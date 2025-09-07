@@ -65,7 +65,7 @@ The C/C++ Lint workflow runs clang-format and clang-tidy using cpp-linter for co
 ```yaml
 jobs:
   lint:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/lint.yml@v1
+    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-lint.yml@main
     with:
       clang_version: "20"
 ```
@@ -75,7 +75,7 @@ jobs:
 ```yaml
 jobs:
   lint:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/lint.yml@v1
+    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-lint.yml@main
     with:
       extensions: "c,cpp,h,hpp,cc,cxx"
       clang_version: "18"
@@ -86,7 +86,7 @@ jobs:
 ```yaml
 jobs:
   lint:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/lint.yml@v1
+    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-lint.yml@main
     with:
       ignore: "build|.git|third_party|vendor|test"
       clang_version: "20"
@@ -97,7 +97,7 @@ jobs:
 ```yaml
 jobs:
   lint:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/lint.yml@v1
+    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-lint.yml@main
     with:
       clang_version: "20"
       style: "google"  # Use Google style instead of .clang-format file
@@ -113,7 +113,7 @@ jobs:
 ```yaml
 jobs:
   lint:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/lint.yml@v1
+    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-lint.yml@main
     with:
       clang_version: "20"
       files_changed_only: true   # Only lint changed files
@@ -179,9 +179,9 @@ HeaderFilterRegex: ''
 
 ## 📚 Related Workflows
 
-- **[Build](build-workflow.md)** - ESP-IDF application builds
 - **[Static Analysis](static-analysis-workflow.md)** - Security analysis
-- **[Security](security-workflow.md)** - Security auditing
+- **[Documentation](docs-workflow.md)** - Documentation generation
+- **[Link Check](link-check-workflow.md)** - Link validation
 
 ## 🔗 Related Resources
 

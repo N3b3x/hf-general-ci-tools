@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← Previous: Build Workflow](build-workflow.md) | [Next: Lint Workflow →](lint-workflow.md)
+[← Previous: Lint Workflow](lint-workflow.md) | [Next: Link Check Workflow →](link-check-workflow.md)
 
 **📖 Doxygen + GitHub Pages Deployment**
 
@@ -34,7 +34,7 @@ The Documentation workflow builds Doxygen documentation and optionally deploys i
 - GitHub Pages deployment
 - Artifact storage
 
-**Use Case**: Automated documentation generation and deployment for ESP-IDF projects
+**Use Case**: Automated documentation generation and deployment for C/C++ projects
 
 ## ⚙️ Inputs
 
@@ -66,7 +66,7 @@ The Documentation workflow builds Doxygen documentation and optionally deploys i
 ```yaml
 jobs:
   docs:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/docs.yml@v1
+    uses: your-org/github-actions-workflows/.github/workflows/docs.yml@main
     with:
       doxygen_config: Doxyfile
       output_dir: docs/doxygen/html
@@ -77,7 +77,7 @@ jobs:
 ```yaml
 jobs:
   docs:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/docs.yml@v1
+    uses: your-org/github-actions-workflows/.github/workflows/docs.yml@main
     with:
       doxygen_config: Doxyfile
       output_dir: docs/doxygen/html
@@ -98,7 +98,7 @@ jobs:
 ```yaml
 jobs:
   docs:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/docs.yml@v1
+    uses: your-org/github-actions-workflows/.github/workflows/docs.yml@main
     with:
       doxygen_config: docs/Doxyfile.custom
       output_dir: docs/generated/html
@@ -114,7 +114,7 @@ Create a `Doxyfile` in your project root:
 
 ```ini
 # Basic Doxygen configuration
-PROJECT_NAME           = "My ESP32 Project"
+PROJECT_NAME           = "My C/C++ Project"
 PROJECT_NUMBER        = 1.0
 OUTPUT_DIRECTORY      = docs/doxygen
 INPUT                 = src inc examples
@@ -193,7 +193,7 @@ For repositories that only need link checking without documentation generation, 
 ```yaml
 jobs:
   link-check:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/link-check.yml@v1
+    uses: your-org/github-actions-workflows/.github/workflows/docs-link-check.yml@main
     with:
       paths: "docs/**,*.md,**/docs/**"  # Paths to check
       fail_on_errors: true              # Fail on broken links
@@ -296,9 +296,9 @@ ls docs/doxygen/html/
 
 ## 📚 Related Workflows
 
-- **[Build](build-workflow.md)** - ESP-IDF application builds
 - **[Lint](lint-workflow.md)** - Code quality checks
-- **[Security](security-workflow.md)** - Security auditing
+- **[Static Analysis](static-analysis-workflow.md)** - Security analysis
+- **[Link Check](link-check-workflow.md)** - Link validation
 
 ## 🔗 Related Resources
 
@@ -310,7 +310,7 @@ ls docs/doxygen/html/
 
 <div align="center">
 
-[← Previous: Build Workflow](build-workflow.md) | [Next: Lint Workflow →](lint-workflow.md)
+[← Previous: Lint Workflow](lint-workflow.md) | [Next: Link Check Workflow →](link-check-workflow.md)
 
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
 

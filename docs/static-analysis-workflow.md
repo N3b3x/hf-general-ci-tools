@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← Previous: Link Check Workflow](link-check-workflow.md) | [Next: Security Workflow →](security-workflow.md)
+[← Previous: Lint Workflow](lint-workflow.md) | [Next: Documentation Workflow →](docs-workflow.md)
 
 **🔒 Cppcheck Security Analysis**
 
@@ -56,7 +56,7 @@ The Static Analysis workflow runs cppcheck via Docker for comprehensive C/C++ co
 ```yaml
 jobs:
   static:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/static-analysis.yml@v1
+    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-static-analysis.yml@main
     with:
       paths: "src inc examples"
       std: "c++17"
@@ -68,7 +68,7 @@ jobs:
 ```yaml
 jobs:
   static:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/static-analysis.yml@v1
+    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-static-analysis.yml@main
     with:
       paths: "src inc examples"
       std: "c++20"
@@ -80,7 +80,7 @@ jobs:
 ```yaml
 jobs:
   static:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/static-analysis.yml@v1
+    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-static-analysis.yml@main
     with:
       paths: "src lib tests"
       std: "c++14"
@@ -134,9 +134,9 @@ Create a `.cppcheck-suppressions` file for false positives:
 
 ## 📚 Related Workflows
 
-- **[Build](build-workflow.md)** - ESP-IDF application builds
 - **[Lint](lint-workflow.md)** - Code quality checks
-- **[Security](security-workflow.md)** - Security auditing
+- **[Documentation](docs-workflow.md)** - Documentation generation
+- **[Link Check](link-check-workflow.md)** - Link validation
 
 ## 🔗 Related Resources
 
@@ -148,7 +148,7 @@ Create a `.cppcheck-suppressions` file for false positives:
 
 <div align="center">
 
-[← Previous: Link Check Workflow](link-check-workflow.md) | [Next: Security Workflow →](security-workflow.md)
+[← Previous: Lint Workflow](lint-workflow.md) | [Next: Documentation Workflow →](docs-workflow.md)
 
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
 
