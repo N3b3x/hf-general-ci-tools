@@ -25,7 +25,7 @@ The C/C++ Lint workflow runs clang-format and clang-tidy using cpp-linter for co
 ## 🎯 Overview
 
 **Purpose**: C/C++ code quality enforcement using cpp-linter-action  
-**Key Features**: 
+**Key Features**:
 - clang-format for code style
 - clang-tidy for static analysis
 - PR annotations and comments
@@ -65,7 +65,7 @@ The C/C++ Lint workflow runs clang-format and clang-tidy using cpp-linter for co
 ```yaml
 jobs:
   lint:
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-lint.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@main
     with:
       clang_version: "20"
 ```
@@ -75,7 +75,7 @@ jobs:
 ```yaml
 jobs:
   lint:
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-lint.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@main
     with:
       extensions: "c,cpp,h,hpp,cc,cxx"
       clang_version: "18"
@@ -86,7 +86,7 @@ jobs:
 ```yaml
 jobs:
   lint:
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-lint.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@main
     with:
       ignore: "build|.git|third_party|vendor|test"
       clang_version: "20"
@@ -97,7 +97,7 @@ jobs:
 ```yaml
 jobs:
   lint:
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-lint.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@main
     with:
       clang_version: "20"
       style: "google"  # Use Google style instead of .clang-format file
@@ -113,7 +113,7 @@ jobs:
 ```yaml
 jobs:
   lint:
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-lint.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@main
     with:
       clang_version: "20"
       files_changed_only: true   # Only lint changed files
@@ -198,4 +198,3 @@ HeaderFilterRegex: ''
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
 
 </div>
-

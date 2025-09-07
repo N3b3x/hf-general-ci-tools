@@ -42,19 +42,19 @@ on:
 
 jobs:
   lint:
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-lint.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@main
     with:
       clang_version: "20"
       extensions: "c,cpp,h,hpp"
 
   static-analysis:
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-static-analysis.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@main
     with:
       paths: "src inc examples"
       strict: false
 
   link-check:
-    uses: your-org/github-actions-workflows/.github/workflows/docs-link-check.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@main
     with:
       paths: "docs/**,*.md"
 ```
@@ -126,8 +126,8 @@ jobs:
 
 ## 🔗 Related Resources
 
-- [Main Repository](https://github.com/your-org/github-actions-workflows)
-- [N3b3/hf-espidf-ci-tools](https://github.com/N3b3/hf-espidf-ci-tools) - ESP-IDF specific CI tools and workflows
+- [Main Repository](https://github.com/N3B3x/hf-general-ci-tools)
+- [N3B3x/hf-espidf-ci-tools](https://github.com/N3B3x/hf-espidf-ci-tools) - ESP-IDF specific CI tools and workflows
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
 - [Clang Documentation](https://clang.llvm.org/)
 - [Doxygen Documentation](https://www.doxygen.nl/)

@@ -1,0 +1,99 @@
+---
+name: Linting and Quality Checks
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+jobs:
+  yamllint:
+    name: YAML Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install yamllint
+        run: |
+          sudo apt update
+          sudo apt install -y yamllint
+
+      - name: Run yamllint on workflow files
+        run: |
+          echo "Checking .github/workflows/*.yml files..."
+          yamllint -c .yamllint .github/workflows/*.yml
+
+      - name: Run yamllint on all YAML files
+        run: |
+          echo "Checking all YAML files in repository..."
+          find . -name "*.yml" -o -name "*.yaml" | grep -v ".git/" | xargs yamllint -c .yamllint || true
+
+  markdownlint:
+    name: Markdown Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install markdownlint
+        run: npm install -g markdownlint-cli
+
+      - name: Run markdownlint
+        run: |
+          echo "Checking markdown files..."
+          markdownlint docs/*.md README.md
+
+  link-check:
+    name: Link Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install markdown-link-check
+        run: npm install -g markdown-link-check
+
+      - name: Check links in README
+        run: markdown-link-check README.md
+
+      - name: Check links in documentation
+        run: |
+          for file in docs/*.md; do
+            echo "Checking links in $file"
+            markdown-link-check "$file"
+          done
+
+  quality-summary:
+    name: Quality Summary
+    needs: [yamllint, markdownlint, link-check]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate quality summary
+        run: |
+          echo "## 🔍 Quality Check Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| YAML Lint | ${{ needs.yamllint.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Markdown Lint | ${{ needs.markdownlint.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Link Check | ${{ needs.link-check.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📋 Quality Standards" >> $GITHUB_STEP_SUMMARY
+          echo "- YAML files follow yamllint standards" >> $GITHUB_STEP_SUMMARY
+          echo "- Markdown files follow markdownlint standards" >> $GITHUB_STEP_SUMMARY
+          echo "- All documentation links are valid" >> $GITHUB_STEP_SUMMARY
+          echo "- Repository follows industry best practices" >> $GITHUB_STEP_SUMMARY

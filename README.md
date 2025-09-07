@@ -30,21 +30,21 @@ on:
 jobs:
   # Lint C/C++ code
   lint:
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-lint.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@main
     with:
       clang_version: "20"
       extensions: "c,cpp,h,hpp"
 
   # Run static analysis
   static-analysis:
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-static-analysis.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@main
     with:
       paths: "src inc examples"
       strict: false
 
   # Check documentation links
   link-check:
-    uses: your-org/github-actions-workflows/.github/workflows/docs-link-check.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@main
     with:
       paths: "docs/**,*.md"
 ```
@@ -63,7 +63,7 @@ on:
 jobs:
   # Comprehensive linting
   lint:
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-lint.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@main
     with:
       clang_version: "20"
       style: "google"
@@ -75,7 +75,7 @@ jobs:
 
   # Strict static analysis
   static-analysis:
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-static-analysis.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@main
     with:
       paths: "src lib tests"
       std: "c++20"
@@ -83,7 +83,7 @@ jobs:
 
   # Build and deploy documentation
   docs:
-    uses: your-org/github-actions-workflows/.github/workflows/docs.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs.yml@main
     with:
       doxygen_config: "Doxyfile"
       output_dir: "docs/html"
@@ -94,7 +94,7 @@ jobs:
 
   # Comprehensive link checking
   link-check:
-    uses: your-org/github-actions-workflows/.github/workflows/docs-link-check.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@main
     with:
       paths: "docs/**,*.md,**/docs/**"
       fail_on_errors: true
@@ -179,7 +179,7 @@ permissions:
 
 ## 🔗 Related Projects
 
-- **[N3b3/hf-espidf-ci-tools](https://github.com/N3b3/hf-espidf-ci-tools)** - ESP-IDF specific CI tools and workflows for ESP32 development
+- **[N3B3x/hf-espidf-ci-tools](https://github.com/N3B3x/hf-espidf-ci-tools)** - ESP-IDF specific CI tools and workflows for ESP32 development
 
 ## 📄 License
 

@@ -46,7 +46,7 @@ on:
 
 jobs:
   link-check:
-    uses: your-org/github-actions-workflows/.github/workflows/docs-link-check.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@main
 ```
 
 ### **Advanced Configuration**
@@ -62,7 +62,7 @@ on:
 
 jobs:
   link-check:
-    uses: your-org/github-actions-workflows/.github/workflows/docs-link-check.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@main
     with:
       paths: "docs/**,*.md,**/docs/**"
       fail_on_errors: true
@@ -102,7 +102,7 @@ on:
 
 jobs:
   link-check:
-    uses: your-org/github-actions-workflows/.github/workflows/docs-link-check.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@main
 ```
 
 ### **Custom Paths**
@@ -116,7 +116,7 @@ on:
 
 jobs:
   link-check:
-    uses: your-org/github-actions-workflows/.github/workflows/docs-link-check.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@main
     with:
       paths: "docs/**,README.md,CONTRIBUTING.md"
       fail_on_errors: false
@@ -133,7 +133,7 @@ on:
 
 jobs:
   link-check:
-    uses: your-org/github-actions-workflows/.github/workflows/docs-link-check.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@main
     with:
       paths: "docs/**"
 ```
@@ -149,7 +149,7 @@ on:
 
 jobs:
   link-check:
-    uses: your-org/github-actions-workflows/.github/workflows/docs-link-check.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@main
     with:
       paths: "**/*.md"
 ```
@@ -169,13 +169,13 @@ on:
 
 jobs:
   docs:
-    uses: your-org/github-actions-workflows/.github/workflows/docs.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs.yml@main
     with:
       project_dir: docs
       run_link_check: true
 
   link-check:
-    uses: your-org/github-actions-workflows/.github/workflows/docs-link-check.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@main
     with:
       paths: "docs/**"
 ```
@@ -193,15 +193,15 @@ on:
 
 jobs:
   lint:
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-lint.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@main
 
   static-analysis:
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-static-analysis.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@main
     with:
       paths: "src inc"
 
   link-check:
-    uses: your-org/github-actions-workflows/.github/workflows/docs-link-check.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@main
 ```
 
 ---
@@ -317,7 +317,7 @@ Enable verbose output for debugging:
 ```yaml
 jobs:
   link-check:
-    uses: your-org/github-actions-workflows/.github/workflows/docs-link-check.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@main
     with:
       paths: "docs/**"
       fail_on_errors: false  # Don't fail on errors for debugging

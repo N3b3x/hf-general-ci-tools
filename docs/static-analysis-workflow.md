@@ -25,7 +25,7 @@ The Static Analysis workflow runs cppcheck via Docker for comprehensive C/C++ co
 ## 🎯 Overview
 
 **Purpose**: Security and quality analysis with cppcheck  
-**Key Features**: 
+**Key Features**:
 - Docker-based cppcheck execution
 - XML and text output formats
 - Configurable strictness levels
@@ -56,7 +56,7 @@ The Static Analysis workflow runs cppcheck via Docker for comprehensive C/C++ co
 ```yaml
 jobs:
   static:
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-static-analysis.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@main
     with:
       paths: "src inc examples"
       std: "c++17"
@@ -68,7 +68,7 @@ jobs:
 ```yaml
 jobs:
   static:
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-static-analysis.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@main
     with:
       paths: "src inc examples"
       std: "c++20"
@@ -80,7 +80,7 @@ jobs:
 ```yaml
 jobs:
   static:
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-static-analysis.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@main
     with:
       paths: "src lib tests"
       std: "c++14"
@@ -153,4 +153,3 @@ Create a `.cppcheck-suppressions` file for false positives:
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
 
 </div>
-

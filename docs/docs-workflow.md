@@ -26,7 +26,7 @@ The Documentation workflow builds Doxygen documentation and optionally deploys i
 ## 🎯 Overview
 
 **Purpose**: Generate and deploy Doxygen documentation  
-**Key Features**: 
+**Key Features**:
 - Doxygen + Graphviz integration
 - Optional link checking
 - Markdown linting (markdownlint)
@@ -66,7 +66,7 @@ The Documentation workflow builds Doxygen documentation and optionally deploys i
 ```yaml
 jobs:
   docs:
-    uses: your-org/github-actions-workflows/.github/workflows/docs.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs.yml@main
     with:
       doxygen_config: Doxyfile
       output_dir: docs/doxygen/html
@@ -77,7 +77,7 @@ jobs:
 ```yaml
 jobs:
   docs:
-    uses: your-org/github-actions-workflows/.github/workflows/docs.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs.yml@main
     with:
       doxygen_config: Doxyfile
       output_dir: docs/doxygen/html
@@ -98,7 +98,7 @@ jobs:
 ```yaml
 jobs:
   docs:
-    uses: your-org/github-actions-workflows/.github/workflows/docs.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs.yml@main
     with:
       doxygen_config: docs/Doxyfile.custom
       output_dir: docs/generated/html
@@ -193,7 +193,7 @@ For repositories that only need link checking without documentation generation, 
 ```yaml
 jobs:
   link-check:
-    uses: your-org/github-actions-workflows/.github/workflows/docs-link-check.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@main
     with:
       paths: "docs/**,*.md,**/docs/**"  # Paths to check
       fail_on_errors: true              # Fail on broken links
@@ -315,4 +315,3 @@ ls docs/doxygen/html/
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
 
 </div>
-

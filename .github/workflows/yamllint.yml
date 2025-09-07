@@ -3,9 +3,9 @@ name: YAML Lint
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
   workflow_dispatch:
 
 jobs:
@@ -24,12 +24,12 @@ jobs:
       - name: Run yamllint on workflow files
         run: |
           echo "Checking .github/workflows/*.yml files..."
-          yamllint .github/workflows/*.yml
+          yamllint -c .yamllint .github/workflows/*.yml
 
       - name: Run yamllint on all YAML files
         run: |
           echo "Checking all YAML files in repository..."
-          find . -name "*.yml" -o -name "*.yaml" | grep -v ".git/" | xargs yamllint || true
+          find . -name "*.yml" -o -name "*.yaml" | grep -v ".git/" | xargs yamllint -c .yamllint || true
 
       - name: Check for yamllint configuration
         run: |

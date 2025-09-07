@@ -57,7 +57,7 @@ on:
 jobs:
   # Lint C/C++ code
   lint:
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-lint.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@main
     with:
       clang_version: "20"
       extensions: "c,cpp,h,hpp"
@@ -65,7 +65,7 @@ jobs:
 
   # Check documentation links
   docs-links:
-    uses: your-org/github-actions-workflows/.github/workflows/docs-link-check.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@main
     with:
       paths: "docs/**,*.md,**/docs/**"
 ```
@@ -104,7 +104,7 @@ env:
 jobs:
   # 🔧 Lint code
   lint:
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-lint.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@main
     with:
       clang_version: "20"
       extensions: "c,cpp,cc,cxx,h,hpp"
@@ -118,7 +118,7 @@ jobs:
   # 🔍 Static analysis
   static-analysis:
     if: ${{ github.event.inputs.run_static_analysis != 'false' }}
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-static-analysis.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@main
     with:
       paths: "src inc examples components"
       std: "c++17"
@@ -126,7 +126,7 @@ jobs:
 
   # 📚 Build and check documentation
   docs:
-    uses: your-org/github-actions-workflows/.github/workflows/docs.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs.yml@main
     with:
       doxygen_config: "Doxyfile"
       output_dir: "docs/doxygen/html"
@@ -138,7 +138,7 @@ jobs:
 
   # 🔗 Check documentation links
   link-check:
-    uses: your-org/github-actions-workflows/.github/workflows/docs-link-check.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@main
     with:
       paths: "docs/**,*.md,**/docs/**,README.md"
       fail_on_errors: ${{ github.event.inputs.strict_mode == 'true' }}
@@ -179,7 +179,7 @@ on:
 jobs:
   # Lint code with relaxed settings
   lint:
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-lint.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@main
     with:
       clang_version: "20"
       extensions: "c,cpp,cc,cxx,h,hpp"
@@ -191,7 +191,7 @@ jobs:
 
   # Quick static analysis (non-strict)
   static-analysis:
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-static-analysis.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@main
     with:
       paths: "src inc"
       std: "c++17"
@@ -199,7 +199,7 @@ jobs:
 
   # Quick link check
   link-check:
-    uses: your-org/github-actions-workflows/.github/workflows/docs-link-check.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@main
     with:
       paths: "*.md,README.md"
       fail_on_errors: false  # Don't fail on broken links in dev
@@ -231,7 +231,7 @@ env:
 jobs:
   # Strict linting for release
   lint-release:
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-lint.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@main
     with:
       clang_version: "20"
       extensions: "c,cpp,cc,cxx,h,hpp"
@@ -243,7 +243,7 @@ jobs:
 
   # Comprehensive static analysis
   static-analysis-release:
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-static-analysis.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@main
     with:
       paths: "src inc examples components"
       std: "c++17"
@@ -251,7 +251,7 @@ jobs:
 
   # Build and deploy documentation
   docs-release:
-    uses: your-org/github-actions-workflows/.github/workflows/docs.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs.yml@main
     with:
       doxygen_config: "Doxyfile"
       output_dir: "docs/doxygen/html"
@@ -262,7 +262,7 @@ jobs:
 
   # Comprehensive link checking
   link-check-release:
-    uses: your-org/github-actions-workflows/.github/workflows/docs-link-check.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@main
     with:
       paths: "docs/**,*.md,**/docs/**,README.md"
       fail_on_errors: true
@@ -315,7 +315,7 @@ on:
 jobs:
   # Static analysis (runs first)
   static-analysis:
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-static-analysis.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@main
     with:
       paths: "src inc examples components"
       std: "c++17"
@@ -324,7 +324,7 @@ jobs:
   # Strict linting with quality focus
   lint-quality:
     needs: static-analysis
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-lint.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@main
     with:
       clang_version: "20"
       extensions: "c,cpp,cc,cxx,h,hpp"
@@ -338,7 +338,7 @@ jobs:
   # Comprehensive documentation checks
   docs-quality:
     needs: static-analysis
-    uses: your-org/github-actions-workflows/.github/workflows/docs.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs.yml@main
     with:
       doxygen_config: "Doxyfile"
       output_dir: "docs/doxygen/html"
@@ -383,7 +383,7 @@ on:
 jobs:
   # Build documentation
   docs-build:
-    uses: your-org/github-actions-workflows/.github/workflows/docs.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs.yml@main
     with:
       doxygen_config: "Doxyfile"
       output_dir: "docs/doxygen/html"
@@ -395,7 +395,7 @@ jobs:
 
   # Comprehensive link checking
   link-check-comprehensive:
-    uses: your-org/github-actions-workflows/.github/workflows/docs-link-check.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@main
     with:
       paths: "docs/**,*.md,**/docs/**,README.md,**/*.md"
       fail_on_errors: true
@@ -436,7 +436,7 @@ env:
 jobs:
   # Parallel linting with minimal checks
   lint-fast:
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-lint.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@main
     with:
       clang_version: "20"
       extensions: "c,cpp,h,hpp"
@@ -449,7 +449,7 @@ jobs:
 
   # Quick static analysis
   static-analysis-fast:
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-static-analysis.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@main
     with:
       paths: "src inc"  # Only check main source directories
       std: "c++17"
@@ -457,7 +457,7 @@ jobs:
 
   # Fast link check
   link-check-fast:
-    uses: your-org/github-actions-workflows/.github/workflows/docs-link-check.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@main
     with:
       paths: "README.md,*.md"  # Only check main docs
       fail_on_errors: false  # Don't fail on broken links for speed
@@ -505,7 +505,7 @@ env:
 jobs:
   static-analysis:
     if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
-    uses: your-org/github-actions-workflows/.github/workflows/c-cpp-static-analysis.yml@main
+    uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@main
 ```
 
 ### **Matrix Strategies**
