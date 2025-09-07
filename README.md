@@ -4,17 +4,33 @@ A collection of reusable GitHub Actions workflows for general-purpose CI/CD task
 
 ## 🚀 Available Workflows
 
-This repository provides the following reusable workflows:
+This repository provides both **reusable workflows** for external use and **internal workflows** for repository quality assurance.
 
-| Workflow | Description | File |
-|----------|-------------|------|
-| **C/C++ Lint** | Code quality checks using clang-format and clang-tidy | `c-cpp-lint.yml` |
-| **Static Analysis** | Security and quality analysis using cppcheck | `c-cpp-static-analysis.yml` |
-| **Documentation** | Doxygen documentation generation and GitHub Pages deployment | `docs.yml` |
-| **Link Check** | Documentation link validation | `docs-link-check.yml` |
-| **YAML Lint** | YAML file validation and formatting | `yamllint.yml` |
+### 🔄 **Reusable Workflows** (For External Use)
+
+These workflows are designed to be used by other repositories:
+
+| Workflow | Description | File | Usage |
+|----------|-------------|------|-------|
+| **C/C++ Lint** | Code quality checks using clang-format and clang-tidy | `c-cpp-lint.yml` | `uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@main` |
+| **Static Analysis** | Security and quality analysis using cppcheck | `c-cpp-static-analysis.yml` | `uses: N3B3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@main` |
+| **Documentation** | Doxygen documentation generation and GitHub Pages deployment | `docs.yml` | `uses: N3B3x/hf-general-ci-tools/.github/workflows/docs.yml@main` |
+| **Link Check** | Documentation link validation | `docs-link-check.yml` | `uses: N3B3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@main` |
+
+### 🏠 **Internal Repository Workflows** (For This Repository)
+
+These workflows are used internally to maintain repository quality:
+
+| Workflow | Description | File | Purpose |
+|----------|-------------|------|---------|
+| **Comprehensive Linting** | Quality assurance for this repository | `linting.yml` | Ensures all YAML, Markdown files, and links meet quality standards |
+| **YAML Lint** | YAML file validation and formatting | `yamllint.yml` | Validates GitHub Actions workflow files and other YAML files |
 
 ## 📋 Quick Start
+
+### Using Reusable Workflows
+
+To use these workflows in your own repository, add them to your `.github/workflows/` directory:
 
 ### Basic Usage
 
@@ -111,6 +127,30 @@ Detailed documentation for each workflow is available in the [`docs/`](docs/) di
 - [Link Check Workflow](docs/link-check-workflow.md) - Link validation
 - [Example Workflows](docs/example-workflows.md) - Complete usage examples
 
+## 🏠 Internal Repository Quality Assurance
+
+This repository uses internal workflows to maintain high quality standards:
+
+### Quality Checks Performed
+
+- **YAML Validation**: All workflow files are validated using yamllint
+- **Markdown Linting**: Documentation follows markdownlint standards  
+- **Link Validation**: All documentation links are checked for validity
+- **Code Quality**: Consistent formatting and style across all files
+
+### Internal Workflow Triggers
+
+- **Push Events**: Quality checks run on every push to main/develop branches
+- **Pull Requests**: All PRs are validated before merging
+- **Manual Dispatch**: Quality checks can be triggered manually
+
+### Repository Standards
+
+- **Line Length**: 250 characters for markdown, 120 for YAML
+- **Formatting**: Consistent indentation and structure
+- **Links**: All documentation links must be valid
+- **Spelling**: Technical terms and proper nouns are properly spelled
+
 ## 🔧 Workflow Details
 
 ### C/C++ Lint Workflow
@@ -176,6 +216,18 @@ permissions:
   id-token: write        # For GitHub Pages authentication
   pull-requests: write   # For PR comments and annotations
 ```
+
+## 📊 Workflow Summary
+
+### 🔄 Reusable Workflows (4)
+- **c-cpp-lint.yml** - C/C++ code quality and formatting
+- **c-cpp-static-analysis.yml** - Security and quality analysis  
+- **docs.yml** - Documentation generation and deployment
+- **docs-link-check.yml** - Documentation link validation
+
+### 🏠 Internal Workflows (2)
+- **linting.yml** - Comprehensive quality assurance
+- **yamllint.yml** - YAML file validation
 
 ## 🔗 Related Projects
 
