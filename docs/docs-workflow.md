@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← Previous: Build Workflow](build-workflow.md) | [Next: Lint Workflow →](lint-workflow.md)
+[← Previous: C/C++ Lint Workflow](lint-workflow.md) | [Next: Link Check Workflow →](link-check-workflow.md)
 
 **📖 Doxygen + GitHub Pages Deployment**
 
@@ -14,14 +14,14 @@ The Documentation workflow builds Doxygen documentation and optionally deploys i
 
 ## 📋 Table of Contents
 
-- [Overview](#overview)
-- [Inputs](#inputs)
-- [Outputs](#outputs)
-- [Usage Examples](#usage-examples)
-- [Configuration](#configuration)
-- [GitHub Pages Setup](#github-pages-setup)
-- [Troubleshooting](#troubleshooting)
-- [Navigation](#navigation)
+- [Overview](#-overview)
+- [Inputs](#-inputs)
+- [Outputs](#-outputs)
+- [Usage Examples](#-usage-examples)
+- [Configuration](#-configuration)
+- [GitHub Pages Setup](#-github-pages-setup)
+- [Troubleshooting](#-troubleshooting)
+- [Related Workflows](#-related-workflows)
 
 ## 🎯 Overview
 
@@ -34,7 +34,7 @@ The Documentation workflow builds Doxygen documentation and optionally deploys i
 - GitHub Pages deployment
 - Artifact storage
 
-**Use Case**: Automated documentation generation and deployment for ESP-IDF projects
+**Use Case**: Automated documentation generation and deployment for C/C++ projects
 
 ## ⚙️ Inputs
 
@@ -66,7 +66,7 @@ The Documentation workflow builds Doxygen documentation and optionally deploys i
 ```yaml
 jobs:
   docs:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/docs.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
       doxygen_config: Doxyfile
       output_dir: docs/doxygen/html
@@ -77,12 +77,12 @@ jobs:
 ```yaml
 jobs:
   docs:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/docs.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
       doxygen_config: Doxyfile
       output_dir: docs/doxygen/html
       run_link_check: true
-      link_check_paths: "docs/**,*.md,**/docs/**,examples/**"
+      link_check_paths: "docs/**,*.md,**/docs/**"
       run_markdown_lint: true
       markdown_lint_paths: "docs/**,*.md"
       run_spell_check: true
@@ -98,7 +98,7 @@ jobs:
 ```yaml
 jobs:
   docs:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/docs.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
       doxygen_config: docs/Doxyfile.custom
       output_dir: docs/generated/html
@@ -114,10 +114,10 @@ Create a `Doxyfile` in your project root:
 
 ```ini
 # Basic Doxygen configuration
-PROJECT_NAME           = "My ESP32 Project"
+PROJECT_NAME           = "My C++ Project"
 PROJECT_NUMBER        = 1.0
 OUTPUT_DIRECTORY      = docs/doxygen
-INPUT                 = src inc examples
+INPUT                 = src include
 FILE_PATTERNS         = *.c *.cpp *.h *.hpp
 RECURSIVE             = YES
 GENERATE_HTML         = YES
@@ -193,7 +193,7 @@ For repositories that only need link checking without documentation generation, 
 ```yaml
 jobs:
   link-check:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/link-check.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
     with:
       paths: "docs/**,*.md,**/docs/**"  # Paths to check
       fail_on_errors: true              # Fail on broken links
@@ -246,7 +246,7 @@ docs.yourproject.com
 
 **Doxygen Build Fails**
 - Verify `Doxyfile` exists and is valid
-- Check source directories exist (`src/`, `inc/`, `examples/`)
+- Check source directories exist (`src/`, `include/`)
 - Ensure Graphviz is installed (handled automatically)
 - Verify `doxygen_config` path is correct
 
@@ -296,9 +296,9 @@ ls docs/doxygen/html/
 
 ## 📚 Related Workflows
 
-- **[Build](build-workflow.md)** - ESP-IDF application builds
-- **[Lint](lint-workflow.md)** - Code quality checks
-- **[Security](security-workflow.md)** - Security auditing
+- **[C/C++ Lint](lint-workflow.md)** - Code quality checks
+- **[Static Analysis](static-analysis-workflow.md)** - Security analysis
+- **[Link Check](link-check-workflow.md)** - Documentation link validation
 
 ## 🔗 Related Resources
 
@@ -310,7 +310,7 @@ ls docs/doxygen/html/
 
 <div align="center">
 
-[← Previous: Build Workflow](build-workflow.md) | [Next: Lint Workflow →](lint-workflow.md)
+[← Previous: C/C++ Lint Workflow](lint-workflow.md) | [Next: Link Check Workflow →](link-check-workflow.md)
 
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
 

@@ -6,11 +6,11 @@
 ![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-orange?style=for-the-badge&logo=github)
 ![Validation](https://img.shields.io/badge/Validation-Broken%20Links-red?style=for-the-badge&logo=link)
 
-**🔍 Automated Documentation Link Validation for HardFOC Projects**
+**🔍 Automated Documentation Link Validation for General Projects**
 
 *Standalone workflow for checking documentation links and ensuring all references are valid*
 
-[← Previous: Lint Workflow](lint-workflow.md) | [Next: Static Analysis Workflow →](static-analysis-workflow.md)
+[← Previous: C/C++ Lint Workflow](lint-workflow.md) | [Next: Static Analysis Workflow →](static-analysis-workflow.md)
 
 </div>
 
@@ -46,7 +46,7 @@ on:
 
 jobs:
   link-check:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/link-check.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
 ```
 
 ### **Advanced Configuration**
@@ -62,7 +62,7 @@ on:
 
 jobs:
   link-check:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/link-check.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
     with:
       paths: "docs/**,*.md,**/docs/**"
       fail_on_errors: true
@@ -102,7 +102,7 @@ on:
 
 jobs:
   link-check:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/link-check.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
 ```
 
 ### **Custom Paths**
@@ -116,7 +116,7 @@ on:
 
 jobs:
   link-check:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/link-check.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
     with:
       paths: "docs/**,README.md,CONTRIBUTING.md"
       fail_on_errors: false
@@ -133,7 +133,7 @@ on:
 
 jobs:
   link-check:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/link-check.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
     with:
       paths: "docs/**"
 ```
@@ -149,7 +149,7 @@ on:
 
 jobs:
   link-check:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/link-check.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
     with:
       paths: "**/*.md"
 ```
@@ -169,13 +169,13 @@ on:
 
 jobs:
   docs:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/docs.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
       project_dir: docs
       run_link_check: true
 
   link-check:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/link-check.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
     with:
       paths: "docs/**"
 ```
@@ -192,21 +192,17 @@ on:
     branches: [main]
 
 jobs:
-  build:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/build.yml@v1
-    with:
-      project_dir: examples/esp32
-
   lint:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/lint.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1
+
+  static:
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1
 
   link-check:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/link-check.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
 
-  security:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/security.yml@v1
-    with:
-      project_dir: examples/esp32
+  docs:
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
 ```
 
 ---
@@ -322,7 +318,7 @@ Enable verbose output for debugging:
 ```yaml
 jobs:
   link-check:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/link-check.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
     with:
       paths: "docs/**"
       fail_on_errors: false  # Don't fail on errors for debugging
@@ -360,7 +356,8 @@ Broken links:
 ## 🔗 Related Documentation
 
 - [Documentation Workflow](docs-workflow.md) - Build and deploy documentation
-- [Build Workflow](build-workflow.md) - ESP-IDF matrix builds
+- [C/C++ Lint Workflow](lint-workflow.md) - Code quality checks
+- [Static Analysis Workflow](static-analysis-workflow.md) - Security analysis
 - [Example Workflows](example-workflows.md) - Complete workflow examples
 - [Main Documentation Index](index.md) - All workflow guides
 
@@ -376,7 +373,7 @@ Broken links:
 
 <div align="center">
 
-[← Previous: Lint Workflow](lint-workflow.md) | [Next: Static Analysis Workflow →](static-analysis-workflow.md)
+[← Previous: C/C++ Lint Workflow](lint-workflow.md) | [Next: Static Analysis Workflow →](static-analysis-workflow.md)
 
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
 

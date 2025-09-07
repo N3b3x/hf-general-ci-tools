@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← Previous: Example Workflows](example-workflows.md) | [Next: Build Workflow →](build-workflow.md)
+[← Previous: Example Workflows](example-workflows.md) | [Next: C/C++ Lint Workflow →](lint-workflow.md)
 
 **📋 Documentation Index and Navigation**
 
@@ -10,52 +10,43 @@
 
 ---
 
-Welcome to the hf-espidf-ci-tools documentation! This guide provides comprehensive coverage of all reusable workflows and how to integrate them into your ESP-IDF projects.
+Welcome to the hf-general-ci-tools documentation! This guide provides comprehensive coverage of all reusable CI workflows and how to integrate them into your projects.
 
 ## 🚀 Quick Navigation
 
 | Workflow | Description | Quick Start |
 |----------|-------------|-------------|
-| **[Build](build-workflow.md)** | ESP-IDF matrix builds with caching | [→ Build Guide](build-workflow.md) |
-| **[Docs](docs-workflow.md)** | Doxygen + GitHub Pages deployment | [→ Docs Guide](docs-workflow.md) |
-| **[Lint](lint-workflow.md)** | C/C++ code quality checks | [→ Lint Guide](lint-workflow.md) |
-| **[Link Check](link-check-workflow.md)** | Documentation link validation | [→ Link Check Guide](link-check-workflow.md) |
+| **[C/C++ Lint](lint-workflow.md)** | C/C++ code quality checks | [→ Lint Guide](lint-workflow.md) |
 | **[Static Analysis](static-analysis-workflow.md)** | Cppcheck security analysis | [→ Static Analysis Guide](static-analysis-workflow.md) |
-| **[Security](security-workflow.md)** | Dependencies, secrets, CodeQL | [→ Security Guide](security-workflow.md) |
+| **[Docs](docs-workflow.md)** | Doxygen + GitHub Pages deployment | [→ Docs Guide](docs-workflow.md) |
+| **[Link Check](link-check-workflow.md)** | Documentation link validation | [→ Link Check Guide](link-check-workflow.md) |
+| **[YAML Lint](yamllint-workflow.md)** | YAML file validation | [→ YAML Lint Guide](yamllint-workflow.md) |
 
 ## 📋 Prerequisites
 
 Before using these workflows, ensure you have:
 
-1. **ESP-IDF project** with proper structure
-2. **hf-espidf-project-tools repository** cloned in your project
-3. **GitHub Actions enabled** in your repository
+1. **C/C++ project** with proper structure
+2. **GitHub Actions enabled** in your repository
+3. **Appropriate configuration files** (e.g., `.clang-format`, `.clang-tidy`, `Doxyfile`)
 
 ## 🏗️ Project Structure
 
 ```
-your-esp32-project/
+your-project/
 ├── .github/workflows/          # Your CI workflows
-├── examples/esp32/             # ESP-IDF project (project_dir)
-├── hf-espidf-project-tools/    # Project tools repo (project_tools_dir)
-│   ├── generate_matrix.py      # Build matrix generator
-│   ├── build_app.sh           # Application builder
-│   ├── requirements.txt        # Python dependencies
-│   └── config_loader.sh        # Configuration management
 ├── src/                        # Source code
-├── inc/                        # Headers
-└── CMakeLists.txt              # ESP-IDF project file
+├── include/                    # Headers
+├── docs/                       # Documentation
+├── .clang-format              # Code style configuration
+├── .clang-tidy                # Static analysis configuration
+├── Doxyfile                   # Documentation configuration
+└── .yamllint                  # YAML linting configuration
 ```
 
 ## 🔧 Basic Setup
 
-### 1. Clone the Tools Repository
-
-```bash
-git clone https://github.com/N3b3x/hf-espidf-project-tools.git
-```
-
-### 2. Create Your First CI Workflow
+### 1. Create Your First CI Workflow
 
 ```yaml
 # .github/workflows/ci.yml
@@ -65,55 +56,40 @@ on:
   pull_request: { branches: [ main ] }
 
 jobs:
-  build:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/build.yml@v1
-    with:
-      project_dir: examples/esp32
-      project_tools_dir: hf-espidf-project-tools
-      auto_clone_tools: true
-      clean_build: false
-
   lint:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/lint.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1
     with:
-      paths: "src/**,inc/**,examples/**"
+      clang_version: "20"
+      style: "file"
+      extensions: "c,cpp,h,hpp"
 
   static:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/static-analysis.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1
     with:
-      paths: "src inc examples"
+      paths: "src include"
+      std: "c++17"
       strict: false
+
+  docs:
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
+    with:
+      doxygen_config: "Doxyfile"
+      output_dir: "docs/doxygen/html"
+
+  link-check:
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
+    with:
+      paths: "docs/**,*.md"
 ```
 
 ## 📚 Workflow Details
 
-### Build Workflow
-- **Purpose**: Matrix builds across ESP-IDF versions and build types
-- **Key Features**: Caching, artifact uploads, matrix generation
-- **Use Case**: CI/CD for ESP32 applications
-
-[→ Full Build Guide](build-workflow.md)
-
-### Documentation Workflow
-- **Purpose**: Generate and deploy Doxygen documentation
-- **Key Features**: GitHub Pages, link checking, artifact storage
-- **Use Case**: Project documentation automation
-
-[→ Full Docs Guide](docs-workflow.md)
-
-### Linting Workflow
+### C/C++ Lint Workflow
 - **Purpose**: C/C++ code quality enforcement
 - **Key Features**: clang-format, clang-tidy, PR annotations
-- **Use Case**: Code style consistency
+- **Use Case**: Code style consistency and quality checks
 
 [→ Full Lint Guide](lint-workflow.md)
-
-### Link Check Workflow
-- **Purpose**: Documentation link validation
-- **Key Features**: External/internal link checking, anchor validation
-- **Use Case**: Documentation integrity
-
-[→ Full Link Check Guide](link-check-workflow.md)
 
 ### Static Analysis Workflow
 - **Purpose**: Security and quality analysis with cppcheck
@@ -122,12 +98,26 @@ jobs:
 
 [→ Full Static Analysis Guide](static-analysis-workflow.md)
 
-### Security Workflow
-- **Purpose**: Comprehensive security auditing
-- **Key Features**: Dependencies, secrets, CodeQL analysis
-- **Use Case**: Security compliance and vulnerability detection
+### Documentation Workflow
+- **Purpose**: Generate and deploy Doxygen documentation
+- **Key Features**: GitHub Pages, link checking, artifact storage
+- **Use Case**: Project documentation automation
 
-[→ Full Security Guide](security-workflow.md)
+[→ Full Docs Guide](docs-workflow.md)
+
+### Link Check Workflow
+- **Purpose**: Documentation link validation
+- **Key Features**: External/internal link checking, anchor validation
+- **Use Case**: Documentation integrity
+
+[→ Full Link Check Guide](link-check-workflow.md)
+
+### YAML Lint Workflow
+- **Purpose**: YAML file validation and formatting
+- **Key Features**: yamllint integration, configurable rules
+- **Use Case**: YAML file quality and consistency
+
+[→ Full YAML Lint Guide](yamllint-workflow.md)
 
 ## 🔄 Workflow Combinations
 
@@ -135,25 +125,28 @@ jobs:
 ```yaml
 # Combines all workflows for comprehensive CI
 jobs:
-  build: # Matrix builds
-  lint:  # Code quality
-  static: # Security analysis
-  security: # Security audit
+  lint:     # Code quality
+  static:   # Security analysis
+  docs:     # Documentation
+  links:    # Link checking
+  yaml:     # YAML validation
 ```
 
 ### Documentation Pipeline
 ```yaml
 # Documentation generation and deployment
 jobs:
-  docs: # Build and deploy docs
+  docs:     # Build and deploy docs
+  links:    # Check documentation links
 ```
 
-### Security Pipeline
+### Code Quality Pipeline
 ```yaml
-# Security-focused workflows
+# Code quality focused workflows
 jobs:
-  security: # Full security audit
-  static: # Additional static analysis
+  lint:     # Code style and quality
+  static:   # Static analysis
+  yaml:     # YAML validation
 ```
 
 ## 📖 Next Steps
@@ -165,16 +158,17 @@ jobs:
 
 ## 🔗 Related Resources
 
-- [Main Repository](https://github.com/N3b3x/hf-espidf-ci-tools)
-- [Project Tools Repository](https://github.com/N3b3x/hf-espidf-project-tools)
-- [ESP-IDF Documentation](https://docs.espressif.com/projects/esp-idf/)
+- [Main Repository](https://github.com/N3b3x/hf-general-ci-tools)
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
+- [Clang Format Documentation](https://clang.llvm.org/docs/ClangFormat.html)
+- [Cppcheck Documentation](https://cppcheck.sourceforge.io/)
+- [Doxygen Documentation](https://www.doxygen.nl/)
 
 ---
 
 <div align="center">
 
-[← Previous: Example Workflows](example-workflows.md) | [Next: Build Workflow →](build-workflow.md)
+[← Previous: Example Workflows](example-workflows.md) | [Next: C/C++ Lint Workflow →](lint-workflow.md)
 
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
 

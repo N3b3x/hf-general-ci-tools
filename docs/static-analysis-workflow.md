@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← Previous: Link Check Workflow](link-check-workflow.md) | [Next: Security Workflow →](security-workflow.md)
+[← Previous: Link Check Workflow](link-check-workflow.md) | [Next: Example Workflows →](example-workflows.md)
 
 **🔒 Cppcheck Security Analysis**
 
@@ -14,13 +14,13 @@ The Static Analysis workflow runs cppcheck via Docker for comprehensive C/C++ co
 
 ## 📋 Table of Contents
 
-- [Overview](#overview)
-- [Inputs](#inputs)
-- [Outputs](#outputs)
-- [Usage Examples](#usage-examples)
-- [Configuration](#configuration)
-- [Troubleshooting](#troubleshooting)
-- [Navigation](#navigation)
+- [Overview](#-overview)
+- [Inputs](#-inputs)
+- [Outputs](#-outputs)
+- [Usage Examples](#-usage-examples)
+- [Configuration](#-configuration)
+- [Troubleshooting](#-troubleshooting)
+- [Related Workflows](#-related-workflows)
 
 ## 🎯 Overview
 
@@ -56,9 +56,9 @@ The Static Analysis workflow runs cppcheck via Docker for comprehensive C/C++ co
 ```yaml
 jobs:
   static:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/static-analysis.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1
     with:
-      paths: "src inc examples"
+      paths: "src include"
       std: "c++17"
       strict: false
 ```
@@ -68,9 +68,9 @@ jobs:
 ```yaml
 jobs:
   static:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/static-analysis.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1
     with:
-      paths: "src inc examples"
+      paths: "src include"
       std: "c++20"
       strict: true  # Fail on any issues
 ```
@@ -80,7 +80,7 @@ jobs:
 ```yaml
 jobs:
   static:
-    uses: N3b3x/hf-espidf-ci-tools/.github/workflows/static-analysis.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1
     with:
       paths: "src lib tests"
       std: "c++14"
@@ -134,9 +134,9 @@ Create a `.cppcheck-suppressions` file for false positives:
 
 ## 📚 Related Workflows
 
-- **[Build](build-workflow.md)** - ESP-IDF application builds
-- **[Lint](lint-workflow.md)** - Code quality checks
-- **[Security](security-workflow.md)** - Security auditing
+- **[C/C++ Lint](lint-workflow.md)** - Code quality checks
+- **[Documentation](docs-workflow.md)** - Documentation generation
+- **[Link Check](link-check-workflow.md)** - Documentation link validation
 
 ## 🔗 Related Resources
 
@@ -148,7 +148,7 @@ Create a `.cppcheck-suppressions` file for false positives:
 
 <div align="center">
 
-[← Previous: Link Check Workflow](link-check-workflow.md) | [Next: Security Workflow →](security-workflow.md)
+[← Previous: Link Check Workflow](link-check-workflow.md) | [Next: Example Workflows →](example-workflows.md)
 
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
 
