@@ -141,7 +141,8 @@ jobs:
           echo "source 'https://rubygems.org'" > Gemfile
           echo "gem 'github-pages', group: :jekyll_plugins" >> Gemfile
 
-          # Install gems
+          # Install gems to local directory to avoid permission issues
+          bundle config set --local path 'vendor/bundle'
           bundle install
 
           echo "✅ Jekyll dependencies installed successfully"
@@ -212,8 +213,8 @@ jobs:
           # Create destination directory if it doesn't exist
           mkdir -p "$JEKYLL_DEST"
 
-          # Build Jekyll site
-          jekyll build \
+          # Build Jekyll site using local bundle
+          bundle exec jekyll build \
             --source "$JEKYLL_SOURCE" \
             --destination "$JEKYLL_DEST" \
             --baseurl "$BASEURL"
