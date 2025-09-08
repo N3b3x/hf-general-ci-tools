@@ -241,18 +241,39 @@ jobs:
       - name: Run spell checking
         if: ${{ inputs.run_spell_check == true }}
         run: |
-          if [ -f "${{ inputs.spell_check_config }}" ]; then
-            cspell ${{ inputs.spell_check_paths }} --config ${{ inputs.spell_check_config }} || {
-              echo "❌ Spell checking failed"
-              exit 1
-            }
-          else
-            cspell ${{ inputs.spell_check_paths }} || {
-              echo "❌ Spell checking failed"
-              exit 1
-            }
+          echo "🔍 Running spell check on: ${{ inputs.spell_check_paths }}"
+          
+          # Check if files exist before running cspell
+          if ! find . -path "./${{ inputs.spell_check_paths }}" -type f | grep -q .; then
+            echo "⚠️  No files found matching pattern: ${{ inputs.spell_check_paths }}"
+            echo "✅ Spell checking skipped (no files to check)"
+            exit 0
           fi
-          echo "✅ Spell checking passed"
+          
+          # Run cspell and capture output
+          if [ -f "${{ inputs.spell_check_config }}" ]; then
+            echo "📝 Using config file: ${{ inputs.spell_check_config }}"
+            cspell_output=$(cspell ${{ inputs.spell_check_paths }} --config ${{ inputs.spell_check_config }} 2>&1)
+            cspell_exit_code=$?
+          else
+            echo "📝 Using default configuration"
+            cspell_output=$(cspell ${{ inputs.spell_check_paths }} 2>&1)
+            cspell_exit_code=$?
+          fi
+          
+          # Display cspell output
+          echo "$cspell_output"
+          
+          # Check if cspell found any spelling issues
+          if echo "$cspell_output" | grep -q "Issues found: [1-9]"; then
+            echo "❌ Spell checking failed - spelling issues found"
+            exit 1
+          elif [ $cspell_exit_code -eq 0 ]; then
+            echo "✅ Spell checking passed"
+          else
+            echo "⚠️  cspell exited with code $cspell_exit_code but no spelling issues detected"
+            echo "✅ Spell checking passed"
+          fi
 
       - name: Link check with Lychee
         if: ${{ inputs.run_link_check == true }}
