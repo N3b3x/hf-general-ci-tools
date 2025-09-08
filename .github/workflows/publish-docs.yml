@@ -29,7 +29,7 @@ jobs:
 
       # Link checking
       run_link_check: true
-      link_check_paths: "docs/**,*.md"
+      link_check_paths: "docs/ README.md CONTRIBUTING.md"
       verbose: true
 
       # Markdown linting
