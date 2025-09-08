@@ -1,28 +1,63 @@
----
-name: Documentation Link Check (Reusable)
+name: 🔗 Documentation Link Check
 
 on:
   workflow_call:
     inputs:
       paths:
-        description: "Comma-separated paths to check for broken links"
+        description: 'Comma-separated paths to check for broken links'
+        required: false
         type: string
-        default: "docs/**,*.md,**/docs/**"
+        default: 'docs/**,*.md,**/docs/**'
       fail_on_errors:
-        description: "Fail the workflow if broken links are found"
+        description: 'Fail the workflow if broken links are found'
+        required: false
         type: boolean
         default: true
-
-permissions:
-  contents: read
+      timeout:
+        description: 'Timeout in seconds for each link check'
+        required: false
+        type: string
+        default: '10'
+      retry:
+        description: 'Number of retries for failed links'
+        required: false
+        type: string
+        default: '3'
+      exclude_private:
+        description: 'Exclude private/internal links'
+        required: false
+        type: boolean
+        default: true
+      exclude_mail:
+        description: 'Exclude mailto links'
+        required: false
+        type: boolean
+        default: true
+      verbose:
+        description: 'Enable verbose output'
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   link-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Check documentation links
-        uses: AlexanderDokuchaev/md-dead-link-check@v1.2.0
+      - name: Link check with Lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: |
+            --no-progress 
+            ${{ inputs.verbose == 'true' && '--verbose' || '' }}
+            --format detailed 
+            --timeout ${{ inputs.timeout }} 
+            --retry ${{ inputs.retry }} 
+            ${{ inputs.exclude_private == 'true' && '--exclude-all-private' || '' }}
+            ${{ inputs.exclude_mail == 'true' && '--exclude-mail' || '' }}
+            ${{ inputs.fail_on_errors == 'true' && '--fail' || '' }}
+            ${{ inputs.paths }}

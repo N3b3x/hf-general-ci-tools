@@ -1,0 +1,133 @@
+# 📁 Configuration Examples
+
+This directory contains example configuration files for the enhanced documentation workflows.
+
+## 📋 Available Examples
+
+### Jekyll Configuration
+- **`_config.yml.example`** - Complete Jekyll configuration for C++ project documentation
+- **`Gemfile.example`** - Ruby dependencies for Jekyll with common plugins
+
+### Link Checking Configuration
+- **`lychee.toml.example`** - Advanced Lychee configuration for comprehensive link checking
+
+## 🚀 Quick Setup
+
+### 1. Jekyll Setup
+
+To enable Jekyll static site generation:
+
+```bash
+# Copy configuration files
+cp docs/_config.yml.example _config.yml
+cp docs/Gemfile.example Gemfile
+
+# Customize the configuration
+# Edit _config.yml with your project details
+# Edit Gemfile if you need additional plugins
+```
+
+### 2. Link Checking Setup
+
+For advanced link checking configuration:
+
+```bash
+# Copy Lychee configuration
+cp docs/lychee.toml.example lychee.toml
+
+# Customize the configuration
+# Edit lychee.toml with your specific needs
+```
+
+## ⚙️ Configuration Details
+
+### Jekyll Configuration (`_config.yml`)
+
+The example configuration includes:
+
+- **Site metadata** - Title, description, URL settings
+- **Theme settings** - Using the `minima` theme by default
+- **Build settings** - Markdown processor, syntax highlighting
+- **Navigation** - Custom navigation menu
+- **Plugins** - Common Jekyll plugins for SEO and sitemaps
+- **Collections** - Documentation collection setup
+- **Exclusions** - Files to exclude from processing
+
+### Gemfile Configuration
+
+The example Gemfile includes:
+
+- **Jekyll core** - Version 4.3+
+- **Theme** - Minima theme for clean presentation
+- **Plugins** - Feed, sitemap, and SEO plugins
+- **Platform support** - Windows and JRuby compatibility
+
+### Lychee Configuration (`lychee.toml`)
+
+The example configuration includes:
+
+- **Input settings** - Files and directories to check
+- **Output settings** - Format and verbosity options
+- **Check settings** - Timeout, retry, and exclusion rules
+- **HTTP settings** - Headers and redirect handling
+- **Cache settings** - Performance optimization
+
+## 🎯 Customization Tips
+
+### Jekyll Customization
+
+1. **Change theme**: Update the `theme` field in `_config.yml`
+2. **Add plugins**: Add gems to `Gemfile` and update `_config.yml`
+3. **Custom navigation**: Modify the `navigation` section
+4. **Exclude files**: Add patterns to the `exclude` section
+
+### Link Checking Customization
+
+1. **Adjust timeouts**: Modify `timeout` and `retry` values
+2. **Exclude domains**: Add patterns to the `exclude` array
+3. **Custom headers**: Update the `headers` section
+4. **Enable caching**: Configure cache settings for performance
+
+## 📚 Integration with Workflows
+
+These configuration files work seamlessly with the enhanced workflows:
+
+```yaml
+jobs:
+  docs:
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
+    with:
+      jekyll_enabled: true
+      jekyll_config: "_config.yml"  # Uses your custom config
+      run_link_check: true          # Uses lychee.toml if present
+```
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+1. **Jekyll build fails**: Check `_config.yml` syntax and plugin compatibility
+2. **Link check timeouts**: Increase timeout values in `lychee.toml`
+3. **Missing dependencies**: Ensure all gems are listed in `Gemfile`
+4. **Theme issues**: Verify theme name and version compatibility
+
+### Debug Mode
+
+Enable verbose output for troubleshooting:
+
+```yaml
+# In workflow
+jekyll_enabled: true
+run_link_check: true
+
+# In lychee.toml
+[output]
+verbose = true
+```
+
+## 📖 Further Reading
+
+- [Jekyll Documentation](https://jekyllrb.com/docs/)
+- [Lychee Documentation](https://github.com/lycheeverse/lychee)
+- [GitHub Pages Documentation](https://docs.github.com/en/pages)
+- [Workflow Documentation](docs-workflow.md)

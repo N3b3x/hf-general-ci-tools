@@ -1,189 +1,241 @@
----
-name: Docs Build & Deploy (Reusable)
+name: 📚 Documentation Workflow
 
 on:
   workflow_call:
     inputs:
       doxygen_config:
-        description: "Path to Doxyfile (relative to repo root)"
+        description: 'Path to Doxyfile (relative to repo root)'
+        required: false
         type: string
-        default: "Doxyfile"
+        default: 'Doxyfile'
       output_dir:
-        description: "Generated HTML dir (relative to repo root)"
+        description: 'Generated HTML directory'
+        required: false
         type: string
-        default: "docs/doxygen/html"
+        default: 'docs/doxygen/html'
       run_link_check:
-        description: "Run documentation link checker"
+        description: 'Run documentation link checker'
+        required: false
         type: boolean
         default: true
       link_check_paths:
-        description: "Comma-separated paths to check for broken links"
+        description: 'Comma-separated paths to check for broken links'
+        required: false
         type: string
-        default: "docs/**,*.md,**/docs/**"
-      link_check_exclude_paths:
-        description: "Comma-separated paths to exclude from link checking (in addition to defaults)"
-        type: string
-        default: ""
+        default: 'docs/**,*.md,**/docs/**'
       run_markdown_lint:
-        description: "Run markdown linting on documentation files"
+        description: 'Run markdown linting on documentation files'
+        required: false
         type: boolean
         default: false
       markdown_lint_paths:
-        description: "Glob patterns for markdown files to lint"
+        description: 'Glob patterns for markdown files to lint'
+        required: false
         type: string
-        default: "**/*.md"
+        default: '**/*.md'
       run_spell_check:
-        description: "Run spell checking on documentation files"
+        description: 'Run spell checking on documentation files'
+        required: false
         type: boolean
         default: false
       spell_check_paths:
-        description: "Glob patterns for files to spell check"
+        description: 'Glob patterns for files to spell check'
+        required: false
         type: string
-        default: "**/*.md"
+        default: '**/*.md'
       spell_check_config:
-        description: "Path to cspell configuration file"
+        description: 'Path to cspell configuration file'
+        required: false
         type: string
-        default: ".cspell.json"
+        default: '.cspell.json'
       deploy_pages:
-        description: "Deploy to GitHub Pages (main branch, non-PR)"
+        description: 'Deploy to GitHub Pages'
+        required: false
         type: boolean
         default: true
+      jekyll_enabled:
+        description: 'Enable Jekyll static site generation'
+        required: false
+        type: boolean
+        default: false
+      jekyll_theme:
+        description: 'Jekyll theme to use'
+        required: false
+        type: string
+        default: 'minima'
+      jekyll_config:
+        description: 'Path to Jekyll configuration file'
+        required: false
+        type: string
+        default: '_config.yml'
+      jekyll_source:
+        description: 'Jekyll source directory'
+        required: false
+        type: string
+        default: 'docs'
+      jekyll_destination:
+        description: 'Jekyll build destination'
+        required: false
+        type: string
+        default: '_site'
+    secrets:
+      GITHUB_TOKEN:
+        description: 'GitHub token for Pages deployment'
+        required: true
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
-  docs:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Check documentation links
-        if: ${{ inputs.run_link_check }}
-        run: |
-          # Create temporary pyproject.toml with dynamic paths from input
-          echo "Creating pyproject.toml with paths: ${{ inputs.link_check_paths }}"
-          echo "Exclude paths: ${{ inputs.link_check_exclude_paths }}"
-          
-          # Convert comma-separated paths to TOML array format
-          IFS=',' read -ra PATHS <<< "${{ inputs.link_check_paths }}"
-          INCLUDE_PATHS=""
-          for path in "${PATHS[@]}"; do
-            # Trim whitespace and add quotes
-            path=$(echo "$path" | xargs)
-            if [ -n "$INCLUDE_PATHS" ]; then
-              INCLUDE_PATHS="$INCLUDE_PATHS,
-              \"$path\""
-            else
-              INCLUDE_PATHS="\"$path\""
-            fi
-          done
-          
-          # Convert comma-separated exclude paths to TOML array format
-          EXCLUDE_PATHS="\"node_modules/**\",
-            \".git/**\",
-            \"**/node_modules/**\""
-          if [ -n "${{ inputs.link_check_exclude_paths }}" ]; then
-            IFS=',' read -ra EXCLUDE_PATHS_ARRAY <<< "${{ inputs.link_check_exclude_paths }}"
-            for path in "${EXCLUDE_PATHS_ARRAY[@]}"; do
-              # Trim whitespace and add quotes
-              path=$(echo "$path" | xargs)
-              if [ -n "$path" ]; then
-                EXCLUDE_PATHS="$EXCLUDE_PATHS,
-                \"$path\""
-              fi
-            done
-          fi
-          
-          cat > pyproject.toml << EOF
-          [tool.md-dead-link-check]
-          # Configuration for md-dead-link-check
-          # Include patterns for files to check
-          include = [
-            $INCLUDE_PATHS
-          ]
-          # Exclude patterns for files to skip
-          exclude = [
-            $EXCLUDE_PATHS
-          ]
-          # Additional configuration options
-          ignore_links = [
-            # Add any specific links to ignore here
-          ]
-          # Timeout for link checking (in seconds)
-          timeout = 30
-          # Follow redirects
-          follow_redirects = true
-          # Check external links
-          check_external = true
-          EOF
-          
-          # Run the link checker using the GitHub Action
-          # The action will use the dynamically generated pyproject.toml
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v4
 
-      - name: Run md-dead-link-check
-        if: ${{ inputs.run_link_check }}
-        uses: AlexanderDokuchaev/md-dead-link-check@v1.2.0
-        with:
-          config: pyproject.toml
-          version: 1.2.0
-          python_version: '3.10'
-
-      - name: Setup Node.js (for linting)
-        if: ${{ inputs.run_markdown_lint || inputs.run_spell_check }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      - name: Install markdownlint
-        if: ${{ inputs.run_markdown_lint }}
-        run: npm install -g markdownlint-cli
-
-      - name: Lint markdown files
-        if: ${{ inputs.run_markdown_lint }}
-        run: markdownlint "${{ inputs.markdown_lint_paths }}" --ignore node_modules
-
-      - name: Install cspell
-        if: ${{ inputs.run_spell_check }}
-        run: npm install -g cspell
-
-      - name: Spell check
-        if: ${{ inputs.run_spell_check }}
-        run: |
-          if [ -f "${{ inputs.spell_check_config }}" ]; then
-            cspell "${{ inputs.spell_check_paths }}" --config "${{ inputs.spell_check_config }}"
-          else
-            cspell "${{ inputs.spell_check_paths }}"
-          fi
-
-      - name: Install Doxygen + Graphviz
+      - name: Install system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y doxygen graphviz
 
-      - name: Build docs (Doxygen)
+      - name: Install Jekyll dependencies
+        if: ${{ inputs.jekyll_enabled == 'true' }}
         run: |
-          doxygen "${{ inputs.doxygen_config }}"
-          test -d "${{ inputs.output_dir }}" || { \
-            echo "No docs at ${{ inputs.output_dir }}"; exit 1; }
+          sudo apt-get install -y ruby-full build-essential zlib1g-dev
+          sudo gem install jekyll bundler
+          if [ -f "Gemfile" ]; then
+            bundle install
+          else
+            echo "source 'https://rubygems.org'" > Gemfile
+            echo "gem 'jekyll', '~> 4.3'" >> Gemfile
+            echo "gem '${{ inputs.jekyll_theme }}'" >> Gemfile
+            bundle install
+          fi
 
-      - name: Upload docs artifact
+      - name: Install Node.js dependencies
+        if: ${{ inputs.run_markdown_lint == 'true' || inputs.run_spell_check == 'true' }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install markdownlint
+        if: ${{ inputs.run_markdown_lint == 'true' }}
+        run: npm install -g markdownlint-cli
+
+      - name: Install cspell
+        if: ${{ inputs.run_spell_check == 'true' }}
+        run: npm install -g cspell
+
+      - name: Generate Doxygen documentation
+        run: |
+          if [ -f "${{ inputs.doxygen_config }}" ]; then
+            doxygen ${{ inputs.doxygen_config }}
+            echo "✅ Doxygen documentation generated successfully"
+          else
+            echo "⚠️  Doxyfile not found at ${{ inputs.doxygen_config }}, skipping Doxygen generation"
+          fi
+
+      - name: Build Jekyll site
+        if: ${{ inputs.jekyll_enabled == 'true' }}
+        run: |
+          if [ -f "${{ inputs.jekyll_config }}" ]; then
+            jekyll build \
+              --source ${{ inputs.jekyll_source }} \
+              --destination ${{ inputs.jekyll_destination }} \
+              --baseurl "${{ steps.pages.outputs.base_path }}"
+            echo "✅ Jekyll site built successfully"
+          else
+            echo "⚠️  Jekyll config not found at ${{ inputs.jekyll_config }}, skipping Jekyll build"
+          fi
+
+      - name: Run markdown linting
+        if: ${{ inputs.run_markdown_lint == 'true' }}
+        run: |
+          markdownlint ${{ inputs.markdown_lint_paths }} || {
+            echo "❌ Markdown linting failed"
+            exit 1
+          }
+          echo "✅ Markdown linting passed"
+
+      - name: Run spell checking
+        if: ${{ inputs.run_spell_check == 'true' }}
+        run: |
+          if [ -f "${{ inputs.spell_check_config }}" ]; then
+            cspell ${{ inputs.spell_check_paths }} --config ${{ inputs.spell_check_config }} || {
+              echo "❌ Spell checking failed"
+              exit 1
+            }
+          else
+            cspell ${{ inputs.spell_check_paths }} || {
+              echo "❌ Spell checking failed"
+              exit 1
+            }
+          fi
+          echo "✅ Spell checking passed"
+
+      - name: Link check with Lychee
+        if: ${{ inputs.run_link_check == 'true' }}
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: |
+            --no-progress 
+            --verbose 
+            --format detailed 
+            --timeout 10 
+            --retry 3 
+            --exclude-all-private 
+            --exclude-mail 
+            ${{ inputs.link_check_paths }}
+          fail: true
+
+      - name: Prepare deployment artifacts
+        run: |
+          if [ "${{ inputs.jekyll_enabled }}" == "true" ] && [ -d "${{ inputs.jekyll_destination }}" ]; then
+            echo "Using Jekyll build output: ${{ inputs.jekyll_destination }}"
+            DEPLOY_PATH="${{ inputs.jekyll_destination }}"
+          elif [ -d "${{ inputs.output_dir }}" ]; then
+            echo "Using Doxygen output: ${{ inputs.output_dir }}"
+            DEPLOY_PATH="${{ inputs.output_dir }}"
+          else
+            echo "No documentation found to deploy"
+            exit 1
+          fi
+          echo "DEPLOY_PATH=$DEPLOY_PATH" >> $GITHUB_ENV
+
+      - name: Upload documentation artifacts
         uses: actions/upload-artifact@v4
         with:
           name: docs-html
-          path: ${{ inputs.output_dir }}
+          path: ${{ env.DEPLOY_PATH }}
           retention-days: 7
 
-      - name: Deploy to GitHub Pages
-        if: >
-          ${{ inputs.deploy_pages && github.ref == 'refs/heads/main' &&
-          github.event_name != 'pull_request' }}
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Upload Pages artifact
+        if: ${{ inputs.deploy_pages == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ${{ inputs.output_dir }}
-          force_orphan: true
+          path: ${{ env.DEPLOY_PATH }}
+
+  deploy:
+    if: ${{ inputs.deploy_pages == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,82 @@
+# Lychee configuration example for link checking
+# Copy this file to your repository root as lychee.toml
+
+[input]
+# Files and directories to check
+files = [
+    "docs/**",
+    "*.md",
+    "README.md"
+]
+
+# Files to exclude
+exclude = [
+    "CHANGELOG.md",
+    "docs/_site/**",
+    "docs/doxygen/html/**"
+]
+
+# File types to check
+file_types = ["md", "html", "txt"]
+
+[output]
+# Output format: detailed, compact, json
+format = "detailed"
+
+# Verbose output
+verbose = true
+
+# Show progress
+progress = false
+
+# Show summary
+summary = true
+
+[check]
+# Timeout for each link check in seconds
+timeout = 10
+
+# Number of retries for failed links
+retry = 3
+
+# Exclude all private/internal links
+exclude_all_private = true
+
+# Exclude mailto links
+exclude_mail = true
+
+# Exclude GitHub issues and pull requests
+exclude_github_issues = false
+
+# Exclude specific domains
+exclude = [
+    "localhost",
+    "127.0.0.1",
+    "0.0.0.0"
+]
+
+# Include specific domains (overrides exclude)
+include = []
+
+[http]
+# Custom headers for HTTP requests
+headers = { "User-Agent" = "lychee/0.14.0" }
+
+# Follow redirects
+follow_redirects = true
+
+# Maximum number of redirects to follow
+max_redirects = 10
+
+# Accept invalid certificates
+accept_invalid_certs = false
+
+[cache]
+# Enable caching of link check results
+enabled = true
+
+# Cache file location
+file = ".lychee-cache"
+
+# Cache duration in seconds (24 hours)
+duration = 86400

@@ -25,16 +25,18 @@ The Documentation workflow builds Doxygen documentation and optionally deploys i
 
 ## 🎯 Overview
 
-**Purpose**: Generate and deploy Doxygen documentation  
+**Purpose**: Generate and deploy Doxygen documentation with optional Jekyll integration  
 **Key Features**: 
 - Doxygen + Graphviz integration
-- Optional link checking
+- Optional Jekyll static site generation
+- Advanced link checking with Lychee
 - Markdown linting (markdownlint)
 - Spell checking (cspell)
-- GitHub Pages deployment
+- Modern GitHub Pages deployment
+- Concurrency control
 - Artifact storage
 
-**Use Case**: Automated documentation generation and deployment for C/C++ projects
+**Use Case**: Automated documentation generation and deployment for C/C++ projects with enhanced presentation
 
 ## ⚙️ Inputs
 
@@ -50,6 +52,11 @@ The Documentation workflow builds Doxygen documentation and optionally deploys i
 | `spell_check_paths` | string | ❌ | `**/*.md` | Glob patterns for files to spell check |
 | `spell_check_config` | string | ❌ | `.cspell.json` | Path to cspell configuration file |
 | `deploy_pages` | boolean | ❌ | `true` | Deploy to GitHub Pages |
+| `jekyll_enabled` | boolean | ❌ | `false` | Enable Jekyll static site generation |
+| `jekyll_theme` | string | ❌ | `minima` | Jekyll theme to use |
+| `jekyll_config` | string | ❌ | `_config.yml` | Path to Jekyll configuration file |
+| `jekyll_source` | string | ❌ | `docs` | Jekyll source directory |
+| `jekyll_destination` | string | ❌ | `_site` | Jekyll build destination |
 
 ## 📤 Outputs
 
@@ -93,6 +100,26 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
+### With Jekyll Integration
+
+```yaml
+jobs:
+  docs:
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
+    with:
+      doxygen_config: Doxyfile
+      output_dir: docs/doxygen/html
+      jekyll_enabled: true
+      jekyll_theme: "minima"
+      jekyll_config: "_config.yml"
+      jekyll_source: "docs"
+      jekyll_destination: "_site"
+      run_link_check: true
+      deploy_pages: true
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
 ### Custom Configuration
 
 ```yaml
@@ -128,22 +155,23 @@ EXTRACT_PRIVATE       = YES
 EXTRACT_STATIC        = YES
 ```
 
-### Link Checking
+### Link Checking with Lychee
 
-The workflow includes a built-in link checker that verifies all local links in documentation files are valid. This helps maintain documentation quality and prevents broken links.
+The workflow includes advanced link checking using Lychee, which provides comprehensive link validation for both internal and external links.
 
 ```yaml
 run_link_check: true  # Enable link checking (default: true)
 link_check_paths: "docs/**,*.md"  # Paths to check for broken links
 ```
 
-The link checker:
+The Lychee link checker:
 - Scans all markdown files in the specified paths
-- Validates local file references and cross-directory links
-- Ignores external URLs, anchors, and common non-file patterns
-- Reports broken links with file and line number information
-- Can be configured to fail the workflow on broken links
-- Uses the external `md-dead-link-check` action directly
+- Validates both internal file references and external URLs
+- Supports configurable timeouts and retry attempts
+- Excludes private/internal links by default
+- Provides detailed reporting with verbose output options
+- Uses the modern `lycheeverse/lychee-action@v2` action
+- Offers better performance and reliability than traditional link checkers
 
 ### Markdown Linting
 
@@ -176,15 +204,49 @@ Features:
 - Supports custom dictionaries and ignore patterns
 - Works with multiple file types
 
-### Link Checker Options
+### Jekyll Integration
 
-**Link Checking (md-dead-link-check):**
+Optional Jekyll static site generation for enhanced documentation presentation and better GitHub Pages integration.
+
 ```yaml
-run_link_check: true
-link_check_paths: "docs/**,*.md,**/docs/**"
-# Uses external md-dead-link-check action directly
-# The external action uses its default configuration
+jekyll_enabled: true  # Enable Jekyll (default: false)
+jekyll_theme: "minima"  # Jekyll theme to use
+jekyll_config: "_config.yml"  # Path to Jekyll config
+jekyll_source: "docs"  # Source directory
+jekyll_destination: "_site"  # Build destination
 ```
+
+**Jekyll Configuration:**
+Create a `_config.yml` file in your repository root:
+
+```yaml
+# Jekyll configuration
+title: "My C++ Project Documentation"
+description: "Comprehensive documentation for my C++ project"
+baseurl: ""  # Set by workflow automatically
+url: "https://yourusername.github.io"
+
+# Theme settings
+theme: minima
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+
+# Navigation
+navigation:
+  - title: "Home"
+    url: "/"
+  - title: "API Reference"
+    url: "/doxygen/html/"
+```
+
+**Features:**
+- Static site generation with customizable themes
+- Better GitHub Pages integration
+- Enhanced navigation and presentation
+- Support for custom layouts and includes
+- Automatic baseurl configuration for GitHub Pages
 
 ### Standalone Link Check
 
@@ -197,7 +259,12 @@ jobs:
     with:
       paths: "docs/**,*.md,**/docs/**"  # Paths to check
       fail_on_errors: true              # Fail on broken links
-      # Uses external md-dead-link-check action directly
+      timeout: "10"                     # Timeout per link (seconds)
+      retry: "3"                        # Number of retries
+      exclude_private: true             # Exclude private links
+      exclude_mail: true                # Exclude mailto links
+      verbose: false                    # Verbose output
+      # Uses lycheeverse/lychee-action@v2 for advanced link checking
 ```
 
 ### GitHub Pages Setup

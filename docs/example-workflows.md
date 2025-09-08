@@ -136,6 +136,9 @@ jobs:
     with:
       doxygen_config: "Doxyfile"
       output_dir: "docs/doxygen/html"
+      jekyll_enabled: true
+      jekyll_theme: "minima"
+      jekyll_config: "_config.yml"
       run_link_check: true
       link_check_paths: "docs/**,*.md,**/docs/**"
       run_markdown_lint: true
@@ -150,6 +153,11 @@ jobs:
     with:
       paths: "docs/**,*.md,**/docs/**,README.md"
       fail_on_errors: true
+      timeout: "15"
+      retry: "3"
+      exclude_private: true
+      exclude_mail: true
+      verbose: false
 
   # 📝 YAML linting
   yaml-lint:
@@ -415,6 +423,9 @@ jobs:
     with:
       doxygen_config: "Doxyfile"
       output_dir: "docs/doxygen/html"
+      jekyll_enabled: true
+      jekyll_theme: "minima"
+      jekyll_config: "_config.yml"
       run_link_check: true
       link_check_paths: "docs/**,*.md,**/docs/**,README.md"
       run_markdown_lint: true
@@ -429,6 +440,11 @@ jobs:
     with:
       paths: "docs/**,*.md,**/docs/**,README.md,**/*.md"
       fail_on_errors: true
+      timeout: "15"
+      retry: "3"
+      exclude_private: true
+      exclude_mail: true
+      verbose: true
 
   # YAML validation
   yaml-lint:

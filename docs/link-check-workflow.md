@@ -22,12 +22,14 @@ The **Link Check Workflow** is a standalone reusable workflow that validates all
 
 ### **Key Features**
 
-- 🔍 **Comprehensive Link Checking** - Validates all markdown files and documentation
-- 🌐 **External Link Validation** - Checks external URLs for accessibility
+- 🔍 **Comprehensive Link Checking** - Validates all markdown files and documentation using Lychee
+- 🌐 **External Link Validation** - Checks external URLs for accessibility with retry logic
 - 📁 **Internal Link Validation** - Verifies internal file references and anchors
-- ⚡ **Fast Processing** - Efficient scanning with configurable timeouts
+- ⚡ **Fast Processing** - Efficient scanning with configurable timeouts and parallel processing
 - 🎯 **Flexible Path Patterns** - Customizable file and directory patterns
-- 📊 **Detailed Reporting** - Clear error messages and link status
+- 📊 **Detailed Reporting** - Clear error messages and link status with verbose output
+- 🛡️ **Smart Filtering** - Excludes private links and mailto addresses by default
+- 🔄 **Retry Logic** - Automatic retry for failed links with configurable attempts
 
 ---
 
@@ -66,6 +68,11 @@ jobs:
     with:
       paths: "docs/**,*.md,**/docs/**"
       fail_on_errors: true
+      timeout: "15"
+      retry: "5"
+      exclude_private: true
+      exclude_mail: true
+      verbose: true
 ```
 
 ---
@@ -76,6 +83,11 @@ jobs:
 |-----------|------|---------|-------------|
 | `paths` | `string` | `"docs/**,*.md,**/docs/**"` | Comma-separated paths to check for broken links |
 | `fail_on_errors` | `boolean` | `true` | Fail the workflow if broken links are found |
+| `timeout` | `string` | `"10"` | Timeout in seconds for each link check |
+| `retry` | `string` | `"3"` | Number of retries for failed links |
+| `exclude_private` | `boolean` | `true` | Exclude private/internal links |
+| `exclude_mail` | `boolean` | `true` | Exclude mailto links |
+| `verbose` | `boolean` | `false` | Enable verbose output |
 
 ### **Path Patterns**
 
@@ -214,8 +226,8 @@ jobs:
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │ Scan Files      │───▶│ Extract Links   │───▶│ Validate Links  │───▶│ Report Results  │
-│ (md-dead-link-  │    │ (Markdown       │    │ (HTTP requests  │    │ (Success/Error  │
-│ check)          │    │ parsing)        │    │ + file checks)  │    │ messages)       │
+│ (Lychee)        │    │ (Markdown       │    │ (HTTP requests  │    │ (Success/Error  │
+│                 │    │ parsing)        │    │ + retry logic)  │    │ messages)       │
 └─────────────────┘    └─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
@@ -228,40 +240,52 @@ jobs:
 
 ### **Validation Methods**
 
-- **External Links**: HTTP HEAD requests with timeout
+- **External Links**: HTTP HEAD requests with configurable timeout and retry logic
 - **Internal Links**: File system existence checks
 - **Anchor Links**: Section header validation
 - **Image Links**: File existence and format validation
+- **Private Links**: Automatically excluded (configurable)
+- **Mailto Links**: Automatically excluded (configurable)
 
 ---
 
 ## ⚙️ Configuration Options
 
-### **md-dead-link-check Parameters**
+### **Lychee Parameters**
 
-The workflow uses `AlexanderDokuchaev/md-dead-link-check@v1.2.0` with these default settings:
+The workflow uses `lycheeverse/lychee-action@v2` with these default settings:
 
-- **Timeout**: 5 seconds per link
-- **Error Codes**: 404, 410, 500 (configurable)
-- **External Links**: Enabled
+- **Timeout**: 10 seconds per link (configurable)
+- **Retry**: 3 attempts for failed links (configurable)
+- **External Links**: Enabled with retry logic
+- **Private Links**: Excluded by default
+- **Mailto Links**: Excluded by default
 - **Anchor Checking**: Enabled
 - **SSL Validation**: Enabled
+- **Verbose Output**: Configurable
 
 ### **Custom Configuration**
 
-For advanced configuration, you can use a `pyproject.toml` file:
+For advanced configuration, you can use a `lychee.toml` file:
 
 ```toml
-[tool.md_dead_link_check]
+[input]
+files = ["docs/**", "*.md"]
+exclude = ["CHANGELOG.md"]
+
+[output]
+format = "detailed"
+verbose = true
+
+[check]
 timeout = 10
-exclude_links = ["https://github.com/", "https://github.com/*"]
-exclude_files = ["CHANGELOG.md"]
-check_web_links = true
-catch_response_codes = [404, 410, 500]
-validate_ssl = true
-throttle_groups = 100
-throttle_delay = 20
-throttle_max_delay = 100
+retry = 3
+exclude_all_private = true
+exclude_mail = true
+exclude_github_issues = false
+
+[http]
+headers = { "User-Agent" = "lychee/0.14.0" }
 ```
 
 ---
@@ -365,7 +389,8 @@ Broken links:
 
 ## 📚 External Resources
 
-- [md-dead-link-check Documentation](https://github.com/AlexanderDokuchaev/md-dead-link-check)
+- [Lychee Documentation](https://github.com/lycheeverse/lychee)
+- [Lychee Action](https://github.com/lycheeverse/lychee-action)
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
 - [Markdown Link Syntax](https://www.markdownguide.org/basic-syntax/#links)
 
