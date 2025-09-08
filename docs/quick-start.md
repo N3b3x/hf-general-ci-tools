@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: page-enhanced
 title: "🚀 Quick Start Guide"
 description: "Get started with hf-general-ci-tools in minutes"
 nav_order: 2

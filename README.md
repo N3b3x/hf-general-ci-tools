@@ -5,9 +5,9 @@
 **A comprehensive collection of reusable GitHub Actions workflows for modern CI/CD pipelines**
 
 [![CI](https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/yamllint.yml/badge.svg)](https://github.com/n3b3x/hf-general-ci-tools/actions)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/n3b3x/hf-general-ci-tools/blob/main/LICENSE)
 [![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg)](https://n3b3x.github.io/hf-general-ci-tools)
-[![YAML Lint](https://img.shields.io/badge/yamllint-passed-brightgreen.svg)](.github/workflows/yamllint.yml)
+[![YAML Lint](https://img.shields.io/badge/yamllint-passed-brightgreen.svg)](https://github.com/n3b3x/hf-general-ci-tools/blob/main/.github/workflows/yamllint.yml)
 
 *Streamline your development workflow with battle-tested, production-ready GitHub Actions*
 

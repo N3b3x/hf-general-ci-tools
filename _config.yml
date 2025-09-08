@@ -4,6 +4,9 @@ description: "A comprehensive collection of reusable GitHub Actions workflows fo
 baseurl: "/hf-general-ci-tools"  # GitHub Pages subpath
 url: "https://n3b3x.github.io"
 
+# Jekyll source configuration - tells Jekyll to use docs folder as source
+source: docs
+
 # Author and social information
 author:
   name: "N3b3x"
@@ -74,7 +77,7 @@ callouts:
     color: red
 
 # Visual enhancements
-color_scheme: dark  # Dark theme
+color_scheme: custom  # Custom enhanced theme
 
 # Auxiliary links with better organization
 aux_links:
@@ -98,7 +101,7 @@ footer_content: "Built with ❤️ using <a href='https://just-the-docs.github.i
 # Collections for better organization
 collections:
   docs:
-    permalink: "/:collection/:path/"
+    permalink: "/:path/"
     output: true
     sort_by: nav_order
 
@@ -108,6 +111,8 @@ just_the_docs:
       name: Documentation
       nav_exclude: false
       search_exclude: false
+  custom_css:
+    - assets/css/custom.css
 
 # Exclude files from processing
 exclude:

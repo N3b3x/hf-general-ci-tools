@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: page-enhanced
 title: "hf-general-ci-tools"
 description: "Reusable GitHub Actions workflows for CI/CD"
 nav_order: 1
@@ -23,13 +23,40 @@ nav_order: 1
 
 **These workflows are designed to be used by other repositories:**
 
-| Workflow | Description | Quick Start |
-|----------|-------------|-------------|
-| **[C/C++ Lint](lint-workflow.md)** | Code quality checks using clang-format and clang-tidy | [→ Lint Guide](lint-workflow.md) |
-| **[Static Analysis](static-analysis-workflow.md)** | Security analysis using cppcheck | [→ Static Analysis Guide](static-analysis-workflow.md) |
-| **[Documentation](docs-workflow.md)** | Doxygen documentation generation and GitHub Pages deployment | [→ Docs Guide](docs-workflow.md) |
-| **[Link Check](link-check-workflow.md)** | Documentation link validation | [→ Link Check Guide](link-check-workflow.md) |
-| **[YAML Lint](yamllint-workflow.md)** | YAML file validation and formatting | [→ YAML Lint Guide](yamllint-workflow.md) |
+{% include workflow-card.html 
+   title="C/C++ Lint Workflow" 
+   icon="🔧"
+   description="Comprehensive code quality checks using clang-format and clang-tidy with configurable rules and standards."
+   features="clang-format formatting, clang-tidy analysis, configurable rules, multiple C++ standards support"
+   quick_start="lint-workflow.md" %}
+
+{% include workflow-card.html 
+   title="Static Analysis Workflow" 
+   icon="🛡️"
+   description="Security and bug detection using cppcheck with custom rules and comprehensive reporting."
+   features="cppcheck integration, custom rules, multiple standards, detailed reporting"
+   quick_start="static-analysis-workflow.md" %}
+
+{% include workflow-card.html 
+   title="Documentation Workflow" 
+   icon="📚"
+   description="Doxygen documentation generation and GitHub Pages deployment with Jekyll support."
+   features="Doxygen generation, GitHub Pages deployment, Jekyll integration, link checking"
+   quick_start="docs-workflow.md" %}
+
+{% include workflow-card.html 
+   title="Link Check Workflow" 
+   icon="🔗"
+   description="Comprehensive documentation link validation using Lychee with custom configurations."
+   features="Lychee integration, custom configs, exclude patterns, detailed reporting"
+   quick_start="link-check-workflow.md" %}
+
+{% include workflow-card.html 
+   title="YAML Lint Workflow" 
+   icon="📝"
+   description="YAML file validation and formatting with syntax checking and style validation."
+   features="Syntax checking, style validation, custom rules, comprehensive reporting"
+   quick_start="yamllint-workflow.md" %}
 
 ## 🏠 Repository-Specific Workflows
 

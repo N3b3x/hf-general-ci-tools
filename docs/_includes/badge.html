@@ -1,0 +1,24 @@
+<!-- Badge component for consistent badge styling -->
+<div class="badge-container">
+  {% if include.type == "workflow" %}
+    <span class="badge badge-workflow">
+      🔄 {{ include.text | default: "Workflow" }}
+    </span>
+  {% elsif include.type == "guide" %}
+    <span class="badge badge-guide">
+      📖 {{ include.text | default: "Guide" }}
+    </span>
+  {% elsif include.type == "example" %}
+    <span class="badge badge-example">
+      💡 {{ include.text | default: "Example" }}
+    </span>
+  {% elsif include.type == "config" %}
+    <span class="badge badge-config">
+      ⚙️ {{ include.text | default: "Configuration" }}
+    </span>
+  {% else %}
+    <span class="badge">
+      {{ include.text | default: "Badge" }}
+    </span>
+  {% endif %}
+</div>

@@ -1,0 +1,32 @@
+<!-- Workflow card component for consistent workflow presentation -->
+<div class="workflow-card">
+  <div class="workflow-header">
+    <h3 class="workflow-title">
+      {% if include.icon %}{{ include.icon }} {% endif %}{{ include.title }}
+    </h3>
+    {% include badge.html type="workflow" text="Reusable Workflow" %}
+  </div>
+  
+  <div class="workflow-content">
+    <p class="workflow-description">{{ include.description }}</p>
+    
+    {% if include.features %}
+      <div class="workflow-features">
+        <h4>Features:</h4>
+        <ul>
+          {% for feature in include.features %}
+            <li>{{ feature }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+    
+    {% if include.quick_start %}
+      <div class="workflow-actions">
+        <a href="{{ include.quick_start }}" class="btn btn-primary">
+          🚀 Quick Start
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</div>
