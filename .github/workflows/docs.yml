@@ -78,10 +78,6 @@ on:
         required: false
         type: string
         default: '_site'
-    secrets:
-      GITHUB_TOKEN:
-        description: 'GitHub token for Pages deployment'
-        required: true
 
 permissions:
   contents: read

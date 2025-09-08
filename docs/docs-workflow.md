@@ -96,8 +96,6 @@ jobs:
       spell_check_paths: "docs/**,*.md"
       spell_check_config: ".cspell.json"
       deploy_pages: true
-    secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 ### With Jekyll Integration
@@ -116,8 +114,6 @@ jobs:
       jekyll_destination: "_site"
       run_link_check: true
       deploy_pages: true
-    secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 ### Custom Configuration
