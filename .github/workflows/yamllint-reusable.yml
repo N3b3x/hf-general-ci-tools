@@ -1,0 +1,154 @@
+---
+name: YAML Lint (Reusable)
+
+on:
+  workflow_call:
+    inputs:
+      paths:
+        description: 'Comma-separated list of paths to check (default: all YAML files)'
+        required: false
+        type: string
+        default: '**/*.yml,**/*.yaml'
+      config_file:
+        description: 'Path to yamllint configuration file (default: .yamllint)'
+        required: false
+        type: string
+        default: '.yamllint'
+      strict_mode:
+        description: 'Enable strict mode (fail on warnings)'
+        required: false
+        type: boolean
+        default: false
+      exclude_patterns:
+        description: 'Comma-separated patterns to exclude from checking'
+        required: false
+        type: string
+        default: '.git/**,node_modules/**,venv/**,.venv/**'
+    outputs:
+      result:
+        description: 'YAML lint result (success/failure)'
+        value: ${{ jobs.yamllint.outputs.result }}
+      files_checked:
+        description: 'Number of files checked'
+        value: ${{ jobs.yamllint.outputs.files_checked }}
+      issues_found:
+        description: 'Number of issues found'
+        value: ${{ jobs.yamllint.outputs.issues_found }}
+
+jobs:
+  yamllint:
+    name: YAML Lint
+    runs-on: ubuntu-latest
+    outputs:
+      result: ${{ steps.lint.outputs.result }}
+      files_checked: ${{ steps.lint.outputs.files_checked }}
+      issues_found: ${{ steps.lint.outputs.issues_found }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install yamllint
+        run: |
+          python -m pip install --upgrade pip
+          pip install yamllint
+
+      - name: Run yamllint
+        id: lint
+        run: |
+          # Parse inputs
+          PATHS="${{ inputs.paths }}"
+          CONFIG_FILE="${{ inputs.config_file }}"
+          STRICT_MODE="${{ inputs.strict_mode }}"
+          EXCLUDE_PATTERNS="${{ inputs.exclude_patterns }}"
+
+          # Convert comma-separated paths to array
+          IFS=',' read -ra PATH_ARRAY <<< "$PATHS"
+          IFS=',' read -ra EXCLUDE_ARRAY <<< "$EXCLUDE_PATTERNS"
+
+          # Build yamllint command
+          YAMLLINT_CMD="yamllint"
+
+          # Add config file if it exists
+          if [ -f "$CONFIG_FILE" ]; then
+            echo "✅ Using yamllint config: $CONFIG_FILE"
+            YAMLLINT_CMD="$YAMLLINT_CMD --config-file $CONFIG_FILE"
+          else
+            echo "⚠️  No config file found at $CONFIG_FILE, using defaults"
+          fi
+
+          # Add strict mode if enabled
+          if [ "$STRICT_MODE" = "true" ]; then
+            echo "🔍 Strict mode enabled"
+            YAMLLINT_CMD="$YAMLLINT_CMD --strict"
+          fi
+
+          # Initialize counters
+          FILES_CHECKED=0
+          ISSUES_FOUND=0
+
+          # Check each path
+          for path in "${PATH_ARRAY[@]}"; do
+            # Trim whitespace
+            path=$(echo "$path" | xargs)
+
+            if [ -z "$path" ]; then
+              continue
+            fi
+
+            echo "🔍 Checking path: $path"
+
+            # Find files matching the pattern
+            if [ -f "$path" ]; then
+              # Single file
+              files=("$path")
+            else
+              # Pattern - find files
+              files=($(find . -name "$path" -type f 2>/dev/null || true))
+            fi
+
+            # Filter out excluded patterns
+            filtered_files=()
+            for file in "${files[@]}"; do
+              skip=false
+              for exclude in "${EXCLUDE_ARRAY[@]}"; do
+                exclude=$(echo "$exclude" | xargs)
+                if [[ "$file" == *"$exclude"* ]]; then
+                  skip=true
+                  break
+                fi
+              done
+              if [ "$skip" = false ]; then
+                filtered_files+=("$file")
+              fi
+            done
+
+            # Run yamllint on filtered files
+            for file in "${filtered_files[@]}"; do
+              if [ -f "$file" ]; then
+                echo "  📄 Checking: $file"
+                FILES_CHECKED=$((FILES_CHECKED + 1))
+
+                # Run yamllint and capture output
+                if ! $YAMLLINT_CMD "$file" 2>&1; then
+                  ISSUES_FOUND=$((ISSUES_FOUND + 1))
+                fi
+              fi
+            done
+          done
+
+          # Set outputs
+          echo "result=$([ $ISSUES_FOUND -eq 0 ] && echo 'success' || echo 'failure')" >> $GITHUB_OUTPUT
+          echo "files_checked=$FILES_CHECKED" >> $GITHUB_OUTPUT
+          echo "issues_found=$ISSUES_FOUND" >> $GITHUB_OUTPUT
+
+          # Summary
+          echo "📊 Summary:"
+          echo "  Files checked: $FILES_CHECKED"
+          echo "  Issues found: $ISSUES_FOUND"
+          echo "  Result: $([ $ISSUES_FOUND -eq 0 ] && echo '✅ Success' || echo '❌ Failure')"
+
+          # Fail if issues found and strict mode is enabled
+          if [ "$STRICT_MODE" = "true" ] && [ $ISSUES_FOUND -gt 0 ]; then
+            echo "❌ Strict mode enabled - failing due to $ISSUES_FOUND issues"
+            exit 1
+          fi

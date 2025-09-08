@@ -2,17 +2,28 @@
 
 A collection of reusable GitHub Actions workflows for general CI/CD tasks including C/C++ linting, static analysis, documentation generation, and link checking.
 
-## 🚀 Available Workflows
+## 🔄 Reusable Workflows
+
+**These workflows are designed to be used by other repositories:**
 
 - **[C/C++ Lint](.github/workflows/c-cpp-lint.yml)** - Code quality checks using clang-format and clang-tidy
 - **[Static Analysis](.github/workflows/c-cpp-static-analysis.yml)** - Security analysis using cppcheck
 - **[Documentation](.github/workflows/docs.yml)** - Doxygen documentation generation and GitHub Pages deployment
 - **[Link Check](.github/workflows/docs-link-check.yml)** - Documentation link validation
-- **[YAML Lint](.github/workflows/yamllint.yml)** - YAML file validation
+- **[YAML Lint](.github/workflows/yamllint-reusable.yml)** - YAML file validation and formatting
+
+## 🏠 Repository-Specific Workflows
+
+**These workflows are used internally by this repository:**
+
+- **[Publish Documentation](.github/workflows/publish-docs.yml)** - Builds and deploys this repo's documentation site
+- **[YAML Lint](.github/workflows/yamllint.yml)** - Validates YAML syntax in this repository (uses the reusable workflow)
 
 ## 📚 Documentation
 
-Comprehensive documentation is available in the [docs/](docs/) directory:
+**🌐 [Live Documentation Site](https://n3b3x.github.io/hf-general-ci-tools/)** - Published documentation with enhanced navigation and search
+
+Comprehensive documentation is also available in the [docs/](docs/) directory:
 
 - [Documentation Index](docs/index.md) - Overview and navigation
 - [C/C++ Lint Workflow](docs/lint-workflow.md) - Code quality checks
@@ -24,7 +35,11 @@ Comprehensive documentation is available in the [docs/](docs/) directory:
 
 ## 🔧 Quick Start
 
-### Basic CI Pipeline
+### Using Reusable Workflows
+
+**For other repositories, use these reusable workflows:**
+
+#### Basic CI Pipeline
 
 ```yaml
 name: CI

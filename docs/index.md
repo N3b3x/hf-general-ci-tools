@@ -1,175 +1,179 @@
-# Documentation Index
+---
+layout: default
+title: "hf-general-ci-tools"
+description: "Reusable GitHub Actions workflows for CI/CD"
+---
+
+# hf-general-ci-tools
 
 <div align="center">
 
-[← Previous: Example Workflows](example-workflows.md) | [Next: C/C++ Lint Workflow →](lint-workflow.md)
+**A collection of reusable GitHub Actions workflows for general CI/CD tasks**
 
-**📋 Documentation Index and Navigation**
+[![CI](https://github.com/n3b3x/hf-general-ci-tools/workflows/CI/badge.svg)](https://github.com/n3b3x/hf-general-ci-tools/actions)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg)](https://n3b3x.github.io/hf-general-ci-tools)
 
 </div>
 
 ---
 
-Welcome to the hf-general-ci-tools documentation! This guide provides comprehensive coverage of all reusable CI workflows and how to integrate them into your projects.
+## 🔄 Reusable Workflows
 
-## 🚀 Quick Navigation
+**These workflows are designed to be used by other repositories:**
 
 | Workflow | Description | Quick Start |
 |----------|-------------|-------------|
-| **[C/C++ Lint](lint-workflow.md)** | C/C++ code quality checks | [→ Lint Guide](lint-workflow.md) |
-| **[Static Analysis](static-analysis-workflow.md)** | Cppcheck security analysis | [→ Static Analysis Guide](static-analysis-workflow.md) |
-| **[Docs](docs-workflow.md)** | Doxygen + GitHub Pages deployment | [→ Docs Guide](docs-workflow.md) |
+| **[C/C++ Lint](lint-workflow.md)** | Code quality checks using clang-format and clang-tidy | [→ Lint Guide](lint-workflow.md) |
+| **[Static Analysis](static-analysis-workflow.md)** | Security analysis using cppcheck | [→ Static Analysis Guide](static-analysis-workflow.md) |
+| **[Documentation](docs-workflow.md)** | Doxygen documentation generation and GitHub Pages deployment | [→ Docs Guide](docs-workflow.md) |
 | **[Link Check](link-check-workflow.md)** | Documentation link validation | [→ Link Check Guide](link-check-workflow.md) |
-| **[YAML Lint](yamllint-workflow.md)** | YAML file validation | [→ YAML Lint Guide](yamllint-workflow.md) |
+| **[YAML Lint](yamllint-workflow.md)** | YAML file validation and formatting | [→ YAML Lint Guide](yamllint-workflow.md) |
 
-## 📋 Prerequisites
+## 🏠 Repository-Specific Workflows
 
-Before using these workflows, ensure you have:
+**These workflows are used internally by this repository:**
 
-1. **C/C++ project** with proper structure
-2. **GitHub Actions enabled** in your repository
-3. **Appropriate configuration files** (e.g., `.clang-format`, `.clang-tidy`, `Doxyfile`)
+| Workflow | Purpose | Trigger |
+|----------|---------|---------|
+| **[Publish Documentation](.github/workflows/publish-docs.yml)** | Builds and deploys this repo's documentation site | Push to main, PRs |
+| **[YAML Lint](.github/workflows/yamllint.yml)** | Validates YAML syntax in this repository (uses reusable workflow) | Push, PRs |
 
-## 🏗️ Project Structure
+## 📚 Documentation
 
-```
-your-project/
-├── .github/workflows/          # Your CI workflows
-├── src/                        # Source code
-├── include/                    # Headers
-├── docs/                       # Documentation
-├── .clang-format              # Code style configuration
-├── .clang-tidy                # Static analysis configuration
-├── Doxyfile                   # Documentation configuration
-└── .yamllint                  # YAML linting configuration
-```
+Comprehensive documentation is available for each workflow:
 
-## 🔧 Basic Setup
+- **[Documentation Index](index.md)** - This page
+- **[C/C++ Lint Workflow](lint-workflow.md)** - Code quality checks
+- **[Static Analysis Workflow](static-analysis-workflow.md)** - Security analysis
+- **[Documentation Workflow](docs-workflow.md)** - Documentation generation
+- **[Link Check Workflow](link-check-workflow.md)** - Link validation
+- **[YAML Lint Workflow](yamllint-workflow.md)** - YAML validation
+- **[Example Workflows](example-workflows.md)** - Real-world usage examples
+- **[Configuration Examples](configuration-examples.md)** - Configuration templates
 
-### 1. Create Your First CI Workflow
+## 🎯 Quick Start
+
+### 1. Choose Your Reusable Workflow
+
+Select the appropriate **reusable workflow** for your needs:
 
 ```yaml
-# .github/workflows/ci.yml
-name: CI
-on:
-  push: { branches: [ main ] }
-  pull_request: { branches: [ main ] }
+# For C/C++ projects
+uses: n3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1
 
+# For documentation
+uses: n3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
+
+# For link checking
+uses: n3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
+
+# For YAML validation
+uses: n3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1
+```
+
+> **Note:** These are **reusable workflows** designed to be called from other repositories. The repository-specific workflows (like `publish-docs.yml`) are only used internally by this repository.
+
+### 2. Configure Your Workflow
+
+Each workflow supports extensive configuration options. See the individual workflow documentation for details.
+
+### 3. Deploy
+
+The workflows will automatically run on your specified triggers and provide detailed feedback.
+
+## 🔧 Features
+
+- **🔄 Reusable** - Drop-in workflows for common CI tasks
+- **⚙️ Configurable** - Extensive input parameters for customization
+- **📚 Well Documented** - Comprehensive guides and examples
+- **🛡️ Secure** - Follows GitHub Actions security best practices
+- **🚀 Fast** - Optimized for performance and reliability
+
+## 📋 Workflow Types
+
+### 🔄 Reusable Workflows
+These workflows are designed to be **called from other repositories** using the `uses` keyword:
+
+```yaml
+jobs:
+  my-job:
+    uses: n3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
+    with:
+      jekyll_enabled: true
+      deploy_pages: true
+```
+
+### 🏠 Repository-Specific Workflows
+These workflows are **only used internally** by this repository:
+
+- **`publish-docs.yml`** - Builds and deploys this repo's documentation site
+- **`yamllint.yml`** - Validates YAML syntax in this repository
+
+> **For other repositories:** Only use the **reusable workflows** listed in the "Reusable Workflows" section above.
+
+## 📖 Usage Examples
+
+### Basic C/C++ Linting
+
+```yaml
+name: Code Quality
+on: [push, pull_request]
 jobs:
   lint:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1
+    uses: n3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1
     with:
-      clang_version: "20"
-      style: "file"
-      extensions: "c,cpp,h,hpp"
+      source_dirs: "src/"
+      include_patterns: "*.cpp,*.hpp,*.c,*.h"
+```
 
-  static:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1
-    with:
-      paths: "src include"
-      std: "c++17"
-      strict: false
+### Documentation Generation
 
+```yaml
+name: Documentation
+on: [push]
+jobs:
   docs:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
+    uses: n3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
-      doxygen_config: "Doxyfile"
-      output_dir: "docs/doxygen/html"
+      jekyll_enabled: true
+      run_link_check: true
+      deploy_pages: true
+```
 
-  link-check:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
+### Link Validation
+
+```yaml
+name: Link Check
+on: [push, pull_request]
+jobs:
+  links:
+    uses: n3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
     with:
       paths: "docs/**,*.md"
+      verbose: true
 ```
 
-## 📚 Workflow Details
+## 🤝 Contributing
 
-### C/C++ Lint Workflow
-- **Purpose**: C/C++ code quality enforcement
-- **Key Features**: clang-format, clang-tidy, PR annotations
-- **Use Case**: Code style consistency and quality checks
+Contributions are welcome! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
 
-[→ Full Lint Guide](lint-workflow.md)
+## 📄 License
 
-### Static Analysis Workflow
-- **Purpose**: Security and quality analysis with cppcheck
-- **Key Features**: Docker-based analysis, XML reports, configurable strictness
-- **Use Case**: Security scanning and bug detection
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-[→ Full Static Analysis Guide](static-analysis-workflow.md)
+## 🙏 Acknowledgments
 
-### Documentation Workflow
-- **Purpose**: Generate and deploy Doxygen documentation
-- **Key Features**: GitHub Pages, link checking, artifact storage
-- **Use Case**: Project documentation automation
-
-[→ Full Docs Guide](docs-workflow.md)
-
-### Link Check Workflow
-- **Purpose**: Documentation link validation
-- **Key Features**: External/internal link checking, anchor validation
-- **Use Case**: Documentation integrity
-
-[→ Full Link Check Guide](link-check-workflow.md)
-
-### YAML Lint Workflow
-- **Purpose**: YAML file validation and formatting
-- **Key Features**: yamllint integration, configurable rules
-- **Use Case**: YAML file quality and consistency
-
-[→ Full YAML Lint Guide](yamllint-workflow.md)
-
-## 🔄 Workflow Combinations
-
-### Full CI Pipeline
-```yaml
-# Combines all workflows for comprehensive CI
-jobs:
-  lint:     # Code quality
-  static:   # Security analysis
-  docs:     # Documentation
-  links:    # Link checking
-  yaml:     # YAML validation
-```
-
-### Documentation Pipeline
-```yaml
-# Documentation generation and deployment
-jobs:
-  docs:     # Build and deploy docs
-  links:    # Check documentation links
-```
-
-### Code Quality Pipeline
-```yaml
-# Code quality focused workflows
-jobs:
-  lint:     # Code style and quality
-  static:   # Static analysis
-  yaml:     # YAML validation
-```
-
-## 📖 Next Steps
-
-1. **Choose your workflows** based on your project needs
-2. **Read the individual guides** for detailed configuration
-3. **Customize inputs** to match your project structure
-4. **Test with a simple workflow** before adding complexity
-
-## 🔗 Related Resources
-
-- [Main Repository](https://github.com/N3b3x/hf-general-ci-tools)
-- [GitHub Actions Documentation](https://docs.github.com/en/actions)
-- [Clang Format Documentation](https://clang.llvm.org/docs/ClangFormat.html)
-- [Cppcheck Documentation](https://cppcheck.sourceforge.io/)
-- [Doxygen Documentation](https://www.doxygen.nl/)
+- GitHub Actions team for the excellent CI/CD platform
+- The open source community for inspiration and feedback
+- All contributors who help improve these workflows
 
 ---
 
 <div align="center">
 
-[← Previous: Example Workflows](example-workflows.md) | [Next: C/C++ Lint Workflow →](lint-workflow.md)
+**Made with ❤️ by [N3b3x](https://github.com/n3b3x)**
 
-**📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
+[GitHub](https://github.com/n3b3x/hf-general-ci-tools) • [Issues](https://github.com/n3b3x/hf-general-ci-tools/issues) • [Discussions](https://github.com/n3b3x/hf-general-ci-tools/discussions)
 
 </div>

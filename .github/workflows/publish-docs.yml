@@ -1,0 +1,44 @@
+---
+name: 📚 Publish Documentation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  publish-docs:
+    uses: ./.github/workflows/docs.yml
+    with:
+      # Jekyll configuration for this repo's docs
+      jekyll_enabled: true
+      jekyll_config: "_config.yml"
+      jekyll_source: "docs"
+      jekyll_destination: "_site"
+
+      # Link checking
+      run_link_check: true
+      link_check_paths: "docs/**,*.md"
+      verbose: true
+
+      # Markdown linting
+      run_markdown_lint: true
+      markdown_lint_paths: "docs/**,*.md"
+
+      # Spell checking
+      run_spell_check: true
+      spell_check_paths: "docs/**,*.md"
+
+      # Deploy to GitHub Pages
+      deploy_pages: true

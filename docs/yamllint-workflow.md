@@ -10,7 +10,7 @@
 
 ---
 
-The YAML Lint workflow validates YAML files in your repository using yamllint to ensure proper formatting and syntax.
+The YAML Lint workflow validates YAML files in your repository using yamllint to ensure proper formatting and syntax. This is a **reusable workflow** that can be called from other repositories.
 
 ## 📋 Table of Contents
 
@@ -28,38 +28,68 @@ The YAML Lint workflow validates YAML files in your repository using yamllint to
 **Key Features**: 
 - yamllint integration
 - Configurable rules
-- Workflow file validation
-- Repository-wide YAML checking
+- Flexible path specification
+- Exclude patterns support
+- Strict mode option
+- Detailed reporting
 
 **Use Case**: YAML file quality and consistency enforcement
 
 ## ⚙️ Inputs
 
-This workflow runs automatically on push and pull requests to main/develop branches. It does not accept external inputs as it's designed to validate all YAML files in the repository.
+| Input | Description | Required | Default | Type |
+|-------|-------------|----------|---------|------|
+| `paths` | Comma-separated list of paths to check | No | `**/*.yml,**/*.yaml` | string |
+| `config_file` | Path to yamllint configuration file | No | `.yamllint` | string |
+| `strict_mode` | Enable strict mode (fail on warnings) | No | `false` | boolean |
+| `exclude_patterns` | Comma-separated patterns to exclude | No | `.git/**,node_modules/**,venv/**,.venv/**` | string |
 
 ## 📤 Outputs
 
 | Output | Description |
 |--------|-------------|
-| Lint results | yamllint output for all YAML files |
-| Configuration check | Validation of .yamllint configuration |
+| `result` | YAML lint result (success/failure) |
+| `files_checked` | Number of files checked |
+| `issues_found` | Number of issues found |
 
 ## 🚀 Usage Examples
 
-### Automatic Usage
-
-The workflow runs automatically on:
-- Push to `main` and `develop` branches
-- Pull requests to `main` and `develop` branches
-- Manual workflow dispatch
-
-### Manual Trigger
+### Basic Usage
 
 ```yaml
-# Triggered via workflow_dispatch
-name: Manual YAML Lint
-on:
-  workflow_dispatch:
+name: YAML Lint
+on: [push, pull_request]
+jobs:
+  yamllint:
+    uses: n3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1
+```
+
+### Advanced Usage
+
+```yaml
+name: YAML Lint
+on: [push, pull_request]
+jobs:
+  yamllint:
+    uses: n3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1
+    with:
+      paths: '.github/workflows/*.yml,docs/*.yml'
+      config_file: '.yamllint'
+      strict_mode: true
+      exclude_patterns: '.git/**,node_modules/**,_site/**'
+```
+
+### Workflow-Only Checking
+
+```yaml
+name: Workflow YAML Lint
+on: [push, pull_request]
+jobs:
+  yamllint:
+    uses: n3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1
+    with:
+      paths: '.github/workflows/*.yml'
+      strict_mode: true
 ```
 
 ## ⚙️ Configuration

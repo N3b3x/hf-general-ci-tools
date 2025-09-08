@@ -1,0 +1,89 @@
+# Jekyll configuration for hf-general-ci-tools documentation
+title: "hf-general-ci-tools"
+description: "A collection of reusable GitHub Actions workflows for general CI/CD tasks"
+baseurl: "/hf-general-ci-tools"  # GitHub Pages subpath
+url: "https://n3b3x.github.io"
+
+# Theme and plugins
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Markdown and syntax highlighting
+markdown: kramdown
+highlighter: rouge
+
+# Site settings
+timezone: UTC
+encoding: utf-8
+
+# Navigation
+navigation:
+  - title: "Home"
+    url: "/"
+  - title: "Workflows"
+    url: "/workflows/"
+  - title: "Examples"
+    url: "/examples/"
+  - title: "Configuration"
+    url: "/configuration/"
+
+# Collections for better organization
+collections:
+  workflows:
+    output: true
+    permalink: /workflows/:name/
+  examples:
+    output: true
+    permalink: /examples/:name/
+
+# Default layouts
+defaults:
+  - scope:
+      path: ""
+      type: "workflows"
+    values:
+      layout: "workflow"
+  - scope:
+      path: ""
+      type: "examples"
+    values:
+      layout: "example"
+
+# Exclude files from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .git
+  - .github
+  - README.md
+  - LICENSE
+
+# Include files that are normally excluded
+include:
+  - _pages
+
+# Social links
+minima:
+  social_links:
+    github: n3b3x
+    twitter: n3b3x
+
+# Author information
+author:
+  name: "N3b3x"
+  email: "nebysma@gmail.com"
+  github: "n3b3x"
+  twitter: "n3b3x"
+
+# SEO settings
+seo:
+  type: "Organization"
+  name: "hf-general-ci-tools"
+  description: "Reusable GitHub Actions workflows for CI/CD"
+  url: "https://n3b3x.github.io/hf-general-ci-tools"
+  image: "/assets/logo.png"
