@@ -170,7 +170,7 @@ jobs:
 
 - 📚 Check the [full documentation](index.md)
 - 🐛 [Report issues](https://github.com/n3b3x/hf-general-ci-tools/issues)
-- 💬 [Join discussions](https://github.com/n3b3x/hf-general-ci-tools/discussions)
+- 💬 [Join discussions](https://github.com/n3b3x/hf-general-ci-tools/issues)
 
 ## 🎯 Next Steps
 
