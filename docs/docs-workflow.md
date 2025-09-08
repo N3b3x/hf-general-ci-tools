@@ -265,9 +265,14 @@ jobs:
 
 ### GitHub Pages Setup
 
-1. **Enable GitHub Pages** in your repository settings
-2. **Set source** to "GitHub Actions"
-3. **Grant permissions** to the workflow:
+**Important**: GitHub Pages must be enabled in your repository settings before using this workflow.
+
+1. **Enable GitHub Pages** in your repository settings:
+   - Go to **Settings** → **Pages**
+   - Set **Source** to "GitHub Actions"
+   - Save the settings
+
+2. **Grant permissions** to the workflow:
 
 ```yaml
 permissions:
@@ -275,6 +280,11 @@ permissions:
   pages: write
   id-token: write
 ```
+
+3. **Workflow behavior**:
+   - If Pages is not enabled, the workflow will continue but skip deployment
+   - Documentation will still be built and artifacts uploaded
+   - No errors will occur if Pages is not configured
 
 ## 🌐 GitHub Pages Setup
 
@@ -317,6 +327,8 @@ docs.yourproject.com
 - Check repository permissions
 - Verify `deploy_pages: true`
 - Ensure workflow runs on main branch (not PRs)
+- **Enable GitHub Pages** in repository settings (Settings → Pages → Source: GitHub Actions)
+- Check if Pages site exists and is configured properly
 
 **Link Check Fails**
 - Verify link paths are correct in `link_check_paths`

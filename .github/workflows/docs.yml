@@ -100,6 +100,9 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v4
+        with:
+          enablement: false
+        continue-on-error: true
 
       - name: Install system dependencies
         run: |
@@ -148,10 +151,18 @@ jobs:
         if: ${{ inputs.jekyll_enabled == 'true' }}
         run: |
           if [ -f "${{ inputs.jekyll_config }}" ]; then
+            # Use base_path if available, otherwise use empty string
+            if [ "${{ steps.pages.outcome }}" == "success" ]; then
+              BASEURL="${{ steps.pages.outputs.base_path }}"
+              echo "Using Pages base_path: $BASEURL"
+            else
+              BASEURL=""
+              echo "Pages not configured, using empty baseurl"
+            fi
             jekyll build \
               --source ${{ inputs.jekyll_source }} \
               --destination ${{ inputs.jekyll_destination }} \
-              --baseurl "${{ steps.pages.outputs.base_path }}"
+              --baseurl "$BASEURL"
             echo "✅ Jekyll site built successfully"
           else
             echo "⚠️  Jekyll config not found at ${{ inputs.jekyll_config }}, skipping Jekyll build"
@@ -219,7 +230,7 @@ jobs:
           retention-days: 7
 
       - name: Upload Pages artifact
-        if: ${{ inputs.deploy_pages == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        if: ${{ inputs.deploy_pages == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.pages.outcome == 'success' }}
         uses: actions/upload-pages-artifact@v3
         with:
           path: ${{ env.DEPLOY_PATH }}
@@ -235,3 +246,4 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deploy
         uses: actions/deploy-pages@v4
+        continue-on-error: true
