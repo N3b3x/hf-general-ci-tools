@@ -10,8 +10,8 @@ description: "Reusable GitHub Actions workflows for CI/CD"
 
 **A collection of reusable GitHub Actions workflows for general CI/CD tasks**
 
-[![CI](https://github.com/n3b3x/hf-general-ci-tools/workflows/CI/badge.svg)](https://github.com/n3b3x/hf-general-ci-tools/actions)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![CI](https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/yamllint.yml/badge.svg)](https://github.com/n3b3x/hf-general-ci-tools/actions)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](../LICENSE)
 [![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg)](https://n3b3x.github.io/hf-general-ci-tools)
 
 </div>
@@ -36,8 +36,8 @@ description: "Reusable GitHub Actions workflows for CI/CD"
 
 | Workflow | Purpose | Trigger |
 |----------|---------|---------|
-| **[Publish Documentation](.github/workflows/publish-docs.yml)** | Builds and deploys this repo's documentation site | Push to main, PRs |
-| **[YAML Lint](.github/workflows/yamllint.yml)** | Validates YAML syntax in this repository (uses reusable workflow) | Push, PRs |
+| **[Publish Documentation](../.github/workflows/publish-docs.yml)** | Builds and deploys this repo's documentation site | Push to main, PRs |
+| **[YAML Lint](../.github/workflows/yamllint.yml)** | Validates YAML syntax in this repository (uses reusable workflow) | Push, PRs |
 
 ## 📚 Documentation
 
@@ -156,11 +156,11 @@ jobs:
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+Contributions are welcome! Please see our [Contributing Guidelines](../CONTRIBUTING.md) for details.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](../LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
@@ -174,6 +174,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Made with ❤️ by [N3b3x](https://github.com/n3b3x)**
 
-[GitHub](https://github.com/n3b3x/hf-general-ci-tools) • [Issues](https://github.com/n3b3x/hf-general-ci-tools/issues) • [Discussions](https://github.com/n3b3x/hf-general-ci-tools/discussions)
+[GitHub](https://github.com/n3b3x/hf-general-ci-tools) • [Issues](https://github.com/n3b3x/hf-general-ci-tools/issues)
 
 </div>

@@ -4,7 +4,7 @@
 
 **A comprehensive collection of reusable GitHub Actions workflows for modern CI/CD pipelines**
 
-[![CI](https://github.com/n3b3x/hf-general-ci-tools/workflows/CI/badge.svg)](https://github.com/n3b3x/hf-general-ci-tools/actions)
+[![CI](https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/yamllint.yml/badge.svg)](https://github.com/n3b3x/hf-general-ci-tools/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg)](https://n3b3x.github.io/hf-general-ci-tools)
 [![YAML Lint](https://img.shields.io/badge/yamllint-passed-brightgreen.svg)](.github/workflows/yamllint.yml)
@@ -227,7 +227,6 @@ your-awesome-project/
 
 - **[Configuration Examples](docs/configuration-examples.md)** - Ready-to-use config files
 - **[Example Workflows](docs/example-workflows.md)** - Complete workflow examples
-- **[Best Practices](docs/best-practices.md)** - Recommended configurations
 
 ---
 
