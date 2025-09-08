@@ -286,7 +286,6 @@ jobs:
             --format detailed
             --timeout 10
             --exclude-all-private
-            --exclude-mail
             ${{ inputs.link_check_paths }}
           fail: true
 
