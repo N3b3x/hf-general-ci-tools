@@ -137,7 +137,6 @@ jobs:
       doxygen_config: "Doxyfile"
       output_dir: "docs/doxygen/html"
       jekyll_enabled: true
-      jekyll_theme: "minima"
       jekyll_config: "_config.yml"
       run_link_check: true
       link_check_paths: "docs/**,*.md,**/docs/**"
@@ -424,7 +423,6 @@ jobs:
       doxygen_config: "Doxyfile"
       output_dir: "docs/doxygen/html"
       jekyll_enabled: true
-      jekyll_theme: "minima"
       jekyll_config: "_config.yml"
       run_link_check: true
       link_check_paths: "docs/**,*.md,**/docs/**,README.md"

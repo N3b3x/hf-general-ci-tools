@@ -75,6 +75,39 @@ jobs:
       verbose: true
 ```
 
+### **Using TOML Configuration File**
+
+For advanced configuration, you can use a `lychee.toml` file:
+
+```yaml
+name: Link Check with TOML Config
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  link-check:
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
+    with:
+      config_file: "lychee.toml"
+      paths: "docs/**,*.md"
+      verbose: true
+```
+
+**Creating a TOML Config File:**
+
+Copy the example configuration:
+```bash
+cp docs/lychee.toml.example lychee.toml
+```
+
+Then customize it for your needs. The TOML file allows you to:
+- Set default timeouts and retry counts
+- Exclude specific domains or patterns
+- Configure HTTP headers and redirects
+- Enable caching for faster subsequent runs
+
 ---
 
 ## 📖 Input Parameters
@@ -88,6 +121,7 @@ jobs:
 | `exclude_private` | `boolean` | `true` | Exclude private/internal links |
 | `exclude_mail` | `boolean` | `true` | Exclude mailto links |
 | `verbose` | `boolean` | `false` | Enable verbose output |
+| `config_file` | `string` | `""` | Path to lychee.toml config file (optional) |
 
 ### **Path Patterns**
 

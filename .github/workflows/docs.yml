@@ -1,3 +1,4 @@
+---
 name: 📚 Documentation Workflow
 
 on:
@@ -23,6 +24,16 @@ on:
         required: false
         type: string
         default: 'docs/**,*.md,**/docs/**'
+      link_check_config:
+        description: 'Path to lychee.toml config file (optional)'
+        required: false
+        type: string
+        default: ''
+      verbose:
+        description: 'Enable verbose output for link checking'
+        required: false
+        type: boolean
+        default: false
       run_markdown_lint:
         description: 'Run markdown linting on documentation files'
         required: false
@@ -58,11 +69,6 @@ on:
         required: false
         type: boolean
         default: false
-      jekyll_theme:
-        description: 'Jekyll theme to use'
-        required: false
-        type: string
-        default: 'minima'
       jekyll_config:
         description: 'Path to Jekyll configuration file'
         required: false
@@ -101,8 +107,7 @@ jobs:
         id: pages
         uses: actions/configure-pages@v4
         with:
-          enablement: false
-        continue-on-error: true
+          enablement: true
 
       - name: Install system dependencies
         run: |
@@ -114,14 +119,11 @@ jobs:
         run: |
           sudo apt-get install -y ruby-full build-essential zlib1g-dev
           sudo gem install jekyll bundler
-          if [ -f "Gemfile" ]; then
-            bundle install
-          else
-            echo "source 'https://rubygems.org'" > Gemfile
-            echo "gem 'jekyll', '~> 4.3'" >> Gemfile
-            echo "gem '${{ inputs.jekyll_theme }}'" >> Gemfile
-            bundle install
-          fi
+          # Always create a GitHub Pages-compatible Gemfile for consistent builds
+          echo "✅ Creating GitHub Pages-compatible Gemfile for consistent builds"
+          echo "source 'https://rubygems.org'" > Gemfile
+          echo "gem 'github-pages', group: :jekyll_plugins" >> Gemfile
+          bundle install
 
       - name: Install Node.js dependencies
         if: ${{ inputs.run_markdown_lint == 'true' || inputs.run_spell_check == 'true' }}
@@ -150,23 +152,32 @@ jobs:
       - name: Build Jekyll site
         if: ${{ inputs.jekyll_enabled == 'true' }}
         run: |
-          if [ -f "${{ inputs.jekyll_config }}" ]; then
-            # Use base_path if available, otherwise use empty string
-            if [ "${{ steps.pages.outcome }}" == "success" ]; then
-              BASEURL="${{ steps.pages.outputs.base_path }}"
-              echo "Using Pages base_path: $BASEURL"
-            else
-              BASEURL=""
-              echo "Pages not configured, using empty baseurl"
-            fi
-            jekyll build \
-              --source ${{ inputs.jekyll_source }} \
-              --destination ${{ inputs.jekyll_destination }} \
-              --baseurl "$BASEURL"
-            echo "✅ Jekyll site built successfully"
-          else
-            echo "⚠️  Jekyll config not found at ${{ inputs.jekyll_config }}, skipping Jekyll build"
+          JEKYLL_SOURCE="${{ inputs.jekyll_source }}"
+          JEKYLL_CONFIG="${{ inputs.jekyll_config }}"
+          JEKYLL_DEST="${{ inputs.jekyll_destination }}"
+          # Check if _config.yml exists, create minimal one if missing
+          if [ ! -f "$JEKYLL_SOURCE/$JEKYLL_CONFIG" ]; then
+            echo "⚠️  Jekyll config not found, creating minimal _config.yml"
+            cat > "$JEKYLL_SOURCE/$JEKYLL_CONFIG" << 'EOF'
+          title: "Project Documentation"
+          description: "Documentation for the project"
+          theme: minima
+          plugins:
+            - jekyll-feed
+            - jekyll-sitemap
+            - jekyll-seo-tag
+          markdown: kramdown
+          highlighter: rouge
+          EOF
+            echo "✅ Created minimal _config.yml"
           fi
+          BASEURL="${{ steps.pages.outputs.base_path }}"
+          echo "Using Pages base_path: $BASEURL"
+          jekyll build \
+            --source "$JEKYLL_SOURCE" \
+            --destination "$JEKYLL_DEST" \
+            --baseurl "$BASEURL"
+          echo "✅ Jekyll site built successfully"
 
       - name: Run markdown linting
         if: ${{ inputs.run_markdown_lint == 'true' }}
@@ -197,14 +208,15 @@ jobs:
         if: ${{ inputs.run_link_check == 'true' }}
         uses: lycheeverse/lychee-action@v2
         with:
-          args: |
-            --no-progress 
-            --verbose 
-            --format detailed 
-            --timeout 10 
-            --retry 3 
-            --exclude-all-private 
-            --exclude-mail 
+          args: >-
+            ${{ inputs.link_check_config != '' && format('--config {0}', inputs.link_check_config) || '' }}
+            --no-progress
+            ${{ inputs.verbose == 'true' && '--verbose' || '' }}
+            --format detailed
+            --timeout 10
+            --retry 3
+            --exclude-all-private
+            --exclude-mail
             ${{ inputs.link_check_paths }}
           fail: true
 
@@ -230,7 +242,7 @@ jobs:
           retention-days: 7
 
       - name: Upload Pages artifact
-        if: ${{ inputs.deploy_pages == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.pages.outcome == 'success' }}
+        if: ${{ inputs.deploy_pages == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         uses: actions/upload-pages-artifact@v3
         with:
           path: ${{ env.DEPLOY_PATH }}

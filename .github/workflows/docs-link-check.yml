@@ -1,3 +1,4 @@
+---
 name: 🔗 Documentation Link Check
 
 on:
@@ -38,6 +39,11 @@ on:
         required: false
         type: boolean
         default: false
+      config_file:
+        description: 'Path to lychee.toml config file (optional)'
+        required: false
+        type: string
+        default: ''
 
 jobs:
   link-check:
@@ -51,12 +57,13 @@ jobs:
       - name: Link check with Lychee
         uses: lycheeverse/lychee-action@v2
         with:
-          args: |
-            --no-progress 
+          args: >-
+            ${{ inputs.config_file != '' && format('--config {0}', inputs.config_file) || '' }}
+            --no-progress
             ${{ inputs.verbose == 'true' && '--verbose' || '' }}
-            --format detailed 
-            --timeout ${{ inputs.timeout }} 
-            --retry ${{ inputs.retry }} 
+            --format detailed
+            --timeout ${{ inputs.timeout }}
+            --retry ${{ inputs.retry }}
             ${{ inputs.exclude_private == 'true' && '--exclude-all-private' || '' }}
             ${{ inputs.exclude_mail == 'true' && '--exclude-mail' || '' }}
             ${{ inputs.fail_on_errors == 'true' && '--fail' || '' }}

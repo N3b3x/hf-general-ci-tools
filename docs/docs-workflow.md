@@ -45,7 +45,9 @@ The Documentation workflow builds Doxygen documentation and optionally deploys i
 | `doxygen_config` | string | ❌ | `Doxyfile` | Path to Doxyfile (relative to repo root) |
 | `output_dir` | string | ❌ | `docs/doxygen/html` | Generated HTML directory |
 | `run_link_check` | boolean | ❌ | `true` | Run documentation link checker |
-| `link_check_paths` | string | ❌ | `docs/**,*.md,**/docs/**` | Comma-separated paths to check for broken links |
+| `link_check_paths` | string | ❌ | `docs/**,*.md,**/docs/**` | Comma-separated glob patterns for Lychee to check |
+| `link_check_config` | string | ❌ | `''` | Path to lychee.toml config file (optional) |
+| `verbose` | boolean | ❌ | `false` | Enable verbose output for link checking |
 | `run_markdown_lint` | boolean | ❌ | `false` | Run markdown linting on documentation files |
 | `markdown_lint_paths` | string | ❌ | `**/*.md` | Glob patterns for markdown files to lint |
 | `run_spell_check` | boolean | ❌ | `false` | Run spell checking on documentation files |
@@ -53,7 +55,6 @@ The Documentation workflow builds Doxygen documentation and optionally deploys i
 | `spell_check_config` | string | ❌ | `.cspell.json` | Path to cspell configuration file |
 | `deploy_pages` | boolean | ❌ | `true` | Deploy to GitHub Pages |
 | `jekyll_enabled` | boolean | ❌ | `false` | Enable Jekyll static site generation |
-| `jekyll_theme` | string | ❌ | `minima` | Jekyll theme to use |
 | `jekyll_config` | string | ❌ | `_config.yml` | Path to Jekyll configuration file |
 | `jekyll_source` | string | ❌ | `docs` | Jekyll source directory |
 | `jekyll_destination` | string | ❌ | `_site` | Jekyll build destination |
@@ -108,7 +109,6 @@ jobs:
       doxygen_config: Doxyfile
       output_dir: docs/doxygen/html
       jekyll_enabled: true
-      jekyll_theme: "minima"
       jekyll_config: "_config.yml"
       jekyll_source: "docs"
       jekyll_destination: "_site"
@@ -162,10 +162,16 @@ link_check_paths: "docs/**,*.md"  # Paths to check for broken links
 
 The Lychee link checker:
 - Scans all markdown files in the specified paths
+- Uses **comma-separated glob patterns** (not shell globs)
 - Validates both internal file references and external URLs
 - Supports configurable timeouts and retry attempts
 - Excludes private/internal links by default
 - Provides detailed reporting with verbose output options
+
+**Path Format Examples:**
+- `docs/**,*.md` - All files in docs/ and all .md files in root
+- `README.md,docs/**/*.md` - Specific file + all .md files in docs/
+- `**/*.md` - All .md files recursively
 - Uses the modern `lycheeverse/lychee-action@v2` action
 - Offers better performance and reliability than traditional link checkers
 
@@ -206,14 +212,14 @@ Optional Jekyll static site generation for enhanced documentation presentation a
 
 ```yaml
 jekyll_enabled: true  # Enable Jekyll (default: false)
-jekyll_theme: "minima"  # Jekyll theme to use
 jekyll_config: "_config.yml"  # Path to Jekyll config
 jekyll_source: "docs"  # Source directory
 jekyll_destination: "_site"  # Build destination
 ```
 
 **Jekyll Configuration:**
-Create a `_config.yml` file in your repository root:
+
+The workflow automatically creates a minimal `_config.yml` file if one doesn't exist. For custom configuration, create a `_config.yml` file in your repository root:
 
 ```yaml
 # Jekyll configuration
