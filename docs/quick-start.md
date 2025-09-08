@@ -178,8 +178,8 @@ Once you have the basics working:
 
 1. **Explore Advanced Features**: Check out our [configuration examples](configuration-examples.md)
 2. **See Real Examples**: Browse our [example workflows](example-workflows.md)
-3. **Customize Further**: Learn about [custom themes](custom-themes.md) and [custom CSS](custom-css.md)
-4. **Set Up Analytics**: Configure [analytics tracking](analytics.md)
+3. **Customize Further**: Explore advanced configuration options
+4. **Set Up Analytics**: Configure analytics tracking in your `_config.yml`
 
 ## 🎉 You're All Set!
 

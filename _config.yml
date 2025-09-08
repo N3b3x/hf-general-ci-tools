@@ -76,9 +76,7 @@ callouts:
     color: red
 
 # Visual enhancements
-logo: "/assets/images/logo.svg"
-favicon_ico: "/assets/images/favicon.svg"
-color_scheme: auto  # Enables automatic light/dark theme switching
+color_scheme: dark  # Dark theme
 
 # Auxiliary links with better organization
 aux_links:
@@ -144,7 +142,7 @@ seo:
   name: "hf-general-ci-tools"
   description: "Reusable GitHub Actions workflows for CI/CD tasks including C/C++ linting, static analysis, documentation generation, and link checking"
   url: "https://n3b3x.github.io/hf-general-ci-tools"
-  image: "/assets/images/og-image.png"
+  # image: "/assets/images/og-image.png"  # Add when available
   twitter:
     card: "summary_large_image"
     site: "@n3b3x"
