@@ -4,8 +4,8 @@ description: "A comprehensive collection of reusable GitHub Actions workflows fo
 baseurl: "/hf-general-ci-tools"  # GitHub Pages subpath
 url: "https://n3b3x.github.io"
 
-# Jekyll source configuration - tells Jekyll to use docs folder as source
-source: docs
+# Jekyll source configuration - config is now in docs folder
+# source: docs  # Not needed when _config.yml is in docs folder
 
 # Author and social information
 author:

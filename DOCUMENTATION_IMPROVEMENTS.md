@@ -3,8 +3,8 @@
 ## ✅ Issues Fixed
 
 ### 1. **Configuration Structure**
-- ✅ Removed duplicate `_config.yml` files (kept only root version)
-- ✅ Added `source: docs` configuration for proper Jekyll source handling
+- ✅ Moved `_config.yml` to `docs/` folder (correct location for Just the Docs)
+- ✅ Removed duplicate `_config.yml` files
 - ✅ Moved `_data/navigation.yml` from root to `docs/_data/navigation.yml`
 - ✅ Fixed navigation structure to follow Just the Docs format
 
@@ -50,32 +50,32 @@
 
 ```
 /workspace/
-├── _config.yml                    # Main Jekyll configuration
 ├── docs/
+│   ├── _config.yml               # Main Jekyll configuration (correct location)
 │   ├── _data/
-│   │   └── navigation.yml         # Navigation structure
+│   │   └── navigation.yml        # Navigation structure
 │   ├── _layouts/
-│   │   └── page-enhanced.html     # Enhanced page layout
+│   │   └── page-enhanced.html    # Enhanced page layout
 │   ├── _includes/
-│   │   ├── badge.html            # Badge component
-│   │   ├── workflow-card.html    # Workflow card component
-│   │   └── footer-enhanced.html  # Enhanced footer
+│   │   ├── badge.html           # Badge component
+│   │   ├── workflow-card.html   # Workflow card component
+│   │   └── footer-enhanced.html # Enhanced footer
 │   ├── _sass/
 │   │   └── color_schemes/
-│   │       └── custom.scss       # Custom color scheme
+│   │       └── custom.scss      # Custom color scheme
 │   ├── assets/
 │   │   └── css/
-│   │       └── custom.css        # Custom CSS styles
-│   ├── index.md                  # Main documentation page
-│   ├── quick-start.md           # Quick start guide
+│   │       └── custom.css       # Custom CSS styles
+│   ├── index.md                 # Main documentation page
+│   ├── quick-start.md          # Quick start guide
 │   └── [other documentation files]
-└── README.md                     # Repository README
+└── README.md                    # Repository README
 ```
 
 ## 🔧 Configuration Highlights
 
-### Main Configuration (`_config.yml`)
-- ✅ `source: docs` - Tells Jekyll to use docs folder as source
+### Main Configuration (`docs/_config.yml`)
+- ✅ Located in `docs/` folder (correct location for Just the Docs)
 - ✅ `remote_theme: just-the-docs/just-the-docs` - Uses Just the Docs theme
 - ✅ `color_scheme: custom` - Uses custom color scheme
 - ✅ Enhanced search configuration
