@@ -2,6 +2,7 @@
 layout: default
 title: "hf-general-ci-tools"
 description: "Reusable GitHub Actions workflows for CI/CD"
+nav_order: 1
 ---
 
 # hf-general-ci-tools
@@ -11,7 +12,7 @@ description: "Reusable GitHub Actions workflows for CI/CD"
 **A collection of reusable GitHub Actions workflows for general CI/CD tasks**
 
 [![CI](https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/yamllint.yml/badge.svg)](https://github.com/n3b3x/hf-general-ci-tools/actions)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](../LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/n3b3x/hf-general-ci-tools/blob/main/LICENSE)
 [![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg)](https://n3b3x.github.io/hf-general-ci-tools)
 
 </div>
@@ -36,8 +37,8 @@ description: "Reusable GitHub Actions workflows for CI/CD"
 
 | Workflow | Purpose | Trigger |
 |----------|---------|---------|
-| **[Publish Documentation](../.github/workflows/publish-docs.yml)** | Builds and deploys this repo's documentation site | Push to main, PRs |
-| **[YAML Lint](../.github/workflows/yamllint.yml)** | Validates YAML syntax in this repository (uses reusable workflow) | Push, PRs |
+| **[Publish Documentation](https://github.com/n3b3x/hf-general-ci-tools/blob/main/.github/workflows/publish-docs.yml)** | Builds and deploys this repo's documentation site | Push to main, PRs |
+| **[YAML Lint](https://github.com/n3b3x/hf-general-ci-tools/blob/main/.github/workflows/yamllint.yml)** | Validates YAML syntax in this repository (uses reusable workflow) | Push, PRs |
 
 ## 📚 Documentation
 
@@ -156,11 +157,11 @@ jobs:
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please see our [Contributing Guidelines](../CONTRIBUTING.md) for details.
+Contributions are welcome! Please see our [Contributing Guidelines](https://github.com/n3b3x/hf-general-ci-tools/blob/main/CONTRIBUTING.md) for details.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](../LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/n3b3x/hf-general-ci-tools/blob/main/LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 

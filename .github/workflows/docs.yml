@@ -136,10 +136,17 @@ jobs:
         if: ${{ inputs.jekyll_enabled == true }}
         run: |
           echo "📦 Installing Jekyll dependencies..."
-          # Always create a GitHub Pages-compatible Gemfile for consistent builds
-          echo "✅ Creating GitHub Pages-compatible Gemfile for consistent builds"
-          echo "source 'https://rubygems.org'" > Gemfile
-          echo "gem 'github-pages', group: :jekyll_plugins" >> Gemfile
+          
+          # Check if a custom Gemfile exists
+          if [ -f "Gemfile" ]; then
+            echo "✅ Using existing custom Gemfile"
+            echo "📋 Gemfile contents:"
+            cat Gemfile
+          else
+            echo "✅ Creating GitHub Pages-compatible Gemfile for consistent builds"
+            echo "source 'https://rubygems.org'" > Gemfile
+            echo "gem 'github-pages', group: :jekyll_plugins" >> Gemfile
+          fi
 
           # Install gems to local directory to avoid permission issues
           bundle config set --local path 'vendor/bundle'

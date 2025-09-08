@@ -1,0 +1,37 @@
+# Main navigation
+- title: Home
+  url: /
+
+# Reusable Workflows
+- title: Reusable Workflows
+  children:
+    - title: C/C++ Lint Workflow
+      url: /lint-workflow
+    - title: Static Analysis Workflow
+      url: /static-analysis-workflow
+    - title: Documentation Workflow
+      url: /docs-workflow
+    - title: Link Check Workflow
+      url: /link-check-workflow
+    - title: YAML Lint Workflow
+      url: /yamllint-workflow
+
+# Examples and Guides
+- title: Examples & Guides
+  children:
+    - title: Example Workflows
+      url: /example-workflows
+    - title: Configuration Examples
+      url: /configuration-examples
+
+# Repository Information
+- title: Repository Info
+  children:
+    - title: Contributing Guidelines
+      url: https://github.com/n3b3x/hf-general-ci-tools/blob/main/CONTRIBUTING.md
+    - title: License
+      url: https://github.com/n3b3x/hf-general-ci-tools/blob/main/LICENSE
+    - title: GitHub Repository
+      url: https://github.com/n3b3x/hf-general-ci-tools
+    - title: Issues
+      url: https://github.com/n3b3x/hf-general-ci-tools/issues

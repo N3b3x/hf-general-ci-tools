@@ -5,11 +5,12 @@ baseurl: "/hf-general-ci-tools"  # GitHub Pages subpath
 url: "https://n3b3x.github.io"
 
 # Theme and plugins
-theme: minima
+remote_theme: just-the-docs/just-the-docs
 plugins:
   - jekyll-feed
   - jekyll-sitemap
   - jekyll-seo-tag
+  - jekyll-remote-theme
 
 # Markdown and syntax highlighting
 markdown: kramdown
@@ -19,38 +20,29 @@ highlighter: rouge
 timezone: UTC
 encoding: utf-8
 
+# Just the Docs configuration
+search_enabled: true
+search:
+  heading_level: 2
+  previews: 3
+  preview_words_before: 5
+  preview_words_after: 10
+  tokenizer_separator: /[\s/]+/
+  rel_url: true
+
 # Navigation
-navigation:
-  - title: "Home"
-    url: "/"
-  - title: "Workflows"
-    url: "/workflows/"
-  - title: "Examples"
-    url: "/examples/"
-  - title: "Configuration"
-    url: "/configuration/"
+nav_external_links:
+  - title: GitHub Repository
+    url: https://github.com/n3b3x/hf-general-ci-tools
+  - title: Issues
+    url: https://github.com/n3b3x/hf-general-ci-tools/issues
 
-# Collections for better organization
-collections:
-  workflows:
-    output: true
-    permalink: /workflows/:name/
-  examples:
-    output: true
-    permalink: /examples/:name/
-
-# Default layouts
-defaults:
-  - scope:
-      path: ""
-      type: "workflows"
-    values:
-      layout: "workflow"
-  - scope:
-      path: ""
-      type: "examples"
-    values:
-      layout: "example"
+# Just the Docs specific settings
+aux_links:
+  GitHub Repository:
+    - https://github.com/n3b3x/hf-general-ci-tools
+  Issues:
+    - https://github.com/n3b3x/hf-general-ci-tools/issues
 
 # Exclude files from processing
 exclude:
@@ -67,18 +59,8 @@ exclude:
 include:
   - _pages
 
-# Social links
-minima:
-  social_links:
-    github: n3b3x
-    twitter: n3b3x
-
-# Author information
-author:
-  name: "N3b3x"
-  email: "nebysma@gmail.com"
-  github: "n3b3x"
-  twitter: "n3b3x"
+# Just the Docs theme settings
+color_scheme: light
 
 # SEO settings
 seo:
