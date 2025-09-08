@@ -345,11 +345,13 @@ jobs:
           echo "Jekyll enabled: ${{ inputs.jekyll_enabled }}"
           echo "Jekyll destination: ${{ inputs.jekyll_destination }}"
           echo "Doxygen output dir: ${{ inputs.output_dir }}"
+          echo "Doxygen needed: ${{ steps.doxygen-check.outputs.doxygen_needed }}"
 
           # Check what directories exist
           echo "📁 Current directory contents:"
           ls -la
 
+          # Check for Jekyll output first (if enabled)
           if [ "${{ inputs.jekyll_enabled }}" == "true" ]; then
             echo "🔍 Checking Jekyll build output..."
             if [ -d "${{ inputs.jekyll_destination }}" ]; then
@@ -362,15 +364,45 @@ jobs:
             fi
           fi
 
-          if [ -z "$DEPLOY_PATH" ] && [ -d "${{ inputs.output_dir }}" ]; then
-            echo "✅ Using Doxygen output: ${{ inputs.output_dir }}"
-            DEPLOY_PATH="${{ inputs.output_dir }}"
+          # Check for Doxygen output (if Jekyll not available or not enabled)
+          if [ -z "$DEPLOY_PATH" ] && [ "${{ steps.doxygen-check.outputs.doxygen_needed }}" == "true" ]; then
+            echo "🔍 Checking Doxygen build output..."
+            if [ -d "${{ inputs.output_dir }}" ]; then
+              echo "✅ Doxygen build output found: ${{ inputs.output_dir }}"
+              echo "📁 Doxygen output contents:"
+              ls -la "${{ inputs.output_dir }}"
+              DEPLOY_PATH="${{ inputs.output_dir }}"
+            else
+              echo "❌ Doxygen build output not found: ${{ inputs.output_dir }}"
+            fi
+          fi
+
+          # If still no path found, check for any documentation directories
+          if [ -z "$DEPLOY_PATH" ]; then
+            echo "🔍 Searching for any documentation directories..."
+            DOC_DIRS=$(find . -type d -name "*site*" -o -name "*docs*" -o -name "*html*" | head -5)
+            if [ -n "$DOC_DIRS" ]; then
+              echo "📁 Found potential documentation directories:"
+              echo "$DOC_DIRS"
+              # Use the first non-empty directory
+              for dir in $DOC_DIRS; do
+                if [ -d "$dir" ] && [ "$(ls -A "$dir" 2>/dev/null)" ]; then
+                  echo "✅ Using found documentation directory: $dir"
+                  DEPLOY_PATH="$dir"
+                  break
+                fi
+              done
+            fi
           fi
 
           if [ -z "$DEPLOY_PATH" ]; then
             echo "❌ No documentation found to deploy"
             echo "Available directories:"
             find . -type d -name "*site*" -o -name "*docs*" -o -name "*html*" | head -10
+            echo "⚠️  This may be expected if:"
+            echo "   - No Doxyfile exists and Jekyll is disabled"
+            echo "   - Documentation generation failed"
+            echo "   - Output directories are empty"
             exit 1
           fi
 
@@ -383,6 +415,23 @@ jobs:
           name: docs-html
           path: ${{ env.DEPLOY_PATH }}
           retention-days: 7
+
+      - name: Check Pages deployment conditions
+        run: |
+          echo "🔍 Pages deployment conditions check:"
+          echo "  deploy_pages: ${{ inputs.deploy_pages }}"
+          echo "  event_name: ${{ github.event_name }}"
+          echo "  ref: ${{ github.ref }}"
+          echo "  is_main_branch: ${{ github.ref == 'refs/heads/main' }}"
+          
+          if [ "${{ inputs.deploy_pages }}" == "true" ] && [ "${{ github.event_name }}" == "push" ] && [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "✅ All conditions met - Pages deployment will proceed"
+          else
+            echo "⚠️  Pages deployment will be skipped because:"
+            [ "${{ inputs.deploy_pages }}" != "true" ] && echo "   - deploy_pages is false"
+            [ "${{ github.event_name }}" != "push" ] && echo "   - not a push event (current: ${{ github.event_name }})"
+            [ "${{ github.ref }}" != "refs/heads/main" ] && echo "   - not on main branch (current: ${{ github.ref }})"
+          fi
 
       - name: Upload Pages artifact
         if: ${{ inputs.deploy_pages == true && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
