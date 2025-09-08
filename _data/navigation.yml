@@ -1,37 +1,77 @@
 # Main navigation
-- title: Home
+- title: 🏠 Home
   url: /
+  nav_order: 1
+
+# Quick Start
+- title: 🚀 Quick Start
+  url: /quick-start
+  nav_order: 2
 
 # Reusable Workflows
-- title: Reusable Workflows
+- title: 🔄 Reusable Workflows
+  nav_order: 3
   children:
-    - title: C/C++ Lint Workflow
+    - title: 🔧 C/C++ Lint Workflow
       url: /lint-workflow
-    - title: Static Analysis Workflow
+      nav_order: 1
+    - title: 🛡️ Static Analysis Workflow
       url: /static-analysis-workflow
-    - title: Documentation Workflow
+      nav_order: 2
+    - title: 📚 Documentation Workflow
       url: /docs-workflow
-    - title: Link Check Workflow
+      nav_order: 3
+    - title: 🔗 Link Check Workflow
       url: /link-check-workflow
-    - title: YAML Lint Workflow
+      nav_order: 4
+    - title: 📝 YAML Lint Workflow
       url: /yamllint-workflow
+      nav_order: 5
 
 # Examples and Guides
-- title: Examples & Guides
+- title: 📖 Examples & Guides
+  nav_order: 4
   children:
-    - title: Example Workflows
+    - title: 🚀 Example Workflows
       url: /example-workflows
-    - title: Configuration Examples
+      nav_order: 1
+    - title: ⚙️ Configuration Examples
       url: /configuration-examples
+      nav_order: 2
+    - title: 🎯 Best Practices
+      url: /best-practices
+      nav_order: 3
+
+# Advanced Features
+- title: ⚡ Advanced Features
+  nav_order: 5
+  children:
+    - title: 🎨 Custom Themes
+      url: /custom-themes
+      nav_order: 1
+    - title: 🔧 Custom CSS
+      url: /custom-css
+      nav_order: 2
+    - title: 📊 Analytics Setup
+      url: /analytics
+      nav_order: 3
 
 # Repository Information
-- title: Repository Info
+- title: ℹ️ Repository Info
+  nav_order: 6
   children:
-    - title: Contributing Guidelines
+    - title: 🤝 Contributing Guidelines
       url: https://github.com/n3b3x/hf-general-ci-tools/blob/main/CONTRIBUTING.md
-    - title: License
+      nav_order: 1
+    - title: 📄 License
       url: https://github.com/n3b3x/hf-general-ci-tools/blob/main/LICENSE
-    - title: GitHub Repository
-      url: https://github.com/n3b3x/hf-general-ci-tools
-    - title: Issues
+      nav_order: 2
+    - title: 🐛 Report Issues
       url: https://github.com/n3b3x/hf-general-ci-tools/issues
+      nav_order: 3
+    - title: 💬 Discussions
+      url: https://github.com/n3b3x/hf-general-ci-tools/discussions
+      nav_order: 4
+    - title: ⭐ Star on GitHub
+      url: https://github.com/n3b3x/hf-general-ci-tools/stargazers
+      nav_order: 5

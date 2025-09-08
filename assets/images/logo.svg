@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" width="200" height="60">
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563eb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="30" cy="30" r="25" fill="url(#gradient)" opacity="0.1"/>
+  
+  <!-- Main icon - GitHub Actions style -->
+  <g transform="translate(15, 15)">
+    <!-- Workflow icon -->
+    <rect x="0" y="0" width="30" height="30" rx="4" fill="url(#gradient)"/>
+    <rect x="4" y="4" width="22" height="22" rx="2" fill="white"/>
+    
+    <!-- CI/CD arrows -->
+    <path d="M8 12 L12 8 L16 12" stroke="#2563eb" stroke-width="2" fill="none"/>
+    <path d="M8 18 L12 22 L16 18" stroke="#2563eb" stroke-width="2" fill="none"/>
+    <path d="M12 8 L12 22" stroke="#2563eb" stroke-width="2"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="50" y="25" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1f2937">
+    hf-general-ci-tools
+  </text>
+  <text x="50" y="40" font-family="Arial, sans-serif" font-size="12" fill="#6b7280">
+    Reusable GitHub Actions Workflows
+  </text>
+</svg>

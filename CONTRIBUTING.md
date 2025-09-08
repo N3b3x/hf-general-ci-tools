@@ -15,11 +15,11 @@ Thank you for your interest in contributing to hf-general-ci-tools! This project
 - [Release Process](#release-process)
 - [Questions and Support](#questions-and-support)
 
-## 🤝 Code of Conduct
+## Code of Conduct
 
 This project follows the [Contributor Covenant Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct.html). By participating, you are expected to uphold this code.
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -46,7 +46,7 @@ This project follows the [Contributor Covenant Code of Conduct](https://www.cont
    git checkout -b feature/your-feature-name
    ```
 
-## 🎯 Types of Contributions
+## Types of Contributions
 
 We welcome several types of contributions:
 
@@ -77,7 +77,7 @@ We welcome several types of contributions:
 - Report compatibility issues
 - Suggest test improvements
 
-## 🔄 Development Workflow
+## Development Workflow
 
 ### 1. Choose an Issue
 
@@ -103,7 +103,7 @@ We welcome several types of contributions:
 - Ensure all checks pass
 - Request review from maintainers
 
-## 🛠️ Workflow Development Guidelines
+## Workflow Development Guidelines
 
 ### General Principles
 
@@ -164,7 +164,7 @@ jobs:
 - **Avoid hardcoded values**: Use inputs and environment variables
 - **Follow principle of least privilege**: Limit access to what's needed
 
-## 📖 Documentation Guidelines
+## Documentation Guidelines
 
 ### Workflow Documentation
 
@@ -226,7 +226,7 @@ Brief description of the workflow.
 - **Include examples**: Show how to use complex features
 - **Keep comments up-to-date**: Update comments when code changes
 
-## 🧪 Testing Guidelines
+## Testing Guidelines
 
 ### Testing Your Workflows
 
@@ -253,7 +253,7 @@ Brief description of the workflow.
 - [ ] Documentation examples work
 - [ ] Performance is acceptable
 
-## 📝 Pull Request Process
+## Pull Request Process
 
 ### Before Submitting
 
@@ -308,7 +308,7 @@ Brief description of changes
 - **Delete feature branch** after merge
 - **Update version tags** if applicable
 
-## 🚀 Release Process
+## Release Process
 
 ### Versioning
 
@@ -325,7 +325,7 @@ We use [Semantic Versioning](https://semver.org/):
 4. **Publish release** on GitHub
 5. **Update documentation** if needed
 
-## ❓ Questions and Support
+## Questions and Support
 
 ### Getting Help
 
