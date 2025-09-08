@@ -169,22 +169,11 @@ jobs:
 
           echo "✅ Ruby and Jekyll installed successfully"
 
-      - name: Cache Node.js dependencies
-        if: ${{ inputs.run_markdown_lint == true || inputs.run_spell_check == true || inputs.jekyll_enabled == true }}
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ env.CACHE_VERSION }}-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-node-${{ env.CACHE_VERSION }}-
-            ${{ runner.os }}-node-
-
       - name: Setup Node.js
         if: ${{ inputs.run_markdown_lint == true || inputs.run_spell_check == true || inputs.jekyll_enabled == true }}
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
 
       - name: Install Jekyll dependencies
         if: ${{ inputs.jekyll_enabled == true }}
