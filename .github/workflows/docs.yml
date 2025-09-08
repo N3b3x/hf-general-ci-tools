@@ -335,13 +335,13 @@ jobs:
           retention-days: 7
 
       - name: Upload Pages artifact
-        if: ${{ inputs.deploy_pages == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        if: ${{ inputs.deploy_pages == true && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         uses: actions/upload-pages-artifact@v3
         with:
           path: ${{ env.DEPLOY_PATH }}
 
   deploy:
-    if: ${{ inputs.deploy_pages == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    if: ${{ inputs.deploy_pages == true && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     needs: build
     runs-on: ubuntu-latest
     environment:
