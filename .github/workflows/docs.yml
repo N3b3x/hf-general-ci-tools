@@ -1,4 +1,11 @@
 ---
+# Documentation Workflow (Reusable)
+# 
+# Optimized workflow with:
+# - Conditional installation of doxygen/graphviz only when Doxyfile exists
+# - Comprehensive caching for system dependencies, Node.js packages, and Ruby gems
+# - Reduced redundant steps and improved performance
+# - Smart dependency management based on actual requirements
 name: Documentation Workflow (Reusable)
 
 on:
@@ -93,6 +100,8 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      CACHE_VERSION: v1
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -105,10 +114,44 @@ jobs:
         with:
           enablement: true
 
+      - name: Check for Doxygen configuration
+        id: doxygen-check
+        run: |
+          if [ -f "${{ inputs.doxygen_config }}" ]; then
+            echo "doxygen_needed=true" >> $GITHUB_OUTPUT
+            echo "✅ Doxyfile found at ${{ inputs.doxygen_config }}"
+          else
+            echo "doxygen_needed=false" >> $GITHUB_OUTPUT
+            echo "⚠️  No Doxyfile found at ${{ inputs.doxygen_config }}, skipping Doxygen dependencies"
+          fi
+
+      - name: Cache system dependencies
+        if: steps.doxygen-check.outputs.doxygen_needed == 'true'
+        uses: actions/cache@v4
+        with:
+          path: /var/cache/apt
+          key: ${{ runner.os }}-apt-deps-${{ env.CACHE_VERSION }}-${{ hashFiles('**/Doxyfile') }}
+          restore-keys: |
+            ${{ runner.os }}-apt-deps-${{ env.CACHE_VERSION }}-
+            ${{ runner.os }}-apt-deps-
+
       - name: Install system dependencies
+        if: steps.doxygen-check.outputs.doxygen_needed == 'true'
         run: |
           sudo apt-get update
           sudo apt-get install -y doxygen graphviz
+
+      - name: Cache Ruby gems
+        if: ${{ inputs.jekyll_enabled == true }}
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gem
+            vendor/bundle
+          key: ${{ runner.os }}-ruby-gems-${{ env.CACHE_VERSION }}-${{ hashFiles('**/Gemfile', '**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-ruby-gems-${{ env.CACHE_VERSION }}-
+            ${{ runner.os }}-ruby-gems-
 
       - name: Install Ruby and Jekyll
         if: ${{ inputs.jekyll_enabled == true }}
@@ -126,11 +169,22 @@ jobs:
 
           echo "✅ Ruby and Jekyll installed successfully"
 
+      - name: Cache Node.js dependencies
+        if: ${{ inputs.run_markdown_lint == true || inputs.run_spell_check == true || inputs.jekyll_enabled == true }}
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ env.CACHE_VERSION }}-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ env.CACHE_VERSION }}-
+            ${{ runner.os }}-node-
+
       - name: Setup Node.js
         if: ${{ inputs.run_markdown_lint == true || inputs.run_spell_check == true || inputs.jekyll_enabled == true }}
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
       - name: Install Jekyll dependencies
         if: ${{ inputs.jekyll_enabled == true }}
@@ -154,30 +208,30 @@ jobs:
 
           echo "✅ Jekyll dependencies installed successfully"
 
-      - name: Install markdownlint
-        if: ${{ inputs.run_markdown_lint == true }}
+      - name: Install Node.js tools
+        if: ${{ inputs.run_markdown_lint == true || inputs.run_spell_check == true }}
         run: |
-          echo "📦 Installing markdownlint..."
-          npm install -g markdownlint-cli
-          markdownlint --version
-          echo "✅ markdownlint installed successfully"
-
-      - name: Install cspell
-        if: ${{ inputs.run_spell_check == true }}
-        run: |
-          echo "📦 Installing cspell..."
-          npm install -g cspell
-          cspell --version
-          echo "✅ cspell installed successfully"
+          echo "📦 Installing Node.js tools..."
+          
+          if [ "${{ inputs.run_markdown_lint }}" == "true" ]; then
+            echo "Installing markdownlint..."
+            npm install -g markdownlint-cli
+            markdownlint --version
+            echo "✅ markdownlint installed successfully"
+          fi
+          
+          if [ "${{ inputs.run_spell_check }}" == "true" ]; then
+            echo "Installing cspell..."
+            npm install -g cspell
+            cspell --version
+            echo "✅ cspell installed successfully"
+          fi
 
       - name: Generate Doxygen documentation
+        if: steps.doxygen-check.outputs.doxygen_needed == 'true'
         run: |
-          if [ -f "${{ inputs.doxygen_config }}" ]; then
-            doxygen ${{ inputs.doxygen_config }}
-            echo "✅ Doxygen documentation generated successfully"
-          else
-            echo "⚠️  Doxyfile not found at ${{ inputs.doxygen_config }}, skipping Doxygen generation"
-          fi
+          doxygen ${{ inputs.doxygen_config }}
+          echo "✅ Doxygen documentation generated successfully"
 
       - name: Build Jekyll site
         if: ${{ inputs.jekyll_enabled == true }}
