@@ -111,7 +111,7 @@ jobs:
           sudo apt-get install -y doxygen graphviz
 
       - name: Install Ruby and Jekyll
-        if: ${{ inputs.jekyll_enabled == 'true' }}
+        if: ${{ inputs.jekyll_enabled == true }}
         run: |
           echo "🔧 Installing Ruby and Jekyll..."
           sudo apt-get update
@@ -127,15 +127,14 @@ jobs:
           echo "✅ Ruby and Jekyll installed successfully"
 
       - name: Setup Node.js
-        if: ${{ inputs.run_markdown_lint == 'true' || inputs.run_spell_check == 'true' ||
-          inputs.jekyll_enabled == 'true' }}
+        if: ${{ inputs.run_markdown_lint == true || inputs.run_spell_check == true || inputs.jekyll_enabled == true }}
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
 
       - name: Install Jekyll dependencies
-        if: ${{ inputs.jekyll_enabled == 'true' }}
+        if: ${{ inputs.jekyll_enabled == true }}
         run: |
           echo "📦 Installing Jekyll dependencies..."
           # Always create a GitHub Pages-compatible Gemfile for consistent builds
@@ -149,7 +148,7 @@ jobs:
           echo "✅ Jekyll dependencies installed successfully"
 
       - name: Install markdownlint
-        if: ${{ inputs.run_markdown_lint == 'true' }}
+        if: ${{ inputs.run_markdown_lint == true }}
         run: |
           echo "📦 Installing markdownlint..."
           npm install -g markdownlint-cli
@@ -157,7 +156,7 @@ jobs:
           echo "✅ markdownlint installed successfully"
 
       - name: Install cspell
-        if: ${{ inputs.run_spell_check == 'true' }}
+        if: ${{ inputs.run_spell_check == true }}
         run: |
           echo "📦 Installing cspell..."
           npm install -g cspell
@@ -174,7 +173,7 @@ jobs:
           fi
 
       - name: Build Jekyll site
-        if: ${{ inputs.jekyll_enabled == 'true' }}
+        if: ${{ inputs.jekyll_enabled == true }}
         run: |
           JEKYLL_SOURCE="${{ inputs.jekyll_source }}"
           JEKYLL_CONFIG="${{ inputs.jekyll_config }}"
@@ -231,7 +230,7 @@ jobs:
           fi
 
       - name: Run markdown linting
-        if: ${{ inputs.run_markdown_lint == 'true' }}
+        if: ${{ inputs.run_markdown_lint == true }}
         run: |
           markdownlint ${{ inputs.markdown_lint_paths }} || {
             echo "❌ Markdown linting failed"
@@ -240,7 +239,7 @@ jobs:
           echo "✅ Markdown linting passed"
 
       - name: Run spell checking
-        if: ${{ inputs.run_spell_check == 'true' }}
+        if: ${{ inputs.run_spell_check == true }}
         run: |
           if [ -f "${{ inputs.spell_check_config }}" ]; then
             cspell ${{ inputs.spell_check_paths }} --config ${{ inputs.spell_check_config }} || {
@@ -256,7 +255,7 @@ jobs:
           echo "✅ Spell checking passed"
 
       - name: Link check with Lychee
-        if: ${{ inputs.run_link_check == 'true' }}
+        if: ${{ inputs.run_link_check == true }}
         uses: lycheeverse/lychee-action@v2
         with:
           args: >-
