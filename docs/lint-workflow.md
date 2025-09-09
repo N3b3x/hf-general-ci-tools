@@ -8,13 +8,9 @@ parent: "🔄 Reusable Workflows"
 
 # C/C++ Lint Workflow Guide
 
-<div align="center">
-
 [← Previous: Documentation Index](index.md) | [Next: Link Check Workflow →](link-check-workflow.md)
 
 **🔍 C/C++ Code Quality Checks**
-
-</div>
 
 ---
 
@@ -200,11 +196,7 @@ HeaderFilterRegex: ''
 
 ---
 
-<div align="center">
-
 [← Previous: Documentation Index](index.md) | [Next: Link Check Workflow →](link-check-workflow.md)
 
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
-
-</div>
 

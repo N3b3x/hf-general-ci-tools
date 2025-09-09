@@ -7,15 +7,11 @@ nav_order: 1
 
 # hf-general-ci-tools
 
-<div align="center">
-
 **A collection of reusable GitHub Actions workflows for general CI/CD tasks**
 
 [![CI](https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/yamllint.yml/badge.svg)](https://github.com/n3b3x/hf-general-ci-tools/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/n3b3x/hf-general-ci-tools/blob/main/LICENSE)
 [![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg)](https://n3b3x.github.io/hf-general-ci-tools)
-
-</div>
 
 ---
 
@@ -171,10 +167,6 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 
 ---
 
-<div align="center">
-
 **Made with ❤️ by [N3b3x](https://github.com/n3b3x)**
 
 [GitHub](https://github.com/n3b3x/hf-general-ci-tools) • [Issues](https://github.com/n3b3x/hf-general-ci-tools/issues)
-
-</div>

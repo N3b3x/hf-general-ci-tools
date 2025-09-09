@@ -8,13 +8,9 @@ parent: "🔄 Reusable Workflows"
 
 # Static Analysis Workflow Guide
 
-<div align="center">
-
 [← Previous: Link Check Workflow](link-check-workflow.md) | [Next: Example Workflows →](example-workflows.md)
 
 **🔒 Cppcheck Security Analysis**
-
-</div>
 
 ---
 
@@ -154,11 +150,7 @@ Create a `.cppcheck-suppressions` file for false positives:
 
 ---
 
-<div align="center">
-
 [← Previous: Link Check Workflow](link-check-workflow.md) | [Next: Example Workflows →](example-workflows.md)
 
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
-
-</div>
 
