@@ -1,5 +1,5 @@
 ---
-layout: enhanced
+layout: mermaid
 title: "Mermaid Diagram Examples"
 description: "Examples of Mermaid diagrams for workflow visualization"
 nav_order: 6

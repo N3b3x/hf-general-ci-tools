@@ -5,58 +5,7 @@ layout: default
 <!-- Enhanced layout with additional features -->
 
 <div class="main-content">
-  <!-- Enhanced page header -->
-  <div class="page-header">
-    <h1 class="page-title">{{ page.title }}</h1>
-    {% if page.description %}
-      <p class="page-description">{{ page.description }}</p>
-    {% endif %}
-    {% if page.last_modified_at %}
-      <p class="page-meta">
-        <small>Last updated: {{ page.last_modified_at | date: "%B %d, %Y" }}</small>
-      </p>
-    {% endif %}
-  </div>
-
-  <!-- Enhanced table of contents -->
-  {% if page.toc %}
-    <div class="toc">
-      <h2>Table of Contents</h2>
-      {% include toc.html html=content %}
-    </div>
-  {% endif %}
-
-  <!-- Main content with enhanced features -->
-  <div class="content">
-    {{ content }}
-  </div>
-
-  <!-- Enhanced navigation -->
-  <div class="page-navigation">
-    {% if page.previous %}
-      <a href="{{ page.previous.url }}" class="nav-previous">
-        ← {{ page.previous.title }}
-      </a>
-    {% endif %}
-    
-    {% if page.next %}
-      <a href="{{ page.next.url }}" class="nav-next">
-        {{ page.next.title }} →
-      </a>
-    {% endif %}
-  </div>
-
-  <!-- Enhanced related pages -->
-  {% if page.related %}
-    <div class="related-pages">
-      <h3>Related Pages</h3>
-      <ul>
-        {% for related in page.related %}
-          <li><a href="{{ related.url }}">{{ related.title }}</a></li>
-        {% endfor %}
-      </ul>
-    </div>
-  {% endif %}
+  {{ content }}
 
   <!-- Enhanced feedback section -->
   <div class="page-feedback">
@@ -78,19 +27,23 @@ layout: default
     const feedbackButtons = document.querySelectorAll('.feedback-btn');
     const feedbackMessage = document.querySelector('.feedback-message');
     
-    feedbackButtons.forEach(button => {
-      button.addEventListener('click', function() {
-        const feedback = this.dataset.feedback;
-        
-        // Track feedback (could send to analytics)
-        console.log('Feedback received:', feedback);
-        
-        // Show thank you message
-        feedbackMessage.style.display = 'block';
-        
-        // Disable buttons
-        feedbackButtons.forEach(btn => btn.disabled = true);
+    if (feedbackButtons.length > 0) {
+      feedbackButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const feedback = this.dataset.feedback;
+          
+          // Track feedback (could send to analytics)
+          console.log('Feedback received:', feedback);
+          
+          // Show thank you message
+          if (feedbackMessage) {
+            feedbackMessage.style.display = 'block';
+          }
+          
+          // Disable buttons
+          feedbackButtons.forEach(btn => btn.disabled = true);
+        });
       });
-    });
+    }
   });
 </script>

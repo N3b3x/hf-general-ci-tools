@@ -19,7 +19,6 @@ plugins:
   - jekyll-remote-theme
   - jekyll-redirect-from
   - jekyll-optional-front-matter
-  - jekyll-mermaid
 
 # Markdown and syntax highlighting
 markdown: kramdown
@@ -67,15 +66,6 @@ breadcrumbs: true
 toc:
   min_level: 2
   max_level: 4
-# Enhanced UI features
-print:
-  enabled: true
-  print_title: true
-  print_author: true
-  print_date: true
-# Mobile enhancements
-mobile_nav: true
-mobile_nav_breakpoint: 768px
 
 # Callouts for better content presentation
 callouts:
@@ -171,22 +161,6 @@ social:
 # Analytics (uncomment and configure if needed)
 # ga_tracking: UA-XXXXXXXXX-X
 # ga_tracking_anonymize_ip: true
-
-# Mermaid diagram configuration
-mermaid:
-  version: "10.6.1"
-  theme: "dark"
-  themeVariables:
-    primaryColor: "#ff6b6b"
-    primaryTextColor: "#ffffff"
-    primaryBorderColor: "#ff6b6b"
-    lineColor: "#ffffff"
-    secondaryColor: "#4ecdc4"
-    tertiaryColor: "#45b7d1"
-    background: "#1a1a1a"
-    mainBkg: "#2d2d2d"
-    secondBkg: "#3d3d3d"
-    tertiaryBkg: "#4d4d4d"
 
 # Performance optimizations
 compress_html:
