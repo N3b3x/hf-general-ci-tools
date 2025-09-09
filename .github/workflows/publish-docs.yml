@@ -35,11 +35,11 @@ jobs:
 
       # Markdown linting
       run_markdown_lint: true
-      markdown_lint_paths: "docs/** **/*.md **/docs/**"
+      markdown_lint_paths: "**/*.md"
 
       # Spell checking
       run_spell_check: false
-      spell_check_paths: "docs/** **/*.md **/docs/**"
+      spell_check_paths: "**/*.md"
 
       # Deploy to GitHub Pages
       deploy_pages: true
