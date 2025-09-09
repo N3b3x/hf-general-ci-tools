@@ -6,8 +6,6 @@ nav_order: 1
 permalink: /
 ---
 
-<div align="center">
-
 # 🚀 hf-general-ci-tools
 
 **A comprehensive collection of reusable GitHub Actions workflows for modern CI/CD pipelines**
@@ -20,8 +18,6 @@ permalink: /
 [![YAML Lint](https://img.shields.io/badge/yamllint-passed-brightgreen.svg)](.github/workflows/yamllint.yml)
 
 *Streamline your development workflow with battle-tested, production-ready GitHub Actions*
-
-</div>
 
 ---
 
@@ -256,10 +252,6 @@ your-awesome-project/
 
 ---
 
-<div align="center">
-
 **⭐ Star this repository if you find it helpful!**
 
 [Report Bug](https://github.com/n3b3x/hf-general-ci-tools/issues) • [Request Feature](https://github.com/n3b3x/hf-general-ci-tools/issues) • [Contribute](CONTRIBUTING.md)
-
-</div>
