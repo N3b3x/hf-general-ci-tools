@@ -97,13 +97,6 @@ aux_links:
   "⭐ Star on GitHub":
     - "https://github.com/n3b3x/hf-general-ci-tools/stargazers"
 
-# External navigation links
-nav_external_links:
-  - title: "📚 GitHub Repository"
-    url: https://github.com/n3b3x/hf-general-ci-tools
-  - title: "🐛 Issues"
-    url: https://github.com/n3b3x/hf-general-ci-tools/issues
-
 # Footer customization
 footer_content: >
   Built with ❤️ using <a href='https://just-the-docs.github.io/just-the-docs/'>Just the Docs</a> •
@@ -123,6 +116,14 @@ just_the_docs:
       name: Documentation
       nav_exclude: false
       search_exclude: false
+
+  # Navigation configuration
+  nav_fold: true
+  nav_external_links:
+    - title: "📚 GitHub Repository"
+      url: https://github.com/n3b3x/hf-general-ci-tools
+    - title: "🐛 Issues"
+      url: https://github.com/n3b3x/hf-general-ci-tools/issues
 
 # Exclude files from processing
 exclude:

@@ -2,8 +2,8 @@
 layout: default
 title: "🔧 Jekyll Configuration Guide"
 description: "Complete guide to Jekyll configuration, CI optimization, and workflow examples"
-nav_order: 4
-parent: "📖 Examples & Guides"
+nav_order: 1
+parent: "Examples & Guides"
 ---
 
 # 🔧 Jekyll Configuration Guide

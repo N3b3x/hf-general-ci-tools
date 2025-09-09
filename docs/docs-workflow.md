@@ -3,7 +3,7 @@ layout: default
 title: "📚 Documentation Workflow"
 description: "Doxygen documentation generation and GitHub Pages deployment"
 nav_order: 3
-parent: "🔄 Reusable Workflows"
+parent: "Reusable Workflows"
 ---
 
 # Documentation Workflow Guide

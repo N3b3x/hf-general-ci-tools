@@ -1,8 +1,18 @@
+---
+layout: default
+title: "🚀 hf-general-ci-tools"
+description: "A comprehensive collection of reusable GitHub Actions workflows for modern CI/CD pipelines"
+nav_order: 1
+permalink: /
+---
+
 <div align="center">
 
 # 🚀 hf-general-ci-tools
 
 **A comprehensive collection of reusable GitHub Actions workflows for modern CI/CD pipelines**
+
+---
 
 [![CI](https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/yamllint.yml/badge.svg)](https://github.com/n3b3x/hf-general-ci-tools/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)

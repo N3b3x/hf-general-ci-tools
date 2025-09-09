@@ -1,8 +1,9 @@
 ---
 layout: default
-title: "hf-general-ci-tools"
-description: "Reusable GitHub Actions workflows for CI/CD"
-nav_order: 1
+title: "📖 Documentation"
+description: "Complete documentation for hf-general-ci-tools workflows"
+nav_order: 2
+permalink: /docs/
 ---
 
 # hf-general-ci-tools
