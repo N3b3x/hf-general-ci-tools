@@ -74,7 +74,7 @@ callouts:
     color: red
 
 # Visual enhancements
-color_scheme: auto  # Auto theme with toggle
+color_scheme: dark
 
 # Auxiliary links with better organization
 aux_links:
