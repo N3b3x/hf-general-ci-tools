@@ -17,7 +17,8 @@ parent: "🔄 Reusable Workflows"
 
 ## 📋 Overview
 
-The **Link Check Workflow** is a standalone reusable workflow that validates all documentation links in your repository. It ensures that all internal and external links are working correctly, preventing broken references in your documentation.
+The **Link Check Workflow** is a standalone reusable workflow that validates all documentation links in your repository.
+It ensures that all internal and external links are working correctly, preventing broken references in your documentation.
 
 ### **Key Features**
 
@@ -414,8 +415,8 @@ Broken links:
 ## 🔗 Related Documentation
 
 - [Documentation Workflow](docs-workflow.md) - Build and deploy documentation
-- [C/C++ Lint Workflow](lint-workflow.md) - Code quality checks
-- [Static Analysis Workflow](static-analysis-workflow.md) - Security analysis
+- [C/C++ Lint Workflow](c-cpp-lint-workflow.md) - Code quality checks
+- [Static Analysis Workflow](c-cpp-static-analysis-workflow.md) - Security analysis
 - [Example Workflows](example-workflows.md) - Complete workflow examples
 - [Main Documentation Index](index.md) - All workflow guides
 

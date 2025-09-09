@@ -1,0 +1,71 @@
+# Jekyll Development Configuration
+# This file contains development-specific settings for local testing
+# Usage: jekyll build --config _config.yml,_config_dev.yml
+
+# Development URL settings
+url: "http://localhost:4000"
+baseurl: ""
+
+# Development-specific settings
+incremental: true   # Enable incremental builds for faster development
+future: true        # Show future-dated posts in development
+drafts: true        # Show draft posts in development
+unpublished: true   # Show unpublished posts in development
+
+# Development-specific debugging
+verbose: true
+profile: true
+
+# Development-specific exclude patterns (less restrictive)
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .git
+  - .github
+  - README.md
+  - LICENSE
+  - "*.gem"
+  - "*.gemspec"
+  - .sass-cache
+  - .jekyll-cache
+  - .jekyll-metadata
+  - _config.production.yml
+
+# Development-specific include patterns
+include:
+  - _pages
+  - .htaccess
+  - robots.txt
+  - sitemap.xml
+  - _config.development.yml
+
+# Development-specific performance settings
+compress_html:
+  clippings: none
+  comments: none
+  endings: none
+  startings: []
+
+# Development-specific social links (local testing)
+social:
+  name: "hf-general-ci-tools (Development)"
+  links:
+    - "http://localhost:4000/hf-general-ci-tools"
+
+# Development-specific footer
+footer_content: "Development Build • Built with ❤️ using <a href='https://just-the-docs.github.io/just-the-docs/'>Just the Docs</a> • <a href='https://github.com/n3b3x/hf-general-ci-tools/blob/main/LICENSE'>MIT License</a> • <a href='https://github.com/n3b3x/hf-general-ci-tools'>View on GitHub</a>"
+
+# Development-specific SEO settings
+seo:
+  type: "Organization"
+  name: "hf-general-ci-tools (Development)"
+  description: "Development build of reusable GitHub Actions workflows for CI/CD tasks"
+  url: "http://localhost:4000/hf-general-ci-tools"
+  twitter:
+    card: "summary"
+    site: "@n3b3x"
+  og:
+    type: "website"
+    locale: "en_US"

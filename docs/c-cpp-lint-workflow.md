@@ -27,8 +27,8 @@ The C/C++ Lint workflow runs clang-format and clang-tidy using cpp-linter for co
 
 ## 🎯 Overview
 
-**Purpose**: C/C++ code quality enforcement using cpp-linter-action  
-**Key Features**: 
+**Purpose**: C/C++ code quality enforcement using cpp-linter-action
+**Key Features**:
 - clang-format for code style
 - clang-tidy for static analysis
 - PR annotations and comments
@@ -51,7 +51,7 @@ The C/C++ Lint workflow runs clang-format and clang-tidy using cpp-linter for co
 | `lines_changed_only` | boolean | ❌ | `false` | Only inspect lines that have changed in the pull request |
 | `step_summary` | boolean | ❌ | `true` | Add a summary of linting results to the workflow step summary |
 | `file_annotations` | boolean | ❌ | `true` | Display linting errors and warnings as file annotations in the GitHub UI |
-| `thread_comments` | boolean | ❌ | `false` | Post a single, collapsible thread comment in a pull request detailing all linting issues |
+| `thread_comments` | boolean | ❌ | `false` | Post a collapsible thread comment in pull requests with linting issues |
 
 ## 📤 Outputs
 
@@ -182,9 +182,9 @@ HeaderFilterRegex: ''
 
 ## 📚 Related Workflows
 
-- **[Static Analysis](static-analysis-workflow.md)** - Security analysis
+- **[Static Analysis](c-cpp-static-analysis-workflow.md)** - Security analysis
 - **[Documentation](docs-workflow.md)** - Documentation generation
-- **[Link Check](link-check-workflow.md)** - Documentation link validation
+- **[Link Check](docs-link-check-workflow.md)** - Documentation link validation
 
 ## 🔗 Related Resources
 
@@ -194,7 +194,7 @@ HeaderFilterRegex: ''
 
 ---
 
-[Next: Static Analysis Workflow →](static-analysis-workflow.md)
+[Next: Static Analysis Workflow →](c-cpp-static-analysis-workflow.md)
 
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
 

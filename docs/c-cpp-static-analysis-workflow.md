@@ -12,7 +12,7 @@ parent: "🔄 Reusable Workflows"
 
 ---
 
-The Static Analysis workflow runs cppcheck via Docker for comprehensive C/C++ code analysis with configurable strictness and artifact generation.
+The Static Analysis workflow runs cppcheck via Docker for comprehensive C/C++ code analysis with configurable strictness.
 
 ## 📋 Table of Contents
 
@@ -26,8 +26,8 @@ The Static Analysis workflow runs cppcheck via Docker for comprehensive C/C++ co
 
 ## 🎯 Overview
 
-**Purpose**: Security and quality analysis with cppcheck  
-**Key Features**: 
+**Purpose**: Security and quality analysis with cppcheck
+**Key Features**:
 - Docker-based cppcheck execution
 - XML and text output formats
 - Configurable strictness levels
@@ -136,9 +136,9 @@ Create a `.cppcheck-suppressions` file for false positives:
 
 ## 📚 Related Workflows
 
-- **[C/C++ Lint](lint-workflow.md)** - Code quality checks
+- **[C/C++ Lint](c-cpp-lint-workflow.md)** - Code quality checks
 - **[Documentation](docs-workflow.md)** - Documentation generation
-- **[Link Check](link-check-workflow.md)** - Documentation link validation
+- **[Link Check](docs-link-check-workflow.md)** - Documentation link validation
 
 ## 🔗 Related Resources
 
@@ -148,7 +148,7 @@ Create a `.cppcheck-suppressions` file for false positives:
 
 ---
 
-[← Previous: C/C++ Lint Workflow](lint-workflow.md) | [Next: Documentation Workflow →](docs-workflow.md)
+[← Previous: C/C++ Lint Workflow](c-cpp-lint-workflow.md) | [Next: Documentation Workflow →](docs-workflow.md)
 
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
 

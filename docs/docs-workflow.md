@@ -12,7 +12,8 @@ parent: "🔄 Reusable Workflows"
 
 ---
 
-The Documentation workflow builds Doxygen documentation and optionally deploys it to GitHub Pages with link checking and artifact management.
+The Documentation workflow builds Doxygen documentation and optionally deploys it to GitHub Pages
+with link checking and artifact management.
 
 ## 📋 Table of Contents
 
@@ -27,8 +28,8 @@ The Documentation workflow builds Doxygen documentation and optionally deploys i
 
 ## 🎯 Overview
 
-**Purpose**: Generate and deploy Doxygen documentation with optional Jekyll integration  
-**Key Features**: 
+**Purpose**: Generate and deploy Doxygen documentation with optional Jekyll integration
+**Key Features**:
 - Doxygen + Graphviz integration
 - Optional Jekyll static site generation
 - Advanced link checking with Lychee
@@ -155,7 +156,8 @@ EXTRACT_STATIC        = YES
 
 ### Link Checking with Lychee
 
-The workflow includes advanced link checking using Lychee, which provides comprehensive link validation for both internal and external links.
+The workflow includes advanced link checking using Lychee, which provides comprehensive link validation
+for both internal and external links.
 
 ```yaml
 run_link_check: true  # Enable link checking (default: true)
@@ -221,28 +223,19 @@ jekyll_destination: "_site"  # Build destination
 
 **Jekyll Configuration:**
 
-The workflow automatically creates a minimal `_config.yml` file if one doesn't exist. For custom configuration, create a `_config.yml` file in your repository root:
+The workflow automatically creates a minimal `_config.yml` file if one doesn't exist.
+For comprehensive Jekyll configuration, see the [Jekyll Guide](jekyll-guide.md).
 
+**Quick Setup:**
 ```yaml
-# Jekyll configuration
+# Basic Jekyll configuration
 title: "My C++ Project Documentation"
 description: "Comprehensive documentation for my C++ project"
 baseurl: ""  # Set by workflow automatically
 url: "https://yourusername.github.io"
-
-# Theme settings
 theme: minima
-
-# Build settings
 markdown: kramdown
 highlighter: rouge
-
-# Navigation
-navigation:
-  - title: "Home"
-    url: "/"
-  - title: "API Reference"
-    url: "/doxygen/html/"
 ```
 
 **Features:**
@@ -379,9 +372,9 @@ ls docs/doxygen/html/
 
 ## 📚 Related Workflows
 
-- **[C/C++ Lint](lint-workflow.md)** - Code quality checks
-- **[Static Analysis](static-analysis-workflow.md)** - Security analysis
-- **[Link Check](link-check-workflow.md)** - Documentation link validation
+- **[C/C++ Lint](c-cpp-lint-workflow.md)** - Code quality checks
+- **[Static Analysis](c-cpp-static-analysis-workflow.md)** - Security analysis
+- **[Link Check](docs-link-check-workflow.md)** - Documentation link validation
 
 ## 🔗 Related Resources
 
@@ -391,7 +384,7 @@ ls docs/doxygen/html/
 
 ---
 
-[← Previous: Static Analysis Workflow](static-analysis-workflow.md) | [Next: Link Check Workflow →](link-check-workflow.md)
+[← Previous: Static Analysis Workflow](c-cpp-static-analysis-workflow.md) | [Next: Link Check Workflow →](docs-link-check-workflow.md)
 
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
 

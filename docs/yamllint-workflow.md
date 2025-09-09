@@ -12,7 +12,8 @@ parent: "🔄 Reusable Workflows"
 
 ---
 
-The YAML Lint workflow validates YAML files in your repository using yamllint to ensure proper formatting and syntax. This is a **reusable workflow** that can be called from other repositories.
+The YAML Lint workflow validates YAML files in your repository using yamllint to ensure proper formatting and syntax.
+This is a **reusable workflow** that can be called from other repositories.
 
 ## 📋 Table of Contents
 
@@ -26,8 +27,8 @@ The YAML Lint workflow validates YAML files in your repository using yamllint to
 
 ## 🎯 Overview
 
-**Purpose**: YAML file validation and formatting  
-**Key Features**: 
+**Purpose**: YAML file validation and formatting
+**Key Features**:
 - yamllint integration
 - Configurable rules
 - Flexible path specification
@@ -150,8 +151,8 @@ Enable debug output by checking the workflow logs in GitHub Actions.
 
 ## 📚 Related Workflows
 
-- **[C/C++ Lint](lint-workflow.md)** - Code quality checks
-- **[Static Analysis](static-analysis-workflow.md)** - Security analysis
+- **[C/C++ Lint](c-cpp-lint-workflow.md)** - Code quality checks
+- **[Static Analysis](c-cpp-static-analysis-workflow.md)** - Security analysis
 - **[Documentation](docs-workflow.md)** - Documentation generation
 
 ## 🔗 Related Resources
@@ -162,6 +163,6 @@ Enable debug output by checking the workflow logs in GitHub Actions.
 
 ---
 
-[← Previous: Link Check Workflow](link-check-workflow.md)
+[← Previous: Link Check Workflow](docs-link-check-workflow.md)
 
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**

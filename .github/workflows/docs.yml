@@ -1,6 +1,6 @@
 ---
 # Documentation Workflow (Reusable)
-# 
+#
 # Optimized workflow with:
 # - Conditional installation of doxygen/graphviz only when Doxyfile exists
 # - Comprehensive caching for system dependencies, Node.js packages, and Ruby gems
@@ -11,26 +11,34 @@ name: Documentation Workflow (Reusable)
 on:
   workflow_call:
     inputs:
+      # =============================================================================
+      # Doxygen Configuration Section
+      # =============================================================================
       doxygen_config:
-        description: 'Path to Doxyfile (relative to repo root)'
+        description: >-
+          Path to Doxyfile (relative to repo root) - output directory auto-detected
+          from OUTPUT_DIRECTORY and HTML_OUTPUT settings
         required: false
         type: string
         default: 'Doxyfile'
-      output_dir:
-        description: 'Generated HTML directory'
+      doxygen_fail_on_warnings:
+        description: 'Treat Doxygen warnings as errors in CI'
         required: false
-        type: string
-        default: 'docs/doxygen/html'
+        type: boolean
+        default: false
+      # =============================================================================
+      # Docs Link Checking Configuration Section
+      # =============================================================================
       run_link_check:
         description: 'Run documentation link checker'
         required: false
         type: boolean
         default: true
       link_check_paths:
-        description: 'Comma-separated paths to check for broken links'
+        description: 'Space- or newline-separated paths to check for broken links'
         required: false
         type: string
-        default: 'docs/**,*.md,**/docs/**'
+        default: 'docs/** **/*.md **/docs/**'
       link_check_config:
         description: 'Path to lychee.toml config file (optional)'
         required: false
@@ -41,6 +49,9 @@ on:
         required: false
         type: boolean
         default: false
+      # =============================================================================
+      # Markdown Linting Configuration Section
+      # =============================================================================
       run_markdown_lint:
         description: 'Run markdown linting on documentation files'
         required: false
@@ -50,7 +61,10 @@ on:
         description: 'Glob patterns for markdown files to lint'
         required: false
         type: string
-        default: '**/*.md'
+        default: 'docs/** **/*.md **/docs/**'
+      # =============================================================================
+      # Spell Checking Configuration Section
+      # =============================================================================
       run_spell_check:
         description: 'Run spell checking on documentation files'
         required: false
@@ -66,31 +80,115 @@ on:
         required: false
         type: string
         default: '.cspell.json'
+      # =============================================================================
+      # Jekyll Configuration Section
+      # =============================================================================
+      jekyll_enabled:
+        description: 'Enable Jekyll static site generation for enhanced documentation presentation'
+        required: false
+        type: boolean
+        default: false
       deploy_pages:
         description: 'Deploy to GitHub Pages'
         required: false
         type: boolean
         default: true
-      jekyll_enabled:
-        description: 'Enable Jekyll static site generation'
-        required: false
-        type: boolean
-        default: false
       jekyll_config:
-        description: 'Path to Jekyll configuration file in jekyll_source directory'
+        description: 'Comma-separated list of Jekyll configuration files (e.g., "_config.yml,_config_prod.yml")'
         required: false
         type: string
         default: '_config.yml'
       jekyll_source:
-        description: 'Jekyll source directory'
+        description: 'Jekyll source directory containing your site files'
         required: false
         type: string
         default: 'docs'
       jekyll_destination:
-        description: 'Jekyll build destination'
+        description: 'Jekyll build destination directory for generated site'
         required: false
         type: string
         default: '_site'
+      jekyll_environment:
+        description: 'Jekyll environment (development, production, staging) - affects which config files are loaded'
+        required: false
+        type: string
+        default: 'production'
+      # =============================================================================
+      # CI-Recommended Jekyll Options (Top Priority)
+      # =============================================================================
+      jekyll_safe:
+        description: 'Run in safe mode (disables custom plugins, used by GitHub Pages) - CI Recommended'
+        required: false
+        type: boolean
+        default: true
+      jekyll_plugins_dir:
+        description: 'Comma-separated list of plugin directories (--plugins option)'
+        required: false
+        type: string
+        default: ''
+      jekyll_layouts_dir:
+        description: 'Layout directory (--layouts option)'
+        required: false
+        type: string
+        default: ''
+      jekyll_verbose:
+        description: 'Enable verbose output during Jekyll build - CI Recommended for debugging'
+        required: false
+        type: boolean
+        default: false
+      jekyll_strict_front_matter:
+        description: 'Cause build to fail if there is a YAML syntax error in front matter - CI Recommended'
+        required: false
+        type: boolean
+        default: true
+      jekyll_drafts:
+        description: 'Include draft posts in the build (useful for development)'
+        required: false
+        type: boolean
+        default: false
+      jekyll_future:
+        description: 'Include future-dated posts in the build'
+        required: false
+        type: boolean
+        default: false
+      jekyll_unpublished:
+        description: 'Include unpublished posts in the build'
+        required: false
+        type: boolean
+        default: false
+      jekyll_incremental:
+        description: 'Enable incremental builds for faster development (may cause issues in CI)'
+        required: false
+        type: boolean
+        default: false
+      jekyll_lsi:
+        description: 'Enable LSI (Latent Semantic Indexing) for related posts'
+        required: false
+        type: boolean
+        default: false
+      jekyll_limit_posts:
+        description: 'Limit the number of posts to parse and publish'
+        required: false
+        type: string
+        default: ''
+      # =============================================================================
+      # Non-CI Recommended Jekyll Options (Debug Only)
+      # =============================================================================
+      jekyll_profile:
+        description: 'Enable profiling output to show build performance (reduces build time)'
+        required: false
+        type: boolean
+        default: false
+      jekyll_quiet:
+        description: 'Suppress normal output during Jekyll build (reduces debugging info)'
+        required: false
+        type: boolean
+        default: false
+      jekyll_trace:
+        description: 'Show full backtrace when an error occurs (debug only)'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -130,44 +228,29 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /var/cache/apt
-          key: ${{ runner.os }}-apt-deps-${{ env.CACHE_VERSION }}-${{ hashFiles('**/Doxyfile') }}
+          key: ${{ runner.os }}-apt-deps-${{ env.CACHE_VERSION }}-${{ hashFiles(inputs.doxygen_config) }}
           restore-keys: |
             ${{ runner.os }}-apt-deps-${{ env.CACHE_VERSION }}-
             ${{ runner.os }}-apt-deps-
 
-      - name: Install system dependencies
+      - name: Install Doxygen (pinned version)
+        if: steps.doxygen-check.outputs.doxygen_needed == 'true'
+        uses: ssciwr/doxygen-install@v1
+        with:
+          version: '1.10.0'
+
+      - name: Install Graphviz
         if: steps.doxygen-check.outputs.doxygen_needed == 'true'
         run: |
           sudo apt-get update
-          sudo apt-get install -y doxygen graphviz
+          sudo apt-get install -y graphviz
 
-      - name: Cache Ruby gems
+      - name: Setup Ruby (bundler cache)
         if: ${{ inputs.jekyll_enabled == true }}
-        uses: actions/cache@v4
+        uses: ruby/setup-ruby@v1
         with:
-          path: |
-            ~/.gem
-            vendor/bundle
-          key: ${{ runner.os }}-ruby-gems-${{ env.CACHE_VERSION }}-${{ hashFiles('**/Gemfile', '**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-ruby-gems-${{ env.CACHE_VERSION }}-
-            ${{ runner.os }}-ruby-gems-
-
-      - name: Install Ruby and Jekyll
-        if: ${{ inputs.jekyll_enabled == true }}
-        run: |
-          echo "🔧 Installing Ruby and Jekyll..."
-          sudo apt-get update
-          sudo apt-get install -y ruby-full build-essential zlib1g-dev
-
-          # Install Jekyll and Bundler
-          sudo gem install jekyll bundler
-
-          # Verify installation
-          jekyll --version
-          bundle --version
-
-          echo "✅ Ruby and Jekyll installed successfully"
+          ruby-version: '3.2'
+          bundler-cache: true
 
       - name: Setup Node.js
         if: ${{ inputs.run_markdown_lint == true || inputs.run_spell_check == true || inputs.jekyll_enabled == true }}
@@ -179,7 +262,6 @@ jobs:
         if: ${{ inputs.jekyll_enabled == true }}
         run: |
           echo "📦 Installing Jekyll dependencies..."
-          
           # Check if a custom Gemfile exists
           if [ -f "Gemfile" ]; then
             echo "✅ Using existing custom Gemfile"
@@ -197,42 +279,14 @@ jobs:
 
           echo "✅ Jekyll dependencies installed successfully"
 
-      - name: Install Node.js tools
-        if: ${{ inputs.run_markdown_lint == true || inputs.run_spell_check == true }}
-        run: |
-          echo "📦 Installing Node.js tools..."
-          
-          if [ "${{ inputs.run_markdown_lint }}" == "true" ]; then
-            echo "Installing markdownlint..."
-            npm install -g markdownlint-cli
-            markdownlint --version
-            echo "✅ markdownlint installed successfully"
-          fi
-          
-          if [ "${{ inputs.run_spell_check }}" == "true" ]; then
-            echo "Installing cspell..."
-            npm install -g cspell
-            cspell --version
-            echo "✅ cspell installed successfully"
-          fi
-
-      - name: Generate Doxygen documentation
-        if: steps.doxygen-check.outputs.doxygen_needed == 'true'
-        run: |
-          doxygen ${{ inputs.doxygen_config }}
-          echo "✅ Doxygen documentation generated successfully"
-
-      - name: Build Jekyll site
+      - name: Validate Jekyll configuration
         if: ${{ inputs.jekyll_enabled == true }}
         run: |
+          echo "🔍 Validating Jekyll configuration..."
+
           JEKYLL_SOURCE="${{ inputs.jekyll_source }}"
           JEKYLL_CONFIG="${{ inputs.jekyll_config }}"
-          JEKYLL_DEST="${{ inputs.jekyll_destination }}"
-
-          echo "🔍 Debug: Jekyll configuration:"
-          echo "  Source: $JEKYLL_SOURCE"
-          echo "  Config: $JEKYLL_CONFIG"
-          echo "  Destination: $JEKYLL_DEST"
+          JEKYLL_ENV="${{ inputs.jekyll_environment }}"
 
           # Check if source directory exists
           if [ ! -d "$JEKYLL_SOURCE" ]; then
@@ -240,22 +294,213 @@ jobs:
             exit 1
           fi
 
-          # Check if _config.yml exists, create minimal one if missing
-          if [ ! -f "$JEKYLL_SOURCE/$JEKYLL_CONFIG" ]; then
-            echo "⚠️  Jekyll config not found, creating minimal _config.yml"
-            cat > "$JEKYLL_SOURCE/$JEKYLL_CONFIG" << 'EOF'
+          # Validate config files
+          IFS=',' read -ra CONFIG_FILES <<< "$JEKYLL_CONFIG"
+          for config_file in "${CONFIG_FILES[@]}"; do
+            if [ -f "$JEKYLL_SOURCE/$config_file" ]; then
+              echo "✅ Validating config file: $config_file"
+
+              # Basic YAML syntax validation
+              if command -v yq >/dev/null 2>&1; then
+                if yq eval '.' "$JEKYLL_SOURCE/$config_file" >/dev/null 2>&1; then
+                  echo "  ✅ YAML syntax is valid"
+                else
+                  echo "  ❌ YAML syntax error in $config_file"
+                  exit 1
+                fi
+              else
+                echo "  ⚠️  yq not available, skipping YAML validation"
+              fi
+
+              # Check for common configuration issues
+              if grep -q "baseurl.*/" "$JEKYLL_SOURCE/$config_file"; then
+                echo "  ⚠️  Warning: baseurl should not end with '/' in $config_file"
+              fi
+
+              if grep -q "url.*/" "$JEKYLL_SOURCE/$config_file"; then
+                echo "  ⚠️  Warning: url should not end with '/' in $config_file"
+              fi
+
+            else
+              echo "⚠️  Config file not found: $config_file"
+            fi
+          done
+
+          # Check for required directories
+          REQUIRED_DIRS=("_layouts" "_includes" "_sass")
+          for dir in "${REQUIRED_DIRS[@]}"; do
+            if [ -d "$JEKYLL_SOURCE/$dir" ]; then
+              echo "✅ Found directory: $dir"
+            else
+              echo "⚠️  Directory not found: $dir (may be using theme defaults)"
+            fi
+          done
+
+          # Check for common files
+          COMMON_FILES=("index.md" "index.html" "404.html" "robots.txt")
+          for file in "${COMMON_FILES[@]}"; do
+            if [ -f "$JEKYLL_SOURCE/$file" ]; then
+              echo "✅ Found file: $file"
+            else
+              echo "⚠️  File not found: $file (optional but recommended)"
+            fi
+          done
+
+          echo "✅ Jekyll configuration validation completed"
+
+      - name: Install Node.js tools
+        if: ${{ inputs.run_markdown_lint == true || inputs.run_spell_check == true }}
+        run: |
+          echo "📦 Installing Node.js tools..."
+          if [ "${{ inputs.run_markdown_lint }}" == "true" ]; then
+            echo "Installing markdownlint..."
+            npm install -g markdownlint-cli
+            markdownlint --version
+            echo "✅ markdownlint installed successfully"
+          fi
+          if [ "${{ inputs.run_spell_check }}" == "true" ]; then
+            echo "Installing cspell..."
+            npm install -g cspell
+            cspell --version
+            echo "✅ cspell installed successfully"
+          fi
+
+      - name: Resolve Doxygen HTML output directory
+        if: steps.doxygen-check.outputs.doxygen_needed == 'true'
+        id: doxy-out
+        run: |
+          DOXY="${{ inputs.doxygen_config }}"
+          # Function to extract values from Doxyfile (handles comments and whitespace)
+          getval(){ awk -F'=' '/^'"$1"'[[:space:]]*=/ \
+            {gsub(/#.*$/,"",$2); gsub(/^[[:space:]]+|[[:space:]]+$/,"",$2); print $2}' "$DOXY"; }
+
+          OUTDIR="$(getval OUTPUT_DIRECTORY)"
+          HTMLO="$(getval HTML_OUTPUT)"
+          [ -z "$HTMLO" ] && HTMLO="html"
+          if [ -n "$OUTDIR" ]; then
+            HTML_DIR="$OUTDIR/$HTMLO"
+          else
+            HTML_DIR="$HTMLO"
+          fi
+          echo "html_dir=$HTML_DIR" >> "$GITHUB_OUTPUT"
+          echo "Resolved Doxygen HTML dir: $HTML_DIR"
+
+      - name: Generate Doxygen documentation
+        if: steps.doxygen-check.outputs.doxygen_needed == 'true'
+        run: |
+          set -o pipefail
+          doxygen ${{ inputs.doxygen_config }} 2>&1 | tee doxygen.log
+          if [ "${{ inputs.doxygen_fail_on_warnings }}" = "true" ] && grep -q "[Ww]arning:" doxygen.log; then
+            echo "❌ Doxygen warnings found; failing per policy"
+            exit 1
+          fi
+          echo "✅ Doxygen documentation generated successfully"
+
+      - name: Stage Doxygen into Jekyll (if enabled)
+        if: ${{ inputs.jekyll_enabled == true && steps.doxygen-check.outputs.doxygen_needed == 'true' }}
+        run: |
+          SRC="${{ steps.doxy-out.outputs.html_dir }}"
+          DEST="${{ inputs.jekyll_source }}/api"
+          if [ -d "$SRC" ]; then
+            mkdir -p "$DEST"
+            if command -v rsync >/dev/null 2>&1; then
+              rsync -a --delete "$SRC"/ "$DEST"/
+            else
+              rm -rf "$DEST" && mkdir -p "$DEST"
+              cp -a "$SRC"/. "$DEST"/
+            fi
+            echo "✅ Staged Doxygen HTML into $DEST"
+          else
+            echo "⚠️  Skipping stage: no Doxygen HTML at $SRC"
+          fi
+
+      - name: Build Jekyll site
+        if: ${{ inputs.jekyll_enabled == true }}
+        run: |
+          # =============================================================================
+          # Jekyll Build Configuration
+          # =============================================================================
+          JEKYLL_SOURCE="${{ inputs.jekyll_source }}"
+          JEKYLL_CONFIG="${{ inputs.jekyll_config }}"
+          JEKYLL_DEST="${{ inputs.jekyll_destination }}"
+          JEKYLL_ENV="${{ inputs.jekyll_environment }}"
+
+          echo "🔍 Jekyll Build Configuration:"
+          echo "  Source: $JEKYLL_SOURCE"
+          echo "  Config: $JEKYLL_CONFIG"
+          echo "  Destination: $JEKYLL_DEST"
+          echo "  Environment: $JEKYLL_ENV"
+
+          # =============================================================================
+          # Pre-build Validation
+          # =============================================================================
+
+          # Check if source directory exists
+          if [ ! -d "$JEKYLL_SOURCE" ]; then
+            echo "❌ Jekyll source directory not found: $JEKYLL_SOURCE"
+            exit 1
+          fi
+
+          # Check if config files exist, create minimal one if missing
+          IFS=',' read -ra CONFIG_FILES <<< "$JEKYLL_CONFIG"
+          CONFIG_EXISTS=false
+          for config_file in "${CONFIG_FILES[@]}"; do
+            if [ -f "$JEKYLL_SOURCE/$config_file" ]; then
+              CONFIG_EXISTS=true
+              echo "✅ Found config file: $config_file"
+            else
+              echo "⚠️  Config file not found: $config_file"
+            fi
+          done
+
+          # Create minimal config if no config files exist
+          if [ "$CONFIG_EXISTS" = false ]; then
+            echo "⚠️  No Jekyll config files found, creating minimal _config.yml"
+            cat > "$JEKYLL_SOURCE/_config.yml" << 'EOF'
+          # Minimal Jekyll configuration
           title: "Project Documentation"
           description: "Documentation for the project"
+          baseurl: ""
+          url: ""
+
+          # Build settings
+          markdown: kramdown
+          highlighter: rouge
           theme: minima
+
+          # Plugins
           plugins:
             - jekyll-feed
             - jekyll-sitemap
             - jekyll-seo-tag
-          markdown: kramdown
-          highlighter: rouge
+
+          # Exclude files
+          exclude:
+            - Gemfile
+            - Gemfile.lock
+            - node_modules
+            - vendor
+            - .git
+            - .github
+            - README.md
+            - LICENSE
           EOF
             echo "✅ Created minimal _config.yml"
+            JEKYLL_CONFIG="_config.yml"
           fi
+
+          # =============================================================================
+          # Configuration File Processing
+          # =============================================================================
+
+          # Use the user-specified config files directly
+          # Users can specify any combination of config files they want
+          ENV_CONFIG_FILES="$JEKYLL_CONFIG"
+          echo "✅ Using configuration files: $ENV_CONFIG_FILES"
+
+          # =============================================================================
+          # Build Command Construction
+          # =============================================================================
 
           BASEURL="${{ steps.pages.outputs.base_path }}"
           echo "Using Pages base_path: $BASEURL"
@@ -263,17 +508,150 @@ jobs:
           # Create destination directory if it doesn't exist
           mkdir -p "$JEKYLL_DEST"
 
-          # Build Jekyll site using local bundle
-          bundle exec jekyll build \
-            --source "$JEKYLL_SOURCE" \
-            --destination "$JEKYLL_DEST" \
-            --baseurl "$BASEURL"
+          # Build Jekyll command with all options
+          JEKYLL_CMD="bundle exec jekyll build"
+          JEKYLL_CMD="$JEKYLL_CMD --source \"$JEKYLL_SOURCE\""
+          JEKYLL_CMD="$JEKYLL_CMD --destination \"$JEKYLL_DEST\""
+          JEKYLL_CMD="$JEKYLL_CMD --config \"$ENV_CONFIG_FILES\""
+          JEKYLL_CMD="$JEKYLL_CMD --baseurl \"$BASEURL\""
+
+          # =============================================================================
+          # CI-Optimized Default Values
+          # =============================================================================
+
+          # Apply CI-optimized defaults for settings not recommended for CI
+          # These ensure consistent, reliable builds in CI environments
+
+          # CI-optimized boolean flags (override user input if not explicitly set)
+          JEKYLL_DRAFTS="${{ inputs.jekyll_drafts }}"
+          JEKYLL_FUTURE="${{ inputs.jekyll_future }}"
+          JEKYLL_UNPUBLISHED="${{ inputs.jekyll_unpublished }}"
+          JEKYLL_INCREMENTAL="${{ inputs.jekyll_incremental }}"
+          JEKYLL_VERBOSE="${{ inputs.jekyll_verbose }}"
+          JEKYLL_PROFILE="${{ inputs.jekyll_profile }}"
+          JEKYLL_QUIET="${{ inputs.jekyll_quiet }}"
+          JEKYLL_TRACE="${{ inputs.jekyll_trace }}"
+          JEKYLL_SAFE="${{ inputs.jekyll_safe }}"
+          JEKYLL_FORCE_POLLING="${{ inputs.jekyll_force_polling }}"
+          JEKYLL_DISABLE_DISK_CACHE="${{ inputs.jekyll_disable_disk_cache }}"
+          JEKYLL_LSI="${{ inputs.jekyll_lsi }}"
+          JEKYLL_STRICT_FRONT_MATTER="${{ inputs.jekyll_strict_front_matter }}"
+
+          # Apply CI-optimized defaults for settings not recommended for CI
+          # These ensure clean, reliable builds in CI environments
+
+          # Disable incremental builds in CI (prevents stale content issues)
+          if [ "$JEKYLL_INCREMENTAL" = "" ] || [ "$JEKYLL_INCREMENTAL" = "null" ]; then
+            JEKYLL_INCREMENTAL="false"
+            echo "🔧 CI Optimization: Disabled incremental builds (not recommended for CI)"
+          fi
+
+
+          # Enable safe mode in CI by default (more secure and predictable)
+          if [ "$JEKYLL_SAFE" = "" ] || [ "$JEKYLL_SAFE" = "null" ]; then
+            JEKYLL_SAFE="true"
+            echo "🔧 CI Optimization: Enabled safe mode (recommended for CI)"
+          fi
+
+          # Enable verbose output in CI by default (better debugging)
+          if [ "$JEKYLL_VERBOSE" = "" ] || [ "$JEKYLL_VERBOSE" = "null" ]; then
+            JEKYLL_VERBOSE="true"
+            echo "🔧 CI Optimization: Enabled verbose output (better for CI debugging)"
+          fi
+
+          # Disable profile by default in CI (reduces build time unless needed)
+          if [ "$JEKYLL_PROFILE" = "" ] || [ "$JEKYLL_PROFILE" = "null" ]; then
+            JEKYLL_PROFILE="false"
+            echo "🔧 CI Optimization: Disabled profiling (reduces build time)"
+          fi
+
+          # Disable drafts by default in CI (focus on finalized content)
+          if [ "$JEKYLL_DRAFTS" = "" ] || [ "$JEKYLL_DRAFTS" = "null" ]; then
+            JEKYLL_DRAFTS="false"
+            echo "🔧 CI Optimization: Disabled drafts (focus on finalized content)"
+          fi
+
+          # Disable future posts by default in CI (prevent publishing future content)
+          if [ "$JEKYLL_FUTURE" = "" ] || [ "$JEKYLL_FUTURE" = "null" ]; then
+            JEKYLL_FUTURE="false"
+            echo "🔧 CI Optimization: Disabled future posts (prevent future content publishing)"
+          fi
+
+          # Disable unpublished posts by default in CI (focus on published content)
+          if [ "$JEKYLL_UNPUBLISHED" = "" ] || [ "$JEKYLL_UNPUBLISHED" = "null" ]; then
+            JEKYLL_UNPUBLISHED="false"
+            echo "🔧 CI Optimization: Disabled unpublished posts (focus on published content)"
+          fi
+
+          # Disable LSI by default in CI (resource-intensive, not needed for CI)
+          if [ "$JEKYLL_LSI" = "" ] || [ "$JEKYLL_LSI" = "null" ]; then
+            JEKYLL_LSI="false"
+            echo "🔧 CI Optimization: Disabled LSI (resource-intensive, not needed for CI)"
+          fi
+
+          # Enable strict front matter by default in CI (ensure content integrity)
+          if [ "$JEKYLL_STRICT_FRONT_MATTER" = "" ] || [ "$JEKYLL_STRICT_FRONT_MATTER" = "null" ]; then
+            JEKYLL_STRICT_FRONT_MATTER="true"
+            echo "🔧 CI Optimization: Enabled strict front matter (ensure content integrity)"
+          fi
+
+          # =============================================================================
+          # Build Command Construction with CI-Optimized Values
+          # =============================================================================
+
+          # Add boolean flags with CI-optimized values
+          [ "$JEKYLL_DRAFTS" = "true" ] && JEKYLL_CMD="$JEKYLL_CMD --drafts"
+          [ "$JEKYLL_FUTURE" = "true" ] && JEKYLL_CMD="$JEKYLL_CMD --future"
+          [ "$JEKYLL_UNPUBLISHED" = "true" ] && JEKYLL_CMD="$JEKYLL_CMD --unpublished"
+          [ "$JEKYLL_INCREMENTAL" = "true" ] && JEKYLL_CMD="$JEKYLL_CMD --incremental"
+          [ "$JEKYLL_VERBOSE" = "true" ] && JEKYLL_CMD="$JEKYLL_CMD --verbose"
+          [ "$JEKYLL_PROFILE" = "true" ] && JEKYLL_CMD="$JEKYLL_CMD --profile"
+          [ "$JEKYLL_QUIET" = "true" ] && JEKYLL_CMD="$JEKYLL_CMD --quiet"
+          [ "$JEKYLL_TRACE" = "true" ] && JEKYLL_CMD="$JEKYLL_CMD --trace"
+            [ "$JEKYLL_SAFE" = "true" ] && JEKYLL_CMD="$JEKYLL_CMD --safe"
+            [ "$JEKYLL_LSI" = "true" ] && JEKYLL_CMD="$JEKYLL_CMD --lsi"
+          [ "$JEKYLL_STRICT_FRONT_MATTER" = "true" ] && JEKYLL_CMD="$JEKYLL_CMD --strict_front_matter"
+
+          # Add valid Jekyll command-line options only
+          [ -n "${{ inputs.jekyll_plugins_dir }}" ] && \
+            JEKYLL_CMD="$JEKYLL_CMD --plugins \"${{ inputs.jekyll_plugins_dir }}\""
+          [ -n "${{ inputs.jekyll_layouts_dir }}" ] && \
+            JEKYLL_CMD="$JEKYLL_CMD --layouts \"${{ inputs.jekyll_layouts_dir }}\""
+          [ -n "${{ inputs.jekyll_limit_posts }}" ] && \
+            JEKYLL_CMD="$JEKYLL_CMD --limit_posts \"${{ inputs.jekyll_limit_posts }}\""
+
+          # =============================================================================
+          # Execute Jekyll Build
+          # =============================================================================
+
+          echo "🚀 Executing Jekyll build command:"
+          echo "$JEKYLL_CMD"
+          echo ""
+
+          # Set Jekyll environment
+          export JEKYLL_ENV="$JEKYLL_ENV"
+
+          # Execute the build command
+          eval $JEKYLL_CMD
+
+          # =============================================================================
+          # Post-build Validation
+          # =============================================================================
 
           # Verify build output
           if [ -d "$JEKYLL_DEST" ] && [ "$(ls -A "$JEKYLL_DEST")" ]; then
             echo "✅ Jekyll site built successfully"
             echo "📁 Build output contents:"
             ls -la "$JEKYLL_DEST"
+
+            # Show build statistics
+            echo ""
+            echo "📊 Build Statistics:"
+            echo "  Total files: $(find "$JEKYLL_DEST" -type f | wc -l)"
+            echo "  Total size: $(du -sh "$JEKYLL_DEST" | cut -f1)"
+            echo "  HTML files: $(find "$JEKYLL_DEST" -name "*.html" | wc -l)"
+            echo "  CSS files: $(find "$JEKYLL_DEST" -name "*.css" | wc -l)"
+            echo "  JS files: $(find "$JEKYLL_DEST" -name "*.js" | wc -l)"
           else
             echo "❌ Jekyll build failed - no output directory or empty directory"
             exit 1
@@ -292,14 +670,18 @@ jobs:
         if: ${{ inputs.run_spell_check == true }}
         run: |
           echo "🔍 Running spell check on: ${{ inputs.spell_check_paths }}"
-          
-          # Check if files exist before running cspell
-          if ! find . -path "./${{ inputs.spell_check_paths }}" -type f | grep -q .; then
+          # Check if files exist before running cspell (handle multiple globs)
+          found_any=false
+          # Split on spaces and newlines
+          for pat in ${{ inputs.spell_check_paths }}; do
+            matches=$(ls $pat 2>/dev/null | wc -l || true)
+            if [ "$matches" -gt 0 ]; then found_any=true; break; fi
+          done
+          if [ "$found_any" != "true" ]; then
             echo "⚠️  No files found matching pattern: ${{ inputs.spell_check_paths }}"
             echo "✅ Spell checking skipped (no files to check)"
             exit 0
           fi
-          
           # Run cspell and capture output
           if [ -f "${{ inputs.spell_check_config }}" ]; then
             echo "📝 Using config file: ${{ inputs.spell_check_config }}"
@@ -310,10 +692,8 @@ jobs:
             cspell_output=$(cspell ${{ inputs.spell_check_paths }} 2>&1)
             cspell_exit_code=$?
           fi
-          
           # Display cspell output
           echo "$cspell_output"
-          
           # Check if cspell found any spelling issues
           if echo "$cspell_output" | grep -q "Issues found: [1-9]"; then
             echo "❌ Spell checking failed - spelling issues found"
@@ -332,7 +712,7 @@ jobs:
           args: >-
             ${{ inputs.link_check_config != '' && format('--config {0}', inputs.link_check_config) || '' }}
             --no-progress
-            ${{ inputs.verbose == 'true' && '--verbose' || '' }}
+            ${{ inputs.verbose && '--verbose' || '' }}
             --format detailed
             --timeout 10
             --exclude-all-private
@@ -344,7 +724,6 @@ jobs:
           echo "🔍 Debug: Checking for documentation artifacts..."
           echo "Jekyll enabled: ${{ inputs.jekyll_enabled }}"
           echo "Jekyll destination: ${{ inputs.jekyll_destination }}"
-          echo "Doxygen output dir: ${{ inputs.output_dir }}"
           echo "Doxygen needed: ${{ steps.doxygen-check.outputs.doxygen_needed }}"
 
           # Check what directories exist
@@ -367,13 +746,15 @@ jobs:
           # Check for Doxygen output (if Jekyll not available or not enabled)
           if [ -z "$DEPLOY_PATH" ] && [ "${{ steps.doxygen-check.outputs.doxygen_needed }}" == "true" ]; then
             echo "🔍 Checking Doxygen build output..."
-            if [ -d "${{ inputs.output_dir }}" ]; then
-              echo "✅ Doxygen build output found: ${{ inputs.output_dir }}"
+            echo "Doxygen output dir (auto-detected): ${{ steps.doxy-out.outputs.html_dir }}"
+
+            if [ -d "${{ steps.doxy-out.outputs.html_dir }}" ]; then
+              echo "✅ Doxygen build output found: ${{ steps.doxy-out.outputs.html_dir }}"
               echo "📁 Doxygen output contents:"
-              ls -la "${{ inputs.output_dir }}"
-              DEPLOY_PATH="${{ inputs.output_dir }}"
+              ls -la "${{ steps.doxy-out.outputs.html_dir }}"
+              DEPLOY_PATH="${{ steps.doxy-out.outputs.html_dir }}"
             else
-              echo "❌ Doxygen build output not found: ${{ inputs.output_dir }}"
+              echo "❌ Doxygen build output not found: ${{ steps.doxy-out.outputs.html_dir }}"
             fi
           fi
 
@@ -407,6 +788,14 @@ jobs:
           fi
 
           echo "✅ Using deployment path: $DEPLOY_PATH"
+
+          # Create .nojekyll file for Doxygen-only deployments
+          if [ "${{ inputs.jekyll_enabled }}" != "true" ]; then
+            echo "📝 Creating .nojekyll file for Doxygen-only deployment"
+            touch "$DEPLOY_PATH/.nojekyll"
+            echo "✅ Created .nojekyll file to bypass Jekyll processing"
+          fi
+
           echo "DEPLOY_PATH=$DEPLOY_PATH" >> $GITHUB_ENV
 
       - name: Upload documentation artifacts
@@ -423,8 +812,9 @@ jobs:
           echo "  event_name: ${{ github.event_name }}"
           echo "  ref: ${{ github.ref }}"
           echo "  is_main_branch: ${{ github.ref == 'refs/heads/main' }}"
-          
-          if [ "${{ inputs.deploy_pages }}" == "true" ] && [ "${{ github.event_name }}" == "push" ] && [ "${{ github.ref }}" == "refs/heads/main" ]; then
+          if [ "${{ inputs.deploy_pages }}" == "true" ] && \
+             [ "${{ github.event_name }}" == "push" ] && \
+             [ "${{ github.ref }}" == "refs/heads/main" ]; then
             echo "✅ All conditions met - Pages deployment will proceed"
           else
             echo "⚠️  Pages deployment will be skipped because:"

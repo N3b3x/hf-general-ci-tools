@@ -17,10 +17,10 @@ nav_order: 1
 
 | Workflow | Description | Quick Start |
 |----------|-------------|-------------|
-| **[C/C++ Lint](lint-workflow.md)** | Code quality checks using clang-format and clang-tidy | [→ Lint Guide](lint-workflow.md) |
-| **[Static Analysis](static-analysis-workflow.md)** | Security analysis using cppcheck | [→ Static Analysis Guide](static-analysis-workflow.md) |
+| **[C/C++ Lint](c-cpp-lint-workflow.md)** | Code quality checks using clang-format and clang-tidy | [→ Lint Guide](c-cpp-lint-workflow.md) |
+| **[Static Analysis](c-cpp-static-analysis-workflow.md)** | Security analysis using cppcheck | [→ Static Analysis Guide](c-cpp-static-analysis-workflow.md) |
 | **[Documentation](docs-workflow.md)** | Doxygen documentation generation and GitHub Pages deployment | [→ Docs Guide](docs-workflow.md) |
-| **[Link Check](link-check-workflow.md)** | Documentation link validation | [→ Link Check Guide](link-check-workflow.md) |
+| **[Link Check](docs-link-check-workflow.md)** | Documentation link validation using Lychee | [→ Link Check Guide](docs-link-check-workflow.md) |
 | **[YAML Lint](yamllint-workflow.md)** | YAML file validation and formatting | [→ YAML Lint Guide](yamllint-workflow.md) |
 
 ## 🏠 Repository-Specific Workflows
@@ -30,20 +30,19 @@ nav_order: 1
 | Workflow | Purpose | Trigger |
 |----------|---------|---------|
 | **[Publish Documentation](https://github.com/n3b3x/hf-general-ci-tools/blob/main/.github/workflows/publish-docs.yml)** | Builds and deploys this repo's documentation site | Push to main, PRs |
-| **[YAML Lint](https://github.com/n3b3x/hf-general-ci-tools/blob/main/.github/workflows/yamllint.yml)** | Validates YAML syntax in this repository (uses reusable workflow) | Push, PRs |
+| **[YAML Lint](https://github.com/n3b3x/hf-general-ci-tools/blob/main/.github/workflows/yamllint.yml)** | Validates YAML syntax in this repository | Push, PRs |
 
 ## 📚 Documentation
 
-Comprehensive documentation is available for each workflow:
+Each workflow has comprehensive documentation with usage examples and configuration options:
 
-- **[Documentation Index](index.md)** - This page
-- **[C/C++ Lint Workflow](lint-workflow.md)** - Code quality checks
-- **[Static Analysis Workflow](static-analysis-workflow.md)** - Security analysis
-- **[Documentation Workflow](docs-workflow.md)** - Documentation generation
-- **[Link Check Workflow](link-check-workflow.md)** - Link validation
-- **[YAML Lint Workflow](yamllint-workflow.md)** - YAML validation
-- **[Example Workflows](example-workflows.md)** - Real-world usage examples
-- **[Configuration Examples](configuration-examples.md)** - Configuration templates
+- **[C/C++ Lint Workflow](c-cpp-lint-workflow.md)** - Code quality checks using clang-format and clang-tidy
+- **[Static Analysis Workflow](c-cpp-static-analysis-workflow.md)** - Security analysis using cppcheck
+- **[Documentation Workflow](docs-workflow.md)** - Doxygen documentation generation and GitHub Pages deployment
+- **[Link Check Workflow](docs-link-check-workflow.md)** - Documentation link validation using Lychee
+- **[YAML Lint Workflow](yamllint-workflow.md)** - YAML file validation and formatting
+- **[Jekyll Guide](jekyll-guide.md)** - Complete Jekyll configuration and examples
+- **[Example Workflows](example-workflows.md)** - Real-world usage examples for consumer repositories
 
 ## 🎯 Quick Start
 
@@ -65,7 +64,8 @@ uses: n3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
 uses: n3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1
 ```
 
-> **Note:** These are **reusable workflows** designed to be called from other repositories. The repository-specific workflows (like `publish-docs.yml`) are only used internally by this repository.
+> **Note:** These are **reusable workflows** designed to be called from other repositories.
+> The repository-specific workflows (like `publish-docs.yml`) are only used internally by this repository.
 
 ### 2. Configure Your Workflow
 
@@ -149,11 +149,13 @@ jobs:
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please see our [Contributing Guidelines](https://github.com/n3b3x/hf-general-ci-tools/blob/main/CONTRIBUTING.md) for details.
+Contributions are welcome! Please see our [Contributing Guidelines](https://github.com/n3b3x/hf-general-ci-tools/blob/main/CONTRIBUTING.md)
+for details.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/n3b3x/hf-general-ci-tools/blob/main/LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/n3b3x/hf-general-ci-tools/blob/main/LICENSE)
+file for details.
 
 ## 🙏 Acknowledgments
 
@@ -163,7 +165,7 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 
 ---
 
-[Next: Reusable Workflows →](reusable-workflows.md)
+[Next: Example Workflows →](example-workflows.md)
 
 **Made with ❤️ by [N3b3x](https://github.com/n3b3x)**
 

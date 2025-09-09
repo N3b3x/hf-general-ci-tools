@@ -1,6 +1,9 @@
+---
 # Jekyll configuration for hf-general-ci-tools documentation
 title: "hf-general-ci-tools"
-description: "A comprehensive collection of reusable GitHub Actions workflows for general CI/CD tasks, including C/C++ linting, static analysis, documentation generation, and link checking"
+description: >
+  A comprehensive collection of reusable GitHub Actions workflows for general CI/CD tasks,
+  including C/C++ linting, static analysis, documentation generation, and link checking
 baseurl: "/hf-general-ci-tools"  # GitHub Pages subpath
 url: "https://n3b3x.github.io"
 
@@ -9,6 +12,10 @@ author:
   name: "N3b3x"
   email: "n3b3x@example.com"
   url: "https://github.com/n3b3x"
+
+# Directory configuration
+includes_dir: docs/_includes
+layouts_dir: docs/_layouts
 
 # Theme and plugins
 remote_theme: just-the-docs/just-the-docs
@@ -98,7 +105,10 @@ nav_external_links:
     url: https://github.com/n3b3x/hf-general-ci-tools/issues
 
 # Footer customization
-footer_content: "Built with ❤️ using <a href='https://just-the-docs.github.io/just-the-docs/'>Just the Docs</a> • <a href='https://github.com/n3b3x/hf-general-ci-tools/blob/main/LICENSE'>MIT License</a> • <a href='https://github.com/n3b3x/hf-general-ci-tools'>View on GitHub</a>"
+footer_content: >
+  Built with ❤️ using <a href='https://just-the-docs.github.io/just-the-docs/'>Just the Docs</a> •
+  <a href='https://github.com/n3b3x/hf-general-ci-tools/blob/main/LICENSE'>MIT License</a> •
+  <a href='https://github.com/n3b3x/hf-general-ci-tools'>View on GitHub</a>
 
 # Collections for better organization
 collections:
@@ -138,7 +148,9 @@ include:
 seo:
   type: "Organization"
   name: "hf-general-ci-tools"
-  description: "Reusable GitHub Actions workflows for CI/CD tasks including C/C++ linting, static analysis, documentation generation, and link checking"
+  description: >
+    Reusable GitHub Actions workflows for CI/CD tasks including C/C++ linting,
+    static analysis, documentation generation, and link checking
   url: "https://n3b3x.github.io/hf-general-ci-tools"
   twitter:
     card: "summary_large_image"
