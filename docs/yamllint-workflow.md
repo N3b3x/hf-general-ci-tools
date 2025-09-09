@@ -8,8 +8,6 @@ parent: "🔄 Reusable Workflows"
 
 # YAML Lint Workflow Guide
 
-[← Previous: Link Check Workflow](link-check-workflow.md)
-
 **📝 YAML File Validation**
 
 ---

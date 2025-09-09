@@ -8,8 +8,6 @@ parent: "🔄 Reusable Workflows"
 
 # 🔗 Documentation Link Check Workflow Guide
 
-[← Previous: Documentation Workflow](docs-workflow.md) | [Next: YAML Lint Workflow →](yamllint-workflow.md)
-
 **🔍 Automated Documentation Link Validation for General Projects**
 
 *Standalone workflow for checking documentation links and ensuring all references are valid*

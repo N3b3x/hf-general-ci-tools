@@ -8,8 +8,6 @@ parent: "📖 Examples & Guides"
 
 # Mermaid Diagram Examples
 
-[← Previous: Configuration Examples](configuration-examples.md) | [Next: Layout Examples →](minimal-example.md)
-
 This page demonstrates how to use Mermaid diagrams in your documentation to visualize workflows, processes, and relationships.
 
 ## Workflow Diagrams

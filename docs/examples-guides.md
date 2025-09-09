@@ -8,8 +8,6 @@ has_children: true
 
 # 📖 Examples & Guides
 
-[← Previous: Reusable Workflows](reusable-workflows.md) | [Next: Repository Info →](repository-info.md)
-
 This section contains practical examples, guides, and configuration templates to help you get the most out of hf-general-ci-tools.
 
 ## Available Resources

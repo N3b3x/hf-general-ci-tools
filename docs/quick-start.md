@@ -8,8 +8,6 @@ parent: "📖 Examples & Guides"
 
 # 🚀 Quick Start Guide
 
-[← Previous: Example Workflows](example-workflows.md) | [Next: Configuration Examples →](configuration-examples.md)
-
 Welcome to **hf-general-ci-tools**! This guide will help you get up and running with our reusable GitHub Actions workflows in just a few minutes.
 
 ## 📋 Prerequisites

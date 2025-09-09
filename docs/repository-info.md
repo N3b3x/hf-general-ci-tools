@@ -7,8 +7,6 @@ nav_order: 4
 
 # ℹ️ Repository Info
 
-[← Previous: Examples & Guides](examples-guides.md) | [Next: C/C++ Lint Workflow →](lint-workflow.md)
-
 Information about the hf-general-ci-tools repository, including how to contribute, licensing, and support resources.
 
 ## Repository Links

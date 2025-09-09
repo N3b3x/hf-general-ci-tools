@@ -8,8 +8,6 @@ parent: "🔄 Reusable Workflows"
 
 # C/C++ Lint Workflow Guide
 
-[Next: Static Analysis Workflow →](static-analysis-workflow.md)
-
 **🔍 C/C++ Code Quality Checks**
 
 ---

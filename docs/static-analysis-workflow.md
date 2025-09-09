@@ -8,8 +8,6 @@ parent: "🔄 Reusable Workflows"
 
 # Static Analysis Workflow Guide
 
-[← Previous: C/C++ Lint Workflow](lint-workflow.md) | [Next: Documentation Workflow →](docs-workflow.md)
-
 **🔒 Cppcheck Security Analysis**
 
 ---

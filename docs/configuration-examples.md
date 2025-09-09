@@ -8,8 +8,6 @@ parent: "📖 Examples & Guides"
 
 # 📁 Configuration Examples
 
-[← Previous: Quick Start Guide](quick-start.md) | [Next: Mermaid Examples →](mermaid-examples.md)
-
 This directory contains example configuration files for the enhanced documentation workflows.
 
 ## 📋 Available Examples
@@ -26,7 +24,7 @@ To enable Jekyll static site generation:
 
 ```bash
 # Copy configuration files
-cp docs/_config.yml.example _config.yml
+cp docs/_config.yml.example docs/_config.yml
 
 # Customize the configuration
 # Edit _config.yml with your project details

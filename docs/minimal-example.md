@@ -8,8 +8,6 @@ parent: "📖 Examples & Guides"
 
 # Minimal Layout Example
 
-[← Previous: Mermaid Examples](mermaid-examples.md)
-
 This page uses the **minimal layout** which removes the sidebar navigation for a clean, focused reading experience.
 
 ## When to Use Minimal Layout

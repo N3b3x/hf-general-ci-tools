@@ -8,8 +8,6 @@ parent: "📖 Examples & Guides"
 
 # 🚀 Example Workflows for Consumer Repositories
 
-[Next: Quick Start Guide →](quick-start.md)
-
 **📋 Complete Workflow Examples for General CI Projects**
 
 *Ready-to-use GitHub Actions workflows that leverage all CI tools in parallel*

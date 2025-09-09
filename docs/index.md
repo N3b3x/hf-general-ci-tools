@@ -7,8 +7,6 @@ nav_order: 1
 
 # hf-general-ci-tools
 
-[Next: Reusable Workflows →](reusable-workflows.md)
-
 **A collection of reusable GitHub Actions workflows for general CI/CD tasks**
 
 ---
