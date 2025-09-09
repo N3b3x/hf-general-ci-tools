@@ -132,8 +132,6 @@ exclude:
   - vendor
   - .git
   - .github
-  - README.md
-  - LICENSE
   - "*.gem"
   - "*.gemspec"
   - .sass-cache
@@ -143,6 +141,8 @@ exclude:
 # Include files that are normally excluded
 include:
   - _pages
+  - README.md
+  - LICENSE
 
 # Enhanced SEO settings
 seo:

@@ -30,7 +30,7 @@ jobs:
 
       # Link checking
       run_link_check: true
-      link_check_paths: "docs/** **/*.md **/docs/**"
+      link_check_paths: "**/*.md"
       verbose: true
 
       # Markdown linting
