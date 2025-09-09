@@ -13,11 +13,11 @@ This section contains all the reusable GitHub Actions workflows available in thi
 
 ## Available Workflows
 
-- **[C/C++ Lint Workflow](c-cpp-lint-workflow.html)** - Code quality checks using clang-format and clang-tidy
-- **[Static Analysis Workflow](c-cpp-static-analysis-workflow.html)** - Security analysis using cppcheck
-- **[Documentation Workflow](docs-workflow.html)** - Doxygen documentation generation and GitHub Pages deployment
-- **[Link Check Workflow](docs-link-check-workflow.html)** - Documentation link validation using Lychee
-- **[YAML Lint Workflow](yamllint-workflow.html)** - YAML file validation and formatting
+- **[C/C++ Lint Workflow](c-cpp-lint-workflow/)** - Code quality checks using clang-format and clang-tidy
+- **[Static Analysis Workflow](c-cpp-static-analysis-workflow/)** - Security analysis using cppcheck
+- **[Documentation Workflow](docs-workflow/)** - Doxygen documentation generation and GitHub Pages deployment
+- **[Link Check Workflow](docs-link-check-workflow/)** - Documentation link validation using Lychee
+- **[YAML Lint Workflow](yamllint-workflow/)** - YAML file validation and formatting
 
 ## Usage
 
