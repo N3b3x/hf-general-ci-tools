@@ -9,10 +9,6 @@ nav_order: 1
 
 **A collection of reusable GitHub Actions workflows for general CI/CD tasks**
 
-[![CI](https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/yamllint.yml/badge.svg)](https://github.com/n3b3x/hf-general-ci-tools/actions)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/n3b3x/hf-general-ci-tools/blob/main/LICENSE)
-[![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg)](https://n3b3x.github.io/hf-general-ci-tools)
-
 ---
 
 ## 🔄 Reusable Workflows
