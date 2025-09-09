@@ -12,10 +12,10 @@ permalink: /
 
 ---
 
-[![CI](https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/yamllint.yml/badge.svg)](https://github.com/n3b3x/hf-general-ci-tools/actions)
+[![Publish Docs](https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/publish-docs.yml/badge.svg)](https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/publish-docs.yml)
+[![YAML Lint](https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/yamllint.yml/badge.svg)](https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/yamllint.yml)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg)](https://n3b3x.github.io/hf-general-ci-tools)
-[![YAML Lint](https://img.shields.io/badge/yamllint-passed-brightgreen.svg)](.github/workflows/yamllint.yml)
 
 *Streamline your development workflow with battle-tested, production-ready GitHub Actions*
 
@@ -66,12 +66,8 @@ This repository provides a curated set of **reusable GitHub Actions workflows** 
 
 ## 📚 Documentation
 
-<div align="center">
-
 **🌐 [Live Documentation Site](https://n3b3x.github.io/hf-general-ci-tools/)**  
 *Published documentation with enhanced navigation and search*
-
-</div>
 
 ### 📖 Available Guides
 

@@ -125,6 +125,9 @@ just_the_docs:
     - title: "🐛 Issues"
       url: https://github.com/n3b3x/hf-general-ci-tools/issues
 
+  # Custom head content
+  head_custom: _includes/head_custom.html
+
 # Exclude files from processing
 exclude:
   - Gemfile
@@ -144,6 +147,7 @@ include:
   - _pages
   - README.md
   - LICENSE
+  - assets/
 
 # Enhanced SEO settings
 seo:
