@@ -19,6 +19,7 @@ plugins:
   - jekyll-remote-theme
   - jekyll-redirect-from
   - jekyll-optional-front-matter
+  - jekyll-mermaid
 
 # Markdown and syntax highlighting
 markdown: kramdown
@@ -33,6 +34,11 @@ kramdown:
     block:
       line_numbers: true
       start_line: 1
+  # Enable Mermaid diagrams
+  math_engine: mathjax
+  math_engine_opts:
+    preview: true
+    preview_as_code: true
 
 # Site settings
 timezone: UTC
@@ -49,6 +55,10 @@ search:
   tokenizer_separator: /[\s/]+/
   rel_url: true
   button: true
+  # Enhanced search features
+  search_tokenizer_separator: /[\s/]+/
+  search_placeholder: "Search documentation..."
+  search_show_path: true
 
 # Navigation and UI enhancements
 nav_enabled: true
@@ -57,6 +67,15 @@ breadcrumbs: true
 toc:
   min_level: 2
   max_level: 4
+# Enhanced UI features
+print:
+  enabled: true
+  print_title: true
+  print_author: true
+  print_date: true
+# Mobile enhancements
+mobile_nav: true
+mobile_nav_breakpoint: 768px
 
 # Callouts for better content presentation
 callouts:
@@ -74,7 +93,7 @@ callouts:
     color: red
 
 # Visual enhancements
-color_scheme: dark  # Dark theme
+color_scheme: auto  # Auto theme with toggle
 
 # Auxiliary links with better organization
 aux_links:
@@ -152,6 +171,22 @@ social:
 # Analytics (uncomment and configure if needed)
 # ga_tracking: UA-XXXXXXXXX-X
 # ga_tracking_anonymize_ip: true
+
+# Mermaid diagram configuration
+mermaid:
+  version: "10.6.1"
+  theme: "dark"
+  themeVariables:
+    primaryColor: "#ff6b6b"
+    primaryTextColor: "#ffffff"
+    primaryBorderColor: "#ff6b6b"
+    lineColor: "#ffffff"
+    secondaryColor: "#4ecdc4"
+    tertiaryColor: "#45b7d1"
+    background: "#1a1a1a"
+    mainBkg: "#2d2d2d"
+    secondBkg: "#3d3d3d"
+    tertiaryBkg: "#4d4d4d"
 
 # Performance optimizations
 compress_html:

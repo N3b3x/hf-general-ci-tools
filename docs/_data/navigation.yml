@@ -38,6 +38,9 @@
     - title: ⚙️ Configuration Examples
       url: /configuration-examples
       nav_order: 2
+    - title: 📊 Mermaid Examples
+      url: /mermaid-examples
+      nav_order: 3
 
 # Repository Information
 - title: ℹ️ Repository Info

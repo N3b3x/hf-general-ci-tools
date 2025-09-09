@@ -1,0 +1,34 @@
+# Gemfile for hf-general-ci-tools documentation
+source "https://rubygems.org"
+
+# GitHub Pages compatible gems
+gem "github-pages", group: :jekyll_plugins
+
+# Additional useful gems
+gem "jekyll-mermaid"
+gem "jekyll-feed", "~> 0.12"
+gem "jekyll-sitemap"
+gem "jekyll-seo-tag"
+gem "jekyll-redirect-from"
+gem "jekyll-optional-front-matter"
+
+# Development gems (optional)
+group :development do
+  gem "jekyll-admin"
+  gem "jekyll-serve"
+end
+
+# Windows and JRuby compatibility
+platforms :mingw, :x64_mingw, :mswin, :jruby do
+  gem "tzinfo", ">= 1", "< 3"
+  gem "tzinfo-data"
+end
+
+# Performance and caching
+gem "jekyll-include-cache"
+
+# Markdown processing
+gem "kramdown-parser-gfm"
+
+# Syntax highlighting
+gem "rouge", "~> 4.0"
