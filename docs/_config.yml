@@ -14,8 +14,8 @@ author:
   url: "https://github.com/n3b3x"
 
 # Directory configuration
-includes_dir: docs/_includes
-layouts_dir: docs/_layouts
+includes_dir: _includes
+layouts_dir: _layouts
 
 # Theme and plugins
 remote_theme: just-the-docs/just-the-docs
@@ -128,6 +128,12 @@ just_the_docs:
   # Custom head content
   head_custom: _includes/head_custom.html
 
+  # Custom CSS and JS
+  custom_css:
+    - assets/css/custom.css
+  custom_js:
+    - assets/js/custom.js
+
 # Exclude files from processing
 exclude:
   - Gemfile
@@ -145,8 +151,8 @@ exclude:
 # Include files that are normally excluded
 include:
   - _pages
-  - README.md
-  - LICENSE
+  - ../README.md
+  - ../LICENSE
   - assets/
 
 # Enhanced SEO settings

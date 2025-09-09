@@ -238,13 +238,9 @@ your-awesome-project/
 
 ## 📄 License
 
-<div align="center">
-
 **MIT License** - See the [LICENSE](LICENSE) file for details
 
 *Free for personal and commercial use*
-
-</div>
 
 ---
 
