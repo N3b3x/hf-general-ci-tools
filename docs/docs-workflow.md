@@ -8,13 +8,9 @@ parent: "🔄 Reusable Workflows"
 
 # Documentation Workflow Guide
 
-<div align="center">
-
-[← Previous: C/C++ Lint Workflow](lint-workflow.md) | [Next: Link Check Workflow →](link-check-workflow.md)
+[← Previous: Static Analysis Workflow](static-analysis-workflow.md) | [Next: Link Check Workflow →](link-check-workflow.md)
 
 **📖 Doxygen + GitHub Pages Deployment**
-
-</div>
 
 ---
 
@@ -397,11 +393,7 @@ ls docs/doxygen/html/
 
 ---
 
-<div align="center">
-
-[← Previous: C/C++ Lint Workflow](lint-workflow.md) | [Next: Link Check Workflow →](link-check-workflow.md)
+[← Previous: Static Analysis Workflow](static-analysis-workflow.md) | [Next: Link Check Workflow →](link-check-workflow.md)
 
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
-
-</div>
 

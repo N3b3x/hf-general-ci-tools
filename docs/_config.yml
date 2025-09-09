@@ -20,6 +20,9 @@ plugins:
   - jekyll-redirect-from
   - jekyll-optional-front-matter
 
+# Navigation settings
+nav_next_prev: true
+
 # Markdown and syntax highlighting
 markdown: kramdown
 highlighter: rouge

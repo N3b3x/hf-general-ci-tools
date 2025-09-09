@@ -7,6 +7,8 @@ nav_order: 1
 
 # hf-general-ci-tools
 
+[Next: Reusable Workflows →](reusable-workflows.md)
+
 **A collection of reusable GitHub Actions workflows for general CI/CD tasks**
 
 ---
@@ -162,6 +164,8 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 - All contributors who help improve these workflows
 
 ---
+
+[Next: Reusable Workflows →](reusable-workflows.md)
 
 **Made with ❤️ by [N3b3x](https://github.com/n3b3x)**
 

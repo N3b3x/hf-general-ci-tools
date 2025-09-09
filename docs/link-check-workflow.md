@@ -8,19 +8,12 @@ parent: "🔄 Reusable Workflows"
 
 # 🔗 Documentation Link Check Workflow Guide
 
-<div align="center">
-
-![Link Check](https://img.shields.io/badge/Link%20Check-Documentation-blue?style=for-the-badge&logo=markdown)
-![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-orange?style=for-the-badge&logo=github)
-![Validation](https://img.shields.io/badge/Validation-Broken%20Links-red?style=for-the-badge&logo=link)
+[← Previous: Documentation Workflow](docs-workflow.md) | [Next: YAML Lint Workflow →](yamllint-workflow.md)
 
 **🔍 Automated Documentation Link Validation for General Projects**
 
 *Standalone workflow for checking documentation links and ensuring all references are valid*
 
-[← Previous: C/C++ Lint Workflow](lint-workflow.md) | [Next: Static Analysis Workflow →](static-analysis-workflow.md)
-
-</div>
 
 ---
 
@@ -105,9 +98,10 @@ jobs:
 
 **Creating a TOML Config File:**
 
-Copy the example configuration:
+Create a custom configuration file:
 ```bash
-cp docs/lychee.toml.example lychee.toml
+# Create lychee.toml in your repository root
+touch lychee.toml
 ```
 
 Then customize it for your needs. The TOML file allows you to:
@@ -438,10 +432,6 @@ Broken links:
 
 ---
 
-<div align="center">
-
-[← Previous: C/C++ Lint Workflow](lint-workflow.md) | [Next: Static Analysis Workflow →](static-analysis-workflow.md)
+[← Previous: Documentation Workflow](docs-workflow.md) | [Next: YAML Lint Workflow →](yamllint-workflow.md)
 
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
-
-</div>

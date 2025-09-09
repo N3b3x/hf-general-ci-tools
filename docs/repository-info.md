@@ -2,11 +2,12 @@
 layout: default
 title: "ℹ️ Repository Info"
 description: "Repository information, contributing guidelines, and links"
-nav_order: 5
-has_children: true
+nav_order: 4
 ---
 
 # ℹ️ Repository Info
+
+[← Previous: Examples & Guides](examples-guides.md) | [Next: C/C++ Lint Workflow →](lint-workflow.md)
 
 Information about the hf-general-ci-tools repository, including how to contribute, licensing, and support resources.
 
@@ -38,3 +39,5 @@ We welcome contributions! Please see our [Contributing Guidelines](https://githu
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](https://github.com/n3b3x/hf-general-ci-tools/blob/main/LICENSE) file for details.
+
+[← Previous: Examples & Guides](examples-guides.md) | [Next: C/C++ Lint Workflow →](lint-workflow.md)

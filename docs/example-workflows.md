@@ -8,19 +8,12 @@ parent: "📖 Examples & Guides"
 
 # 🚀 Example Workflows for Consumer Repositories
 
-<div align="center">
-
-![Examples](https://img.shields.io/badge/Examples-Consumer%20Workflows-blue?style=for-the-badge&logo=github)
-![Parallel](https://img.shields.io/badge/Parallel-Jobs-green?style=for-the-badge&logo=github-actions)
-![CI/CD](https://img.shields.io/badge/CI%2FCD-General%20Tools-orange?style=for-the-badge&logo=github)
+[Next: Quick Start Guide →](quick-start.md)
 
 **📋 Complete Workflow Examples for General CI Projects**
 
 *Ready-to-use GitHub Actions workflows that leverage all CI tools in parallel*
 
-[← Previous: Static Analysis Workflow](static-analysis-workflow.md) | [Next: Documentation Index →](index.md)
-
-</div>
 
 ---
 
@@ -588,10 +581,6 @@ For more detailed information, see the individual workflow documentation:
 
 ---
 
-<div align="center">
-
-[← Previous: Static Analysis Workflow](static-analysis-workflow.md) | [Next: Documentation Index →](index.md)
+[Next: Quick Start Guide →](quick-start.md)
 
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
-
-</div>

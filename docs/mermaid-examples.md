@@ -2,11 +2,13 @@
 layout: default
 title: "📊 Mermaid Examples"
 description: "Examples of Mermaid diagrams for workflow visualization"
-nav_order: 3
+nav_order: 4
 parent: "📖 Examples & Guides"
 ---
 
 # Mermaid Diagram Examples
+
+[← Previous: Configuration Examples](configuration-examples.md) | [Next: Layout Examples →](minimal-example.md)
 
 This page demonstrates how to use Mermaid diagrams in your documentation to visualize workflows, processes, and relationships.
 
@@ -95,6 +97,8 @@ If your Mermaid diagrams are not rendering:
 4. Check the browser console for any JavaScript errors
 
 For more information about Mermaid syntax, visit the [official Mermaid documentation](https://mermaid-js.github.io/mermaid/).
+
+[← Previous: Configuration Examples](configuration-examples.md) | [Next: Layout Examples →](minimal-example.md)
 
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
 <script>

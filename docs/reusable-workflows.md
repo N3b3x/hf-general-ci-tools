@@ -2,11 +2,13 @@
 layout: default
 title: "🔄 Reusable Workflows"
 description: "Reusable GitHub Actions workflows for CI/CD tasks"
-nav_order: 3
+nav_order: 2
 has_children: true
 ---
 
 # 🔄 Reusable Workflows
+
+[← Previous: Documentation Index](index.md) | [Next: Examples & Guides →](examples-guides.md)
 
 These workflows are designed to be **called from other repositories** using the `uses` keyword. Each workflow provides specific CI/CD functionality that can be integrated into your project's GitHub Actions.
 
@@ -39,3 +41,5 @@ jobs:
 - **📚 Well Documented** - Comprehensive guides and examples
 - **🛡️ Secure** - Follows GitHub Actions security best practices
 - **🚀 Fast** - Optimized for performance and reliability
+
+[← Previous: Documentation Index](index.md) | [Next: Examples & Guides →](examples-guides.md)

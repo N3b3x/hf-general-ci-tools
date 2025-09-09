@@ -8,7 +8,7 @@ parent: "🔄 Reusable Workflows"
 
 # C/C++ Lint Workflow Guide
 
-[← Previous: Documentation Index](index.md) | [Next: Link Check Workflow →](link-check-workflow.md)
+[Next: Static Analysis Workflow →](static-analysis-workflow.md)
 
 **🔍 C/C++ Code Quality Checks**
 
@@ -196,7 +196,7 @@ HeaderFilterRegex: ''
 
 ---
 
-[← Previous: Documentation Index](index.md) | [Next: Link Check Workflow →](link-check-workflow.md)
+[Next: Static Analysis Workflow →](static-analysis-workflow.md)
 
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
 

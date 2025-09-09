@@ -2,11 +2,13 @@
 layout: minimal
 title: "📄 Layout Examples"
 description: "This page demonstrates the minimal layout without sidebar navigation"
-nav_order: 4
+nav_order: 5
 parent: "📖 Examples & Guides"
 ---
 
 # Minimal Layout Example
+
+[← Previous: Mermaid Examples](mermaid-examples.md)
 
 This page uses the **minimal layout** which removes the sidebar navigation for a clean, focused reading experience.
 
@@ -40,3 +42,5 @@ This layout is perfect for:
 - Long-form guides
 - Print-ready documents
 - Mobile-optimized content
+
+[← Previous: Mermaid Examples](mermaid-examples.md)

@@ -3,9 +3,12 @@ layout: default
 title: "🚀 Quick Start Guide"
 description: "Get started with hf-general-ci-tools in minutes"
 nav_order: 2
+parent: "📖 Examples & Guides"
 ---
 
 # 🚀 Quick Start Guide
+
+[← Previous: Example Workflows](example-workflows.md) | [Next: Configuration Examples →](configuration-examples.md)
 
 Welcome to **hf-general-ci-tools**! This guide will help you get up and running with our reusable GitHub Actions workflows in just a few minutes.
 
@@ -195,3 +198,5 @@ Congratulations! You now have a working CI/CD pipeline with hf-general-ci-tools.
 <div class="callout note">
 <strong>💡 Pro Tip:</strong> Start with the basic configuration and gradually add more features as you become familiar with the workflows.
 </div>
+
+[← Previous: Example Workflows](example-workflows.md) | [Next: Configuration Examples →](configuration-examples.md)

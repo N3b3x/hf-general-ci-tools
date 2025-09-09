@@ -2,11 +2,13 @@
 layout: default
 title: "📖 Examples & Guides"
 description: "Examples, guides, and configuration templates"
-nav_order: 4
+nav_order: 3
 has_children: true
 ---
 
 # 📖 Examples & Guides
+
+[← Previous: Reusable Workflows](reusable-workflows.md) | [Next: Repository Info →](repository-info.md)
 
 This section contains practical examples, guides, and configuration templates to help you get the most out of hf-general-ci-tools.
 
@@ -30,3 +32,5 @@ This section contains practical examples, guides, and configuration templates to
 - Use parallel jobs for faster CI/CD execution
 - Implement proper error handling and notifications
 - Keep your workflows maintainable and well-documented
+
+[← Previous: Reusable Workflows](reusable-workflows.md) | [Next: Repository Info →](repository-info.md)

@@ -8,7 +8,7 @@ parent: "🔄 Reusable Workflows"
 
 # Static Analysis Workflow Guide
 
-[← Previous: Link Check Workflow](link-check-workflow.md) | [Next: Example Workflows →](example-workflows.md)
+[← Previous: C/C++ Lint Workflow](lint-workflow.md) | [Next: Documentation Workflow →](docs-workflow.md)
 
 **🔒 Cppcheck Security Analysis**
 
@@ -150,7 +150,7 @@ Create a `.cppcheck-suppressions` file for false positives:
 
 ---
 
-[← Previous: Link Check Workflow](link-check-workflow.md) | [Next: Example Workflows →](example-workflows.md)
+[← Previous: C/C++ Lint Workflow](lint-workflow.md) | [Next: Documentation Workflow →](docs-workflow.md)
 
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
 

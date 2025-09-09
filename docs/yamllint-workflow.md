@@ -8,13 +8,9 @@ parent: "🔄 Reusable Workflows"
 
 # YAML Lint Workflow Guide
 
-<div align="center">
-
-[← Previous: Static Analysis Workflow](static-analysis-workflow.md) | [Next: Example Workflows →](example-workflows.md)
+[← Previous: Link Check Workflow](link-check-workflow.md)
 
 **📝 YAML File Validation**
-
-</div>
 
 ---
 
@@ -168,10 +164,6 @@ Enable debug output by checking the workflow logs in GitHub Actions.
 
 ---
 
-<div align="center">
-
-[← Previous: Static Analysis Workflow](static-analysis-workflow.md) | [Next: Example Workflows →](example-workflows.md)
+[← Previous: Link Check Workflow](link-check-workflow.md)
 
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
-
-</div>
