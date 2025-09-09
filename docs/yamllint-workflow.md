@@ -1,3 +1,11 @@
+---
+layout: default
+title: "📝 YAML Lint Workflow"
+description: "YAML file validation and formatting"
+nav_order: 5
+parent: "🔄 Reusable Workflows"
+---
+
 # YAML Lint Workflow Guide
 
 <div align="center">

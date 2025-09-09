@@ -1,3 +1,11 @@
+---
+layout: default
+title: "⚙️ Configuration Examples"
+description: "Configuration templates and examples"
+nav_order: 2
+parent: "📖 Examples & Guides"
+---
+
 # 📁 Configuration Examples
 
 This directory contains example configuration files for the enhanced documentation workflows.

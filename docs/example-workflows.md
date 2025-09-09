@@ -1,3 +1,11 @@
+---
+layout: default
+title: "🚀 Example Workflows"
+description: "Real-world usage examples for consumer repositories"
+nav_order: 1
+parent: "📖 Examples & Guides"
+---
+
 # 🚀 Example Workflows for Consumer Repositories
 
 <div align="center">
