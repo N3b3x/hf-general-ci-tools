@@ -414,6 +414,54 @@ jobs:
             echo "⚠️  Skipping stage: no Doxygen HTML at $SRC"
           fi
 
+      - name: Run markdown linting
+        if: ${{ inputs.run_markdown_lint == true }}
+        run: |
+          markdownlint ${{ inputs.markdown_lint_paths }} || {
+            echo "❌ Markdown linting failed"
+            exit 1
+          }
+          echo "✅ Markdown linting passed"
+
+      - name: Run spell checking
+        if: ${{ inputs.run_spell_check == true }}
+        run: |
+          echo "🔍 Running spell check on: ${{ inputs.spell_check_paths }}"
+          # Check if files exist before running cspell (handle multiple globs)
+          found_any=false
+          # Split on spaces and newlines
+          for pat in ${{ inputs.spell_check_paths }}; do
+            matches=$(ls $pat 2>/dev/null | wc -l || true)
+            if [ "$matches" -gt 0 ]; then found_any=true; break; fi
+          done
+          if [ "$found_any" != "true" ]; then
+            echo "⚠️  No files found matching pattern: ${{ inputs.spell_check_paths }}"
+            echo "✅ Spell checking skipped (no files to check)"
+            exit 0
+          fi
+          # Run cspell and capture output
+          if [ -f "${{ inputs.spell_check_config }}" ]; then
+            echo "📝 Using config file: ${{ inputs.spell_check_config }}"
+            cspell_output=$(cspell ${{ inputs.spell_check_paths }} --config ${{ inputs.spell_check_config }} 2>&1)
+            cspell_exit_code=$?
+          else
+            echo "📝 Using default configuration"
+            cspell_output=$(cspell ${{ inputs.spell_check_paths }} 2>&1)
+            cspell_exit_code=$?
+          fi
+          # Display cspell output
+          echo "$cspell_output"
+          # Check if cspell found any spelling issues
+          if echo "$cspell_output" | grep -q "Issues found: [1-9]"; then
+            echo "❌ Spell checking failed - spelling issues found"
+            exit 1
+          elif [ $cspell_exit_code -eq 0 ]; then
+            echo "✅ Spell checking passed"
+          else
+            echo "⚠️  cspell exited with code $cspell_exit_code but no spelling issues detected"
+            echo "✅ Spell checking passed"
+          fi
+
       - name: Build Jekyll site
         if: ${{ inputs.jekyll_enabled == true }}
         run: |
@@ -655,54 +703,6 @@ jobs:
           else
             echo "❌ Jekyll build failed - no output directory or empty directory"
             exit 1
-          fi
-
-      - name: Run markdown linting
-        if: ${{ inputs.run_markdown_lint == true }}
-        run: |
-          markdownlint ${{ inputs.markdown_lint_paths }} || {
-            echo "❌ Markdown linting failed"
-            exit 1
-          }
-          echo "✅ Markdown linting passed"
-
-      - name: Run spell checking
-        if: ${{ inputs.run_spell_check == true }}
-        run: |
-          echo "🔍 Running spell check on: ${{ inputs.spell_check_paths }}"
-          # Check if files exist before running cspell (handle multiple globs)
-          found_any=false
-          # Split on spaces and newlines
-          for pat in ${{ inputs.spell_check_paths }}; do
-            matches=$(ls $pat 2>/dev/null | wc -l || true)
-            if [ "$matches" -gt 0 ]; then found_any=true; break; fi
-          done
-          if [ "$found_any" != "true" ]; then
-            echo "⚠️  No files found matching pattern: ${{ inputs.spell_check_paths }}"
-            echo "✅ Spell checking skipped (no files to check)"
-            exit 0
-          fi
-          # Run cspell and capture output
-          if [ -f "${{ inputs.spell_check_config }}" ]; then
-            echo "📝 Using config file: ${{ inputs.spell_check_config }}"
-            cspell_output=$(cspell ${{ inputs.spell_check_paths }} --config ${{ inputs.spell_check_config }} 2>&1)
-            cspell_exit_code=$?
-          else
-            echo "📝 Using default configuration"
-            cspell_output=$(cspell ${{ inputs.spell_check_paths }} 2>&1)
-            cspell_exit_code=$?
-          fi
-          # Display cspell output
-          echo "$cspell_output"
-          # Check if cspell found any spelling issues
-          if echo "$cspell_output" | grep -q "Issues found: [1-9]"; then
-            echo "❌ Spell checking failed - spelling issues found"
-            exit 1
-          elif [ $cspell_exit_code -eq 0 ]; then
-            echo "✅ Spell checking passed"
-          else
-            echo "⚠️  cspell exited with code $cspell_exit_code but no spelling issues detected"
-            echo "✅ Spell checking passed"
           fi
 
       - name: Link check with Lychee
