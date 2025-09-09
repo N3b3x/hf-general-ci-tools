@@ -33,11 +33,6 @@ kramdown:
     block:
       line_numbers: true
       start_line: 1
-  # Enable Mermaid diagrams
-  math_engine: mathjax
-  math_engine_opts:
-    preview: true
-    preview_as_code: true
 
 # Site settings
 timezone: UTC
@@ -54,10 +49,6 @@ search:
   tokenizer_separator: /[\s/]+/
   rel_url: true
   button: true
-  # Enhanced search features
-  search_tokenizer_separator: /[\s/]+/
-  search_placeholder: "Search documentation..."
-  search_show_path: true
 
 # Navigation and UI enhancements
 nav_enabled: true
