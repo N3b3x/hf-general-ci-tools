@@ -77,7 +77,7 @@ on:
         type: boolean
         default: false
       jekyll_config:
-        description: 'Path to Jekyll configuration file'
+        description: 'Path to Jekyll configuration file in jekyll_source directory'
         required: false
         type: string
         default: '_config.yml'
