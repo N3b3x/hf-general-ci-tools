@@ -38,7 +38,7 @@ on:
         description: 'Space- or newline-separated paths to check for broken links'
         required: false
         type: string
-        default: 'docs/** **/*.md **/docs/**'
+        default: '**/*.md'
       link_check_config:
         description: 'Path to lychee.toml config file (optional)'
         required: false
@@ -61,7 +61,7 @@ on:
         description: 'Glob patterns for markdown files to lint'
         required: false
         type: string
-        default: 'docs/** **/*.md **/docs/**'
+        default: '**/*.md'
       # =============================================================================
       # Spell Checking Configuration Section
       # =============================================================================
