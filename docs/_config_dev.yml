@@ -36,10 +36,6 @@ exclude:
 # Development-specific include patterns
 include:
   - _pages
-  - .htaccess
-  - robots.txt
-  - sitemap.xml
-  - _config.development.yml
 
 # Development-specific performance settings
 compress_html:
