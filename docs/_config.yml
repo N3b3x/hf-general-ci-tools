@@ -84,7 +84,7 @@ callouts:
     color: red
 
 # Visual enhancements
-color_scheme: light
+color_scheme: dark
 toggle_color_scheme: true
 toggle_auto_mode: true
 
