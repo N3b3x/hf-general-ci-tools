@@ -1,6 +1,6 @@
 // Custom JavaScript for hf-general-ci-tools documentation
 
-// Back to Top functionality
+// Back to Top functionality - Optimized
 document.addEventListener('DOMContentLoaded', function() {
   // Create back to top button
   const backToTopButton = document.createElement('button');
@@ -8,16 +8,24 @@ document.addEventListener('DOMContentLoaded', function() {
   backToTopButton.innerHTML = '↑';
   backToTopButton.setAttribute('aria-label', 'Back to top');
   backToTopButton.setAttribute('title', 'Back to top');
+  backToTopButton.setAttribute('type', 'button');
   
   // Add button to body
   document.body.appendChild(backToTopButton);
   
-  // Show/hide button based on scroll position
+  // Throttled scroll handler for better performance
+  let ticking = false;
   function toggleBackToTop() {
-    if (window.pageYOffset > 300) {
-      backToTopButton.classList.add('show');
-    } else {
-      backToTopButton.classList.remove('show');
+    if (!ticking) {
+      requestAnimationFrame(function() {
+        if (window.pageYOffset > 300) {
+          backToTopButton.classList.add('show');
+        } else {
+          backToTopButton.classList.remove('show');
+        }
+        ticking = false;
+      });
+      ticking = true;
     }
   }
   
@@ -30,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   // Event listeners
-  window.addEventListener('scroll', toggleBackToTop);
+  window.addEventListener('scroll', toggleBackToTop, { passive: true });
   backToTopButton.addEventListener('click', scrollToTop);
   
   // Initial check

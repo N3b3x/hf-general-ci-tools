@@ -76,6 +76,3 @@ exclude:
 # Production-specific include patterns
 include:
   - _pages
-  - .htaccess
-  - robots.txt
-  - sitemap.xml

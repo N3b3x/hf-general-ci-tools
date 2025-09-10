@@ -84,9 +84,9 @@ callouts:
     color: red
 
 # Visual enhancements
-color_scheme: dark
-# toggle_color_scheme: light
-# toggle_auto_mode: true
+color_scheme: light
+toggle_color_scheme: true
+toggle_auto_mode: true
 
 # Auxiliary links with better organization
 aux_links:
@@ -110,13 +110,8 @@ collections:
     output: true
     sort_by: nav_order
 
+# Just the Docs configuration
 just_the_docs:
-  collections:
-    docs:
-      name: Documentation
-      nav_exclude: false
-      search_exclude: false
-
   # Navigation configuration
   nav_fold: true
   nav_external_links:
