@@ -2,7 +2,7 @@
 layout: default
 title: "🔄 Reusable Workflows"
 description: "Collection of reusable GitHub Actions workflows for CI/CD tasks"
-nav_order: 2
+nav_order: 3
 has_children: true
 permalink: /workflows/
 ---
