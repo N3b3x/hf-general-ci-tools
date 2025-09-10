@@ -3,7 +3,7 @@ layout: default
 title: "🛡️ Static Analysis Workflow"
 description: "Security analysis using cppcheck"
 nav_order: 2
-parent: "Reusable Workflows"
+parent: "🔄 Reusable Workflows"
 ---
 
 # Static Analysis Workflow Guide

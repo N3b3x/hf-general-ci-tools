@@ -3,7 +3,7 @@ layout: default
 title: "🚀 Example Workflows"
 description: "Real-world usage examples for consumer repositories"
 nav_order: 2
-parent: "Examples & Guides"
+parent: "📖 Examples & Guides"
 ---
 
 # 🚀 Example Workflows
