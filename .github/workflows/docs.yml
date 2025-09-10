@@ -201,6 +201,9 @@ jobs:
     env:
       CACHE_VERSION: v1
     steps:
+      # =============================================================================
+      # Repository Setup and Configuration
+      # =============================================================================
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -212,6 +215,9 @@ jobs:
         with:
           enablement: true
 
+      # =============================================================================
+      # Doxygen Configuration Detection
+      # =============================================================================
       - name: Check for Doxygen configuration
         id: doxygen-check
         run: |
@@ -223,6 +229,9 @@ jobs:
             echo "⚠️  No Doxyfile found at ${{ inputs.doxygen_config }}, skipping Doxygen dependencies"
           fi
 
+      # =============================================================================
+      # Doxygen Dependencies Installation
+      # =============================================================================
       - name: Cache system dependencies
         if: steps.doxygen-check.outputs.doxygen_needed == 'true'
         uses: actions/cache@v4
@@ -245,6 +254,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y graphviz
 
+      # =============================================================================
+      # Language Runtime Setup
+      # =============================================================================
       - name: Setup Ruby (bundler cache)
         if: ${{ inputs.jekyll_enabled == true }}
         uses: ruby/setup-ruby@v1
@@ -258,6 +270,9 @@ jobs:
         with:
           node-version: '20'
 
+      # =============================================================================
+      # Jekyll Dependencies and Configuration
+      # =============================================================================
       - name: Install Jekyll dependencies
         if: ${{ inputs.jekyll_enabled == true }}
         run: |
@@ -348,6 +363,9 @@ jobs:
 
           echo "✅ Jekyll configuration validation completed"
 
+      # =============================================================================
+      # MARKDOWN AND SPELL CHECK Documentation Quality Tools Installation
+      # =============================================================================
       - name: Install Node.js tools
         if: ${{ inputs.run_markdown_lint == true || inputs.run_spell_check == true }}
         run: |
@@ -365,6 +383,9 @@ jobs:
             echo "✅ cspell installed successfully"
           fi
 
+      # =============================================================================
+      # Doxygen Documentation Generation
+      # =============================================================================
       - name: Resolve Doxygen HTML output directory
         if: steps.doxygen-check.outputs.doxygen_needed == 'true'
         id: doxy-out
@@ -414,6 +435,9 @@ jobs:
             echo "⚠️  Skipping stage: no Doxygen HTML at $SRC"
           fi
 
+      # =============================================================================
+      # Documentation Quality Checks
+      # =============================================================================
       - name: Run markdown linting
         if: ${{ inputs.run_markdown_lint == true }}
         run: |
@@ -462,6 +486,9 @@ jobs:
             echo "✅ Spell checking passed"
           fi
 
+      # =============================================================================
+      # Jekyll Site Generation
+      # =============================================================================
       - name: Build Jekyll site
         if: ${{ inputs.jekyll_enabled == true }}
         run: |
@@ -705,6 +732,9 @@ jobs:
             exit 1
           fi
 
+      # =============================================================================
+      # Link Validation
+      # =============================================================================
       - name: Link check with Lychee
         if: ${{ inputs.run_link_check == true }}
         uses: lycheeverse/lychee-action@v2
@@ -719,6 +749,9 @@ jobs:
             ${{ inputs.link_check_paths }}
           fail: false
 
+      # =============================================================================
+      # Deployment Artifact Preparation
+      # =============================================================================
       - name: Prepare deployment artifacts
         run: |
           echo "🔍 Debug: Checking for documentation artifacts..."
@@ -798,6 +831,9 @@ jobs:
 
           echo "DEPLOY_PATH=$DEPLOY_PATH" >> $GITHUB_ENV
 
+      # =============================================================================
+      # Artifact Upload and Deployment
+      # =============================================================================
       - name: Upload documentation artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -829,6 +865,9 @@ jobs:
         with:
           path: ${{ env.DEPLOY_PATH }}
 
+  # =============================================================================
+  # GitHub Pages Deployment Job
+  # =============================================================================
   deploy:
     if: ${{ inputs.deploy_pages == true && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     needs: build
