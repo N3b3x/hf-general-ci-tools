@@ -3,7 +3,7 @@ layout: default
 title: "🔗 Link Check Workflow"
 description: "Documentation link validation using Lychee"
 nav_order: 4
-parent: "Reusable Workflows"
+parent: "🔄 Reusable Workflows"
 ---
 
 # 🔗 Documentation Link Check Workflow Guide

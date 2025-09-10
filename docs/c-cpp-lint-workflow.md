@@ -3,7 +3,7 @@ layout: default
 title: "🔧 C/C++ Lint Workflow"
 description: "Code quality checks using clang-format and clang-tidy"
 nav_order: 1
-parent: "Reusable Workflows"
+parent: "🔄 Reusable Workflows"
 ---
 
 # C/C++ Lint Workflow Guide
