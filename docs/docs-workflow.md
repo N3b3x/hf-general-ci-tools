@@ -94,7 +94,7 @@ with link checking and artifact management.
 | `jekyll_plugins_dir` | string | ❌ | `''` | Comma-separated list of plugin directories |
 | `jekyll_layouts_dir` | string | ❌ | `''` | Layout directory |
 | `jekyll_verbose` | boolean | ❌ | `false` | Enable verbose output during Jekyll build |
-| `jekyll_strict_front_matter` | boolean | ❌ | `true` | Cause build to fail if there is a YAML syntax error in front matter |
+| `jekyll_strict_front_matter` | boolean | ❌ | `true` | Fail build on YAML syntax errors in front matter |
 | `jekyll_drafts` | boolean | ❌ | `false` | Include draft posts in the build |
 | `jekyll_future` | boolean | ❌ | `false` | Include future-dated posts in the build |
 | `jekyll_unpublished` | boolean | ❌ | `false` | Include unpublished posts in the build |
@@ -223,7 +223,7 @@ for both internal and external links.
 
 ```yaml
 run_link_check: true  # Enable link checking (default: true)
-link_check_paths: "docs/**,*.md"  # Paths to check for broken links
+link_check_paths: "docs/** *.md"  # Paths to check for broken links
 ```
 
 The Lychee link checker:

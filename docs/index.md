@@ -144,7 +144,7 @@ jobs:
   links:
     uses: n3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
     with:
-      paths: "docs/**,*.md"
+      paths: "docs/** *.md"
       verbose: true
 ```
 
@@ -166,7 +166,7 @@ file for details.
 
 ---
 
-[Next: Example Workflows →](example-workflows.md)
+[Next: Reusable Workflows →](workflows.md)
 
 **Made with ❤️ by [N3b3x](https://github.com/n3b3x)**
 

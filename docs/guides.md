@@ -24,3 +24,9 @@ integrate these workflows into your project.
 
 For advanced Jekyll configuration and CI optimization, refer to the
 [Jekyll Configuration Guide](jekyll-guide.md).
+
+---
+
+[← Previous: Reusable Workflows](workflows.md)
+
+**📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**

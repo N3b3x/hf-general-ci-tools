@@ -287,4 +287,10 @@ strategy:
 
 ---
 
+[← Previous: Jekyll Configuration Guide](jekyll-guide.md)
+
+**📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
+
+---
+
 *For more detailed configuration options, see the individual workflow documentation pages.*

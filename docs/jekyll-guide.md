@@ -436,4 +436,10 @@ jobs:
 
 ---
 
+[Next: Example Workflows →](example-workflows.md)
+
+**📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
+
+---
+
 *This guide provides everything you need to configure Jekyll with the enhanced documentation workflow. For more information, see the [main documentation](index.md).*
