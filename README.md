@@ -19,8 +19,6 @@ permalink: /
 
 *Streamline your development workflow with battle-tested, production-ready GitHub Actions*
 
-> **🧪 [Test 404 Page](nonexistent-page)** - Click this link to test our custom 404 page with the dinosaur game!
-
 ---
 
 ## 📋 Overview
@@ -245,6 +243,8 @@ your-awesome-project/
 *Free for personal and commercial use*
 
 ---
+
+> **🧪 [Test 404 Page](nonexistent-page)** - Click this link to test our custom 404 page with the dinosaur game!
 
 **⭐ Star this repository if you find it helpful!**
 
