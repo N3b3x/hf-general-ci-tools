@@ -481,17 +481,22 @@ search_exclude: true
       
       // Mountains in background
       ctx.fillStyle = '#A8A8A8';
-      for (let i = 0; i < 3; i++) {
-        const x = (backgroundOffset + i * canvas.width) % (canvas.width * 2);
-        const height = 80 + i * 20;
-        ctx.beginPath();
-        ctx.moveTo(x, canvas.height - height);
-        ctx.lineTo(x + 100, canvas.height - height - 30);
-        ctx.lineTo(x + 200, canvas.height - height);
-        ctx.lineTo(x + 200, canvas.height);
-        ctx.lineTo(x, canvas.height);
-        ctx.closePath();
-        ctx.fill();
+      for (let i = 0; i < 5; i++) {
+        const x = (backgroundOffset + i * canvas.width) % (canvas.width * 3);
+        const height = 80 + i * 15;
+        const width = 200;
+        
+        // Only draw if the mountain is at least partially visible
+        if (x + width > 0 && x < canvas.width) {
+          ctx.beginPath();
+          ctx.moveTo(x, canvas.height - height);
+          ctx.lineTo(x + width/2, canvas.height - height - 30);
+          ctx.lineTo(x + width, canvas.height - height);
+          ctx.lineTo(x + width, canvas.height);
+          ctx.lineTo(x, canvas.height);
+          ctx.closePath();
+          ctx.fill();
+        }
       }
       
       // Ground with texture
@@ -716,18 +721,17 @@ search_exclude: true
           ctx.fillRect(0, 0, canvas.width, canvas.height);
           
           ctx.fillStyle = '#fff';
-          ctx.font = 'bold 24px Arial';
+          ctx.font = 'bold 32px Arial';
           ctx.textAlign = 'center';
           ctx.fillText('Game Over!', canvas.width / 2, canvas.height / 2 - 40);
           
-          ctx.font = '18px Arial';
-          ctx.fillText(`Score: ${score}`, canvas.width / 2, canvas.height / 2 - 10);
-          ctx.fillText(`High Score: ${highScore}`, canvas.width / 2, canvas.height / 2 + 15);
+          ctx.font = '20px Arial';
+          ctx.fillText(`Score: ${score}`, canvas.width / 2, canvas.height / 2 + 5);
+          ctx.fillText(`High Score: ${highScore}`, canvas.width / 2, canvas.height / 2 + 30);
           
           ctx.font = '16px Arial';
-          ctx.fillStyle = '#95a5a6';
-          ctx.fillText('Click "Pick Dino" to choose a new dinosaur', canvas.width / 2, canvas.height / 2 + 45);
-          ctx.fillText('Then press SPACE or click to start!', canvas.width / 2, canvas.height / 2 + 70);
+          ctx.fillStyle = '#bdc3c7';
+          ctx.fillText('Press SPACE or click to restart', canvas.width / 2, canvas.height / 2 + 70);
           
           // Draw pick dino button on game over screen
           drawPickDinoButton(ctx);
@@ -759,10 +763,12 @@ search_exclude: true
           drawPickDinoButton(ctx);
         }
         
-        // Draw controls
-        ctx.fillStyle = '#95a5a6';
-        ctx.font = '12px Arial';
-        ctx.fillText('SPACE or Click to jump • Avoid the cacti!', canvas.width / 2, canvas.height / 2 + 80);
+        // Draw controls (only on start screen, not game over)
+        if (!isGameOver) {
+          ctx.fillStyle = '#95a5a6';
+          ctx.font = '12px Arial';
+          ctx.fillText('SPACE or Click to jump • Avoid the cacti!', canvas.width / 2, canvas.height / 2 + 80);
+        }
         return;
       }
       
