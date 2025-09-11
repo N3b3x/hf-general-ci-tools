@@ -40,15 +40,27 @@ The C/C++ Lint workflow runs clang-format and clang-tidy using cpp-linter for co
 
 ## ⚙️ Inputs
 
+### 🔧 Clang Configuration
+
 | Input | Type | Required | Default | Description |
 |-------|------|----------|---------|-------------|
 | `clang_version` | string | ❌ | `20` | Clang major version |
 | `style` | string | ❌ | `"file"` | clang-format style (llvm, google, webkit, or 'file' to use .clang-format) |
 | `tidy_checks` | string | ❌ | `""` | clang-tidy checks (comma-separated glob patterns, use - prefix to disable) |
+
+### 📁 File Selection
+
+| Input | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
 | `extensions` | string | ❌ | `"c,cpp,cc,cxx,h,hpp"` | File extensions to check (comma-separated) |
 | `ignore` | string | ❌ | `"build\|.git"` | Files or directories to exclude from linting (pipe-separated) |
 | `files_changed_only` | boolean | ❌ | `false` | Only lint files that have been changed in the pull request |
 | `lines_changed_only` | boolean | ❌ | `false` | Only inspect lines that have changed in the pull request |
+
+### 📊 Output Options
+
+| Input | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
 | `step_summary` | boolean | ❌ | `true` | Add a summary of linting results to the workflow step summary |
 | `file_annotations` | boolean | ❌ | `true` | Display linting errors and warnings as file annotations in the GitHub UI |
 | `thread_comments` | boolean | ❌ | `false` | Post a collapsible thread comment in pull requests with linting issues |

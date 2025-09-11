@@ -7,10 +7,12 @@ on:
       clang_version:
         description: "Clang major version"
         type: string
+        required: false
         default: "20"
       style:
         description: "clang-format style (llvm, google, webkit, or 'file' to use .clang-format)"
         type: string
+        required: false
         default: "file"
       tidy_checks:
         description: "clang-tidy checks (comma-separated glob patterns, use - prefix to disable)"
@@ -19,30 +21,37 @@ on:
       extensions:
         description: "File extensions to check (comma-separated)"
         type: string
+        required: false
         default: "c,cpp,cc,cxx,h,hpp"
       ignore:
         description: "Files or directories to exclude from linting (pipe-separated)"
         type: string
+        required: false
         default: "build|.git"
       files_changed_only:
         description: "Only lint files that have been changed in the pull request"
         type: boolean
+        required: false
         default: false
       lines_changed_only:
         description: "Only inspect lines that have changed in the pull request"
         type: boolean
+        required: false
         default: false
       step_summary:
         description: "Add a summary of linting results to the workflow step summary"
         type: boolean
+        required: false
         default: true
       file_annotations:
         description: "Display linting errors and warnings as file annotations in the GitHub UI"
         type: boolean
+        required: false
         default: true
       thread_comments:
         description: "Post a single, collapsible thread comment in a pull request detailing all linting issues"
         type: boolean
+        required: false
         default: false
 
 permissions:

@@ -40,12 +40,19 @@ This is a **reusable workflow** that can be called from other repositories.
 
 ## ⚙️ Inputs
 
+### 📁 File Selection
+
 | Input | Description | Required | Default | Type |
 |-------|-------------|----------|---------|------|
 | `paths` | Comma-separated list of paths to check | No | `**/*.yml,**/*.yaml` | string |
+| `exclude_patterns` | Comma-separated patterns to exclude | No | `.git/**,node_modules/**,venv/**,.venv/**` | string |
+
+### ⚙️ Configuration
+
+| Input | Description | Required | Default | Type |
+|-------|-------------|----------|---------|------|
 | `config_file` | Path to yamllint configuration file | No | `.yamllint` | string |
 | `strict_mode` | Enable strict mode (fail on warnings) | No | `false` | boolean |
-| `exclude_patterns` | Comma-separated patterns to exclude | No | `.git/**,node_modules/**,venv/**,.venv/**` | string |
 
 ## 📤 Outputs
 
@@ -64,7 +71,7 @@ name: YAML Lint
 on: [push, pull_request]
 jobs:
   yamllint:
-    uses: n3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1
 ```
 
 ### Advanced Usage
@@ -74,7 +81,7 @@ name: YAML Lint
 on: [push, pull_request]
 jobs:
   yamllint:
-    uses: n3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1
     with:
       paths: '.github/workflows/*.yml,docs/*.yml'
       config_file: '.yamllint'
@@ -89,10 +96,25 @@ name: Workflow YAML Lint
 on: [push, pull_request]
 jobs:
   yamllint:
-    uses: n3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1
     with:
       paths: '.github/workflows/*.yml'
       strict_mode: true
+```
+
+### Comprehensive Configuration
+
+```yaml
+name: Complete YAML Lint
+on: [push, pull_request]
+jobs:
+  yamllint:
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1
+    with:
+      paths: '.github/workflows/*.yml,docs/*.yml,**/*.yaml'
+      config_file: '.yamllint'
+      strict_mode: true
+      exclude_patterns: '.git/**,node_modules/**,venv/**,.venv/**,_site/**'
 ```
 
 ## ⚙️ Configuration

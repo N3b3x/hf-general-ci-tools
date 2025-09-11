@@ -5,10 +5,10 @@ on:
   workflow_call:
     inputs:
       paths:
-        description: 'Comma-separated paths to check for broken links'
+        description: 'Space-separated paths to check for broken links'
         required: false
         type: string
-        default: 'docs/**,*.md,**/docs/**'
+        default: 'docs/** *.md **/docs/**'
       fail_on_errors:
         description: 'Fail the workflow if broken links are found'
         required: false

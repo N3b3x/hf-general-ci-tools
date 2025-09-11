@@ -35,7 +35,7 @@ on:
         type: boolean
         default: true
       link_check_paths:
-        description: 'Space- or newline-separated paths to check for broken links'
+        description: 'Space-separated paths to check for broken links'
         required: false
         type: string
         default: '**/*.md'

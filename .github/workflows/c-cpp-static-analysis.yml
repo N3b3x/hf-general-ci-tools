@@ -7,14 +7,17 @@ on:
       paths:
         description: "Dirs to analyze (space-separated)"
         type: string
+        required: false
         default: "src inc examples"
       std:
         description: "C++ standard"
         type: string
+        required: false
         default: "c++17"
       strict:
         description: "Fail job if any issues found"
         type: boolean
+        required: false
         default: false
 
 jobs:

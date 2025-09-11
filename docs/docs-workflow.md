@@ -29,6 +29,7 @@ with link checking and artifact management.
 ## 🎯 Overview
 
 **Purpose**: Generate and deploy Doxygen documentation with optional Jekyll integration
+
 **Key Features**:
 - Doxygen + Graphviz integration
 - Optional Jekyll static site generation
@@ -43,24 +44,66 @@ with link checking and artifact management.
 
 ## ⚙️ Inputs
 
+### 📚 Doxygen Configuration
+
 | Input | Type | Required | Default | Description |
 |-------|------|----------|---------|-------------|
 | `doxygen_config` | string | ❌ | `Doxyfile` | Path to Doxyfile (relative to repo root) |
-| `output_dir` | string | ❌ | `docs/doxygen/html` | Generated HTML directory |
+| `doxygen_fail_on_warnings` | boolean | ❌ | `false` | Treat Doxygen warnings as errors in CI |
+
+### 🔗 Link Checking
+
+| Input | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
 | `run_link_check` | boolean | ❌ | `true` | Run documentation link checker |
-| `link_check_paths` | string | ❌ | `docs/**,*.md,**/docs/**` | Comma-separated glob patterns for Lychee to check |
+| `link_check_paths` | string | ❌ | `**/*.md` | Space-separated paths to check for broken links |
 | `link_check_config` | string | ❌ | `''` | Path to lychee.toml config file (optional) |
 | `verbose` | boolean | ❌ | `false` | Enable verbose output for link checking |
+
+### 📝 Documentation Quality
+
+| Input | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
 | `run_markdown_lint` | boolean | ❌ | `false` | Run markdown linting on documentation files |
-| `markdown_lint_paths` | string | ❌ | `**/*.md` | Glob patterns for markdown files to lint |
+| `markdown_lint_paths` | string | ❌ | `**/*.md` | Space-separated glob patterns for markdown files to lint |
 | `run_spell_check` | boolean | ❌ | `false` | Run spell checking on documentation files |
-| `spell_check_paths` | string | ❌ | `**/*.md` | Glob patterns for files to spell check |
+| `spell_check_paths` | string | ❌ | `**/*.md` | Space-separated glob patterns for files to spell check |
 | `spell_check_config` | string | ❌ | `.cspell.json` | Path to cspell configuration file |
+
+### 🌐 Deployment
+
+| Input | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
 | `deploy_pages` | boolean | ❌ | `true` | Deploy to GitHub Pages |
+
+### 🎨 Jekyll Configuration
+
+| Input | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
 | `jekyll_enabled` | boolean | ❌ | `false` | Enable Jekyll static site generation |
-| `jekyll_config` | string | ❌ | `_config.yml` | Path to Jekyll configuration file |
-| `jekyll_source` | string | ❌ | `docs` | Jekyll source directory |
-| `jekyll_destination` | string | ❌ | `_site` | Jekyll build destination |
+| `jekyll_config` | string | ❌ | `_config.yml` | Comma-separated list of Jekyll configuration files |
+| `jekyll_source` | string | ❌ | `docs` | Jekyll source directory containing your site files |
+| `jekyll_destination` | string | ❌ | `_site` | Jekyll build destination directory for generated site |
+| `jekyll_environment` | string | ❌ | `production` | Jekyll environment (development, production, staging) |
+
+### ⚙️ Jekyll Advanced Options
+
+| Input | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `jekyll_safe` | boolean | ❌ | `true` | Run in safe mode (disables custom plugins, used by GitHub Pages) |
+| `jekyll_plugins_dir` | string | ❌ | `''` | Comma-separated list of plugin directories |
+| `jekyll_layouts_dir` | string | ❌ | `''` | Layout directory |
+| `jekyll_verbose` | boolean | ❌ | `false` | Enable verbose output during Jekyll build |
+| `jekyll_strict_front_matter` | boolean | ❌ | `true` | Cause build to fail if there is a YAML syntax error in front matter |
+| `jekyll_drafts` | boolean | ❌ | `false` | Include draft posts in the build |
+| `jekyll_future` | boolean | ❌ | `false` | Include future-dated posts in the build |
+| `jekyll_unpublished` | boolean | ❌ | `false` | Include unpublished posts in the build |
+| `jekyll_incremental` | boolean | ❌ | `false` | Enable incremental builds for faster development |
+| `jekyll_lsi` | boolean | ❌ | `false` | Enable LSI (Latent Semantic Indexing) for related posts |
+| `jekyll_limit_posts` | string | ❌ | `''` | Limit the number of posts to parse and publish |
+| `jekyll_profile` | boolean | ❌ | `false` | Enable profiling output to show build performance |
+| `jekyll_quiet` | boolean | ❌ | `false` | Suppress normal output during Jekyll build |
+| `jekyll_trace` | boolean | ❌ | `false` | Show full backtrace when an error occurs |
 
 ## 📤 Outputs
 
@@ -80,7 +123,6 @@ jobs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
       doxygen_config: Doxyfile
-      output_dir: docs/doxygen/html
 ```
 
 ### With Documentation Quality Checks
@@ -91,13 +133,12 @@ jobs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
       doxygen_config: Doxyfile
-      output_dir: docs/doxygen/html
       run_link_check: true
-      link_check_paths: "docs/**,*.md,**/docs/**"
+      link_check_paths: "docs/** *.md **/docs/**"
       run_markdown_lint: true
-      markdown_lint_paths: "docs/**,*.md"
+      markdown_lint_paths: "docs/** *.md"
       run_spell_check: true
-      spell_check_paths: "docs/**,*.md"
+      spell_check_paths: "docs/** *.md"
       spell_check_config: ".cspell.json"
       deploy_pages: true
 ```
@@ -110,11 +151,33 @@ jobs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
       doxygen_config: Doxyfile
-      output_dir: docs/doxygen/html
       jekyll_enabled: true
       jekyll_config: "_config.yml"
       jekyll_source: "docs"
       jekyll_destination: "_site"
+      run_link_check: true
+      deploy_pages: true
+```
+
+### Advanced Jekyll Configuration
+
+```yaml
+jobs:
+  docs:
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
+    with:
+      doxygen_config: Doxyfile
+      jekyll_enabled: true
+      jekyll_config: "_config.yml,_config_prod.yml"
+      jekyll_source: "docs"
+      jekyll_destination: "_site"
+      jekyll_environment: "production"
+      jekyll_safe: true
+      jekyll_verbose: true
+      jekyll_strict_front_matter: true
+      jekyll_drafts: false
+      jekyll_future: false
+      jekyll_unpublished: false
       run_link_check: true
       deploy_pages: true
 ```
@@ -127,7 +190,6 @@ jobs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
       doxygen_config: docs/Doxyfile.custom
-      output_dir: docs/generated/html
       run_link_check: false
       deploy_pages: false
 ```
@@ -166,18 +228,20 @@ link_check_paths: "docs/**,*.md"  # Paths to check for broken links
 
 The Lychee link checker:
 - Scans all markdown files in the specified paths
-- Uses **comma-separated glob patterns** (not shell globs)
+- Uses **space-separated glob patterns** (not comma-separated)
 - Validates both internal file references and external URLs
 - Supports configurable timeouts and retry attempts
 - Excludes private/internal links by default
 - Provides detailed reporting with verbose output options
 
 **Path Format Examples:**
-- `docs/**,*.md` - All files in docs/ and all .md files in root
-- `README.md,docs/**/*.md` - Specific file + all .md files in docs/
-- `**/*.md` - All .md files recursively
+- `**/*.md` - All .md files recursively (default)
+- `docs/** *.md` - All files in docs/ and all .md files in root (space-separated)
+- `README.md docs/**/*.md` - Specific file + all .md files in docs/ (space-separated)
 - Uses the modern `lycheeverse/lychee-action@v2` action
 - Offers better performance and reliability than traditional link checkers
+
+**Important**: Paths must be **space-separated**, not comma-separated, as required by `lycheeverse/lychee-action@v2`.
 
 ### Markdown Linting
 
@@ -245,6 +309,35 @@ highlighter: rouge
 - Support for custom layouts and includes
 - Automatic baseurl configuration for GitHub Pages
 
+**Advanced Jekyll Configuration:**
+
+The workflow supports extensive Jekyll configuration options for fine-tuned control:
+
+```yaml
+jekyll_enabled: true
+jekyll_config: "_config.yml,_config_prod.yml"  # Multiple config files
+jekyll_environment: "production"               # Environment-specific settings
+jekyll_safe: true                              # Safe mode (GitHub Pages compatible)
+jekyll_verbose: true                           # Verbose output for debugging
+jekyll_strict_front_matter: true              # Fail on YAML syntax errors
+jekyll_drafts: false                           # Exclude draft posts
+jekyll_future: false                           # Exclude future-dated posts
+jekyll_unpublished: false                      # Exclude unpublished posts
+jekyll_incremental: false                      # Disable incremental builds (CI recommended)
+jekyll_lsi: false                              # Disable LSI (resource-intensive)
+jekyll_profile: false                          # Disable profiling (reduces build time)
+jekyll_quiet: false                            # Enable normal output
+jekyll_trace: false                            # Disable full backtrace
+```
+
+**CI-Optimized Defaults:**
+The workflow automatically applies CI-optimized defaults for better reliability:
+- Safe mode enabled (prevents custom plugin issues)
+- Incremental builds disabled (prevents stale content)
+- Profiling disabled (reduces build time)
+- Drafts and future posts excluded (focus on published content)
+- Strict front matter validation enabled (ensures content integrity)
+
 ### Standalone Link Check
 
 For repositories that only need link checking without documentation generation, use the dedicated link check workflow:
@@ -254,7 +347,7 @@ jobs:
   link-check:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
     with:
-      paths: "docs/**,*.md,**/docs/**"  # Paths to check
+      paths: "docs/** *.md **/docs/**"  # Paths to check (default: **/*.md)
       fail_on_errors: true              # Fail on broken links
       timeout: "10"                     # Timeout per link (seconds)
       retry: "3"                        # Number of retries

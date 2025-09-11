@@ -37,9 +37,16 @@ The Static Analysis workflow runs cppcheck via Docker for comprehensive C/C++ co
 
 ## ⚙️ Inputs
 
+### 📁 Analysis Scope
+
 | Input | Type | Required | Default | Description |
 |-------|------|----------|---------|-------------|
 | `paths` | string | ❌ | `src inc examples` | Space-separated directories to analyze |
+
+### ⚙️ Analysis Configuration
+
+| Input | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
 | `std` | string | ❌ | `c++17` | C++ standard for analysis |
 | `strict` | boolean | ❌ | `false` | Fail job if issues found |
 

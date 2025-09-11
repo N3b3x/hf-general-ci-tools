@@ -59,7 +59,7 @@ jobs:
   docs-links:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
     with:
-      paths: "docs/**,*.md,**/docs/**"
+      paths: "docs/** *.md **/docs/**"
 ```
 
 ---
@@ -109,9 +109,8 @@ jobs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
       doxygen_config: "Doxyfile"
-      output_dir: "docs/doxygen/html"
       run_link_check: true
-      link_check_paths: "docs/**,*.md,**/docs/**"
+      link_check_paths: "docs/** *.md **/docs/**"
       jekyll_enabled: true
       jekyll_config: "_config.yml,_config_prod.yml"
       jekyll_environment: "production"
@@ -127,7 +126,7 @@ jobs:
   link-check:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
     with:
-      paths: "docs/**,*.md,**/docs/**"
+      paths: "docs/** *.md **/docs/**"
       fail_on_errors: true
       timeout: "30"
 ```
@@ -161,7 +160,6 @@ jobs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
       doxygen_config: "Doxyfile"
-      output_dir: "docs/doxygen/html"
       run_link_check: false
       jekyll_enabled: true
       jekyll_config: "_config.yml,_config_dev.yml"
@@ -214,9 +212,8 @@ jobs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
       doxygen_config: "Doxyfile"
-      output_dir: "docs/doxygen/html"
       run_link_check: true
-      link_check_paths: "docs/**,*.md,**/docs/**"
+      link_check_paths: "docs/** *.md **/docs/**"
       jekyll_enabled: true
       jekyll_config: "_config.yml,_config_prod.yml"
       jekyll_environment: "production"
@@ -225,7 +222,7 @@ jobs:
   link-check:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
     with:
-      paths: "docs/**,*.md,**/docs/**"
+      paths: "docs/** *.md **/docs/**"
       fail_on_errors: true
       timeout: "60"
 

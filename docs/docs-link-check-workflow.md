@@ -66,7 +66,7 @@ jobs:
   link-check:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
     with:
-      paths: "docs/**,*.md,**/docs/**"
+      paths: "docs/** *.md **/docs/**"
       fail_on_errors: true
       timeout: "15"
       retry: "5"
@@ -91,7 +91,7 @@ jobs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
     with:
       config_file: "lychee.toml"
-      paths: "docs/**,*.md"
+      paths: "docs/** *.md"
       verbose: true
 ```
 
@@ -113,16 +113,28 @@ Then customize it for your needs. The TOML file allows you to:
 
 ## 📖 Input Parameters
 
+### 📁 File Selection
+
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `paths` | `string` | `"docs/**,*.md,**/docs/**"` | Comma-separated paths to check for broken links |
-| `fail_on_errors` | `boolean` | `true` | Fail the workflow if broken links are found |
+| `paths` | `string` | `"docs/** *.md **/docs/**"` | Space-separated paths to check for broken links |
+
+### ⚙️ Link Checking Configuration
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
 | `timeout` | `string` | `"10"` | Timeout in seconds for each link check |
 | `retry` | `string` | `"3"` | Number of retries for failed links |
 | `exclude_private` | `boolean` | `true` | Exclude private/internal links |
 | `exclude_mail` | `boolean` | `true` | Exclude mailto links |
-| `verbose` | `boolean` | `false` | Enable verbose output |
 | `config_file` | `string` | `""` | Path to lychee.toml config file (optional) |
+
+### 📊 Output Control
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `fail_on_errors` | `boolean` | `true` | Fail the workflow if broken links are found |
+| `verbose` | `boolean` | `false` | Enable verbose output |
 
 ### **Path Patterns**
 
@@ -132,7 +144,9 @@ The `paths` parameter supports glob patterns:
 - `*.md` - All markdown files in repository root
 - `**/docs/**` - All files in any docs directory
 - `README.md` - Specific file
-- `docs/**,*.md` - Multiple patterns (comma-separated)
+- `docs/** *.md` - Multiple patterns (space-separated)
+
+**Important**: Paths must be **space-separated**, not comma-separated, as required by `lycheeverse/lychee-action@v2`.
 
 ---
 
@@ -165,7 +179,7 @@ jobs:
   link-check:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
     with:
-      paths: "docs/**,README.md,CONTRIBUTING.md"
+      paths: "docs/** README.md CONTRIBUTING.md"
       fail_on_errors: false
 ```
 
@@ -218,7 +232,7 @@ jobs:
   docs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
-      project_dir: docs
+      doxygen_config: Doxyfile
       run_link_check: true
 
   link-check:
@@ -305,7 +319,7 @@ For advanced configuration, you can use a `lychee.toml` file:
 
 ```toml
 [input]
-files = ["docs/**", "*.md"]
+files = ["docs/**", "*.md"]  # Note: TOML config uses array format, workflow uses space-separated
 exclude = ["CHANGELOG.md"]
 
 [output]
