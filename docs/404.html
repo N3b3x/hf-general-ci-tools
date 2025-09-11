@@ -1,0 +1,425 @@
+---
+layout: default
+title: "404 - Page Not Found"
+description: "The page you're looking for doesn't exist. Play the dinosaur game while you're here!"
+permalink: /404.html
+---
+
+<style>
+  .error-container {
+    text-align: center;
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  
+  .error-code {
+    font-size: 8rem;
+    font-weight: 900;
+    color: #2c3e50;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    background: linear-gradient(45deg, #3498db, #e74c3c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .error-message {
+    font-size: 1.5rem;
+    color: #7f8c8d;
+    margin: 1rem 0 2rem 0;
+    line-height: 1.6;
+  }
+  
+  .game-container {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border: 2px solid #e9ecef;
+  }
+  
+  .game-title {
+    font-size: 1.2rem;
+    color: #495057;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+  
+  .game-instructions {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 1rem;
+    font-style: italic;
+  }
+  
+  #dino-game {
+    width: 100%;
+    max-width: 600px;
+    height: 200px;
+    margin: 0 auto;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    background: #ffffff;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .navigation-links {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .nav-link {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,123,255,0.3);
+  }
+  
+  .nav-link:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,123,255,0.4);
+    text-decoration: none;
+    color: white;
+  }
+  
+  .nav-link.secondary {
+    background: #6c757d;
+    box-shadow: 0 2px 4px rgba(108,117,125,0.3);
+  }
+  
+  .nav-link.secondary:hover {
+    background: #545b62;
+    box-shadow: 0 4px 8px rgba(108,117,125,0.4);
+  }
+  
+  .fun-fact {
+    margin-top: 2rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  
+  .fun-fact strong {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+  }
+  
+  @media (max-width: 768px) {
+    .error-code {
+      font-size: 6rem;
+    }
+    
+    .error-message {
+      font-size: 1.2rem;
+    }
+    
+    .navigation-links {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .nav-link {
+      width: 200px;
+      text-align: center;
+    }
+  }
+</style>
+
+<div class="error-container">
+  <h1 class="error-code">404</h1>
+  <p class="error-message">
+    Oops! The page you're looking for seems to have wandered off into the digital void.<br>
+    But don't worry – while you're here, why not play a game?
+  </p>
+  
+  <div class="game-container">
+    <h2 class="game-title">🦕 Dinosaur Adventure</h2>
+    <p class="game-instructions">
+      Press SPACE or click to jump over obstacles! See how far you can go.
+    </p>
+    <div id="dino-game"></div>
+  </div>
+  
+  <div class="navigation-links">
+    <a href="{{ '/' | relative_url }}" class="nav-link">🏠 Go Home</a>
+    <a href="{{ '/workflows/' | relative_url }}" class="nav-link">🔄 Workflows</a>
+    <a href="{{ '/guides/' | relative_url }}" class="nav-link">📖 Guides</a>
+    <a href="https://github.com/n3b3x/hf-general-ci-tools" class="nav-link secondary" target="_blank">🐙 GitHub</a>
+  </div>
+  
+  <div class="fun-fact">
+    <strong>💡 Did you know?</strong>
+    The Google Chrome dinosaur game was created in 2014 and has been played over 270 million times! 
+    It's one of the most popular offline games ever created.
+  </div>
+</div>
+
+<script>
+  // Enhanced Dinosaur Game Implementation
+  (function() {
+    let gameContainer = document.getElementById('dino-game');
+    if (!gameContainer) return;
+    
+    // Create game canvas
+    let canvas = document.createElement('canvas');
+    canvas.width = gameContainer.offsetWidth;
+    canvas.height = gameContainer.offsetHeight;
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.display = 'block';
+    gameContainer.appendChild(canvas);
+    
+    let ctx = canvas.getContext('2d');
+    let gameRunning = false;
+    let score = 0;
+    let highScore = localStorage.getItem('dino-high-score') || 0;
+    
+    // Game objects
+    let dino = {
+      x: 50,
+      y: canvas.height - 80,
+      width: 40,
+      height: 40,
+      velocityY: 0,
+      grounded: true,
+      color: '#2c3e50'
+    };
+    
+    let obstacles = [];
+    let clouds = [];
+    
+    // Game state
+    let gameSpeed = 2;
+    let obstacleTimer = 0;
+    let cloudTimer = 0;
+    
+    // Input handling
+    let keys = {};
+    
+    document.addEventListener('keydown', function(e) {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        keys.space = true;
+      }
+    });
+    
+    document.addEventListener('keyup', function(e) {
+      if (e.code === 'Space') {
+        keys.space = false;
+      }
+    });
+    
+    gameContainer.addEventListener('click', function() {
+      keys.space = true;
+      setTimeout(() => keys.space = false, 100);
+    });
+    
+    // Game functions
+    function jump() {
+      if (dino.grounded) {
+        dino.velocityY = -12;
+        dino.grounded = false;
+      }
+    }
+    
+    function updateDino() {
+      if (!dino.grounded) {
+        dino.velocityY += 0.8; // Gravity
+        dino.y += dino.velocityY;
+        
+        if (dino.y >= canvas.height - 80) {
+          dino.y = canvas.height - 80;
+          dino.velocityY = 0;
+          dino.grounded = true;
+        }
+      }
+    }
+    
+    function createObstacle() {
+      obstacles.push({
+        x: canvas.width,
+        y: canvas.height - 60,
+        width: 20,
+        height: 40,
+        color: '#e74c3c'
+      });
+    }
+    
+    function createCloud() {
+      clouds.push({
+        x: canvas.width,
+        y: Math.random() * (canvas.height / 2),
+        width: 30,
+        height: 20,
+        speed: 1
+      });
+    }
+    
+    function updateObstacles() {
+      obstacles.forEach((obstacle, index) => {
+        obstacle.x -= gameSpeed;
+        if (obstacle.x + obstacle.width < 0) {
+          obstacles.splice(index, 1);
+          score += 10;
+        }
+      });
+    }
+    
+    function updateClouds() {
+      clouds.forEach((cloud, index) => {
+        cloud.x -= cloud.speed;
+        if (cloud.x + cloud.width < 0) {
+          clouds.splice(index, 1);
+        }
+      });
+    }
+    
+    function checkCollisions() {
+      obstacles.forEach(obstacle => {
+        if (dino.x < obstacle.x + obstacle.width &&
+            dino.x + dino.width > obstacle.x &&
+            dino.y < obstacle.y + obstacle.height &&
+            dino.y + dino.height > obstacle.y) {
+          gameOver();
+        }
+      });
+    }
+    
+    function gameOver() {
+      gameRunning = false;
+      if (score > highScore) {
+        highScore = score;
+        localStorage.setItem('dino-high-score', highScore);
+      }
+      
+      // Show game over screen
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 24px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('Game Over!', canvas.width / 2, canvas.height / 2 - 20);
+      
+      ctx.font = '16px Arial';
+      ctx.fillText(`Score: ${score}`, canvas.width / 2, canvas.height / 2 + 10);
+      ctx.fillText(`High Score: ${highScore}`, canvas.width / 2, canvas.height / 2 + 35);
+      ctx.fillText('Click or press SPACE to restart', canvas.width / 2, canvas.height / 2 + 65);
+    }
+    
+    function startGame() {
+      gameRunning = true;
+      score = 0;
+      obstacles = [];
+      clouds = [];
+      dino.y = canvas.height - 80;
+      dino.velocityY = 0;
+      dino.grounded = true;
+      gameSpeed = 2;
+    }
+    
+    function draw() {
+      // Clear canvas
+      ctx.fillStyle = '#f8f9fa';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      if (!gameRunning) {
+        // Draw start screen
+        ctx.fillStyle = '#2c3e50';
+        ctx.font = 'bold 20px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Press SPACE or click to start!', canvas.width / 2, canvas.height / 2);
+        return;
+      }
+      
+      // Draw ground
+      ctx.fillStyle = '#95a5a6';
+      ctx.fillRect(0, canvas.height - 20, canvas.width, 20);
+      
+      // Draw clouds
+      ctx.fillStyle = '#ecf0f1';
+      clouds.forEach(cloud => {
+        ctx.fillRect(cloud.x, cloud.y, cloud.width, cloud.height);
+      });
+      
+      // Draw dino
+      ctx.fillStyle = dino.color;
+      ctx.fillRect(dino.x, dino.y, dino.width, dino.height);
+      
+      // Draw obstacles
+      obstacles.forEach(obstacle => {
+        ctx.fillStyle = obstacle.color;
+        ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+      });
+      
+      // Draw score
+      ctx.fillStyle = '#2c3e50';
+      ctx.font = '16px Arial';
+      ctx.textAlign = 'left';
+      ctx.fillText(`Score: ${score}`, 10, 30);
+      ctx.fillText(`High Score: ${highScore}`, 10, 50);
+    }
+    
+    function gameLoop() {
+      if (keys.space && !gameRunning) {
+        startGame();
+      }
+      
+      if (gameRunning) {
+        updateDino();
+        updateObstacles();
+        updateClouds();
+        checkCollisions();
+        
+        // Create obstacles
+        obstacleTimer++;
+        if (obstacleTimer > 120 - gameSpeed * 10) {
+          createObstacle();
+          obstacleTimer = 0;
+        }
+        
+        // Create clouds
+        cloudTimer++;
+        if (cloudTimer > 200) {
+          createCloud();
+          cloudTimer = 0;
+        }
+        
+        // Increase game speed
+        if (score > 0 && score % 100 === 0) {
+          gameSpeed += 0.1;
+        }
+      }
+      
+      draw();
+      requestAnimationFrame(gameLoop);
+    }
+    
+    // Start the game
+    gameLoop();
+    
+    // Handle window resize
+    window.addEventListener('resize', function() {
+      canvas.width = gameContainer.offsetWidth;
+      canvas.height = gameContainer.offsetHeight;
+    });
+  })();
+</script>
