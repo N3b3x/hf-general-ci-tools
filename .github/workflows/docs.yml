@@ -12,6 +12,14 @@ on:
   workflow_call:
     inputs:
       # =============================================================================
+      # Repository Configuration Section
+      # =============================================================================
+      checkout_recursive:
+        description: 'Checkout submodules recursively (useful for projects with documentation in submodules)'
+        required: false
+        type: boolean
+        default: false
+      # =============================================================================
       # Doxygen Configuration Section
       # =============================================================================
       doxygen_config:
@@ -207,7 +215,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          submodules: recursive
+          submodules: ${{ inputs.checkout_recursive && 'recursive' || 'false' }}
           fetch-depth: 0
 
       - name: Setup Pages

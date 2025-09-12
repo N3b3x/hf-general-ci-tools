@@ -44,6 +44,12 @@ with link checking and artifact management.
 
 ## ⚙️ Inputs
 
+### 📁 Repository Configuration
+
+| Input | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `checkout_recursive` | boolean | ❌ | `false` | Checkout submodules recursively (for projects with docs in submodules) |
+
 ### 📚 Doxygen Configuration
 
 | Input | Type | Required | Default | Description |
@@ -125,6 +131,17 @@ jobs:
       doxygen_config: Doxyfile
 ```
 
+### With Submodule Support
+
+```yaml
+jobs:
+  docs:
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
+    with:
+      doxygen_config: Doxyfile
+      checkout_recursive: true  # Enable submodule checkout
+```
+
 ### With Documentation Quality Checks
 
 ```yaml
@@ -194,7 +211,45 @@ jobs:
       deploy_pages: false
 ```
 
+### Submodule Documentation Projects
+
+```yaml
+jobs:
+  docs:
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
+    with:
+      checkout_recursive: true  # Required for submodule-based docs
+      doxygen_config: Doxyfile
+      jekyll_enabled: true
+      jekyll_source: "docs"
+      run_link_check: true
+      link_check_paths: "docs/** *.md **/docs/**"
+```
+
 ## ⚙️ Configuration
+
+### Repository Setup
+
+#### **Submodule Checkout**
+
+The workflow supports optional recursive submodule checkout for projects that store documentation in submodules:
+
+```yaml
+checkout_recursive: true  # Enable submodule checkout
+```
+
+**When to use recursive checkout:**
+- Documentation is stored in a separate submodule repository
+- Doxygen source files are in submodules
+- Jekyll themes or plugins are in submodules
+- External documentation dependencies are in submodules
+
+**When NOT to use recursive checkout:**
+- All documentation is in the main repository
+- No submodules are present
+- Performance optimization (recursive checkout is slower)
+
+**Default behavior:** `false` (no submodule checkout)
 
 ### Doxygen Configuration
 

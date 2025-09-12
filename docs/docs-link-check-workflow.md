@@ -117,6 +117,7 @@ Then customize it for your needs. The TOML file allows you to:
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
+| `checkout_recursive` | `boolean` | `false` | Checkout submodules recursively (for projects with docs in submodules) |
 | `paths` | `string` | `"docs/** *.md **/docs/**"` | Space-separated paths to check for broken links |
 
 ### ⚙️ Link Checking Configuration
@@ -213,6 +214,25 @@ jobs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
     with:
       paths: "**/*.md"
+```
+
+### **With Submodule Support**
+
+```yaml
+name: Link Check with Submodules
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  link-check:
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
+    with:
+      checkout_recursive: true  # Enable submodule checkout
+      paths: "docs/** *.md **/docs/**"
+      fail_on_errors: true
+      timeout: "15"
 ```
 
 ---

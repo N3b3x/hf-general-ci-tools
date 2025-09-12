@@ -236,6 +236,47 @@ jobs:
 
 ---
 
+## 📚 Submodule Documentation Workflow
+
+**Use Case**: Projects with documentation stored in submodules or external repositories.
+
+```yaml
+name: 📚 Submodule Documentation CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # Documentation with submodule support
+  docs:
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
+    with:
+      checkout_recursive: true  # Enable submodule checkout
+      doxygen_config: "Doxyfile"
+      run_link_check: true
+      link_check_paths: "docs/** *.md **/docs/**"
+      jekyll_enabled: true
+      jekyll_source: "docs"
+      jekyll_config: "_config.yml"
+      run_markdown_lint: true
+      markdown_lint_paths: "docs/** *.md"
+      run_spell_check: true
+      spell_check_paths: "docs/** *.md"
+
+  # Link checking for submodule content
+  link-check:
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
+    with:
+      paths: "docs/** *.md **/docs/**"
+      fail_on_errors: true
+      timeout: "30"
+```
+
+---
+
 ## 🎯 Workflow Selection Guide
 
 | Use Case | Recommended Workflow | Key Features |
@@ -244,6 +285,7 @@ jobs:
 | **Production Projects** | Advanced Parallel | Comprehensive checks with parallel execution |
 | **Development** | Development Workflow | Relaxed checks with draft support |
 | **Releases** | Release Workflow | Strict checks with production documentation |
+| **Submodule Projects** | Submodule Documentation | Recursive checkout with comprehensive docs |
 
 ---
 
@@ -272,6 +314,15 @@ strategy:
         std: c++20
       - clang_version: 19
         std: c++17
+```
+
+### **Submodule Configuration**
+```yaml
+# Enable submodule checkout for documentation projects
+checkout_recursive: true
+
+# Only when documentation is in submodules
+# Disable for performance if not needed
 ```
 
 ### **Caching**
