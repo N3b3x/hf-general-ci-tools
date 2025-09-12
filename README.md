@@ -244,7 +244,7 @@ your-awesome-project/
 
 ---
 
-> **🧪 [Test 404 Page](nonexistent-page)** - Click this link to test our custom 404 page!
+> **🧪 [Test 404 Page](nonexistent-page)** - (on live documentation) Click this link to test our custom 404 page!
 
 **⭐ Star this repository if you find it helpful!**
 
