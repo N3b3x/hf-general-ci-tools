@@ -13,6 +13,7 @@ Complete guide to configuring Jekyll with the enhanced documentation workflow, i
 ## 📋 Table of Contents
 
 - [Quick Start](#quick-start)
+- [Configuration Validation](#-configuration-validation)
 - [Configuration Files](#configuration-files)
 - [Environment vs Configuration](#environment-vs-configuration)
 - [CI Optimization](#ci-optimization)
@@ -53,6 +54,105 @@ jekyll_environment: "development"
 jekyll_config: "_config.yml,_config_staging.yml"
 jekyll_environment: "staging"
 ```
+
+## 🔍 Configuration Validation
+
+### Built-in Validation Features
+
+The workflow includes comprehensive Jekyll configuration validation that automatically:
+
+- **Validates YAML syntax** in all configuration files
+- **Checks directory structure** based on your `_config.yml` settings
+- **Verifies file locations** relative to configuration file location
+- **Reports configuration issues** with helpful warnings
+
+### How Validation Works
+
+#### 1. **Smart Directory Detection**
+The validation reads your `_config.yml` to determine where directories should be located:
+
+```yaml
+# Your _config.yml specifies custom locations
+layouts_dir: docs/_layouts
+includes_dir: docs/_includes
+sass:
+  sass_dir: docs/_sass
+```
+
+**Validation Logic:**
+- ✅ Checks `docs/_layouts` (from config) → Found!
+- ✅ Checks `docs/_includes` (from config) → Found!
+- ⚠️ Checks `docs/_sass` (from config) → Not found (using theme defaults)
+
+#### 2. **File Location Validation**
+Files are checked relative to where your `_config.yml` is located:
+
+```yaml
+# If _config.yml is in docs/ directory
+# Files are checked in docs/ directory, not root
+```
+
+**Example Output:**
+```
+🔍 Validating Jekyll configuration...
+✅ Validating config file: docs/_config.yml
+  ✅ YAML syntax is valid
+✅ Found layouts directory: docs/_layouts
+✅ Found includes directory: docs/_includes
+⚠️  Directory not found: docs/_sass (may be using theme defaults)
+✅ Found file: index.md
+✅ Found file: 404.html
+✅ Found file: robots.txt
+⚠️  File not found: index.html (optional but recommended)
+✅ Jekyll configuration validation completed
+```
+
+#### 3. **Configuration Warnings**
+The validation catches common configuration issues:
+
+- **Trailing slashes** in `baseurl` or `url` (should not end with `/`)
+- **Missing required directories** (with fallback to theme defaults)
+- **YAML syntax errors** (with specific line numbers)
+
+### Validation Best Practices
+
+#### ✅ **Do This:**
+```yaml
+# Correct baseurl (no trailing slash)
+baseurl: "/my-project"
+
+# Correct url (no trailing slash)  
+url: "https://username.github.io"
+
+# Specify custom directory locations
+layouts_dir: docs/_layouts
+includes_dir: docs/_includes
+```
+
+#### ❌ **Avoid This:**
+```yaml
+# Incorrect - trailing slashes
+baseurl: "/my-project/"
+url: "https://username.github.io/"
+
+# Don't worry about missing directories if using theme defaults
+# The validation will correctly report this
+```
+
+### Troubleshooting Validation Issues
+
+#### **False Warnings About Missing Directories**
+If you see warnings about missing `_layouts`, `_includes`, or `_sass` directories:
+
+1. **Check your `_config.yml`** - Are custom paths specified?
+2. **Verify directory locations** - Do they exist where specified?
+3. **Theme defaults** - Missing directories are fine if using theme defaults
+
+#### **File Not Found Warnings**
+Common files (`index.md`, `404.html`, `robots.txt`) are checked in the same directory as your `_config.yml`:
+
+- If `_config.yml` is in `docs/`, files are checked in `docs/`
+- If `_config.yml` is in root, files are checked in root
 
 ## 📁 Configuration Files
 

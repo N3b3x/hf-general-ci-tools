@@ -308,6 +308,7 @@ highlighter: rouge
 - Enhanced navigation and presentation
 - Support for custom layouts and includes
 - Automatic baseurl configuration for GitHub Pages
+- **Smart configuration validation** with directory-aware checking
 
 **Advanced Jekyll Configuration:**
 
@@ -356,6 +357,43 @@ jobs:
       verbose: false                    # Verbose output
       # Uses lycheeverse/lychee-action@v2 for advanced link checking
 ```
+
+### 🔍 Jekyll Configuration Validation
+
+The workflow includes intelligent Jekyll configuration validation that:
+
+#### **Smart Directory Detection**
+- Reads your `_config.yml` to determine custom directory locations
+- Checks directories where they're actually configured (e.g., `docs/_layouts`)
+- Falls back to standard locations if custom paths aren't specified
+- Reports missing directories as "may be using theme defaults"
+
+#### **File Location Validation**
+- Checks common files (`index.md`, `404.html`, `robots.txt`) relative to your config file location
+- If `_config.yml` is in `docs/`, files are checked in `docs/` directory
+- Prevents false warnings about missing files in wrong locations
+
+#### **Configuration Warnings**
+- Detects trailing slashes in `baseurl` and `url` (should be avoided)
+- Validates YAML syntax with specific error reporting
+- Provides helpful guidance for common configuration issues
+
+**Example Validation Output:**
+```
+🔍 Validating Jekyll configuration...
+✅ Validating config file: docs/_config.yml
+  ✅ YAML syntax is valid
+✅ Found layouts directory: docs/_layouts
+✅ Found includes directory: docs/_includes
+⚠️  Directory not found: docs/_sass (may be using theme defaults)
+✅ Found file: index.md
+✅ Found file: 404.html
+✅ Found file: robots.txt
+⚠️  File not found: index.html (optional but recommended)
+✅ Jekyll configuration validation completed
+```
+
+For detailed validation guidance, see the [Jekyll Configuration Guide](jekyll-guide.md#-configuration-validation).
 
 ### GitHub Pages Setup
 
@@ -416,6 +454,13 @@ docs.yourproject.com
 - Check source directories exist (`src/`, `include/`)
 - Ensure Graphviz is installed (handled automatically)
 - Verify `doxygen_config` path is correct
+
+**Jekyll Configuration Validation Issues**
+
+- **False warnings about missing directories**: Check if your `_config.yml` specifies custom directory locations (e.g., `layouts_dir: docs/_layouts`)
+- **Files not found warnings**: Ensure common files (`index.md`, `404.html`, `robots.txt`) are in the same directory as your `_config.yml`
+- **Trailing slash warnings**: Remove trailing slashes from `baseurl` and `url` in your configuration
+- **YAML syntax errors**: Use online YAML validators or `yq` to check syntax
 
 **GitHub Pages Not Deploying**
 - Check repository permissions

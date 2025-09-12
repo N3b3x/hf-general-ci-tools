@@ -14,12 +14,11 @@ author:
   url: "https://github.com/n3b3x"
 
 # Directory configuration
-_layouts:
-  layouts_dir: docs/_layouts
-_includes:
-  includes_dir: docs/_includes
+layouts_dir: docs/_layouts
+includes_dir: docs/_includes
 sass:
   sass_dir: docs/_sass
+
 
 # Theme and plugins
 remote_theme: just-the-docs/just-the-docs

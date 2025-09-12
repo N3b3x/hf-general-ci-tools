@@ -329,11 +329,11 @@ jobs:
               fi
 
               # Check for common configuration issues
-              if grep -q "baseurl.*/" "$JEKYLL_SOURCE/$config_file"; then
+              if grep -q "baseurl.*/$" "$JEKYLL_SOURCE/$config_file"; then
                 echo "  ⚠️  Warning: baseurl should not end with '/' in $config_file"
               fi
 
-              if grep -q "url.*/" "$JEKYLL_SOURCE/$config_file"; then
+              if grep -q "url.*/$" "$JEKYLL_SOURCE/$config_file"; then
                 echo "  ⚠️  Warning: url should not end with '/' in $config_file"
               fi
 
@@ -342,23 +342,52 @@ jobs:
             fi
           done
 
-          # Check for required directories
-          REQUIRED_DIRS=("_layouts" "_includes" "_sass")
-          for dir in "${REQUIRED_DIRS[@]}"; do
-            if [ -d "$JEKYLL_SOURCE/$dir" ]; then
-              echo "✅ Found directory: $dir"
-            else
-              echo "⚠️  Directory not found: $dir (may be using theme defaults)"
-            fi
-          done
+          # Check for required directories based on config
+          # Read directory paths from _config.yml
+          LAYOUTS_DIR=$(grep -E "^layouts_dir:" "$JEKYLL_SOURCE/$config_file" | sed 's/.*: *//' | tr -d ' ')
+          INCLUDES_DIR=$(grep -E "^includes_dir:" "$JEKYLL_SOURCE/$config_file" | sed 's/.*: *//' | tr -d ' ')
+          SASS_DIR=$(grep -E "^sass:" -A 1 "$JEKYLL_SOURCE/$config_file" | grep -E "sass_dir:" | sed 's/.*: *//' | tr -d ' ')
+          
+          # Check layouts directory
+          if [ -n "$LAYOUTS_DIR" ] && [ -d "$JEKYLL_SOURCE/$LAYOUTS_DIR" ]; then
+            echo "✅ Found layouts directory: $LAYOUTS_DIR"
+          elif [ -d "$JEKYLL_SOURCE/_layouts" ]; then
+            echo "✅ Found layouts directory: _layouts"
+          else
+            echo "⚠️  Directory not found: _layouts (may be using theme defaults)"
+          fi
+          
+          # Check includes directory
+          if [ -n "$INCLUDES_DIR" ] && [ -d "$JEKYLL_SOURCE/$INCLUDES_DIR" ]; then
+            echo "✅ Found includes directory: $INCLUDES_DIR"
+          elif [ -d "$JEKYLL_SOURCE/_includes" ]; then
+            echo "✅ Found includes directory: _includes"
+          else
+            echo "⚠️  Directory not found: _includes (may be using theme defaults)"
+          fi
+          
+          # Check sass directory
+          if [ -n "$SASS_DIR" ] && [ -d "$JEKYLL_SOURCE/$SASS_DIR" ]; then
+            echo "✅ Found sass directory: $SASS_DIR"
+          elif [ -d "$JEKYLL_SOURCE/_sass" ]; then
+            echo "✅ Found sass directory: _sass"
+          else
+            echo "⚠️  Directory not found: _sass (may be using theme defaults)"
+          fi
 
-          # Check for common files
+          # Check for common files in the same directory as the config file
           COMMON_FILES=("index.md" "index.html" "404.html" "robots.txt")
           for file in "${COMMON_FILES[@]}"; do
-            if [ -f "$JEKYLL_SOURCE/$file" ]; then
-              echo "✅ Found file: $file"
+            if [ -f "$JEKYLL_SOURCE/$config_file" ]; then
+              # Get the directory containing the config file
+              CONFIG_DIR=$(dirname "$JEKYLL_SOURCE/$config_file")
+              if [ -f "$CONFIG_DIR/$file" ]; then
+                echo "✅ Found file: $file"
+              else
+                echo "⚠️  File not found: $file (optional but recommended)"
+              fi
             else
-              echo "⚠️  File not found: $file (optional but recommended)"
+              echo "⚠️  Config file not found, cannot determine file locations"
             fi
           done
 
