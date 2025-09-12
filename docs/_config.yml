@@ -16,8 +16,8 @@ author:
 # Directory configuration
 layouts_dir: docs/_layouts
 includes_dir: docs/_includes
-sass:
-  sass_dir: docs/_sass
+# sass:
+#   sass_dir: docs/_sass
 
 
 # Theme and plugins
