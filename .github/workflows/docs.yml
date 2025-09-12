@@ -346,8 +346,9 @@ jobs:
           # Read directory paths from _config.yml
           LAYOUTS_DIR=$(grep -E "^layouts_dir:" "$JEKYLL_SOURCE/$config_file" | sed 's/.*: *//' | tr -d ' ')
           INCLUDES_DIR=$(grep -E "^includes_dir:" "$JEKYLL_SOURCE/$config_file" | sed 's/.*: *//' | tr -d ' ')
-          SASS_DIR=$(grep -E "^sass:" -A 1 "$JEKYLL_SOURCE/$config_file" | grep -E "sass_dir:" | sed 's/.*: *//' | tr -d ' ')
-          
+          SASS_DIR=$(grep -E "^sass:" -A 1 "$JEKYLL_SOURCE/$config_file" | \
+            grep -E "sass_dir:" | sed 's/.*: *//' | tr -d ' ')
+
           # Check layouts directory
           if [ -n "$LAYOUTS_DIR" ] && [ -d "$JEKYLL_SOURCE/$LAYOUTS_DIR" ]; then
             echo "✅ Found layouts directory: $LAYOUTS_DIR"
@@ -356,7 +357,7 @@ jobs:
           else
             echo "⚠️  Directory not found: _layouts (may be using theme defaults)"
           fi
-          
+
           # Check includes directory
           if [ -n "$INCLUDES_DIR" ] && [ -d "$JEKYLL_SOURCE/$INCLUDES_DIR" ]; then
             echo "✅ Found includes directory: $INCLUDES_DIR"
@@ -365,7 +366,7 @@ jobs:
           else
             echo "⚠️  Directory not found: _includes (may be using theme defaults)"
           fi
-          
+
           # Check sass directory
           if [ -n "$SASS_DIR" ] && [ -d "$JEKYLL_SOURCE/$SASS_DIR" ]; then
             echo "✅ Found sass directory: $SASS_DIR"

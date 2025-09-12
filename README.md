@@ -14,7 +14,7 @@ permalink: /
 
 [![Publish Docs](https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/publish-docs.yml/badge.svg)](https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/publish-docs.yml)
 [![YAML Lint](https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/yamllint.yml/badge.svg)](https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/yamllint.yml)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-GPL%20v3-blue.svg)](LICENSE)
 [![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg)](https://n3b3x.github.io/hf-general-ci-tools)
 
 *Streamline your development workflow with battle-tested, production-ready GitHub Actions*
@@ -238,7 +238,7 @@ your-awesome-project/
 
 ## 📄 License
 
-**MIT License** - See the [LICENSE](LICENSE) file for details
+**GNU General Public License v3.0** - See the [LICENSE](LICENSE) file for details
 
 *Free for personal and commercial use*
 

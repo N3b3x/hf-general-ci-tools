@@ -1,3 +1,4 @@
+---
 # Jekyll Development Configuration
 # This file contains development-specific settings for local testing
 # Usage: jekyll build --config _config.yml,_config_dev.yml
@@ -51,7 +52,10 @@ social:
     - "http://localhost:4000/hf-general-ci-tools"
 
 # Development-specific footer
-footer_content: "Development Build • Built with ❤️ using <a href='https://just-the-docs.github.io/just-the-docs/'>Just the Docs</a> • <a href='https://github.com/n3b3x/hf-general-ci-tools/blob/main/LICENSE'>MIT License</a> • <a href='https://github.com/n3b3x/hf-general-ci-tools'>View on GitHub</a>"
+footer_content: >
+  Development Build • Built with ❤️ using <a href='https://just-the-docs.github.io/just-the-docs/'>Just the Docs</a> •
+  <a href='https://github.com/n3b3x/hf-general-ci-tools/blob/main/LICENSE'>GPL v3 License</a> •
+  <a href='https://github.com/n3b3x/hf-general-ci-tools'>View on GitHub</a>
 
 # Development-specific SEO settings
 seo:

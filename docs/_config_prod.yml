@@ -1,3 +1,4 @@
+---
 # Jekyll Production Configuration
 # This file contains production-specific settings that override the base configuration
 # Usage: jekyll build --config _config.yml,_config_prod.yml
@@ -21,7 +22,9 @@ compress_html:
 seo:
   type: "Organization"
   name: "hf-general-ci-tools"
-  description: "Reusable GitHub Actions workflows for CI/CD tasks including C/C++ linting, static analysis, documentation generation, and link checking"
+  description: >
+    Reusable GitHub Actions workflows for CI/CD tasks including C/C++ linting,
+    static analysis, documentation generation, and link checking
   url: "https://n3b3x.github.io/hf-general-ci-tools"
   twitter:
     card: "summary_large_image"
@@ -38,7 +41,10 @@ social:
     - "https://github.com/n3b3x"
 
 # Production-specific footer
-footer_content: "Built with ❤️ using <a href='https://just-the-docs.github.io/just-the-docs/'>Just the Docs</a> • <a href='https://github.com/n3b3x/hf-general-ci-tools/blob/main/LICENSE'>MIT License</a> • <a href='https://github.com/n3b3x/hf-general-ci-tools'>View on GitHub</a>"
+footer_content: >
+  Built with ❤️ using <a href='https://just-the-docs.github.io/just-the-docs/'>Just the Docs</a> •
+  <a href='https://github.com/n3b3x/hf-general-ci-tools/blob/main/LICENSE'>GPL v3 License</a> •
+  <a href='https://github.com/n3b3x/hf-general-ci-tools'>View on GitHub</a>
 
 # Production-specific performance settings (CI-optimized)
 incremental: false  # Disable incremental builds for production (prevents stale content)

@@ -155,7 +155,7 @@ for details.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/n3b3x/hf-general-ci-tools/blob/main/LICENSE)
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](https://github.com/n3b3x/hf-general-ci-tools/blob/main/LICENSE)
 file for details.
 
 ## 🙏 Acknowledgments
