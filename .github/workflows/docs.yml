@@ -758,6 +758,32 @@ jobs:
             echo "📁 Build output contents:"
             ls -la "$JEKYLL_DEST"
 
+            # Show Doxygen API integration details if Doxygen was enabled
+            if [ "${{ steps.doxygen-check.outputs.doxygen_needed }}" == "true" ]; then
+              echo ""
+              echo "📚 Doxygen API Integration:"
+              if [ -d "$JEKYLL_DEST/api" ]; then
+                echo "  ✅ API directory found: $JEKYLL_DEST/api"
+                echo "  📁 API directory contents:"
+                ls -la "$JEKYLL_DEST/api"
+                echo ""
+                echo "  📊 API Statistics:"
+                echo "    API files: $(find "$JEKYLL_DEST/api" -type f | wc -l)"
+                echo "    API size: $(du -sh "$JEKYLL_DEST/api" | cut -f1)"
+                echo "    API HTML files: $(find "$JEKYLL_DEST/api" -name "*.html" | wc -l)"
+                echo "    API CSS files: $(find "$JEKYLL_DEST/api" -name "*.css" | wc -l)"
+                echo "    API JS files: $(find "$JEKYLL_DEST/api" -name "*.js" | wc -l)"
+                echo ""
+                echo "  🌐 Access URLs:"
+                echo "    Local: http://localhost:4000/api/"
+                echo "    GitHub Pages: https://yoursite.github.io/api/"
+                echo "    Jekyll reference: {{ site.baseurl }}/api/"
+              else
+                echo "  ⚠️  API directory not found: $JEKYLL_DEST/api"
+                echo "  This may indicate an issue with Doxygen staging"
+              fi
+            fi
+
             # Show build statistics
             echo ""
             echo "📊 Build Statistics:"
