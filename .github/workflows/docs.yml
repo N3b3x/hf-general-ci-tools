@@ -241,16 +241,6 @@ jobs:
       # =============================================================================
       # Doxygen Dependencies Installation
       # =============================================================================
-      - name: Cache system dependencies
-        if: steps.doxygen-check.outputs.doxygen_needed == 'true'
-        uses: actions/cache@v4
-        with:
-          path: /var/cache/apt
-          key: ${{ runner.os }}-apt-deps-${{ env.CACHE_VERSION }}-${{ hashFiles(inputs.doxygen_config) }}
-          restore-keys: |
-            ${{ runner.os }}-apt-deps-${{ env.CACHE_VERSION }}-
-            ${{ runner.os }}-apt-deps-
-
       - name: Install Doxygen (pinned version)
         if: steps.doxygen-check.outputs.doxygen_needed == 'true'
         uses: ssciwr/doxygen-install@v1
