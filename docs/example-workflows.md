@@ -20,7 +20,7 @@ Each workflow is designed for different use cases and can be customized to fit y
 ### **Key Features**
 - 🔄 **Parallel Execution** - Multiple jobs run simultaneously for maximum efficiency
 - 🛡️ **Comprehensive Coverage** - Lint, static analysis, documentation, and link checking
-- 📊 **Smart Caching** - Optimized for fast builds and minimal resource usage
+- 📊 **Smart Caching** - Optimized dependency installation with built-in caching
 - 🎯 **General Purpose** - Designed for C/C++ projects with documentation
 
 ---
@@ -327,7 +327,11 @@ checkout_recursive: true
 
 ### **Caching**
 ```yaml
-- name: Cache dependencies
+# Note: The reusable workflows handle their own optimized caching
+# No additional caching needed for Doxygen/Graphviz dependencies
+
+# For custom dependencies, you can still add caching:
+- name: Cache custom dependencies
   uses: actions/cache@v3
   with:
     path: |

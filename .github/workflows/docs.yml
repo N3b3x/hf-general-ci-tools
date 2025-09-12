@@ -3,7 +3,7 @@
 #
 # Optimized workflow with:
 # - Conditional installation of doxygen/graphviz only when Doxyfile exists
-# - Comprehensive caching for system dependencies, Node.js packages, and Ruby gems
+# - Optimized dependency installation with built-in caching
 # - Reduced redundant steps and improved performance
 # - Smart dependency management based on actual requirements
 name: Documentation Workflow (Reusable)
