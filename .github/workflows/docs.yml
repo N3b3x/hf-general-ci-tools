@@ -257,11 +257,21 @@ jobs:
         with:
           version: '1.10.0'
 
-      - name: Install Graphviz
+      - name: Check for pre-installed Graphviz
         if: steps.doxygen-check.outputs.doxygen_needed == 'true'
+        id: graphviz-check
         run: |
-          sudo apt-get update
-          sudo apt-get install -y graphviz
+          if command -v dot >/dev/null 2>&1; then
+            echo "graphviz_available=true" >> $GITHUB_OUTPUT
+            echo "✅ Graphviz pre-installed: $(dot -V 2>&1 | head -1)"
+          else
+            echo "graphviz_available=false" >> $GITHUB_OUTPUT
+            echo "⚠️  Graphviz not pre-installed, will install via action"
+          fi
+
+      - name: Install Graphviz (Optimized)
+        if: steps.doxygen-check.outputs.doxygen_needed == 'true' && steps.graphviz-check.outputs.graphviz_available == 'false'
+        uses: tlylt/install-graphviz@v1
 
       # =============================================================================
       # Language Runtime Setup
