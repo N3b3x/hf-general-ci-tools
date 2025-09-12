@@ -457,8 +457,10 @@ docs.yourproject.com
 
 **Jekyll Configuration Validation Issues**
 
-- **False warnings about missing directories**: Check if your `_config.yml` specifies custom directory locations (e.g., `layouts_dir: docs/_layouts`)
-- **Files not found warnings**: Ensure common files (`index.md`, `404.html`, `robots.txt`) are in the same directory as your `_config.yml`
+- **False warnings about missing directories**: Check if your `_config.yml` specifies custom directory
+  locations (e.g., `layouts_dir: docs/_layouts`)
+- **Files not found warnings**: Ensure common files (`index.md`, `404.html`, `robots.txt`) are in the
+  same directory as your `_config.yml`
 - **Trailing slash warnings**: Remove trailing slashes from `baseurl` and `url` in your configuration
 - **YAML syntax errors**: Use online YAML validators or `yq` to check syntax
 
