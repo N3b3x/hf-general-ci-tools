@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hf-general-ci-tools Documentation</title>
+    <meta http-equiv="refresh" content="0; url=/latest/">
+    <link rel="canonical" href="/latest/">
+    
+    <!-- Fallback for users with JavaScript disabled -->
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        .redirect-message {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .version-links {
+            margin-top: 20px;
+        }
+        .version-links a {
+            display: inline-block;
+            margin: 5px 10px 5px 0;
+            padding: 8px 16px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .version-links a:hover {
+            background: #0056b3;
+        }
+        .loading {
+            text-align: center;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚀 hf-general-ci-tools Documentation</h1>
+    
+    <div class="redirect-message">
+        <p><strong>Redirecting to latest documentation...</strong></p>
+        <p>If you are not redirected automatically, <a href="/latest/">click here</a>.</p>
+    </div>
+    
+    <div class="loading" id="loading">
+        <p>Loading available versions...</p>
+    </div>
+    
+    <div class="version-links" id="version-links" style="display: none;">
+        <h3>Available Versions:</h3>
+        <a href="/latest/">Latest (main branch)</a>
+        <!-- Versions will be populated by JavaScript -->
+    </div>
+    
+    <script>
+        // Load and display available versions
+        fetch('/versions.json')
+            .then(response => response.json())
+            .then(versions => {
+                const versionLinks = document.getElementById('version-links');
+                const loading = document.getElementById('loading');
+                
+                // Add version links
+                versions.sort().reverse().forEach(version => {
+                    const link = document.createElement('a');
+                    link.href = `/${version}/`;
+                    link.textContent = `v${version}`;
+                    versionLinks.appendChild(link);
+                });
+                
+                // Show version links and hide loading
+                versionLinks.style.display = 'block';
+                loading.style.display = 'none';
+            })
+            .catch(error => {
+                console.warn('Could not load versions:', error);
+                document.getElementById('loading').innerHTML = '<p>Unable to load version list. <a href="/latest/">Go to latest documentation</a></p>';
+            });
+    </script>
+</body>
+</html>

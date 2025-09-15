@@ -1,0 +1,1619 @@
+{"0": {
+    "doc": "🚀 hf-general-ci-tools",
+    "title": "🚀 hf-general-ci-tools",
+    "content": "A comprehensive collection of reusable GitHub Actions workflows for modern CI/CD pipelines . Streamline your development workflow with battle-tested, production-ready GitHub Actions . ",
+    "url": "/",
+    
+    "relUrl": "/"
+  },"1": {
+    "doc": "🚀 hf-general-ci-tools",
+    "title": "📋 Overview",
+    "content": "This repository provides a curated set of reusable GitHub Actions workflows designed to accelerate your CI/CD pipeline setup. Whether you’re working on C/C++ projects, documentation, or need comprehensive quality checks, these workflows have you covered. 📖 📚🌐 Live Complete Documentation - Interactive guides, examples, and step-by-step tutorials . ",
+    "url": "/#-overview",
+    
+    "relUrl": "/#-overview"
+  },"2": {
+    "doc": "🚀 hf-general-ci-tools",
+    "title": "✨ Key Features",
+    "content": ". | 🔧 C/C++ Development - Linting, static analysis, and code quality | 📚 Documentation - Doxygen generation and GitHub Pages deployment | 🔗 Link Validation - Comprehensive link checking for documentation | 📝 YAML Validation - Ensure your workflow files are properly formatted | 🎯 Production Ready - Battle-tested workflows used in real projects | ⚙️ Highly Configurable - Extensive customization options | 🚀 Easy Integration - Drop-in workflows for immediate use | . ",
+    "url": "/#-key-features",
+    
+    "relUrl": "/#-key-features"
+  },"3": {
+    "doc": "🚀 hf-general-ci-tools",
+    "title": "🔄 Reusable Workflows",
+    "content": "For other repositories - These workflows are designed to be called from your own repositories . | Workflow | Description | Features | Quick Start | . | 🔧 C/C++ Lint | Code quality and formatting checks | • clang-format• clang-tidy• Configurable rules | → Use Now | . | 🛡️ Static Analysis | Security and bug detection | • cppcheck integration• Custom rules• Multiple standards | → Use Now | . | 📚 Documentation | Documentation generation &amp; deployment | • Doxygen support• Jekyll sites• GitHub Pages | → Use Now | . | 🔗 Link Check | Documentation link validation | • Lychee integration• Custom configs• Exclude patterns | → Use Now | . | 📝 YAML Lint | YAML file validation | • Syntax checking• Style validation• Custom rules | → Use Now | . ",
+    "url": "/#-reusable-workflows",
+    
+    "relUrl": "/#-reusable-workflows"
+  },"4": {
+    "doc": "🚀 hf-general-ci-tools",
+    "title": "🏠 Repository-Specific Workflows",
+    "content": "Internal workflows - These are used by this repository itself . | Workflow | Purpose | Trigger | Status | . | 📚 Publish Documentation | Builds and deploys this repo’s documentation site | Push to main, PRs | ✅ Active | . | 📝 YAML Lint | Validates YAML syntax in this repository | Push, PRs | ✅ Active | . ",
+    "url": "/#-repository-specific-workflows",
+    
+    "relUrl": "/#-repository-specific-workflows"
+  },"5": {
+    "doc": "🚀 hf-general-ci-tools",
+    "title": "📚 Documentation",
+    "content": "🌐 Live Documentation Site Published documentation with enhanced navigation and search . ",
+    "url": "/#-documentation",
+    
+    "relUrl": "/#-documentation"
+  },"6": {
+    "doc": "🚀 hf-general-ci-tools",
+    "title": "📖 Available Guides",
+    "content": "| Guide | Description | Target Audience | . | 📋 Documentation Index | Complete overview and navigation | All users | . | 🔧 C/C++ Lint Guide | Code quality and formatting setup | C/C++ developers | . | 🛡️ Static Analysis Guide | Security analysis configuration | Security-focused teams | . | 📚 Documentation Guide | Documentation generation &amp; deployment | Documentation teams | . | 🔗 Link Check Guide | Link validation setup | Documentation maintainers | . | 📝 YAML Lint Guide | YAML validation configuration | DevOps engineers | . | 💡 Example Workflows | Complete workflow examples | All users | . ",
+    "url": "/#-available-guides",
+    
+    "relUrl": "/#-available-guides"
+  },"7": {
+    "doc": "🚀 hf-general-ci-tools",
+    "title": "🚀 Quick Start",
+    "content": "📚 View Complete Documentation - Interactive guides, examples, and configuration templates . ",
+    "url": "/#-quick-start",
+    
+    "relUrl": "/#-quick-start"
+  },"8": {
+    "doc": "🚀 hf-general-ci-tools",
+    "title": "🎯 Using Reusable Workflows",
+    "content": "For other repositories - Copy and customize these examples for your project . 🔧 Basic CI Pipeline . | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 . | name: 🚀 CI Pipeline on: push: { branches: [ main ] } pull_request: { branches: [ main ] } jobs: # Code quality checks lint: uses: n3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1 with: clang_version: \"20\" style: \"file\" extensions: \"c,cpp,h,hpp\" # Security analysis static: uses: n3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1 with: paths: \"src include\" std: \"c++17\" strict: false # Documentation generation docs: uses: n3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: \"Doxyfile\" output_dir: \"docs/doxygen/html\" # Link validation link-check: uses: n3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: paths: \"docs/**,*.md\" . | . 🎨 Individual Workflow Examples . 🔧 C/C++ Linting Only ```yaml name: Code Quality on: [push, pull_request] jobs: lint: uses: n3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1 with: source_dirs: \"src/\" include_patterns: \"*.cpp,*.hpp,*.c,*.h\" clang_version: \"20\" style: \"file\" ``` 📚 Documentation Only ```yaml name: Build Docs on: [push] jobs: docs: uses: n3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: jekyll_enabled: true jekyll_source: \"docs\" deploy_pages: true run_link_check: true ``` 🔗 Link Checking Only ```yaml name: Check Links on: [push, pull_request] jobs: link-check: uses: n3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: paths: \"docs/**,*.md\" verbose: true timeout: \"30\" ``` . ",
+    "url": "/#-using-reusable-workflows",
+    
+    "relUrl": "/#-using-reusable-workflows"
+  },"9": {
+    "doc": "🚀 hf-general-ci-tools",
+    "title": "📋 Prerequisites",
+    "content": " ",
+    "url": "/#-prerequisites",
+    
+    "relUrl": "/#-prerequisites"
+  },"10": {
+    "doc": "🚀 hf-general-ci-tools",
+    "title": "✅ Required Setup",
+    "content": "| Requirement | Description | Example | . | GitHub Actions | Enabled in your repository | Repository Settings → Actions | . | Project Structure | Proper C/C++ project layout | src/, include/, docs/ | . | Configuration Files | Tool-specific configs | .clang-format, Doxyfile | . ",
+    "url": "/#-required-setup",
+    
+    "relUrl": "/#-required-setup"
+  },"11": {
+    "doc": "🚀 hf-general-ci-tools",
+    "title": "🏗️ Recommended Project Structure",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 . | your-awesome-project/ ├── .github/workflows/ # Your CI workflows │ └── ci.yml # Main CI pipeline ├── src/ # Source code │ ├── main.cpp │ └── utils/ ├── include/ # Header files │ └── utils.h ├── docs/ # Documentation │ ├── index.md │ └── api/ ├── .clang-format # Code style configuration ├── .clang-tidy # Static analysis configuration ├── Doxyfile # Documentation configuration ├── .yamllint # YAML linting configuration └── README.md # Project documentation . | . ",
+    "url": "/#%EF%B8%8F-recommended-project-structure",
+    
+    "relUrl": "/#️-recommended-project-structure"
+  },"12": {
+    "doc": "🚀 hf-general-ci-tools",
+    "title": "🔗 Related Resources",
+    "content": " ",
+    "url": "/#-related-resources",
+    
+    "relUrl": "/#-related-resources"
+  },"13": {
+    "doc": "🚀 hf-general-ci-tools",
+    "title": "📚 Official Documentation",
+    "content": "| Tool | Documentation | Purpose | . | GitHub Actions | Official GitHub Actions docs | Workflow syntax and features | . | Clang Format | Code formatting tool | Style configuration | . | Cppcheck | Static analysis tool | Bug and security detection | . | Doxygen | Documentation generator | API documentation | . | Jekyll | Static site generator | Documentation websites | . ",
+    "url": "/#-official-documentation",
+    
+    "relUrl": "/#-official-documentation"
+  },"14": {
+    "doc": "🚀 hf-general-ci-tools",
+    "title": "🛠️ Configuration Examples",
+    "content": ". | Configuration Examples - Ready-to-use config files | Example Workflows - Complete workflow examples | . ",
+    "url": "/#%EF%B8%8F-configuration-examples",
+    
+    "relUrl": "/#️-configuration-examples"
+  },"15": {
+    "doc": "🚀 hf-general-ci-tools",
+    "title": "📄 License",
+    "content": "GNU General Public License v3.0 - See the LICENSE file for details . Free for personal and commercial use . 🧪 Test 404 Page - (on live documentation) Click this link to test our custom 404 page! . ⭐ Star this repository if you find it helpful! . Report Bug • Request Feature • Contribute . ",
+    "url": "/#-license",
+    
+    "relUrl": "/#-license"
+  },"16": {
+    "doc": "🔧 C/C++ Lint Workflow",
+    "title": "C/C++ Lint Workflow Guide",
+    "content": "🔍 C/C++ Code Quality Checks . The C/C++ Lint workflow runs clang-format and clang-tidy using cpp-linter for code quality enforcement. ",
+    "url": "/docs/c-cpp-lint-workflow.html#cc-lint-workflow-guide",
+    
+    "relUrl": "/docs/c-cpp-lint-workflow.html#cc-lint-workflow-guide"
+  },"17": {
+    "doc": "🔧 C/C++ Lint Workflow",
+    "title": "📋 Table of Contents",
+    "content": ". | Overview | Inputs | Outputs | Usage Examples | Linting Behavior | Configuration | Troubleshooting | Related Workflows | . ",
+    "url": "/docs/c-cpp-lint-workflow.html#-table-of-contents",
+    
+    "relUrl": "/docs/c-cpp-lint-workflow.html#-table-of-contents"
+  },"18": {
+    "doc": "🔧 C/C++ Lint Workflow",
+    "title": "🎯 Overview",
+    "content": "Purpose: C/C++ code quality enforcement using cpp-linter-action Key Features: . | clang-format for code style | clang-tidy for static analysis | PR annotations and comments | Configurable file extensions | Configurable exclude paths | Direct integration with cpp-linter/cpp-linter-action@v2 | . Use Case: Code style consistency and quality enforcement . ",
+    "url": "/docs/c-cpp-lint-workflow.html#-overview",
+    
+    "relUrl": "/docs/c-cpp-lint-workflow.html#-overview"
+  },"19": {
+    "doc": "🔧 C/C++ Lint Workflow",
+    "title": "⚙️ Inputs",
+    "content": " ",
+    "url": "/docs/c-cpp-lint-workflow.html#%EF%B8%8F-inputs",
+    
+    "relUrl": "/docs/c-cpp-lint-workflow.html#️-inputs"
+  },"20": {
+    "doc": "🔧 C/C++ Lint Workflow",
+    "title": "🔧 Clang Configuration",
+    "content": "| Input | Type | Required | Default | Description | . | clang_version | string | ❌ | 20 | Clang major version | . | style | string | ❌ | \"file\" | clang-format style (llvm, google, webkit, or ‘file’ to use .clang-format) | . | tidy_checks | string | ❌ | \"\" | clang-tidy checks (comma-separated glob patterns, use - prefix to disable) | . ",
+    "url": "/docs/c-cpp-lint-workflow.html#-clang-configuration",
+    
+    "relUrl": "/docs/c-cpp-lint-workflow.html#-clang-configuration"
+  },"21": {
+    "doc": "🔧 C/C++ Lint Workflow",
+    "title": "📁 File Selection",
+    "content": "| Input | Type | Required | Default | Description | . | extensions | string | ❌ | \"c,cpp,cc,cxx,h,hpp\" | File extensions to check (comma-separated) | . | ignore | string | ❌ | \"build\\|.git\" | Files or directories to exclude from linting (pipe-separated) | . | files_changed_only | boolean | ❌ | false | Only lint files that have been changed in the pull request | . | lines_changed_only | boolean | ❌ | false | Only inspect lines that have changed in the pull request | . ",
+    "url": "/docs/c-cpp-lint-workflow.html#-file-selection",
+    
+    "relUrl": "/docs/c-cpp-lint-workflow.html#-file-selection"
+  },"22": {
+    "doc": "🔧 C/C++ Lint Workflow",
+    "title": "📊 Output Options",
+    "content": "| Input | Type | Required | Default | Description | . | step_summary | boolean | ❌ | true | Add a summary of linting results to the workflow step summary | . | file_annotations | boolean | ❌ | true | Display linting errors and warnings as file annotations in the GitHub UI | . | thread_comments | boolean | ❌ | false | Post a collapsible thread comment in pull requests with linting issues | . ",
+    "url": "/docs/c-cpp-lint-workflow.html#-output-options",
+    
+    "relUrl": "/docs/c-cpp-lint-workflow.html#-output-options"
+  },"23": {
+    "doc": "🔧 C/C++ Lint Workflow",
+    "title": "📤 Outputs",
+    "content": "| Output | Description | . | PR annotations | File-level annotations for style issues | . | PR comments | Summary comments with issue counts | . | Step summary | Workflow step summary with linting results | . ",
+    "url": "/docs/c-cpp-lint-workflow.html#-outputs",
+    
+    "relUrl": "/docs/c-cpp-lint-workflow.html#-outputs"
+  },"24": {
+    "doc": "🔧 C/C++ Lint Workflow",
+    "title": "🚀 Usage Examples",
+    "content": " ",
+    "url": "/docs/c-cpp-lint-workflow.html#-usage-examples",
+    
+    "relUrl": "/docs/c-cpp-lint-workflow.html#-usage-examples"
+  },"25": {
+    "doc": "🔧 C/C++ Lint Workflow",
+    "title": "Basic Usage",
+    "content": "| 1 2 3 4 5 . | jobs: lint: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1 with: clang_version: \"20\" . | . ",
+    "url": "/docs/c-cpp-lint-workflow.html#basic-usage",
+    
+    "relUrl": "/docs/c-cpp-lint-workflow.html#basic-usage"
+  },"26": {
+    "doc": "🔧 C/C++ Lint Workflow",
+    "title": "Custom File Extensions",
+    "content": "| 1 2 3 4 5 6 . | jobs: lint: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1 with: extensions: \"c,cpp,h,hpp,cc,cxx\" clang_version: \"18\" . | . ",
+    "url": "/docs/c-cpp-lint-workflow.html#custom-file-extensions",
+    
+    "relUrl": "/docs/c-cpp-lint-workflow.html#custom-file-extensions"
+  },"27": {
+    "doc": "🔧 C/C++ Lint Workflow",
+    "title": "Custom Exclude Paths",
+    "content": "| 1 2 3 4 5 6 . | jobs: lint: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1 with: ignore: \"build|.git|third_party|vendor|test\" clang_version: \"20\" . | . ",
+    "url": "/docs/c-cpp-lint-workflow.html#custom-exclude-paths",
+    
+    "relUrl": "/docs/c-cpp-lint-workflow.html#custom-exclude-paths"
+  },"28": {
+    "doc": "🔧 C/C++ Lint Workflow",
+    "title": "Advanced Configuration",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 . | jobs: lint: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1 with: clang_version: \"20\" style: \"google\" # Use Google style instead of .clang-format file tidy_checks: \"readability-*,performance-*,modernize-*\" # Specific checks extensions: \"c,cpp,h,hpp\" ignore: \"build|.git|third_party\" files_changed_only: true # Only check changed files in PRs thread_comments: true # Post collapsible thread comments . | . ",
+    "url": "/docs/c-cpp-lint-workflow.html#advanced-configuration",
+    
+    "relUrl": "/docs/c-cpp-lint-workflow.html#advanced-configuration"
+  },"29": {
+    "doc": "🔧 C/C++ Lint Workflow",
+    "title": "Performance Optimized for Large Projects",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 . | jobs: lint: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1 with: clang_version: \"20\" files_changed_only: true # Only lint changed files lines_changed_only: true # Only check changed lines ignore: \"build|.git|third_party|vendor\" # Exclude more directories step_summary: true # Show summary in workflow file_annotations: true # Show inline annotations thread_comments: false # Disable thread comments for performance . | . ",
+    "url": "/docs/c-cpp-lint-workflow.html#performance-optimized-for-large-projects",
+    
+    "relUrl": "/docs/c-cpp-lint-workflow.html#performance-optimized-for-large-projects"
+  },"30": {
+    "doc": "🔧 C/C++ Lint Workflow",
+    "title": "🔧 Linting Behavior",
+    "content": "The workflow provides: . | Code Style Checking: clang-format checks for style violations | Static Analysis: clang-tidy performs static analysis checks | PR Feedback: Annotations and comments on pull requests | Configurable Scope: Control which files and paths are checked | Performance Options: Check only changed files/lines for faster runs | File Annotations: Provides PR annotations for linting issues | . ",
+    "url": "/docs/c-cpp-lint-workflow.html#-linting-behavior",
+    
+    "relUrl": "/docs/c-cpp-lint-workflow.html#-linting-behavior"
+  },"31": {
+    "doc": "🔧 C/C++ Lint Workflow",
+    "title": "⚠️ Important Notes",
+    "content": ". | Permissions Required: The workflow needs pull-requests: write permission for PR comments | File Discovery: The action automatically discovers C/C++ files in your repository | Configuration Files: Uses .clang-format and .clang-tidy files if present | . ",
+    "url": "/docs/c-cpp-lint-workflow.html#%EF%B8%8F-important-notes",
+    
+    "relUrl": "/docs/c-cpp-lint-workflow.html#️-important-notes"
+  },"32": {
+    "doc": "🔧 C/C++ Lint Workflow",
+    "title": "⚙️ Configuration",
+    "content": " ",
+    "url": "/docs/c-cpp-lint-workflow.html#%EF%B8%8F-configuration",
+    
+    "relUrl": "/docs/c-cpp-lint-workflow.html#️-configuration"
+  },"33": {
+    "doc": "🔧 C/C++ Lint Workflow",
+    "title": ".clang-format",
+    "content": "Create a .clang-format file in your project root: . | 1 2 3 4 . | BasedOnStyle: Google IndentWidth: 2 ColumnLimit: 100 AccessModifierOffset: -2 . | . ",
+    "url": "/docs/c-cpp-lint-workflow.html#clang-format",
+    
+    "relUrl": "/docs/c-cpp-lint-workflow.html#clang-format"
+  },"34": {
+    "doc": "🔧 C/C++ Lint Workflow",
+    "title": ".clang-tidy",
+    "content": "Create a .clang-tidy file for static analysis: . | 1 2 3 . | Checks: '*,readability-*,performance-*,modernize-*' WarningsAsErrors: '' HeaderFilterRegex: '' . | . ",
+    "url": "/docs/c-cpp-lint-workflow.html#clang-tidy",
+    
+    "relUrl": "/docs/c-cpp-lint-workflow.html#clang-tidy"
+  },"35": {
+    "doc": "🔧 C/C++ Lint Workflow",
+    "title": "🔧 Troubleshooting",
+    "content": " ",
+    "url": "/docs/c-cpp-lint-workflow.html#-troubleshooting",
+    
+    "relUrl": "/docs/c-cpp-lint-workflow.html#-troubleshooting"
+  },"36": {
+    "doc": "🔧 C/C++ Lint Workflow",
+    "title": "Common Issues",
+    "content": "Style Issues Not Detected . | Verify .clang-format exists and is valid | Check file extensions are included | Ensure paths match your project structure | . Clang Version Issues . | Use supported versions (18, 19, 20) | Check cpp-linter compatibility | . ",
+    "url": "/docs/c-cpp-lint-workflow.html#common-issues",
+    
+    "relUrl": "/docs/c-cpp-lint-workflow.html#common-issues"
+  },"37": {
+    "doc": "🔧 C/C++ Lint Workflow",
+    "title": "📚 Related Workflows",
+    "content": ". | Static Analysis - Security analysis | Documentation - Documentation generation | Link Check - Documentation link validation | . ",
+    "url": "/docs/c-cpp-lint-workflow.html#-related-workflows",
+    
+    "relUrl": "/docs/c-cpp-lint-workflow.html#-related-workflows"
+  },"38": {
+    "doc": "🔧 C/C++ Lint Workflow",
+    "title": "🔗 Related Resources",
+    "content": ". | cpp-linter Action | Clang Format | Clang Tidy | . Next: Static Analysis Workflow → . | 📚 All Documentation | 🏠 Main README | . ",
+    "url": "/docs/c-cpp-lint-workflow.html#-related-resources",
+    
+    "relUrl": "/docs/c-cpp-lint-workflow.html#-related-resources"
+  },"39": {
+    "doc": "🔧 C/C++ Lint Workflow",
+    "title": "🔧 C/C++ Lint Workflow",
+    "content": " ",
+    "url": "/docs/c-cpp-lint-workflow.html",
+    
+    "relUrl": "/docs/c-cpp-lint-workflow.html"
+  },"40": {
+    "doc": "🛡️ Static Analysis Workflow",
+    "title": "Static Analysis Workflow Guide",
+    "content": "🔒 Cppcheck Security Analysis . The Static Analysis workflow runs cppcheck via Docker for comprehensive C/C++ code analysis with configurable strictness. ",
+    "url": "/docs/c-cpp-static-analysis-workflow.html#static-analysis-workflow-guide",
+    
+    "relUrl": "/docs/c-cpp-static-analysis-workflow.html#static-analysis-workflow-guide"
+  },"41": {
+    "doc": "🛡️ Static Analysis Workflow",
+    "title": "📋 Table of Contents",
+    "content": ". | Overview | Inputs | Outputs | Usage Examples | Configuration | Troubleshooting | Related Workflows | . ",
+    "url": "/docs/c-cpp-static-analysis-workflow.html#-table-of-contents",
+    
+    "relUrl": "/docs/c-cpp-static-analysis-workflow.html#-table-of-contents"
+  },"42": {
+    "doc": "🛡️ Static Analysis Workflow",
+    "title": "🎯 Overview",
+    "content": "Purpose: Security and quality analysis with cppcheck Key Features: . | Docker-based cppcheck execution | XML and text output formats | Configurable strictness levels | Artifact storage | . Use Case: Security scanning and bug detection in C/C++ code . ",
+    "url": "/docs/c-cpp-static-analysis-workflow.html#-overview",
+    
+    "relUrl": "/docs/c-cpp-static-analysis-workflow.html#-overview"
+  },"43": {
+    "doc": "🛡️ Static Analysis Workflow",
+    "title": "⚙️ Inputs",
+    "content": " ",
+    "url": "/docs/c-cpp-static-analysis-workflow.html#%EF%B8%8F-inputs",
+    
+    "relUrl": "/docs/c-cpp-static-analysis-workflow.html#️-inputs"
+  },"44": {
+    "doc": "🛡️ Static Analysis Workflow",
+    "title": "📁 Analysis Scope",
+    "content": "| Input | Type | Required | Default | Description | . | paths | string | ❌ | src inc examples | Space-separated directories to analyze | . ",
+    "url": "/docs/c-cpp-static-analysis-workflow.html#-analysis-scope",
+    
+    "relUrl": "/docs/c-cpp-static-analysis-workflow.html#-analysis-scope"
+  },"45": {
+    "doc": "🛡️ Static Analysis Workflow",
+    "title": "⚙️ Analysis Configuration",
+    "content": "| Input | Type | Required | Default | Description | . | std | string | ❌ | c++17 | C++ standard for analysis | . | strict | boolean | ❌ | false | Fail job if issues found | . ",
+    "url": "/docs/c-cpp-static-analysis-workflow.html#%EF%B8%8F-analysis-configuration",
+    
+    "relUrl": "/docs/c-cpp-static-analysis-workflow.html#️-analysis-configuration"
+  },"46": {
+    "doc": "🛡️ Static Analysis Workflow",
+    "title": "📤 Outputs",
+    "content": "| Output | Description | . | cppcheck_report.xml | XML format analysis report | . | cppcheck_output.txt | Human-readable output | . | Artifacts | Uploaded reports for review | . ",
+    "url": "/docs/c-cpp-static-analysis-workflow.html#-outputs",
+    
+    "relUrl": "/docs/c-cpp-static-analysis-workflow.html#-outputs"
+  },"47": {
+    "doc": "🛡️ Static Analysis Workflow",
+    "title": "🚀 Usage Examples",
+    "content": " ",
+    "url": "/docs/c-cpp-static-analysis-workflow.html#-usage-examples",
+    
+    "relUrl": "/docs/c-cpp-static-analysis-workflow.html#-usage-examples"
+  },"48": {
+    "doc": "🛡️ Static Analysis Workflow",
+    "title": "Basic Usage",
+    "content": "| 1 2 3 4 5 6 7 . | jobs: static: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1 with: paths: \"src include\" std: \"c++17\" strict: false . | . ",
+    "url": "/docs/c-cpp-static-analysis-workflow.html#basic-usage",
+    
+    "relUrl": "/docs/c-cpp-static-analysis-workflow.html#basic-usage"
+  },"49": {
+    "doc": "🛡️ Static Analysis Workflow",
+    "title": "Strict Mode",
+    "content": "| 1 2 3 4 5 6 7 . | jobs: static: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1 with: paths: \"src include\" std: \"c++20\" strict: true # Fail on any issues . | . ",
+    "url": "/docs/c-cpp-static-analysis-workflow.html#strict-mode",
+    
+    "relUrl": "/docs/c-cpp-static-analysis-workflow.html#strict-mode"
+  },"50": {
+    "doc": "🛡️ Static Analysis Workflow",
+    "title": "Custom Paths",
+    "content": "| 1 2 3 4 5 6 7 . | jobs: static: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1 with: paths: \"src lib tests\" std: \"c++14\" strict: false . | . ",
+    "url": "/docs/c-cpp-static-analysis-workflow.html#custom-paths",
+    
+    "relUrl": "/docs/c-cpp-static-analysis-workflow.html#custom-paths"
+  },"51": {
+    "doc": "🛡️ Static Analysis Workflow",
+    "title": "⚙️ Configuration",
+    "content": " ",
+    "url": "/docs/c-cpp-static-analysis-workflow.html#%EF%B8%8F-configuration",
+    
+    "relUrl": "/docs/c-cpp-static-analysis-workflow.html#️-configuration"
+  },"52": {
+    "doc": "🛡️ Static Analysis Workflow",
+    "title": "cppcheck Configuration",
+    "content": "The workflow uses these cppcheck options: . | 1 2 3 4 5 6 7 . | cppcheck \\ --enable=warning,style,performance,portability \\ --suppress=missingIncludeSystem \\ --inline-suppr \\ --std=c++17 \\ --xml \\ --output-file=cppcheck_report.xml . | . ",
+    "url": "/docs/c-cpp-static-analysis-workflow.html#cppcheck-configuration",
+    
+    "relUrl": "/docs/c-cpp-static-analysis-workflow.html#cppcheck-configuration"
+  },"53": {
+    "doc": "🛡️ Static Analysis Workflow",
+    "title": "Suppression Files",
+    "content": "Create a .cppcheck-suppressions file for false positives: . | 1 2 3 . | // Suppress specific warnings // unusedFunction:src/legacy.c // missingInclude:src/third_party.h . | . ",
+    "url": "/docs/c-cpp-static-analysis-workflow.html#suppression-files",
+    
+    "relUrl": "/docs/c-cpp-static-analysis-workflow.html#suppression-files"
+  },"54": {
+    "doc": "🛡️ Static Analysis Workflow",
+    "title": "🔧 Troubleshooting",
+    "content": " ",
+    "url": "/docs/c-cpp-static-analysis-workflow.html#-troubleshooting",
+    
+    "relUrl": "/docs/c-cpp-static-analysis-workflow.html#-troubleshooting"
+  },"55": {
+    "doc": "🛡️ Static Analysis Workflow",
+    "title": "Common Issues",
+    "content": "Analysis Fails . | Verify source directories exist | Check Docker is available | Ensure paths are space-separated | . Too Many False Positives . | Use suppression files | Adjust enabled checks | Review cppcheck configuration | . Strict Mode Too Restrictive . | Set strict: false for development | Review issues before enabling strict mode | Use suppressions for known false positives | . ",
+    "url": "/docs/c-cpp-static-analysis-workflow.html#common-issues",
+    
+    "relUrl": "/docs/c-cpp-static-analysis-workflow.html#common-issues"
+  },"56": {
+    "doc": "🛡️ Static Analysis Workflow",
+    "title": "📚 Related Workflows",
+    "content": ". | C/C++ Lint - Code quality checks | Documentation - Documentation generation | Link Check - Documentation link validation | . ",
+    "url": "/docs/c-cpp-static-analysis-workflow.html#-related-workflows",
+    
+    "relUrl": "/docs/c-cpp-static-analysis-workflow.html#-related-workflows"
+  },"57": {
+    "doc": "🛡️ Static Analysis Workflow",
+    "title": "🔗 Related Resources",
+    "content": ". | cppcheck Documentation | cppcheck Docker Image | Static Analysis Best Practices | . | ← Previous: C/C++ Lint Workflow | Next: Documentation Workflow → | . | 📚 All Documentation | 🏠 Main README | . ",
+    "url": "/docs/c-cpp-static-analysis-workflow.html#-related-resources",
+    
+    "relUrl": "/docs/c-cpp-static-analysis-workflow.html#-related-resources"
+  },"58": {
+    "doc": "🛡️ Static Analysis Workflow",
+    "title": "🛡️ Static Analysis Workflow",
+    "content": " ",
+    "url": "/docs/c-cpp-static-analysis-workflow.html",
+    
+    "relUrl": "/docs/c-cpp-static-analysis-workflow.html"
+  },"59": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "🔗 Documentation Link Check Workflow Guide",
+    "content": "🔍 Automated Documentation Link Validation for General Projects . Standalone workflow for checking documentation links and ensuring all references are valid . ",
+    "url": "/docs/docs-link-check-workflow.html#-documentation-link-check-workflow-guide",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#-documentation-link-check-workflow-guide"
+  },"60": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "📋 Overview",
+    "content": "The Link Check Workflow is a standalone reusable workflow that validates all documentation links in your repository. It ensures that all internal and external links are working correctly, preventing broken references in your documentation. ",
+    "url": "/docs/docs-link-check-workflow.html#-overview",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#-overview"
+  },"61": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "Key Features",
+    "content": ". | 🔍 Comprehensive Link Checking - Validates all markdown files and documentation using Lychee | 🌐 External Link Validation - Checks external URLs for accessibility with retry logic | 📁 Internal Link Validation - Verifies internal file references and anchors | ⚡ Fast Processing - Efficient scanning with configurable timeouts and parallel processing | 🎯 Flexible Path Patterns - Customizable file and directory patterns | 📊 Detailed Reporting - Clear error messages and link status with verbose output | 🛡️ Smart Filtering - Excludes private links and mailto addresses by default | 🔄 Retry Logic - Automatic retry for failed links with configurable attempts | . ",
+    "url": "/docs/docs-link-check-workflow.html#key-features",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#key-features"
+  },"62": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "🚀 Quick Start",
+    "content": " ",
+    "url": "/docs/docs-link-check-workflow.html#-quick-start",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#-quick-start"
+  },"63": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "Basic Usage",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 . | name: Check Documentation Links on: push: branches: [main] pull_request: branches: [main] jobs: link-check: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 . | . ",
+    "url": "/docs/docs-link-check-workflow.html#basic-usage",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#basic-usage"
+  },"64": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "Advanced Configuration",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 . | name: Advanced Link Check on: push: branches: [main] pull_request: branches: [main] jobs: link-check: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: paths: \"docs/** *.md **/docs/**\" fail_on_errors: true timeout: \"15\" retry: \"5\" exclude_private: true exclude_mail: true verbose: true . | . ",
+    "url": "/docs/docs-link-check-workflow.html#advanced-configuration",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#advanced-configuration"
+  },"65": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "Using TOML Configuration File",
+    "content": "For advanced configuration, you can use a lychee.toml file: . | 1 2 3 4 5 6 7 8 9 10 11 12 13 . | name: Link Check with TOML Config on: push: branches: [main] jobs: link-check: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: config_file: \"lychee.toml\" paths: \"docs/** *.md\" verbose: true . | . Creating a TOML Config File: . Create a custom configuration file: . | 1 2 . | # Create lychee.toml in your repository root touch lychee.toml . | . Then customize it for your needs. The TOML file allows you to: . | Set default timeouts and retry counts | Exclude specific domains or patterns | Configure HTTP headers and redirects | Enable caching for faster subsequent runs | . ",
+    "url": "/docs/docs-link-check-workflow.html#using-toml-configuration-file",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#using-toml-configuration-file"
+  },"66": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "📖 Input Parameters",
+    "content": " ",
+    "url": "/docs/docs-link-check-workflow.html#-input-parameters",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#-input-parameters"
+  },"67": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "📁 File Selection",
+    "content": "| Parameter | Type | Default | Description | . | checkout_recursive | boolean | false | Checkout submodules recursively (for projects with docs in submodules) | . | paths | string | \"docs/** *.md **/docs/**\" | Space-separated paths to check for broken links | . ",
+    "url": "/docs/docs-link-check-workflow.html#-file-selection",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#-file-selection"
+  },"68": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "⚙️ Link Checking Configuration",
+    "content": "| Parameter | Type | Default | Description | . | timeout | string | \"10\" | Timeout in seconds for each link check | . | retry | string | \"3\" | Number of retries for failed links | . | exclude_private | boolean | true | Exclude private/internal links | . | exclude_mail | boolean | true | Exclude mailto links | . | config_file | string | \"\" | Path to lychee.toml config file (optional) | . ",
+    "url": "/docs/docs-link-check-workflow.html#%EF%B8%8F-link-checking-configuration",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#️-link-checking-configuration"
+  },"69": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "📊 Output Control",
+    "content": "| Parameter | Type | Default | Description | . | fail_on_errors | boolean | true | Fail the workflow if broken links are found | . | verbose | boolean | false | Enable verbose output | . ",
+    "url": "/docs/docs-link-check-workflow.html#-output-control",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#-output-control"
+  },"70": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "Path Patterns",
+    "content": "The paths parameter supports glob patterns: . | docs/** - All files in docs directory and subdirectories | *.md - All markdown files in repository root | **/docs/** - All files in any docs directory | README.md - Specific file | docs/** *.md - Multiple patterns (space-separated) | . Important: Paths must be space-separated, not comma-separated, as required by lycheeverse/lychee-action@v2. ",
+    "url": "/docs/docs-link-check-workflow.html#path-patterns",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#path-patterns"
+  },"71": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "🔧 Usage Examples",
+    "content": " ",
+    "url": "/docs/docs-link-check-workflow.html#-usage-examples",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#-usage-examples"
+  },"72": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "Basic Link Check",
+    "content": "| 1 2 3 4 5 6 7 8 9 . | name: Basic Link Check on: push: branches: [main] jobs: link-check: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 . | . ",
+    "url": "/docs/docs-link-check-workflow.html#basic-link-check",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#basic-link-check"
+  },"73": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "Custom Paths",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 . | name: Custom Link Check on: push: branches: [main] jobs: link-check: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: paths: \"docs/** README.md CONTRIBUTING.md\" fail_on_errors: false . | . ",
+    "url": "/docs/docs-link-check-workflow.html#custom-paths",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#custom-paths"
+  },"74": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "Documentation Only",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 . | name: Documentation Link Check on: push: branches: [main] jobs: link-check: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: paths: \"docs/**\" . | . ",
+    "url": "/docs/docs-link-check-workflow.html#documentation-only",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#documentation-only"
+  },"75": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "All Markdown Files",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 . | name: All Markdown Link Check on: push: branches: [main] jobs: link-check: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: paths: \"**/*.md\" . | . ",
+    "url": "/docs/docs-link-check-workflow.html#all-markdown-files",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#all-markdown-files"
+  },"76": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "With Submodule Support",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 . | name: Link Check with Submodules on: push: branches: [main] jobs: link-check: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: checkout_recursive: true # Enable submodule checkout paths: \"docs/** *.md **/docs/**\" fail_on_errors: true timeout: \"15\" . | . ",
+    "url": "/docs/docs-link-check-workflow.html#with-submodule-support",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#with-submodule-support"
+  },"77": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "🛠️ Integration with Other Workflows",
+    "content": " ",
+    "url": "/docs/docs-link-check-workflow.html#%EF%B8%8F-integration-with-other-workflows",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#️-integration-with-other-workflows"
+  },"78": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "Combined with Documentation Workflow",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 . | name: Documentation Pipeline on: push: branches: [main] jobs: docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: Doxyfile run_link_check: true link-check: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: paths: \"docs/**\" . | . ",
+    "url": "/docs/docs-link-check-workflow.html#combined-with-documentation-workflow",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#combined-with-documentation-workflow"
+  },"79": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "Part of Full CI Pipeline",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 . | name: Full CI Pipeline on: push: branches: [main] pull_request: branches: [main] jobs: lint: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1 static: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1 link-check: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 . | . ",
+    "url": "/docs/docs-link-check-workflow.html#part-of-full-ci-pipeline",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#part-of-full-ci-pipeline"
+  },"80": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "🔍 How It Works",
+    "content": " ",
+    "url": "/docs/docs-link-check-workflow.html#-how-it-works",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#-how-it-works"
+  },"81": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "Link Checking Process",
+    "content": "| 1 2 3 4 5 . | ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐ │ Scan Files │───▶│ Extract Links │───▶│ Validate Links │───▶│ Report Results │ │ (Lychee) │ │ (Markdown │ │ (HTTP requests │ │ (Success/Error │ │ │ │ parsing) │ │ + retry logic) │ │ messages) │ └─────────────────┘ └─────────────────┘ └─────────────────┘ └─────────────────┘ . | . ",
+    "url": "/docs/docs-link-check-workflow.html#link-checking-process",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#link-checking-process"
+  },"82": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "Link Types Checked",
+    "content": ". | External Links - HTTP/HTTPS URLs | Internal File Links - Relative file paths | Anchor Links - Links to sections within files | Image Links - Image file references | . ",
+    "url": "/docs/docs-link-check-workflow.html#link-types-checked",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#link-types-checked"
+  },"83": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "Validation Methods",
+    "content": ". | External Links: HTTP HEAD requests with configurable timeout and retry logic | Internal Links: File system existence checks | Anchor Links: Section header validation | Image Links: File existence and format validation | Private Links: Automatically excluded (configurable) | Mailto Links: Automatically excluded (configurable) | . ",
+    "url": "/docs/docs-link-check-workflow.html#validation-methods",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#validation-methods"
+  },"84": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "⚙️ Configuration Options",
+    "content": " ",
+    "url": "/docs/docs-link-check-workflow.html#%EF%B8%8F-configuration-options",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#️-configuration-options"
+  },"85": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "Lychee Parameters",
+    "content": "The workflow uses lycheeverse/lychee-action@v2 with these default settings: . | Timeout: 10 seconds per link (configurable) | Retry: 3 attempts for failed links (configurable) | External Links: Enabled with retry logic | Private Links: Excluded by default | Mailto Links: Excluded by default | Anchor Checking: Enabled | SSL Validation: Enabled | Verbose Output: Configurable | . ",
+    "url": "/docs/docs-link-check-workflow.html#lychee-parameters",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#lychee-parameters"
+  },"86": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "Custom Configuration",
+    "content": "For advanced configuration, you can use a lychee.toml file: . | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 . | [input] files = [\"docs/**\", \"*.md\"] # Note: TOML config uses array format, workflow uses space-separated exclude = [\"CHANGELOG.md\"] [output] format = \"detailed\" verbose = true [check] timeout = 10 retry = 3 exclude_all_private = true exclude_mail = true exclude_github_issues = false [http] headers = { \"User-Agent\" = \"lychee/0.14.0\" } . | . ",
+    "url": "/docs/docs-link-check-workflow.html#custom-configuration",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#custom-configuration"
+  },"87": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "🚨 Troubleshooting",
+    "content": " ",
+    "url": "/docs/docs-link-check-workflow.html#-troubleshooting",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#-troubleshooting"
+  },"88": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "Common Issues",
+    "content": "Link Check Fails . Symptoms: Workflow fails with “broken links found” Solutions: . | 1 2 3 4 5 6 7 8 . | # Check specific links manually curl -I https://example.com/broken-link # Verify internal file paths ls -la docs/broken-file.md # Check anchor references grep -n \"## Target Section\" docs/file.md . | . Timeout Errors . Symptoms: “Timeout” or “Connection timeout” errors Solutions: . | 1 2 3 4 5 6 7 . | # Check if external site is accessible ping example.com # Verify network connectivity curl -I https://example.com # Check if site requires authentication . | . False Positives . Symptoms: Valid links reported as broken Solutions: . | 1 2 3 4 5 6 7 8 . | # Check link format echo \"https://example.com/path\" # Verify file encoding file -i docs/file.md # Check for special characters grep -n \"\\[.*\\](.*)\" docs/file.md . | . ",
+    "url": "/docs/docs-link-check-workflow.html#common-issues",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#common-issues"
+  },"89": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "Debug Mode",
+    "content": "Enable verbose output for debugging: . | 1 2 3 4 5 6 . | jobs: link-check: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: paths: \"docs/**\" fail_on_errors: false # Don't fail on errors for debugging . | . ",
+    "url": "/docs/docs-link-check-workflow.html#debug-mode",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#debug-mode"
+  },"90": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "📊 Output and Reporting",
+    "content": " ",
+    "url": "/docs/docs-link-check-workflow.html#-output-and-reporting",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#-output-and-reporting"
+  },"91": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "Success Output",
+    "content": "| 1 2 3 4 . | ✅ Link check completed successfully 📊 Checked 25 files 🔗 Validated 150 links ⏱️ Processing time: 45 seconds . | . ",
+    "url": "/docs/docs-link-check-workflow.html#success-output",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#success-output"
+  },"92": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "Error Output",
+    "content": "| 1 2 3 4 5 6 7 8 9 . | ❌ Link check failed 📊 Checked 25 files 🔗 Found 3 broken links ⏱️ Processing time: 45 seconds Broken links: - docs/guide.md:5 → https://example.com/broken - docs/api.md:12 → ../missing-file.md - README.md:8 → #non-existent-section . | . ",
+    "url": "/docs/docs-link-check-workflow.html#error-output",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#error-output"
+  },"93": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "🔗 Related Documentation",
+    "content": ". | Documentation Workflow - Build and deploy documentation | C/C++ Lint Workflow - Code quality checks | Static Analysis Workflow - Security analysis | Example Workflows - Complete workflow examples | Main Documentation Index - All workflow guides | . ",
+    "url": "/docs/docs-link-check-workflow.html#-related-documentation",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#-related-documentation"
+  },"94": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "📚 External Resources",
+    "content": ". | Lychee Documentation | Lychee Action | GitHub Actions Documentation | Markdown Link Syntax | . | ← Previous: Documentation Workflow | Next: YAML Lint Workflow → | . | 📚 All Documentation | 🏠 Main README | . ",
+    "url": "/docs/docs-link-check-workflow.html#-external-resources",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html#-external-resources"
+  },"95": {
+    "doc": "🔗 Link Check Workflow",
+    "title": "🔗 Link Check Workflow",
+    "content": " ",
+    "url": "/docs/docs-link-check-workflow.html",
+    
+    "relUrl": "/docs/docs-link-check-workflow.html"
+  },"96": {
+    "doc": "📚 Documentation Workflow",
+    "title": "Documentation Workflow Guide",
+    "content": "📖 Doxygen + GitHub Pages Deployment . The Documentation workflow builds Doxygen documentation and optionally deploys it to GitHub Pages with link checking and artifact management. ",
+    "url": "/docs/docs-workflow.html#documentation-workflow-guide",
+    
+    "relUrl": "/docs/docs-workflow.html#documentation-workflow-guide"
+  },"97": {
+    "doc": "📚 Documentation Workflow",
+    "title": "📋 Table of Contents",
+    "content": ". | Overview | Inputs | Outputs | Usage Examples | Configuration | GitHub Pages Setup | Troubleshooting | Related Workflows | . ",
+    "url": "/docs/docs-workflow.html#-table-of-contents",
+    
+    "relUrl": "/docs/docs-workflow.html#-table-of-contents"
+  },"98": {
+    "doc": "📚 Documentation Workflow",
+    "title": "🎯 Overview",
+    "content": "Purpose: Generate and deploy Doxygen documentation with optional Jekyll integration . Key Features: . | Doxygen + Graphviz integration (optimized installation) | Optional Jekyll static site generation | Advanced link checking with Lychee | Markdown linting (markdownlint) | Spell checking (cspell) | Modern GitHub Pages deployment | Concurrency control | Artifact storage | Fast dependency installation using pre-built binaries | . Use Case: Automated documentation generation and deployment for C/C++ projects with enhanced presentation . ",
+    "url": "/docs/docs-workflow.html#-overview",
+    
+    "relUrl": "/docs/docs-workflow.html#-overview"
+  },"99": {
+    "doc": "📚 Documentation Workflow",
+    "title": "⚙️ Inputs",
+    "content": " ",
+    "url": "/docs/docs-workflow.html#%EF%B8%8F-inputs",
+    
+    "relUrl": "/docs/docs-workflow.html#️-inputs"
+  },"100": {
+    "doc": "📚 Documentation Workflow",
+    "title": "📁 Repository Configuration",
+    "content": "| Input | Type | Required | Default | Description | . | checkout_recursive | boolean | ❌ | false | Checkout submodules recursively (for projects with docs in submodules) | . ",
+    "url": "/docs/docs-workflow.html#-repository-configuration",
+    
+    "relUrl": "/docs/docs-workflow.html#-repository-configuration"
+  },"101": {
+    "doc": "📚 Documentation Workflow",
+    "title": "📚 Doxygen Configuration",
+    "content": "| Input | Type | Required | Default | Description | . | doxygen_config | string | ❌ | Doxyfile | Path to Doxyfile (relative to repo root) | . | doxygen_fail_on_warnings | boolean | ❌ | false | Treat Doxygen warnings as errors in CI | . ",
+    "url": "/docs/docs-workflow.html#-doxygen-configuration",
+    
+    "relUrl": "/docs/docs-workflow.html#-doxygen-configuration"
+  },"102": {
+    "doc": "📚 Documentation Workflow",
+    "title": "🔗 Link Checking",
+    "content": "| Input | Type | Required | Default | Description | . | run_link_check | boolean | ❌ | true | Run documentation link checker | . | link_check_paths | string | ❌ | **/*.md | Space-separated paths to check for broken links | . | link_check_config | string | ❌ | '' | Path to lychee.toml config file (optional) | . | verbose | boolean | ❌ | false | Enable verbose output for link checking | . ",
+    "url": "/docs/docs-workflow.html#-link-checking",
+    
+    "relUrl": "/docs/docs-workflow.html#-link-checking"
+  },"103": {
+    "doc": "📚 Documentation Workflow",
+    "title": "📝 Documentation Quality",
+    "content": "| Input | Type | Required | Default | Description | . | run_markdown_lint | boolean | ❌ | false | Run markdown linting on documentation files | . | markdown_lint_paths | string | ❌ | **/*.md | Space-separated glob patterns for markdown files to lint | . | run_spell_check | boolean | ❌ | false | Run spell checking on documentation files | . | spell_check_paths | string | ❌ | **/*.md | Space-separated glob patterns for files to spell check | . | spell_check_config | string | ❌ | .cspell.json | Path to cspell configuration file | . ",
+    "url": "/docs/docs-workflow.html#-documentation-quality",
+    
+    "relUrl": "/docs/docs-workflow.html#-documentation-quality"
+  },"104": {
+    "doc": "📚 Documentation Workflow",
+    "title": "🌐 Deployment",
+    "content": "| Input | Type | Required | Default | Description | . | deploy_pages | boolean | ❌ | true | Deploy to GitHub Pages | . ",
+    "url": "/docs/docs-workflow.html#-deployment",
+    
+    "relUrl": "/docs/docs-workflow.html#-deployment"
+  },"105": {
+    "doc": "📚 Documentation Workflow",
+    "title": "🎨 Jekyll Configuration",
+    "content": "| Input | Type | Required | Default | Description | . | jekyll_enabled | boolean | ❌ | false | Enable Jekyll static site generation | . | jekyll_config | string | ❌ | _config.yml | Comma-separated list of Jekyll configuration files | . | jekyll_source | string | ❌ | docs | Jekyll source directory containing your site files | . | jekyll_destination | string | ❌ | _site | Jekyll build destination directory for generated site | . | jekyll_environment | string | ❌ | production | Jekyll environment (development, production, staging) | . ",
+    "url": "/docs/docs-workflow.html#-jekyll-configuration",
+    
+    "relUrl": "/docs/docs-workflow.html#-jekyll-configuration"
+  },"106": {
+    "doc": "📚 Documentation Workflow",
+    "title": "⚙️ Jekyll Advanced Options",
+    "content": "| Input | Type | Required | Default | Description | . | jekyll_safe | boolean | ❌ | true | Run in safe mode (disables custom plugins, used by GitHub Pages) | . | jekyll_plugins_dir | string | ❌ | '' | Comma-separated list of plugin directories | . | jekyll_layouts_dir | string | ❌ | '' | Layout directory | . | jekyll_verbose | boolean | ❌ | false | Enable verbose output during Jekyll build | . | jekyll_strict_front_matter | boolean | ❌ | true | Fail build on YAML syntax errors in front matter | . | jekyll_drafts | boolean | ❌ | false | Include draft posts in the build | . | jekyll_future | boolean | ❌ | false | Include future-dated posts in the build | . | jekyll_unpublished | boolean | ❌ | false | Include unpublished posts in the build | . | jekyll_incremental | boolean | ❌ | false | Enable incremental builds for faster development | . | jekyll_lsi | boolean | ❌ | false | Enable LSI (Latent Semantic Indexing) for related posts | . | jekyll_limit_posts | string | ❌ | '' | Limit the number of posts to parse and publish | . | jekyll_profile | boolean | ❌ | false | Enable profiling output to show build performance | . | jekyll_quiet | boolean | ❌ | false | Suppress normal output during Jekyll build | . | jekyll_trace | boolean | ❌ | false | Show full backtrace when an error occurs | . ",
+    "url": "/docs/docs-workflow.html#%EF%B8%8F-jekyll-advanced-options",
+    
+    "relUrl": "/docs/docs-workflow.html#️-jekyll-advanced-options"
+  },"107": {
+    "doc": "📚 Documentation Workflow",
+    "title": "📤 Outputs",
+    "content": "| Output | Description | . | HTML documentation | Generated Doxygen HTML files | . | GitHub Pages | Deployed documentation (if enabled) | . | Artifacts | Uploaded documentation files | . ",
+    "url": "/docs/docs-workflow.html#-outputs",
+    
+    "relUrl": "/docs/docs-workflow.html#-outputs"
+  },"108": {
+    "doc": "📚 Documentation Workflow",
+    "title": "🚀 Usage Examples",
+    "content": " ",
+    "url": "/docs/docs-workflow.html#-usage-examples",
+    
+    "relUrl": "/docs/docs-workflow.html#-usage-examples"
+  },"109": {
+    "doc": "📚 Documentation Workflow",
+    "title": "Basic Usage",
+    "content": "| 1 2 3 4 5 . | jobs: docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: Doxyfile . | . ",
+    "url": "/docs/docs-workflow.html#basic-usage",
+    
+    "relUrl": "/docs/docs-workflow.html#basic-usage"
+  },"110": {
+    "doc": "📚 Documentation Workflow",
+    "title": "With Submodule Support",
+    "content": "| 1 2 3 4 5 6 . | jobs: docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: Doxyfile checkout_recursive: true # Enable submodule checkout . | . ",
+    "url": "/docs/docs-workflow.html#with-submodule-support",
+    
+    "relUrl": "/docs/docs-workflow.html#with-submodule-support"
+  },"111": {
+    "doc": "📚 Documentation Workflow",
+    "title": "With Documentation Quality Checks",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 . | jobs: docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: Doxyfile run_link_check: true link_check_paths: \"docs/** *.md **/docs/**\" run_markdown_lint: true markdown_lint_paths: \"docs/** *.md\" run_spell_check: true spell_check_paths: \"docs/** *.md\" spell_check_config: \".cspell.json\" deploy_pages: true . | . ",
+    "url": "/docs/docs-workflow.html#with-documentation-quality-checks",
+    
+    "relUrl": "/docs/docs-workflow.html#with-documentation-quality-checks"
+  },"112": {
+    "doc": "📚 Documentation Workflow",
+    "title": "With Jekyll Integration",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 . | jobs: docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: Doxyfile jekyll_enabled: true jekyll_config: \"_config.yml\" jekyll_source: \"docs\" jekyll_destination: \"_site\" run_link_check: true deploy_pages: true . | . ",
+    "url": "/docs/docs-workflow.html#with-jekyll-integration",
+    
+    "relUrl": "/docs/docs-workflow.html#with-jekyll-integration"
+  },"113": {
+    "doc": "📚 Documentation Workflow",
+    "title": "Advanced Jekyll Configuration",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 . | jobs: docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: Doxyfile jekyll_enabled: true jekyll_config: \"_config.yml,_config_prod.yml\" jekyll_source: \"docs\" jekyll_destination: \"_site\" jekyll_environment: \"production\" jekyll_safe: true jekyll_verbose: true jekyll_strict_front_matter: true jekyll_drafts: false jekyll_future: false jekyll_unpublished: false run_link_check: true deploy_pages: true . | . ",
+    "url": "/docs/docs-workflow.html#advanced-jekyll-configuration",
+    
+    "relUrl": "/docs/docs-workflow.html#advanced-jekyll-configuration"
+  },"114": {
+    "doc": "📚 Documentation Workflow",
+    "title": "Custom Configuration",
+    "content": "| 1 2 3 4 5 6 7 . | jobs: docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: docs/Doxyfile.custom run_link_check: false deploy_pages: false . | . ",
+    "url": "/docs/docs-workflow.html#custom-configuration",
+    
+    "relUrl": "/docs/docs-workflow.html#custom-configuration"
+  },"115": {
+    "doc": "📚 Documentation Workflow",
+    "title": "Submodule Documentation Projects",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 . | jobs: docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: checkout_recursive: true # Required for submodule-based docs doxygen_config: Doxyfile jekyll_enabled: true jekyll_source: \"docs\" run_link_check: true link_check_paths: \"docs/** *.md **/docs/**\" . | . ",
+    "url": "/docs/docs-workflow.html#submodule-documentation-projects",
+    
+    "relUrl": "/docs/docs-workflow.html#submodule-documentation-projects"
+  },"116": {
+    "doc": "📚 Documentation Workflow",
+    "title": "⚙️ Configuration",
+    "content": " ",
+    "url": "/docs/docs-workflow.html#%EF%B8%8F-configuration",
+    
+    "relUrl": "/docs/docs-workflow.html#️-configuration"
+  },"117": {
+    "doc": "📚 Documentation Workflow",
+    "title": "Repository Setup",
+    "content": "Submodule Checkout . The workflow supports optional recursive submodule checkout for projects that store documentation in submodules: . | 1 . | checkout_recursive: true # Enable submodule checkout . | . When to use recursive checkout: . | Documentation is stored in a separate submodule repository | Doxygen source files are in submodules | Jekyll themes or plugins are in submodules | External documentation dependencies are in submodules | . When NOT to use recursive checkout: . | All documentation is in the main repository | No submodules are present | Performance optimization (recursive checkout is slower) | . Default behavior: false (no submodule checkout) . ",
+    "url": "/docs/docs-workflow.html#repository-setup",
+    
+    "relUrl": "/docs/docs-workflow.html#repository-setup"
+  },"118": {
+    "doc": "📚 Documentation Workflow",
+    "title": "Optimized Dependency Installation",
+    "content": "The workflow uses optimized installation methods for maximum speed: . | Doxygen: ssciwr/doxygen-install@v1 - Pre-built binaries with caching | Graphviz: tlylt/install-graphviz@v1 - Pre-built binaries with caching | Pre-installation Check: Uses pre-installed Graphviz if available (instant) | Performance: 75-90% faster than traditional apt-get installation | . ",
+    "url": "/docs/docs-workflow.html#optimized-dependency-installation",
+    
+    "relUrl": "/docs/docs-workflow.html#optimized-dependency-installation"
+  },"119": {
+    "doc": "📚 Documentation Workflow",
+    "title": "Doxygen Configuration",
+    "content": "Create a Doxyfile in your project root: . | 1 2 3 4 5 6 7 8 9 10 11 12 13 . | # Basic Doxygen configuration PROJECT_NAME = \"My C++ Project\" PROJECT_NUMBER = 1.0 OUTPUT_DIRECTORY = docs/doxygen INPUT = src include FILE_PATTERNS = *.c *.cpp *.h *.hpp RECURSIVE = YES GENERATE_HTML = YES HTML_OUTPUT = html GENERATE_LATEX = NO EXTRACT_ALL = YES EXTRACT_PRIVATE = YES EXTRACT_STATIC = YES . | . ",
+    "url": "/docs/docs-workflow.html#doxygen-configuration",
+    
+    "relUrl": "/docs/docs-workflow.html#doxygen-configuration"
+  },"120": {
+    "doc": "📚 Documentation Workflow",
+    "title": "Link Checking with Lychee",
+    "content": "The workflow includes advanced link checking using Lychee, which provides comprehensive link validation for both internal and external links. | 1 2 . | run_link_check: true # Enable link checking (default: true) link_check_paths: \"docs/** *.md\" # Paths to check for broken links . | . The Lychee link checker: . | Scans all markdown files in the specified paths | Uses space-separated glob patterns (not comma-separated) | Validates both internal file references and external URLs | Supports configurable timeouts and retry attempts | Excludes private/internal links by default | Provides detailed reporting with verbose output options | . Path Format Examples: . | **/*.md - All .md files recursively (default) | docs/** *.md - All files in docs/ and all .md files in root (space-separated) | README.md docs/**/*.md - Specific file + all .md files in docs/ (space-separated) | Uses the modern lycheeverse/lychee-action@v2 action | Offers better performance and reliability than traditional link checkers | . Important: Paths must be space-separated, not comma-separated, as required by lycheeverse/lychee-action@v2. ",
+    "url": "/docs/docs-workflow.html#link-checking-with-lychee",
+    
+    "relUrl": "/docs/docs-workflow.html#link-checking-with-lychee"
+  },"121": {
+    "doc": "📚 Documentation Workflow",
+    "title": "Markdown Linting",
+    "content": "Optional markdown linting using markdownlint-cli to enforce consistent markdown formatting and catch common issues. | 1 2 . | run_markdown_lint: true # Enable markdown linting (default: false) markdown_lint_paths: \"**/*.md\" # Glob patterns for files to lint . | . Features: . | Enforces consistent markdown formatting | Catches common markdown issues | Configurable via .markdownlint.json file | Ignores node_modules by default | . ",
+    "url": "/docs/docs-workflow.html#markdown-linting",
+    
+    "relUrl": "/docs/docs-workflow.html#markdown-linting"
+  },"122": {
+    "doc": "📚 Documentation Workflow",
+    "title": "Spell Checking",
+    "content": "Optional spell checking using cspell to catch spelling errors in documentation. | 1 2 3 . | run_spell_check: true # Enable spell checking (default: false) spell_check_paths: \"**/*.md\" # Glob patterns for files to check spell_check_config: \".cspell.json\" # Path to cspell config file . | . Features: . | Catches spelling errors in documentation | Configurable via .cspell.json file | Supports custom dictionaries and ignore patterns | Works with multiple file types | . ",
+    "url": "/docs/docs-workflow.html#spell-checking",
+    
+    "relUrl": "/docs/docs-workflow.html#spell-checking"
+  },"123": {
+    "doc": "📚 Documentation Workflow",
+    "title": "Jekyll Integration",
+    "content": "Optional Jekyll static site generation for enhanced documentation presentation and better GitHub Pages integration. | 1 2 3 4 . | jekyll_enabled: true # Enable Jekyll (default: false) jekyll_config: \"_config.yml\" # Path to Jekyll config jekyll_source: \"docs\" # Source directory jekyll_destination: \"_site\" # Build destination . | . Jekyll Configuration: . The workflow automatically creates a minimal _config.yml file if one doesn’t exist. For comprehensive Jekyll configuration, see the Jekyll Guide. Quick Setup: . | 1 2 3 4 5 6 7 8 . | # Basic Jekyll configuration title: \"My C++ Project Documentation\" description: \"Comprehensive documentation for my C++ project\" baseurl: \"\" # Set by workflow automatically url: \"https://yourusername.github.io\" theme: minima markdown: kramdown highlighter: rouge . | . Features: . | Static site generation with customizable themes | Better GitHub Pages integration | Enhanced navigation and presentation | Support for custom layouts and includes | Automatic baseurl configuration for GitHub Pages | Smart configuration validation with directory-aware checking | . Advanced Jekyll Configuration: . The workflow supports extensive Jekyll configuration options for fine-tuned control: . | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 . | jekyll_enabled: true jekyll_config: \"_config.yml,_config_prod.yml\" # Multiple config files jekyll_environment: \"production\" # Environment-specific settings jekyll_safe: true # Safe mode (GitHub Pages compatible) jekyll_verbose: true # Verbose output for debugging jekyll_strict_front_matter: true # Fail on YAML syntax errors jekyll_drafts: false # Exclude draft posts jekyll_future: false # Exclude future-dated posts jekyll_unpublished: false # Exclude unpublished posts jekyll_incremental: false # Disable incremental builds (CI recommended) jekyll_lsi: false # Disable LSI (resource-intensive) jekyll_profile: false # Disable profiling (reduces build time) jekyll_quiet: false # Enable normal output jekyll_trace: false # Disable full backtrace . | . CI-Optimized Defaults: The workflow automatically applies CI-optimized defaults for better reliability: . | Safe mode enabled (prevents custom plugin issues) | Incremental builds disabled (prevents stale content) | Profiling disabled (reduces build time) | Drafts and future posts excluded (focus on published content) | Strict front matter validation enabled (ensures content integrity) | . ",
+    "url": "/docs/docs-workflow.html#jekyll-integration",
+    
+    "relUrl": "/docs/docs-workflow.html#jekyll-integration"
+  },"124": {
+    "doc": "📚 Documentation Workflow",
+    "title": "Standalone Link Check",
+    "content": "For repositories that only need link checking without documentation generation, use the dedicated link check workflow: . | 1 2 3 4 5 6 7 8 9 10 11 12 . | jobs: link-check: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: paths: \"docs/** *.md **/docs/**\" # Paths to check (default: **/*.md) fail_on_errors: true # Fail on broken links timeout: \"10\" # Timeout per link (seconds) retry: \"3\" # Number of retries exclude_private: true # Exclude private links exclude_mail: true # Exclude mailto links verbose: false # Verbose output # Uses lycheeverse/lychee-action@v2 for advanced link checking . | . ",
+    "url": "/docs/docs-workflow.html#standalone-link-check",
+    
+    "relUrl": "/docs/docs-workflow.html#standalone-link-check"
+  },"125": {
+    "doc": "📚 Documentation Workflow",
+    "title": "🔍 Jekyll Configuration Validation",
+    "content": "The workflow includes intelligent Jekyll configuration validation that: . Smart Directory Detection . | Reads your _config.yml to determine custom directory locations | Checks directories where they’re actually configured (e.g., docs/_layouts) | Falls back to standard locations if custom paths aren’t specified | Reports missing directories as “may be using theme defaults” | . File Location Validation . | Checks common files (index.md, 404.html, robots.txt) relative to your config file location | If _config.yml is in docs/, files are checked in docs/ directory | Prevents false warnings about missing files in wrong locations | . Configuration Warnings . | Detects trailing slashes in baseurl and url (should be avoided) | Validates YAML syntax with specific error reporting | Provides helpful guidance for common configuration issues | . Example Validation Output: . | 1 2 3 4 5 6 7 8 9 10 11 . | 🔍 Validating Jekyll configuration... ✅ Validating config file: docs/_config.yml ✅ YAML syntax is valid ✅ Found layouts directory: docs/_layouts ✅ Found includes directory: docs/_includes ⚠️ Directory not found: docs/_sass (may be using theme defaults) ✅ Found file: index.md ✅ Found file: 404.html ✅ Found file: robots.txt ⚠️ File not found: index.html (optional but recommended) ✅ Jekyll configuration validation completed . | . For detailed validation guidance, see the Jekyll Configuration Guide. ",
+    "url": "/docs/docs-workflow.html#-jekyll-configuration-validation",
+    
+    "relUrl": "/docs/docs-workflow.html#-jekyll-configuration-validation"
+  },"126": {
+    "doc": "📚 Documentation Workflow",
+    "title": "GitHub Pages Setup",
+    "content": "Important: GitHub Pages must be enabled in your repository settings before using this workflow. | Enable GitHub Pages in your repository settings: . | Go to Settings → Pages | Set Source to “GitHub Actions” | Save the settings | . | Grant permissions to the workflow: | . | 1 2 3 4 . | permissions: contents: write pages: write id-token: write . | . | Workflow behavior: . | If Pages is not enabled, the workflow will continue but skip deployment | Documentation will still be built and artifacts uploaded | No errors will occur if Pages is not configured | . | . ",
+    "url": "/docs/docs-workflow.html#github-pages-setup",
+    
+    "relUrl": "/docs/docs-workflow.html#github-pages-setup"
+  },"127": {
+    "doc": "📚 Documentation Workflow",
+    "title": "🌐 GitHub Pages Setup",
+    "content": " ",
+    "url": "/docs/docs-workflow.html#-github-pages-setup",
+    
+    "relUrl": "/docs/docs-workflow.html#-github-pages-setup"
+  },"128": {
+    "doc": "📚 Documentation Workflow",
+    "title": "Repository Settings",
+    "content": ". | Go to Settings → Pages | Set Source to “GitHub Actions” | Ensure GitHub Actions has write permissions | . ",
+    "url": "/docs/docs-workflow.html#repository-settings",
+    
+    "relUrl": "/docs/docs-workflow.html#repository-settings"
+  },"129": {
+    "doc": "📚 Documentation Workflow",
+    "title": "Workflow Permissions",
+    "content": "The workflow requires these permissions: . | 1 2 3 4 . | permissions: contents: write # Upload artifacts pages: write # Deploy to Pages id-token: write # Authentication . | . ",
+    "url": "/docs/docs-workflow.html#workflow-permissions",
+    
+    "relUrl": "/docs/docs-workflow.html#workflow-permissions"
+  },"130": {
+    "doc": "📚 Documentation Workflow",
+    "title": "Custom Domain (Optional)",
+    "content": "Add a CNAME file to your docs/doxygen/html directory: . | 1 . | docs.yourproject.com . | . ",
+    "url": "/docs/docs-workflow.html#custom-domain-optional",
+    
+    "relUrl": "/docs/docs-workflow.html#custom-domain-optional"
+  },"131": {
+    "doc": "📚 Documentation Workflow",
+    "title": "🔧 Troubleshooting",
+    "content": " ",
+    "url": "/docs/docs-workflow.html#-troubleshooting",
+    
+    "relUrl": "/docs/docs-workflow.html#-troubleshooting"
+  },"132": {
+    "doc": "📚 Documentation Workflow",
+    "title": "Common Issues",
+    "content": "Doxygen Build Fails . | Verify Doxyfile exists and is valid | Check source directories exist (src/, include/) | Graphviz is automatically installed via optimized action (no manual setup needed) | Verify doxygen_config path is correct | . Jekyll Configuration Validation Issues . | False warnings about missing directories: Check if your _config.yml specifies custom directory locations (e.g., layouts_dir: docs/_layouts) | Files not found warnings: Ensure common files (index.md, 404.html, robots.txt) are in the same directory as your _config.yml | Trailing slash warnings: Remove trailing slashes from baseurl and url in your configuration | YAML syntax errors: Use online YAML validators or yq to check syntax | . GitHub Pages Not Deploying . | Check repository permissions | Verify deploy_pages: true | Ensure workflow runs on main branch (not PRs) | Enable GitHub Pages in repository settings (Settings → Pages → Source: GitHub Actions) | Check if Pages site exists and is configured properly | . Link Check Fails . | Verify link paths are correct in link_check_paths | Check that markdown files exist at specified paths | Review link checker output for specific broken links | . Markdown Lint Fails . | Check markdown syntax and formatting | Review .markdownlint.json configuration if present | Fix linting errors reported by markdownlint | . Spell Check Fails . | Review spelling errors in documentation | Add words to .cspell.json custom dictionary if needed | Check spell_check_config path is correct | . ",
+    "url": "/docs/docs-workflow.html#common-issues",
+    
+    "relUrl": "/docs/docs-workflow.html#common-issues"
+  },"133": {
+    "doc": "📚 Documentation Workflow",
+    "title": "Debug Mode",
+    "content": "Enable debug output: . | 1 2 . | env: ACTIONS_STEP_DEBUG: true . | . ",
+    "url": "/docs/docs-workflow.html#debug-mode",
+    
+    "relUrl": "/docs/docs-workflow.html#debug-mode"
+  },"134": {
+    "doc": "📚 Documentation Workflow",
+    "title": "Manual Testing",
+    "content": "Test Doxygen locally: . | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 . | # Install Doxygen and Graphviz # Option 1: Using package manager (slower) sudo apt-get install doxygen graphviz # Option 2: Using optimized actions (faster, like in CI) # For local development, you can use the same actions: # - ssciwr/doxygen-install@v1 for Doxygen # - tlylt/install-graphviz@v1 for Graphviz # Generate docs doxygen Doxyfile # Check output ls docs/doxygen/html/ . | . ",
+    "url": "/docs/docs-workflow.html#manual-testing",
+    
+    "relUrl": "/docs/docs-workflow.html#manual-testing"
+  },"135": {
+    "doc": "📚 Documentation Workflow",
+    "title": "📚 Related Workflows",
+    "content": ". | C/C++ Lint - Code quality checks | Static Analysis - Security analysis | Link Check - Documentation link validation | . ",
+    "url": "/docs/docs-workflow.html#-related-workflows",
+    
+    "relUrl": "/docs/docs-workflow.html#-related-workflows"
+  },"136": {
+    "doc": "📚 Documentation Workflow",
+    "title": "🔗 Related Resources",
+    "content": ". | Doxygen Documentation | GitHub Pages | Markdown Link Checking | . | ← Previous: Static Analysis Workflow | Next: Link Check Workflow → | . | 📚 All Documentation | 🏠 Main README | . ",
+    "url": "/docs/docs-workflow.html#-related-resources",
+    
+    "relUrl": "/docs/docs-workflow.html#-related-resources"
+  },"137": {
+    "doc": "📚 Documentation Workflow",
+    "title": "📚 Documentation Workflow",
+    "content": " ",
+    "url": "/docs/docs-workflow.html",
+    
+    "relUrl": "/docs/docs-workflow.html"
+  },"138": {
+    "doc": "🚀 Example Workflows",
+    "title": "🚀 Example Workflows",
+    "content": "Ready-to-use GitHub Actions workflows that leverage all CI tools in parallel . ",
+    "url": "/docs/example-workflows.html",
+    
+    "relUrl": "/docs/example-workflows.html"
+  },"139": {
+    "doc": "🚀 Example Workflows",
+    "title": "🎯 Overview",
+    "content": "These example workflows demonstrate how to use the general CI tools in your consumer repositories. Each workflow is designed for different use cases and can be customized to fit your project’s needs. ",
+    "url": "/docs/example-workflows.html#-overview",
+    
+    "relUrl": "/docs/example-workflows.html#-overview"
+  },"140": {
+    "doc": "🚀 Example Workflows",
+    "title": "Key Features",
+    "content": ". | 🔄 Parallel Execution - Multiple jobs run simultaneously for maximum efficiency | 🛡️ Comprehensive Coverage - Lint, static analysis, documentation, and link checking | 📊 Smart Caching - Optimized dependency installation with built-in caching | 🎯 General Purpose - Designed for C/C++ projects with documentation | . ",
+    "url": "/docs/example-workflows.html#key-features",
+    
+    "relUrl": "/docs/example-workflows.html#key-features"
+  },"141": {
+    "doc": "🚀 Example Workflows",
+    "title": "🏗️ Basic Workflow",
+    "content": "Use Case: Simple projects that need basic CI/CD with lint and documentation checks. | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 . | name: 🏗️ Basic CI on: push: branches: [main, develop] pull_request: branches: [main] jobs: # Lint C/C++ code lint: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1 with: clang_version: \"20\" style: \"file\" extensions: \"c,cpp,h,hpp\" # Static analysis static: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1 with: paths: \"src include\" std: \"c++17\" strict: false # Check documentation links docs-links: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: paths: \"docs/** *.md **/docs/**\" . | . ",
+    "url": "/docs/example-workflows.html#%EF%B8%8F-basic-workflow",
+    
+    "relUrl": "/docs/example-workflows.html#️-basic-workflow"
+  },"142": {
+    "doc": "🚀 Example Workflows",
+    "title": "🚀 Advanced Parallel Workflow",
+    "content": "Use Case: Production projects requiring comprehensive CI/CD with all checks running in parallel. | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 . | name: 🚀 Advanced CI on: push: branches: [main, develop, release/*] pull_request: branches: [main, develop] workflow_dispatch: inputs: run_strict_checks: description: 'Run strict static analysis' required: false default: false type: boolean jobs: # C/C++ Linting lint: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1 with: clang_version: \"20\" style: \"file\" tidy_checks: \"performance-*,modernize-*,readability-*\" extensions: \"c,cpp,cc,cxx,h,hpp\" ignore: \"build|.git|third_party\" files_changed_only: true # Static Analysis static-analysis: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1 with: paths: \"src include examples\" std: \"c++17\" strict: $ # Documentation Generation docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: \"Doxyfile\" run_link_check: true link_check_paths: \"docs/** *.md **/docs/**\" jekyll_enabled: true jekyll_config: \"_config.yml,_config_prod.yml\" jekyll_environment: \"production\" # YAML Linting yaml-lint: uses: N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1 with: paths: \"**/*.yml,**/*.yaml\" strict_mode: false # Link Checking link-check: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: paths: \"docs/** *.md **/docs/**\" fail_on_errors: true timeout: \"30\" . | . ",
+    "url": "/docs/example-workflows.html#-advanced-parallel-workflow",
+    
+    "relUrl": "/docs/example-workflows.html#-advanced-parallel-workflow"
+  },"143": {
+    "doc": "🚀 Example Workflows",
+    "title": "🔧 Development Workflow",
+    "content": "Use Case: Development branches with relaxed checks and draft documentation. | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 . | name: 🔧 Development CI on: push: branches: [develop, feature/*] pull_request: branches: [develop] jobs: # Quick lint check lint: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1 with: clang_version: \"20\" style: \"file\" files_changed_only: true # Documentation with drafts docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: \"Doxyfile\" run_link_check: false jekyll_enabled: true jekyll_config: \"_config.yml,_config_dev.yml\" jekyll_environment: \"development\" jekyll_drafts: true jekyll_future: true . | . ",
+    "url": "/docs/example-workflows.html#-development-workflow",
+    
+    "relUrl": "/docs/example-workflows.html#-development-workflow"
+  },"144": {
+    "doc": "🚀 Example Workflows",
+    "title": "📦 Release Workflow",
+    "content": "Use Case: Release branches with strict checks and production documentation. | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 . | name: 📦 Release CI on: push: branches: [release/*] workflow_dispatch: inputs: release_version: description: 'Release version tag' required: true type: string jobs: # Strict linting lint: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1 with: clang_version: \"20\" style: \"file\" tidy_checks: \"performance-*,modernize-*,readability-*,bugprone-*\" extensions: \"c,cpp,cc,cxx,h,hpp\" ignore: \"build|.git\" files_changed_only: false # Strict static analysis static-analysis: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1 with: paths: \"src include examples\" std: \"c++17\" strict: true # Production documentation docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: \"Doxyfile\" run_link_check: true link_check_paths: \"docs/** *.md **/docs/**\" jekyll_enabled: true jekyll_config: \"_config.yml,_config_prod.yml\" jekyll_environment: \"production\" # Comprehensive link checking link-check: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: paths: \"docs/** *.md **/docs/**\" fail_on_errors: true timeout: \"60\" # YAML validation yaml-lint: uses: N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1 with: paths: \"**/*.yml,**/*.yaml\" strict_mode: true . | . ",
+    "url": "/docs/example-workflows.html#-release-workflow",
+    
+    "relUrl": "/docs/example-workflows.html#-release-workflow"
+  },"145": {
+    "doc": "🚀 Example Workflows",
+    "title": "📚 Submodule Documentation Workflow",
+    "content": "Use Case: Projects with documentation stored in submodules or external repositories. | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 . | name: 📚 Submodule Documentation CI on: push: branches: [main, develop] pull_request: branches: [main] jobs: # Documentation with submodule support docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: checkout_recursive: true # Enable submodule checkout doxygen_config: \"Doxyfile\" run_link_check: true link_check_paths: \"docs/** *.md **/docs/**\" jekyll_enabled: true jekyll_source: \"docs\" jekyll_config: \"_config.yml\" run_markdown_lint: true markdown_lint_paths: \"docs/** *.md\" run_spell_check: true spell_check_paths: \"docs/** *.md\" # Link checking for submodule content link-check: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: paths: \"docs/** *.md **/docs/**\" fail_on_errors: true timeout: \"30\" . | . ",
+    "url": "/docs/example-workflows.html#-submodule-documentation-workflow",
+    
+    "relUrl": "/docs/example-workflows.html#-submodule-documentation-workflow"
+  },"146": {
+    "doc": "🚀 Example Workflows",
+    "title": "🎯 Workflow Selection Guide",
+    "content": "| Use Case | Recommended Workflow | Key Features | . | Simple Projects | Basic Workflow | Essential linting and link checking | . | Production Projects | Advanced Parallel | Comprehensive checks with parallel execution | . | Development | Development Workflow | Relaxed checks with draft support | . | Releases | Release Workflow | Strict checks with production documentation | . | Submodule Projects | Submodule Documentation | Recursive checkout with comprehensive docs | . ",
+    "url": "/docs/example-workflows.html#-workflow-selection-guide",
+    
+    "relUrl": "/docs/example-workflows.html#-workflow-selection-guide"
+  },"147": {
+    "doc": "🚀 Example Workflows",
+    "title": "🔧 Customization Tips",
+    "content": " ",
+    "url": "/docs/example-workflows.html#-customization-tips",
+    
+    "relUrl": "/docs/example-workflows.html#-customization-tips"
+  },"148": {
+    "doc": "🚀 Example Workflows",
+    "title": "Parallel vs Sequential",
+    "content": ". | Use parallel jobs for faster execution | Use sequential jobs when dependencies exist | . ",
+    "url": "/docs/example-workflows.html#parallel-vs-sequential",
+    
+    "relUrl": "/docs/example-workflows.html#parallel-vs-sequential"
+  },"149": {
+    "doc": "🚀 Example Workflows",
+    "title": "Conditional Execution",
+    "content": "| 1 2 3 4 5 . | # Only run on specific branches if: github.ref == 'refs/heads/main' # Only run when files change if: contains(github.event.head_commit.modified, 'src/') . | . ",
+    "url": "/docs/example-workflows.html#conditional-execution",
+    
+    "relUrl": "/docs/example-workflows.html#conditional-execution"
+  },"150": {
+    "doc": "🚀 Example Workflows",
+    "title": "Matrix Strategies",
+    "content": "| 1 2 3 4 5 6 7 8 . | strategy: matrix: clang_version: [18, 19, 20] include: - clang_version: 20 std: c++20 - clang_version: 19 std: c++17 . | . ",
+    "url": "/docs/example-workflows.html#matrix-strategies",
+    
+    "relUrl": "/docs/example-workflows.html#matrix-strategies"
+  },"151": {
+    "doc": "🚀 Example Workflows",
+    "title": "Submodule Configuration",
+    "content": "| 1 2 3 4 5 . | # Enable submodule checkout for documentation projects checkout_recursive: true # Only when documentation is in submodules # Disable for performance if not needed . | . ",
+    "url": "/docs/example-workflows.html#submodule-configuration",
+    
+    "relUrl": "/docs/example-workflows.html#submodule-configuration"
+  },"152": {
+    "doc": "🚀 Example Workflows",
+    "title": "Caching",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 . | # Note: The reusable workflows handle their own optimized caching # No additional caching needed for Doxygen/Graphviz dependencies # For custom dependencies, you can still add caching: - name: Cache custom dependencies uses: actions/cache@v3 with: path: | ~/.cache/ccache build/ key: $-$ . | . ← Previous: Jekyll Configuration Guide . | 📚 All Documentation | 🏠 Main README | . For more detailed configuration options, see the individual workflow documentation pages. ",
+    "url": "/docs/example-workflows.html#caching",
+    
+    "relUrl": "/docs/example-workflows.html#caching"
+  },"153": {
+    "doc": "📖 Examples & Guides",
+    "title": "Examples &amp; Guides",
+    "content": "This section provides comprehensive guides and real-world examples for using the workflows in this repository. ",
+    "url": "/guides/#examples--guides",
+    
+    "relUrl": "/guides/#examples--guides"
+  },"154": {
+    "doc": "📖 Examples & Guides",
+    "title": "Available Guides",
+    "content": ". | Jekyll Configuration Guide - Complete guide to Jekyll configuration, CI optimization, and workflow examples | Example Workflows - Real-world usage examples for consumer repositories | . ",
+    "url": "/guides/#available-guides",
+    
+    "relUrl": "/guides/#available-guides"
+  },"155": {
+    "doc": "📖 Examples & Guides",
+    "title": "Getting Started",
+    "content": "If you’re new to this repository, start with the Example Workflows to see how to integrate these workflows into your project. For advanced Jekyll configuration and CI optimization, refer to the Jekyll Configuration Guide. ← Previous: Reusable Workflows . | 📚 All Documentation | 🏠 Main README | . ",
+    "url": "/guides/#getting-started",
+    
+    "relUrl": "/guides/#getting-started"
+  },"156": {
+    "doc": "📖 Examples & Guides",
+    "title": "📖 Examples & Guides",
+    "content": " ",
+    "url": "/guides/",
+    
+    "relUrl": "/guides/"
+  },"157": {
+    "doc": "📖 Documentation",
+    "title": "hf-general-ci-tools",
+    "content": "A collection of reusable GitHub Actions workflows for general CI/CD tasks . ",
+    "url": "/docs/#hf-general-ci-tools",
+    
+    "relUrl": "/docs/#hf-general-ci-tools"
+  },"158": {
+    "doc": "📖 Documentation",
+    "title": "🔄 Reusable Workflows",
+    "content": "These workflows are designed to be used by other repositories: . | Workflow | Description | Quick Start | . | C/C++ Lint | Code quality checks using clang-format and clang-tidy | → Lint Guide | . | Static Analysis | Security analysis using cppcheck | → Static Analysis Guide | . | Documentation | Doxygen documentation generation and GitHub Pages deployment | → Docs Guide | . | Link Check | Documentation link validation using Lychee | → Link Check Guide | . | YAML Lint | YAML file validation and formatting | → YAML Lint Guide | . ",
+    "url": "/docs/#-reusable-workflows",
+    
+    "relUrl": "/docs/#-reusable-workflows"
+  },"159": {
+    "doc": "📖 Documentation",
+    "title": "🏠 Repository-Specific Workflows",
+    "content": "These workflows are used internally by this repository: . | Workflow | Purpose | Trigger | . | Publish Documentation | Builds and deploys this repo’s documentation site | Push to main, PRs | . | YAML Lint | Validates YAML syntax in this repository | Push, PRs | . ",
+    "url": "/docs/#-repository-specific-workflows",
+    
+    "relUrl": "/docs/#-repository-specific-workflows"
+  },"160": {
+    "doc": "📖 Documentation",
+    "title": "📚 Documentation",
+    "content": "Each workflow has comprehensive documentation with usage examples and configuration options: . | C/C++ Lint Workflow - Code quality checks using clang-format and clang-tidy | Static Analysis Workflow - Security analysis using cppcheck | Documentation Workflow - Doxygen documentation generation and GitHub Pages deployment | Link Check Workflow - Documentation link validation using Lychee | YAML Lint Workflow - YAML file validation and formatting | Jekyll Guide - Complete Jekyll configuration and examples | Example Workflows - Real-world usage examples for consumer repositories | . ",
+    "url": "/docs/#-documentation",
+    
+    "relUrl": "/docs/#-documentation"
+  },"161": {
+    "doc": "📖 Documentation",
+    "title": "🎯 Quick Start",
+    "content": " ",
+    "url": "/docs/#-quick-start",
+    
+    "relUrl": "/docs/#-quick-start"
+  },"162": {
+    "doc": "📖 Documentation",
+    "title": "1. Choose Your Reusable Workflow",
+    "content": "Select the appropriate reusable workflow for your needs: . | 1 2 3 4 5 6 7 8 9 10 11 . | # For C/C++ projects uses: n3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1 # For documentation uses: n3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 # For link checking uses: n3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 # For YAML validation uses: n3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1 . | . Note: These are reusable workflows designed to be called from other repositories. The repository-specific workflows (like publish-docs.yml) are only used internally by this repository. ",
+    "url": "/docs/#1-choose-your-reusable-workflow",
+    
+    "relUrl": "/docs/#1-choose-your-reusable-workflow"
+  },"163": {
+    "doc": "📖 Documentation",
+    "title": "2. Configure Your Workflow",
+    "content": "Each workflow supports extensive configuration options. See the individual workflow documentation for details. ",
+    "url": "/docs/#2-configure-your-workflow",
+    
+    "relUrl": "/docs/#2-configure-your-workflow"
+  },"164": {
+    "doc": "📖 Documentation",
+    "title": "3. Deploy",
+    "content": "The workflows will automatically run on your specified triggers and provide detailed feedback. ",
+    "url": "/docs/#3-deploy",
+    
+    "relUrl": "/docs/#3-deploy"
+  },"165": {
+    "doc": "📖 Documentation",
+    "title": "🔧 Features",
+    "content": ". | 🔄 Reusable - Drop-in workflows for common CI tasks | ⚙️ Configurable - Extensive input parameters for customization | 📚 Well Documented - Comprehensive guides and examples | 🛡️ Secure - Follows GitHub Actions security best practices | 🚀 Fast - Optimized for performance and reliability | . ",
+    "url": "/docs/#-features",
+    
+    "relUrl": "/docs/#-features"
+  },"166": {
+    "doc": "📖 Documentation",
+    "title": "📋 Workflow Types",
+    "content": " ",
+    "url": "/docs/#-workflow-types",
+    
+    "relUrl": "/docs/#-workflow-types"
+  },"167": {
+    "doc": "📖 Documentation",
+    "title": "🔄 Reusable Workflows",
+    "content": "These workflows are designed to be called from other repositories using the uses keyword: . | 1 2 3 4 5 6 . | jobs: my-job: uses: n3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: jekyll_enabled: true deploy_pages: true . | . ",
+    "url": "/docs/#-reusable-workflows-1",
+    
+    "relUrl": "/docs/#-reusable-workflows-1"
+  },"168": {
+    "doc": "📖 Documentation",
+    "title": "🏠 Repository-Specific Workflows",
+    "content": "These workflows are only used internally by this repository: . | publish-docs.yml - Builds and deploys this repo’s documentation site | yamllint.yml - Validates YAML syntax in this repository | . For other repositories: Only use the reusable workflows listed in the “Reusable Workflows” section above. ",
+    "url": "/docs/#-repository-specific-workflows-1",
+    
+    "relUrl": "/docs/#-repository-specific-workflows-1"
+  },"169": {
+    "doc": "📖 Documentation",
+    "title": "📖 Usage Examples",
+    "content": " ",
+    "url": "/docs/#-usage-examples",
+    
+    "relUrl": "/docs/#-usage-examples"
+  },"170": {
+    "doc": "📖 Documentation",
+    "title": "Basic C/C++ Linting",
+    "content": "| 1 2 3 4 5 6 7 8 . | name: Code Quality on: [push, pull_request] jobs: lint: uses: n3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1 with: source_dirs: \"src/\" include_patterns: \"*.cpp,*.hpp,*.c,*.h\" . | . ",
+    "url": "/docs/#basic-cc-linting",
+    
+    "relUrl": "/docs/#basic-cc-linting"
+  },"171": {
+    "doc": "📖 Documentation",
+    "title": "Documentation Generation",
+    "content": "| 1 2 3 4 5 6 7 8 9 . | name: Documentation on: [push] jobs: docs: uses: n3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: jekyll_enabled: true run_link_check: true deploy_pages: true . | . ",
+    "url": "/docs/#documentation-generation",
+    
+    "relUrl": "/docs/#documentation-generation"
+  },"172": {
+    "doc": "📖 Documentation",
+    "title": "Link Validation",
+    "content": "| 1 2 3 4 5 6 7 8 . | name: Link Check on: [push, pull_request] jobs: links: uses: n3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: paths: \"docs/** *.md\" verbose: true . | . ",
+    "url": "/docs/#link-validation",
+    
+    "relUrl": "/docs/#link-validation"
+  },"173": {
+    "doc": "📖 Documentation",
+    "title": "🤝 Contributing",
+    "content": "Contributions are welcome! Please see our Contributing Guidelines for details. ",
+    "url": "/docs/#-contributing",
+    
+    "relUrl": "/docs/#-contributing"
+  },"174": {
+    "doc": "📖 Documentation",
+    "title": "📄 License",
+    "content": "This project is licensed under the GNU General Public License v3.0 - see the LICENSE file for details. ",
+    "url": "/docs/#-license",
+    
+    "relUrl": "/docs/#-license"
+  },"175": {
+    "doc": "📖 Documentation",
+    "title": "🙏 Acknowledgments",
+    "content": ". | GitHub Actions team for the excellent CI/CD platform | The open source community for inspiration and feedback | All contributors who help improve these workflows | . Next: Reusable Workflows → . Made with ❤️ by N3b3x . GitHub • Issues . ",
+    "url": "/docs/#-acknowledgments",
+    
+    "relUrl": "/docs/#-acknowledgments"
+  },"176": {
+    "doc": "📖 Documentation",
+    "title": "📖 Documentation",
+    "content": " ",
+    "url": "/docs/",
+    
+    "relUrl": "/docs/"
+  },"177": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "🔧 Jekyll Configuration Guide",
+    "content": "Complete guide to configuring Jekyll with the enhanced documentation workflow, including CI optimization and practical examples. ",
+    "url": "/docs/jekyll-guide.html",
+    
+    "relUrl": "/docs/jekyll-guide.html"
+  },"178": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "📋 Table of Contents",
+    "content": ". | Quick Start | Configuration Validation | Configuration Files | Environment vs Configuration | CI Optimization | Workflow Examples | Troubleshooting | . ",
+    "url": "/docs/jekyll-guide.html#-table-of-contents",
+    
+    "relUrl": "/docs/jekyll-guide.html#-table-of-contents"
+  },"179": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "🚀 Quick Start",
+    "content": " ",
+    "url": "/docs/jekyll-guide.html#-quick-start",
+    
+    "relUrl": "/docs/jekyll-guide.html#-quick-start"
+  },"180": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "1. Basic Setup",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 . | name: Build Documentation on: push: branches: [main] jobs: build-docs: uses: ./.github/workflows/docs.yml with: jekyll_enabled: true jekyll_config: \"_config.yml\" jekyll_environment: \"production\" . | . ",
+    "url": "/docs/jekyll-guide.html#1-basic-setup",
+    
+    "relUrl": "/docs/jekyll-guide.html#1-basic-setup"
+  },"181": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "2. Multiple Configuration Files",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 . | # Production build jekyll_config: \"_config.yml,_config_prod.yml\" jekyll_environment: \"production\" # Development build jekyll_config: \"_config.yml,_config_dev.yml\" jekyll_environment: \"development\" # Staging build jekyll_config: \"_config.yml,_config_staging.yml\" jekyll_environment: \"staging\" . | . ",
+    "url": "/docs/jekyll-guide.html#2-multiple-configuration-files",
+    
+    "relUrl": "/docs/jekyll-guide.html#2-multiple-configuration-files"
+  },"182": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "🔍 Configuration Validation",
+    "content": " ",
+    "url": "/docs/jekyll-guide.html#-configuration-validation",
+    
+    "relUrl": "/docs/jekyll-guide.html#-configuration-validation"
+  },"183": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "Built-in Validation Features",
+    "content": "The workflow includes comprehensive Jekyll configuration validation that automatically: . | Validates YAML syntax in all configuration files | Checks directory structure based on your _config.yml settings | Verifies file locations relative to configuration file location | Reports configuration issues with helpful warnings | . ",
+    "url": "/docs/jekyll-guide.html#built-in-validation-features",
+    
+    "relUrl": "/docs/jekyll-guide.html#built-in-validation-features"
+  },"184": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "How Validation Works",
+    "content": "1. Smart Directory Detection . The validation reads your _config.yml to determine where directories should be located: . | 1 2 3 4 5 . | # Your _config.yml specifies custom locations layouts_dir: docs/_layouts includes_dir: docs/_includes sass: sass_dir: docs/_sass . | . Validation Logic: . | ✅ Checks docs/_layouts (from config) → Found! | ✅ Checks docs/_includes (from config) → Found! | ⚠️ Checks docs/_sass (from config) → Not found (using theme defaults) | . 2. File Location Validation . Files are checked relative to where your _config.yml is located: . | 1 2 . | # If _config.yml is in docs/ directory # Files are checked in docs/ directory, not root . | . Example Output: . | 1 2 3 4 5 6 7 8 9 10 11 . | 🔍 Validating Jekyll configuration... ✅ Validating config file: docs/_config.yml ✅ YAML syntax is valid ✅ Found layouts directory: docs/_layouts ✅ Found includes directory: docs/_includes ⚠️ Directory not found: docs/_sass (may be using theme defaults) ✅ Found file: index.md ✅ Found file: 404.html ✅ Found file: robots.txt ⚠️ File not found: index.html (optional but recommended) ✅ Jekyll configuration validation completed . | . 3. Configuration Warnings . The validation catches common configuration issues: . | Trailing slashes in baseurl or url (should not end with /) | Missing required directories (with fallback to theme defaults) | YAML syntax errors (with specific line numbers) | . ",
+    "url": "/docs/jekyll-guide.html#how-validation-works",
+    
+    "relUrl": "/docs/jekyll-guide.html#how-validation-works"
+  },"185": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "Validation Best Practices",
+    "content": "✅ Do This: . | 1 2 3 4 5 6 7 8 9 . | # Correct baseurl (no trailing slash) baseurl: \"/my-project\" # Correct url (no trailing slash) url: \"https://username.github.io\" # Specify custom directory locations layouts_dir: docs/_layouts includes_dir: docs/_includes . | . ❌ Avoid This: . | 1 2 3 4 5 6 . | # Incorrect - trailing slashes baseurl: \"/my-project/\" url: \"https://username.github.io/\" # Don't worry about missing directories if using theme defaults # The validation will correctly report this . | . ",
+    "url": "/docs/jekyll-guide.html#validation-best-practices",
+    
+    "relUrl": "/docs/jekyll-guide.html#validation-best-practices"
+  },"186": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "Troubleshooting Validation Issues",
+    "content": "False Warnings About Missing Directories . If you see warnings about missing _layouts, _includes, or _sass directories: . | Check your _config.yml - Are custom paths specified? | Verify directory locations - Do they exist where specified? | Theme defaults - Missing directories are fine if using theme defaults | . File Not Found Warnings . Common files (index.md, 404.html, robots.txt) are checked in the same directory as your _config.yml: . | If _config.yml is in docs/, files are checked in docs/ | If _config.yml is in root, files are checked in root | . ",
+    "url": "/docs/jekyll-guide.html#troubleshooting-validation-issues",
+    
+    "relUrl": "/docs/jekyll-guide.html#troubleshooting-validation-issues"
+  },"187": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "📁 Configuration Files",
+    "content": " ",
+    "url": "/docs/jekyll-guide.html#-configuration-files",
+    
+    "relUrl": "/docs/jekyll-guide.html#-configuration-files"
+  },"188": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "Standard Naming Convention",
+    "content": "Use these standard naming conventions for your Jekyll configuration files: . | _config.yml - Base configuration | _config_dev.yml - Development overrides | _config_staging.yml - Staging overrides | _config_prod.yml - Production overrides | _config_theme.yml - Theme-specific settings | _config_analytics.yml - Analytics settings | . ",
+    "url": "/docs/jekyll-guide.html#standard-naming-convention",
+    
+    "relUrl": "/docs/jekyll-guide.html#standard-naming-convention"
+  },"189": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "Base Configuration (_config.yml)",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 . | # Site settings title: \"My Project Documentation\" description: \"Comprehensive documentation for my project\" baseurl: \"\" # Set automatically by workflow for GitHub Pages url: \"https://yourusername.github.io\" # Author information author: name: \"Your Name\" email: \"your.email@example.com\" url: \"https://github.com/yourusername\" # Build settings markdown: kramdown highlighter: rouge permalink: pretty # Theme settings theme: minima # OR for remote themes: # remote_theme: just-the-docs/just-the-docs # Plugins plugins: - jekyll-feed - jekyll-sitemap - jekyll-seo-tag - jekyll-redirect-from - jekyll-optional-front-matter # Collections collections: docs: output: true permalink: /:collection/:path/ # Navigation navigation: - title: \"Home\" url: \"/\" - title: \"Getting Started\" url: \"/getting-started/\" - title: \"API Reference\" url: \"/api/\" # Exclude files exclude: - Gemfile - Gemfile.lock - node_modules - vendor - .git - .github - README.md - LICENSE . | . ",
+    "url": "/docs/jekyll-guide.html#base-configuration-_configyml",
+    
+    "relUrl": "/docs/jekyll-guide.html#base-configuration-_configyml"
+  },"190": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "Environment-Specific Configurations",
+    "content": "Development (_config_dev.yml) . | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 . | # Development URL settings url: \"http://localhost:4000\" baseurl: \"\" # Development-specific settings incremental: true # Enable incremental builds future: true # Show future-dated posts drafts: true # Show draft posts unpublished: true # Show unpublished posts verbose: true # Enable verbose output profile: true # Enable profiling safe: false # Allow custom plugins # Development exclusions (less restrictive) exclude: - Gemfile - Gemfile.lock - node_modules - vendor - .git - .github - README.md - LICENSE - _config_prod.yml . | . Production (_config_prod.yml) . | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 . | # Production URL settings url: \"https://yourusername.github.io\" baseurl: \"/your-repo-name\" # Production optimizations compress_html: clippings: all comments: all endings: all startings: [html, head, body] # Production-specific settings incremental: false # Disable incremental builds future: false # Don't publish future-dated posts drafts: false # Don't publish draft posts unpublished: false # Don't publish unpublished posts safe: true # Enable safe mode verbose: true # Enable verbose output profile: false # Disable profiling strict_front_matter: true # Fail on front matter errors lsi: false # Disable LSI # Production exclusions exclude: - Gemfile - Gemfile.lock - node_modules - vendor - .git - .github - README.md - LICENSE - \"*.gem\" - \"*.gemspec\" - .sass-cache - .jekyll-cache - .jekyll-metadata - _config_dev.yml - _config_staging.yml - .env* . | . ",
+    "url": "/docs/jekyll-guide.html#environment-specific-configurations",
+    
+    "relUrl": "/docs/jekyll-guide.html#environment-specific-configurations"
+  },"191": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "🌍 Environment vs Configuration",
+    "content": " ",
+    "url": "/docs/jekyll-guide.html#-environment-vs-configuration",
+    
+    "relUrl": "/docs/jekyll-guide.html#-environment-vs-configuration"
+  },"192": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "Two Independent Concepts",
+    "content": "Jekyll has two separate mechanisms that work together: . 1. JEKYLL_ENV - Runtime Environment Variable . | Purpose: Controls logic inside Liquid templates | Access: jekyll.environment in templates | Usage: Set as environment variable before Jekyll commands | . | 1 2 3 . | # Set environment variable JEKYLL_ENV=production bundle exec jekyll build JEKYLL_ENV=development bundle exec jekyll build . | . In Liquid templates: . | 1 2 3 4 5 . | &lt;div class=\"debug-banner\"&gt;Development Mode&lt;/div&gt; . | . 2. --config - Configuration File Selection . | Purpose: Controls which YAML files Jekyll loads | Usage: Comma-separated list of config files | Precedence: Later files override earlier ones | . | 1 2 . | # Multiple config files jekyll build --config _config.yml,_config_prod.yml . | . ",
+    "url": "/docs/jekyll-guide.html#two-independent-concepts",
+    
+    "relUrl": "/docs/jekyll-guide.html#two-independent-concepts"
+  },"193": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "How They Work Together",
+    "content": "You associate them by convention in your workflow: . | 1 2 3 4 5 6 7 . | # Production build jekyll_environment: \"production\" # Sets JEKYLL_ENV=production jekyll_config: \"_config.yml,_config_prod.yml\" # Loads these configs # Development build jekyll_environment: \"development\" # Sets JEKYLL_ENV=development jekyll_config: \"_config.yml,_config_dev.yml\" # Loads these configs . | . Result: . | Configs set structural things (URLs, excludes, plugins, etc.) | Environment lets you branch on behaviors in Liquid templates | Association is your choice - you decide which config goes with which environment | . ",
+    "url": "/docs/jekyll-guide.html#how-they-work-together",
+    
+    "relUrl": "/docs/jekyll-guide.html#how-they-work-together"
+  },"194": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "⚡ CI Optimization",
+    "content": " ",
+    "url": "/docs/jekyll-guide.html#-ci-optimization",
+    
+    "relUrl": "/docs/jekyll-guide.html#-ci-optimization"
+  },"195": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "Automatic CI Defaults",
+    "content": "The workflow automatically applies CI-optimized defaults for Jekyll command-line options: . | Setting | CI Default | Reason | . | incremental | false | Prevents stale content issues | . | watch | false | Unnecessary in CI environments | . | serve | false | Not applicable for CI builds | . | livereload | false | Not applicable for CI builds | . | safe | true | More secure and predictable | . | verbose | true | Better debugging in CI | . | profile | false | Reduces build time | . | drafts | false | Focus on finalized content | . | future | false | Prevent future content publishing | . | unpublished | false | Focus on published content | . | lsi | false | Resource-intensive, not needed for CI | . | strict_front_matter | true | Ensure content integrity | . ",
+    "url": "/docs/jekyll-guide.html#automatic-ci-defaults",
+    
+    "relUrl": "/docs/jekyll-guide.html#automatic-ci-defaults"
+  },"196": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "Override CI Defaults",
+    "content": "Users can override CI defaults when needed: . | 1 2 3 4 5 . | # Override CI defaults for development jekyll_environment: \"development\" jekyll_drafts: true # Override CI default jekyll_future: true # Override CI default jekyll_safe: false # Override CI default . | . ",
+    "url": "/docs/jekyll-guide.html#override-ci-defaults",
+    
+    "relUrl": "/docs/jekyll-guide.html#override-ci-defaults"
+  },"197": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "🚀 Workflow Examples",
+    "content": " ",
+    "url": "/docs/jekyll-guide.html#-workflow-examples",
+    
+    "relUrl": "/docs/jekyll-guide.html#-workflow-examples"
+  },"198": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "Basic Production Build",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 . | name: Production Documentation Build on: push: branches: [main] jobs: build-docs: uses: ./.github/workflows/docs.yml with: jekyll_enabled: true jekyll_config: \"_config.yml,_config_prod.yml\" jekyll_environment: \"production\" # CI defaults automatically applied . | . ",
+    "url": "/docs/jekyll-guide.html#basic-production-build",
+    
+    "relUrl": "/docs/jekyll-guide.html#basic-production-build"
+  },"199": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "Development Build with Overrides",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 . | name: Development Documentation Build on: push: branches: [develop] jobs: build-docs: uses: ./.github/workflows/docs.yml with: jekyll_enabled: true jekyll_config: \"_config.yml,_config_dev.yml\" jekyll_environment: \"development\" # Override CI defaults for development jekyll_drafts: true jekyll_future: true jekyll_safe: false . | . ",
+    "url": "/docs/jekyll-guide.html#development-build-with-overrides",
+    
+    "relUrl": "/docs/jekyll-guide.html#development-build-with-overrides"
+  },"200": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "Multi-Environment Build",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 . | name: Multi-Environment Build on: push: branches: [main, develop, staging] workflow_dispatch: inputs: environment: description: 'Target environment' required: true default: 'production' type: choice options: - production - staging - development jobs: build-docs: uses: ./.github/workflows/docs.yml with: jekyll_enabled: true jekyll_environment: $ jekyll_config: \"_config.yml,_config_$.yml\" . | . ",
+    "url": "/docs/jekyll-guide.html#multi-environment-build",
+    
+    "relUrl": "/docs/jekyll-guide.html#multi-environment-build"
+  },"201": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "Custom Configuration Files",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 . | name: Custom Config Build on: push: branches: [main] jobs: build-docs: uses: ./.github/workflows/docs.yml with: jekyll_enabled: true # Any combination of config files jekyll_config: \"_config.yml,_config_theme.yml,_config_analytics.yml,_config_prod.yml\" jekyll_environment: \"production\" . | . ",
+    "url": "/docs/jekyll-guide.html#custom-configuration-files",
+    
+    "relUrl": "/docs/jekyll-guide.html#custom-configuration-files"
+  },"202": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "🔧 Troubleshooting",
+    "content": " ",
+    "url": "/docs/jekyll-guide.html#-troubleshooting",
+    
+    "relUrl": "/docs/jekyll-guide.html#-troubleshooting"
+  },"203": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "Common Issues",
+    "content": "Configuration Not Found . | 1 . | ❌ Jekyll config not found, creating minimal _config.yml . | . Solution: Ensure your config file exists in the source directory or let the workflow create a minimal one. YAML Syntax Errors . | 1 . | ❌ YAML syntax error in _config.yml . | . Solution: Validate your YAML syntax using online tools or yq command. Build Failures . | 1 . | ❌ Jekyll build failed - no output directory or empty directory . | . Solution: Check your configuration, ensure all required files exist, and review build logs. ",
+    "url": "/docs/jekyll-guide.html#common-issues",
+    
+    "relUrl": "/docs/jekyll-guide.html#common-issues"
+  },"204": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "Debug Build",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 . | name: Debug Build on: workflow_dispatch: jobs: build-docs: uses: ./.github/workflows/docs.yml with: jekyll_enabled: true jekyll_config: \"_config.yml\" jekyll_environment: \"development\" # Debug options jekyll_verbose: true jekyll_trace: true jekyll_profile: true jekyll_strict_front_matter: true . | . ",
+    "url": "/docs/jekyll-guide.html#debug-build",
+    
+    "relUrl": "/docs/jekyll-guide.html#debug-build"
+  },"205": {
+    "doc": "🔧 Jekyll Configuration Guide",
+    "title": "Getting Help",
+    "content": ". | Check the Jekyll documentation | Review the GitHub Pages documentation | Use the workflow’s built-in validation | Enable verbose output for detailed debugging | . Next: Example Workflows → . | 📚 All Documentation | 🏠 Main README | . This guide provides everything you need to configure Jekyll with the enhanced documentation workflow. For more information, see the main documentation. ",
+    "url": "/docs/jekyll-guide.html#getting-help",
+    
+    "relUrl": "/docs/jekyll-guide.html#getting-help"
+  },"206": {
+    "doc": "🔄 Reusable Workflows",
+    "title": "Reusable Workflows",
+    "content": "This section contains all the reusable GitHub Actions workflows available in this repository. ",
+    "url": "/workflows/#reusable-workflows",
+    
+    "relUrl": "/workflows/#reusable-workflows"
+  },"207": {
+    "doc": "🔄 Reusable Workflows",
+    "title": "Available Workflows",
+    "content": ". | C/C++ Lint Workflow - Code quality checks using clang-format and clang-tidy | Static Analysis Workflow - Security analysis using cppcheck | Documentation Workflow - Doxygen documentation generation and GitHub Pages deployment | Link Check Workflow - Documentation link validation using Lychee | YAML Lint Workflow - YAML file validation and formatting | . ",
+    "url": "/workflows/#available-workflows",
+    
+    "relUrl": "/workflows/#available-workflows"
+  },"208": {
+    "doc": "🔄 Reusable Workflows",
+    "title": "Usage",
+    "content": "Each workflow is designed to be reusable and can be called from other repositories. See the individual workflow documentation for detailed usage instructions and parameters. | ← Previous: Documentation | Next: Examples &amp; Guides → | . | 📚 All Documentation | 🏠 Main README | . ",
+    "url": "/workflows/#usage",
+    
+    "relUrl": "/workflows/#usage"
+  },"209": {
+    "doc": "🔄 Reusable Workflows",
+    "title": "🔄 Reusable Workflows",
+    "content": " ",
+    "url": "/workflows/",
+    
+    "relUrl": "/workflows/"
+  },"210": {
+    "doc": "📝 YAML Lint Workflow",
+    "title": "YAML Lint Workflow Guide",
+    "content": "📝 YAML File Validation . The YAML Lint workflow validates YAML files in your repository using yamllint to ensure proper formatting and syntax. This is a reusable workflow that can be called from other repositories. ",
+    "url": "/docs/yamllint-workflow.html#yaml-lint-workflow-guide",
+    
+    "relUrl": "/docs/yamllint-workflow.html#yaml-lint-workflow-guide"
+  },"211": {
+    "doc": "📝 YAML Lint Workflow",
+    "title": "📋 Table of Contents",
+    "content": ". | Overview | Inputs | Outputs | Usage Examples | Configuration | Troubleshooting | Related Workflows | . ",
+    "url": "/docs/yamllint-workflow.html#-table-of-contents",
+    
+    "relUrl": "/docs/yamllint-workflow.html#-table-of-contents"
+  },"212": {
+    "doc": "📝 YAML Lint Workflow",
+    "title": "🎯 Overview",
+    "content": "Purpose: YAML file validation and formatting Key Features: . | yamllint integration | Configurable rules | Flexible path specification | Exclude patterns support | Strict mode option | Detailed reporting | . Use Case: YAML file quality and consistency enforcement . ",
+    "url": "/docs/yamllint-workflow.html#-overview",
+    
+    "relUrl": "/docs/yamllint-workflow.html#-overview"
+  },"213": {
+    "doc": "📝 YAML Lint Workflow",
+    "title": "⚙️ Inputs",
+    "content": " ",
+    "url": "/docs/yamllint-workflow.html#%EF%B8%8F-inputs",
+    
+    "relUrl": "/docs/yamllint-workflow.html#️-inputs"
+  },"214": {
+    "doc": "📝 YAML Lint Workflow",
+    "title": "📁 File Selection",
+    "content": "| Input | Description | Required | Default | Type | . | paths | Comma-separated list of paths to check | No | **/*.yml,**/*.yaml | string | . | exclude_patterns | Comma-separated patterns to exclude | No | .git/**,node_modules/**,venv/**,.venv/** | string | . ",
+    "url": "/docs/yamllint-workflow.html#-file-selection",
+    
+    "relUrl": "/docs/yamllint-workflow.html#-file-selection"
+  },"215": {
+    "doc": "📝 YAML Lint Workflow",
+    "title": "⚙️ Configuration",
+    "content": "| Input | Description | Required | Default | Type | . | config_file | Path to yamllint configuration file | No | .yamllint | string | . | strict_mode | Enable strict mode (fail on warnings) | No | false | boolean | . ",
+    "url": "/docs/yamllint-workflow.html#%EF%B8%8F-configuration",
+    
+    "relUrl": "/docs/yamllint-workflow.html#️-configuration"
+  },"216": {
+    "doc": "📝 YAML Lint Workflow",
+    "title": "📤 Outputs",
+    "content": "| Output | Description | . | result | YAML lint result (success/failure) | . | files_checked | Number of files checked | . | issues_found | Number of issues found | . ",
+    "url": "/docs/yamllint-workflow.html#-outputs",
+    
+    "relUrl": "/docs/yamllint-workflow.html#-outputs"
+  },"217": {
+    "doc": "📝 YAML Lint Workflow",
+    "title": "🚀 Usage Examples",
+    "content": " ",
+    "url": "/docs/yamllint-workflow.html#-usage-examples",
+    
+    "relUrl": "/docs/yamllint-workflow.html#-usage-examples"
+  },"218": {
+    "doc": "📝 YAML Lint Workflow",
+    "title": "Basic Usage",
+    "content": "| 1 2 3 4 5 . | name: YAML Lint on: [push, pull_request] jobs: yamllint: uses: N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1 . | . ",
+    "url": "/docs/yamllint-workflow.html#basic-usage",
+    
+    "relUrl": "/docs/yamllint-workflow.html#basic-usage"
+  },"219": {
+    "doc": "📝 YAML Lint Workflow",
+    "title": "Advanced Usage",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 . | name: YAML Lint on: [push, pull_request] jobs: yamllint: uses: N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1 with: paths: '.github/workflows/*.yml,docs/*.yml' config_file: '.yamllint' strict_mode: true exclude_patterns: '.git/**,node_modules/**,_site/**' . | . ",
+    "url": "/docs/yamllint-workflow.html#advanced-usage",
+    
+    "relUrl": "/docs/yamllint-workflow.html#advanced-usage"
+  },"220": {
+    "doc": "📝 YAML Lint Workflow",
+    "title": "Workflow-Only Checking",
+    "content": "| 1 2 3 4 5 6 7 8 . | name: Workflow YAML Lint on: [push, pull_request] jobs: yamllint: uses: N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1 with: paths: '.github/workflows/*.yml' strict_mode: true . | . ",
+    "url": "/docs/yamllint-workflow.html#workflow-only-checking",
+    
+    "relUrl": "/docs/yamllint-workflow.html#workflow-only-checking"
+  },"221": {
+    "doc": "📝 YAML Lint Workflow",
+    "title": "Comprehensive Configuration",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 . | name: Complete YAML Lint on: [push, pull_request] jobs: yamllint: uses: N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1 with: paths: '.github/workflows/*.yml,docs/*.yml,**/*.yaml' config_file: '.yamllint' strict_mode: true exclude_patterns: '.git/**,node_modules/**,venv/**,.venv/**,_site/**' . | . ",
+    "url": "/docs/yamllint-workflow.html#comprehensive-configuration",
+    
+    "relUrl": "/docs/yamllint-workflow.html#comprehensive-configuration"
+  },"222": {
+    "doc": "📝 YAML Lint Workflow",
+    "title": "⚙️ Configuration",
+    "content": " ",
+    "url": "/docs/yamllint-workflow.html#%EF%B8%8F-configuration-1",
+    
+    "relUrl": "/docs/yamllint-workflow.html#️-configuration-1"
+  },"223": {
+    "doc": "📝 YAML Lint Workflow",
+    "title": ".yamllint Configuration",
+    "content": "Create a .yamllint file in your project root: . | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 . | extends: default rules: line-length: max: 120 level: warning indentation: spaces: 2 comments: min-spaces-from-content: 1 document-start: present: true truthy: allowed-values: ['true', 'false', 'on', 'off'] . | . ",
+    "url": "/docs/yamllint-workflow.html#yamllint-configuration",
+    
+    "relUrl": "/docs/yamllint-workflow.html#yamllint-configuration"
+  },"224": {
+    "doc": "📝 YAML Lint Workflow",
+    "title": "Default Rules",
+    "content": "The workflow uses yamllint with these default settings: . | Line length: 120 characters (warning) | Indentation: 2 spaces | Document start: Required | Comments: Proper spacing | . ",
+    "url": "/docs/yamllint-workflow.html#default-rules",
+    
+    "relUrl": "/docs/yamllint-workflow.html#default-rules"
+  },"225": {
+    "doc": "📝 YAML Lint Workflow",
+    "title": "🔧 Troubleshooting",
+    "content": " ",
+    "url": "/docs/yamllint-workflow.html#-troubleshooting",
+    
+    "relUrl": "/docs/yamllint-workflow.html#-troubleshooting"
+  },"226": {
+    "doc": "📝 YAML Lint Workflow",
+    "title": "Common Issues",
+    "content": "YAML Syntax Errors . | Check for proper indentation (2 spaces) | Verify YAML syntax is valid | Ensure proper document structure | . Line Length Issues . | Adjust line length in .yamllint configuration | Break long lines appropriately | Use YAML’s line continuation features | . Indentation Problems . | Use consistent 2-space indentation | Avoid mixing tabs and spaces | Check for proper nesting | . ",
+    "url": "/docs/yamllint-workflow.html#common-issues",
+    
+    "relUrl": "/docs/yamllint-workflow.html#common-issues"
+  },"227": {
+    "doc": "📝 YAML Lint Workflow",
+    "title": "Debug Mode",
+    "content": "Enable debug output by checking the workflow logs in GitHub Actions. ",
+    "url": "/docs/yamllint-workflow.html#debug-mode",
+    
+    "relUrl": "/docs/yamllint-workflow.html#debug-mode"
+  },"228": {
+    "doc": "📝 YAML Lint Workflow",
+    "title": "📚 Related Workflows",
+    "content": ". | C/C++ Lint - Code quality checks | Static Analysis - Security analysis | Documentation - Documentation generation | . ",
+    "url": "/docs/yamllint-workflow.html#-related-workflows",
+    
+    "relUrl": "/docs/yamllint-workflow.html#-related-workflows"
+  },"229": {
+    "doc": "📝 YAML Lint Workflow",
+    "title": "🔗 Related Resources",
+    "content": ". | yamllint Documentation | YAML Specification | GitHub Actions YAML Reference | . ← Previous: Link Check Workflow . | 📚 All Documentation | 🏠 Main README | . ",
+    "url": "/docs/yamllint-workflow.html#-related-resources",
+    
+    "relUrl": "/docs/yamllint-workflow.html#-related-resources"
+  },"230": {
+    "doc": "📝 YAML Lint Workflow",
+    "title": "📝 YAML Lint Workflow",
+    "content": " ",
+    "url": "/docs/yamllint-workflow.html",
+    
+    "relUrl": "/docs/yamllint-workflow.html"
+  }
+}

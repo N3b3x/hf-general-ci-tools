@@ -1,9 +1,10 @@
 ---
-name: 📚 Publish Documentation
+name: 📚 Publish Documentation (Versioned)
 
 on:
   push:
     branches: [main]
+    tags: ['v*']
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -14,32 +15,93 @@ permissions:
   id-token: write
 
 concurrency:
-  group: docs-no-doxygen-${{ github.ref }}
+  group: docs-versioned-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  publish-docs:
-    uses: ./.github/workflows/docs.yml
-    with:
-      # Jekyll configuration for this repo's docs
-      jekyll_enabled: true
-      jekyll_config: "docs/_config.yml"
-      jekyll_source: "."
-      jekyll_destination: "_site"
-      jekyll_layouts_dir: "docs/_layouts"
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      # Link checking
-      run_link_check: true
-      link_check_paths: "**/*.md"
-      verbose: true
+      - name: Set version folder
+        id: ver
+        run: |
+          if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
+            V="${GITHUB_REF_NAME#v}"        # e.g., v1.4.0 -> 1.4.0
+            echo "out=v${V%.*}" >> $GITHUB_OUTPUT  # v1.4
+          else
+            echo "out=latest" >> $GITHUB_OUTPUT
+          fi
 
-      # Markdown linting
-      run_markdown_lint: true
-      markdown_lint_paths: "**/*.md"
+      - name: Ruby / Jekyll
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
 
-      # Spell checking
-      run_spell_check: false
-      spell_check_paths: "**/*.md"
+      - name: Install Jekyll deps
+        run: |
+          bundle install --path vendor/bundle
 
-      # Deploy to GitHub Pages
-      deploy_pages: true
+      - name: Build Doxygen
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y doxygen graphviz
+          doxygen Doxyfile
+
+      - name: Build Jekyll
+        env:
+          JEKYLL_ENV: production
+        run: |
+          bundle exec jekyll build --config docs/_config.yml --source . --destination _site
+
+      - name: Arrange versioned output
+        run: |
+          mkdir -p site/${{ steps.ver.outputs.out }}
+          rsync -a _site/ site/${{ steps.ver.outputs.out }}/
+          # Move Doxygen HTML under /api/ inside the version
+          if [ -d html ]; then
+            mkdir -p site/${{ steps.ver.outputs.out }}/api
+            rsync -a html/ site/${{ steps.ver.outputs.out }}/api/
+          fi
+
+      - name: Update versions.json (lightweight)
+        run: |
+          # Collect already-published versions (gh-pages) + current
+          git fetch origin gh-pages:gh-pages || true
+          if git rev-parse --verify gh-pages >/dev/null 2>&1; then
+            git worktree add ghp gh-pages
+            mkdir -p ghp
+            jq -r '.' ghp/versions.json >/dev/null 2>&1 || echo '[]' > ghp/versions.json
+            VLIST="$(jq -r '.[]' ghp/versions.json 2>/dev/null || echo '')"
+          else
+            mkdir ghp
+            echo '[]' > ghp/versions.json
+            VLIST=""
+          fi
+          CUR="${{ steps.ver.outputs.out }}"
+          # Add CUR if missing (ignore latest)
+          if [ "$CUR" != "latest" ]; then
+            if ! echo "$VLIST" | grep -q "^$CUR$"; then
+              jq --arg v "$CUR" '. + [$v] | unique' ghp/versions.json > ghp/versions.json.new
+              mv ghp/versions.json.new ghp/versions.json
+            fi
+          fi
+          mkdir -p site
+          cp ghp/versions.json site/versions.json || echo '[]' > site/versions.json
+
+      - name: Copy root redirect
+        run: |
+          cp index.html site/index.html
+
+      - name: Upload artifact for Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4

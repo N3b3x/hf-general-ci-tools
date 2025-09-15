@@ -4,8 +4,8 @@ title: "hf-general-ci-tools"
 description: >
   A comprehensive collection of reusable GitHub Actions workflows for general CI/CD tasks,
   including C/C++ linting, static analysis, documentation generation, and link checking
-baseurl: "/hf-general-ci-tools"  # GitHub Pages subpath
-url: "https://n3b3x.github.io"
+url: ""                # leave blank; Pages injects base url
+baseurl: ""            # keep empty; rely on relative links for versioned docs
 
 # Author and social information
 author:
@@ -29,9 +29,15 @@ plugins:
   - jekyll-remote-theme
   - jekyll-redirect-from
   - jekyll-optional-front-matter
+  - jekyll-relative-links
 
 # Navigation settings
 nav_next_prev: true
+
+# Relative links configuration for versioned docs
+relative_links:
+  enabled: true
+  collections: true
 
 # Markdown and syntax highlighting
 markdown: kramdown
@@ -99,6 +105,8 @@ aux_links:
     - "https://github.com/n3b3x/hf-general-ci-tools/issues"
   "⭐ Star on GitHub":
     - "https://github.com/n3b3x/hf-general-ci-tools/stargazers"
+  "📖 API Documentation":
+    - "/api/"
 
 # Footer customization
 footer_content: >

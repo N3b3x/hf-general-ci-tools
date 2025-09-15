@@ -1,0 +1,148 @@
+<!-- Version Switcher Component for hf-general-ci-tools -->
+<div class="version-switcher">
+  <label for="version-select" class="version-label">Version:</label>
+  <select id="version-select" class="version-select">
+    <option value="">Loading versions...</option>
+  </select>
+</div>
+
+<style>
+.version-switcher {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  background: var(--search-result-background-color);
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+}
+
+.version-label {
+  font-weight: 600;
+  color: var(--text-color);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.version-select {
+  background: var(--body-background-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.9rem;
+  min-width: 120px;
+  cursor: pointer;
+}
+
+.version-select:focus {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 2px;
+}
+
+.version-select:hover {
+  border-color: var(--link-color);
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .version-switcher {
+    background: var(--search-result-background-color);
+  }
+  
+  .version-select {
+    background: var(--body-background-color);
+    color: var(--text-color);
+  }
+}
+</style>
+
+<script>
+(function() {
+  'use strict';
+  
+  // Get current version from URL path
+  function getCurrentVersion() {
+    const pathParts = window.location.pathname.split('/').filter(part => part);
+    // Look for version pattern (vX.Y or latest)
+    for (let i = 0; i < pathParts.length; i++) {
+      const part = pathParts[i];
+      if (part === 'latest' || /^v\d+\.\d+/.test(part)) {
+        return part;
+      }
+    }
+    return 'latest'; // default
+  }
+  
+  // Get base path without version
+  function getBasePath() {
+    const pathParts = window.location.pathname.split('/').filter(part => part);
+    const versionIndex = pathParts.findIndex(part => part === 'latest' || /^v\d+\.\d+/.test(part));
+    
+    if (versionIndex !== -1) {
+      // Remove version and everything after it
+      return '/' + pathParts.slice(0, versionIndex).join('/');
+    }
+    
+    // If no version found, return current path
+    return window.location.pathname;
+  }
+  
+  // Load versions and populate selector
+  function loadVersions() {
+    const select = document.getElementById('version-select');
+    if (!select) return;
+    
+    // Try to load versions.json
+    fetch('/versions.json')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to load versions');
+        }
+        return response.json();
+      })
+      .then(versions => {
+        // Add 'latest' as first option
+        const allVersions = ['latest', ...versions.sort().reverse()];
+        
+        // Clear existing options
+        select.innerHTML = '';
+        
+        // Add version options
+        allVersions.forEach(version => {
+          const option = document.createElement('option');
+          option.value = version;
+          option.textContent = version;
+          select.appendChild(option);
+        });
+        
+        // Set current version
+        const currentVersion = getCurrentVersion();
+        select.value = currentVersion;
+        
+        // Add change handler
+        select.addEventListener('change', function() {
+          const selectedVersion = this.value;
+          if (selectedVersion && selectedVersion !== currentVersion) {
+            const basePath = getBasePath();
+            const newPath = basePath + '/' + selectedVersion + '/';
+            window.location.href = newPath;
+          }
+        });
+      })
+      .catch(error => {
+        console.warn('Could not load versions:', error);
+        // Fallback: just show current version
+        select.innerHTML = '<option value="' + getCurrentVersion() + '">' + getCurrentVersion() + '</option>';
+      });
+  }
+  
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadVersions);
+  } else {
+    loadVersions();
+  }
+})();
+</script>
