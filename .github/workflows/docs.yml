@@ -1811,6 +1811,10 @@ jobs:
             # For preview or other types, redirect to development as fallback
             REDIRECT_TARGET="development"
           fi
+          
+          # Add repository name to redirect target
+          REPO_NAME="${{ github.event.repository.name }}"
+          REDIRECT_TARGET="/$REPO_NAME/$REDIRECT_TARGET"
 
           echo "🎯 Creating root redirect to: $REDIRECT_TARGET"
           
@@ -1821,7 +1825,7 @@ jobs:
           <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <meta http-equiv="refresh" content="0; url='/$REDIRECT_TARGET/'" />
+            <meta http-equiv="refresh" content="0; url='$REDIRECT_TARGET/'" />
             <title>Documentation - Redirecting to $REDIRECT_TARGET</title>
             <style>
               body { 
@@ -1871,8 +1875,8 @@ jobs:
               <h1>📚 Documentation</h1>
               <div class="spinner"></div>
               <p>Redirecting to the latest documentation...</p>
-              <p><a href="/$REDIRECT_TARGET/">Click here if you are not redirected automatically</a></p>
-              <p><a href="/version_selector.html">Browse all versions</a></p>
+              <p><a href="$REDIRECT_TARGET/">Click here if you are not redirected automatically</a></p>
+              <p><a href="/$REPO_NAME/version_selector.html">Browse all versions</a></p>
             </div>
           </body>
           </html>
