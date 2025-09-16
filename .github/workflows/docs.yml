@@ -1982,7 +1982,7 @@ jobs:
                   fi
                   
                   echo "<div class=\"version-card $current_class\">"
-                  echo "  <a href=\"/$version/\">"
+                  echo "  <a href=\"/$REPO_NAME/$version/\">"
                   echo "    <div class=\"version-name\">$version</div>"
                   echo "    <div class=\"version-type\">$version_type</div>"
                   echo "    <div class=\"version-description\">Click to view documentation</div>"
@@ -1992,7 +1992,7 @@ jobs:
               </div>
               
               <div style="text-align: center; margin-top: 40px;">
-                <a href="/" style="color: #0366d6; text-decoration: none;">← Back to latest documentation</a>
+                <a href="/$REPO_NAME/" style="color: #0366d6; text-decoration: none;">← Back to latest documentation</a>
               </div>
             </div>
           </body>
