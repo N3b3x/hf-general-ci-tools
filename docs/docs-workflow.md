@@ -44,11 +44,13 @@ with link checking and artifact management.
 - **Concurrency control** and artifact storage
 - **Fast dependency installation** using pre-built binaries
 
-**Use Case**: Automated versioned documentation generation and deployment for C/C++ projects with comprehensive versioning support
+**Use Case**: Automated versioned documentation generation and deployment for C/C++ projects with
+comprehensive versioning support
 
 ## 🏗️ Versioned Documentation Architecture
 
-The workflow implements a sophisticated versioned documentation system that automatically manages multiple versions of your documentation:
+The workflow implements a sophisticated versioned documentation system that automatically manages
+multiple versions of your documentation:
 
 ### **Directory Structure**
 ```
