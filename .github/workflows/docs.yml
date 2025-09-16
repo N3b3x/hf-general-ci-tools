@@ -238,7 +238,7 @@ on:
         default: false
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -644,6 +644,7 @@ jobs:
     if: always() && needs.input-validation.outputs.validation_passed == 'success' && needs.version-detection.result == 'success' && needs.quality-checks.result == 'success'
     env:
       CACHE_VERSION: v1
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       # =============================================================================
       # Repository Setup and Configuration
@@ -1659,15 +1660,16 @@ jobs:
           git config --global user.email 'actions@github.com'
 
           # Clone deployment branch (create if it doesn't exist)
-          # Use GitHub token for authentication
-          REPO_URL="https://${{ github.token }}@github.com/${{ github.repository }}.git"
-          
+          # Use standard HTTPS URL - authentication handled by GITHUB_TOKEN permissions
+          REPO_URL="https://github.com/${{ github.repository }}.git"
+
           if git ls-remote --heads $REPO_URL $DEPLOYMENT_BRANCH | grep -q $DEPLOYMENT_BRANCH; then
             echo "✅ Branch $DEPLOYMENT_BRANCH exists, cloning..."
             git clone --branch=$DEPLOYMENT_BRANCH --depth=1 $REPO_URL gh-pages-deploy
+            cd gh-pages-deploy
           else
             echo "⚠️  Branch $DEPLOYMENT_BRANCH not found, creating it..."
-            
+
             # Try to clone main branch first, fallback to master if main doesn't exist
             if git ls-remote --heads $REPO_URL main | grep -q main; then
               echo "📋 Using main branch as base..."
@@ -1680,12 +1682,12 @@ jobs:
               echo "Please ensure your repository has a main or master branch."
               exit 1
             fi
-            
+
             cd gh-pages-deploy
-            
+
             # Create and switch to deployment branch
             git checkout -b $DEPLOYMENT_BRANCH
-            
+
             # Create initial commit
             echo "# $DEPLOYMENT_BRANCH branch for documentation deployment" > README.md
             echo "" >> README.md
@@ -1693,12 +1695,13 @@ jobs:
             echo "Do not edit files in this branch manually - they will be overwritten." >> README.md
             git add README.md
             git commit -m "Initialize $DEPLOYMENT_BRANCH branch for documentation deployment"
-            
-            # Push the new branch using authenticated URL
-            git push $REPO_URL $DEPLOYMENT_BRANCH
+
+            # Push the new branch
+            git push origin $DEPLOYMENT_BRANCH
             echo "✅ Created and pushed $DEPLOYMENT_BRANCH branch"
           fi
-          
+
+          # Ensure we're in the deployment directory
           cd gh-pages-deploy
 
           # =============================================================================
@@ -1834,7 +1837,7 @@ jobs:
           - Ref: ${{ github.ref }}
           - Deployed: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
-          git push $REPO_URL $DEPLOYMENT_BRANCH
+          git push origin $DEPLOYMENT_BRANCH
 
           echo "✅ Successfully deployed versioned documentation"
           echo "🌐 Access URLs:"

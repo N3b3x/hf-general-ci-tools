@@ -680,15 +680,22 @@ git push origin gh-pages
 
 **Solution**: The workflow now uses proper GitHub token authentication:
 
-1. **Automatic authentication** - Uses `${{ github.token }}` for all Git operations
-2. **Secure URLs** - All repository URLs include authentication tokens
+1. **Automatic authentication** - Uses GitHub Actions built-in `GITHUB_TOKEN` with proper permissions
+2. **Secure URLs** - Uses standard HTTPS URLs without token exposure
 3. **No manual setup** - Works automatically in GitHub Actions environment
 
 **What happens automatically**:
-- ✅ Uses GitHub Actions token for authentication
-- ✅ Clones and pushes using authenticated URLs
+- ✅ Uses GitHub Actions built-in authentication via `contents: write` permission
+- ✅ Uses standard HTTPS URLs without token exposure
+- ✅ Clones and pushes using secure authentication
 - ✅ No manual token configuration needed
 - ✅ Works with private repositories (with proper permissions)
+
+**Technical Details**:
+- Uses standard HTTPS URLs without embedded tokens
+- Relies on `contents: write` permission for authentication
+- GitHub Actions automatically provides `GITHUB_TOKEN` with proper permissions
+- No token exposure in logs or URLs
 
 ## 📚 Related Workflows
 
