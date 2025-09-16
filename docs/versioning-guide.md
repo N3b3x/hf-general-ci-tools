@@ -111,10 +111,12 @@ version_type: "stable"
 The workflow automatically modifies your main `_config.yml` to inject version-specific information:
 
 - **Title**: Appends version name to the title
-- **Base URL**: Updates to include version path  
+- **Base URL**: Updates to include version path
 - **Version Info**: Adds `version` and `version_type` variables
+- **Comment-safe processing**: Safely handles inline comments in configuration files
+- **Clean generation**: Creates `_config_generated.yml` without syntax errors
 
-No custom templates are needed - the workflow handles everything automatically.
+No custom templates are needed - the workflow handles everything automatically with robust configuration processing.
 
 **Navigation for Versioned Docs:**
 
@@ -145,7 +147,7 @@ The workflow automatically generates the navigation menu based on the front matt
 **The following features are automatically enabled with versioned documentation:**
 
 - **Version preservation** - All existing version directories are preserved
-- **Root redirect** - Creates redirect from root to latest stable version  
+- **Root redirect** - Creates redirect from root to latest stable version
 - **Version selector** - Adds version selector component for navigation
 
 **Why these are automatic:**

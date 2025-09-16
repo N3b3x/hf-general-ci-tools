@@ -1,6 +1,7 @@
+---
 # Example: Versioned Documentation Workflow
 # This is an example of how to use the enhanced docs.yml workflow with versioning
-# 
+#
 # Key Features:
 # - Automatic version detection from git tags/branches
 # - Versioned deployment to gh-pages branch
@@ -71,7 +72,7 @@ jobs:
       # for seamless integration.
       doxygen_config: 'Doxyfile'         # Path to your Doxyfile
       doxygen_fail_on_warnings: 'false'  # Set to true for strict builds
-      
+
       # =============================================================================
       # Jekyll Configuration
       # =============================================================================

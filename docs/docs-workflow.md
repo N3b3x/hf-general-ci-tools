@@ -581,6 +581,75 @@ doxygen Doxyfile
 ls docs/doxygen/html/
 ```
 
+## 🔧 Troubleshooting
+
+### Common Configuration Issues
+
+#### **Sed Syntax Errors**
+
+**Problem**: Workflow fails with `sed: -e expression #1, char 44: unterminated 's' command`
+
+**Cause**: Inline comments in configuration files can cause sed syntax errors during processing.
+
+**Solution**: The workflow now automatically handles inline comments safely. If you encounter this error:
+
+1. **Check your `_config.yml`** for inline comments:
+   ```yaml
+   # This is safe
+   title: "My Project"  # This comment is handled automatically
+   baseurl: "/my-project"  # GitHub Pages subpath
+   ```
+
+2. **The workflow automatically**:
+   - Strips inline comments during processing
+   - Generates clean configuration files
+   - Prevents sed syntax errors
+
+**Example Fix**:
+```yaml
+# Before (could cause errors in older versions)
+baseurl: "/my-project"  # GitHub Pages subpath
+
+# After (handled automatically by current workflow)
+baseurl: "/my-project"  # GitHub Pages subpath
+# ↑ This comment is now safely stripped during processing
+```
+
+#### **YAML Validation Issues**
+
+**Problem**: YAML syntax errors in configuration files
+
+**Solution**: The workflow includes built-in YAML validation:
+
+1. **Automatic validation** - YAML syntax is checked during workflow execution
+2. **Clear error messages** - Specific line numbers and error descriptions
+3. **Prevention** - Validation runs before configuration processing
+
+**Manual validation**:
+```bash
+# Install yamllint
+pip install yamllint
+
+# Validate your configuration
+yamllint _config.yml
+```
+
+#### **Configuration Generation Failures**
+
+**Problem**: Version-specific configuration generation fails
+
+**Solution**: The workflow now includes robust configuration processing:
+
+1. **Comment-safe extraction** - Handles inline comments automatically
+2. **Clean generation** - Creates `_config_generated.yml` without syntax errors
+3. **Error prevention** - Validates configuration before processing
+
+**Check generated configuration**:
+```bash
+# After workflow runs, check the generated file
+cat _config_generated.yml
+```
+
 ## 📚 Related Workflows
 
 - **[C/C++ Lint](c-cpp-lint-workflow.md)** - Code quality checks

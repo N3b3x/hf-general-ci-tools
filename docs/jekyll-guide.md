@@ -65,6 +65,8 @@ The workflow includes comprehensive Jekyll configuration validation that automat
 - **Checks directory structure** based on your `_config.yml` settings
 - **Verifies file locations** relative to configuration file location
 - **Reports configuration issues** with helpful warnings
+- **Handles inline comments** safely during configuration extraction
+- **Generates clean configuration** for versioned deployments
 
 ### How Validation Works
 
@@ -121,7 +123,7 @@ The validation catches common configuration issues:
 # Correct baseurl (no trailing slash)
 baseurl: "/my-project"
 
-# Correct url (no trailing slash)  
+# Correct url (no trailing slash)
 url: "https://username.github.io"
 
 # Specify custom directory locations
@@ -153,6 +155,66 @@ Common files (`index.md`, `404.html`, `robots.txt`) are checked in the same dire
 
 - If `_config.yml` is in `docs/`, files are checked in `docs/`
 - If `_config.yml` is in root, files are checked in root
+
+### 🔧 Configuration Generation and Comment Handling
+
+#### **Robust Configuration Processing**
+
+The workflow includes advanced configuration processing that safely handles inline comments and generates clean, versioned configurations:
+
+**Key Features:**
+- **Comment-safe extraction** - Automatically strips inline comments during configuration processing
+- **Version-specific generation** - Creates `_config_generated.yml` with version information
+- **Error prevention** - Prevents `sed` syntax errors from malformed configuration lines
+
+#### **How Comment Handling Works**
+
+The workflow safely extracts configuration values even when they contain inline comments:
+
+```yaml
+# Your _config.yml with inline comments
+title: "My Project"  # Project title
+baseurl: "/my-project"  # GitHub Pages subpath
+layouts_dir: _config/_layouts  # Custom layouts
+```
+
+**Processing Steps:**
+1. **Extract value** - Gets the configuration value
+2. **Strip comments** - Removes `# comment` portions safely
+3. **Clean whitespace** - Trims leading/trailing spaces
+4. **Generate versioned config** - Creates clean configuration for deployment
+
+**Example Processing:**
+```bash
+# Input: baseurl: "/my-project"  # GitHub Pages subpath
+# Output: /my-project (clean, no comments)
+```
+
+#### **Version-Specific Configuration Generation**
+
+For versioned documentation, the workflow automatically:
+
+1. **Copies your main config** - Uses `_config.yml` as the base
+2. **Extracts clean values** - Safely processes title, baseurl, and directory settings
+3. **Injects version info** - Adds version-specific metadata
+4. **Generates clean config** - Creates `_config_generated.yml` without syntax errors
+
+**Generated Configuration Example:**
+```yaml
+# _config_generated.yml (auto-generated)
+title: "My Project - v1.2.3"
+baseurl: "/my-project/v1.2.3"
+version: "v1.2.3"
+version_type: "stable"
+# ... rest of your original configuration
+```
+
+#### **Error Prevention**
+
+This robust processing prevents common configuration errors:
+
+- ❌ **Before**: `sed: -e expression #1, char 44: unterminated 's' command`
+- ✅ **After**: Clean configuration generation without syntax errors
 
 ## 📁 Configuration Files
 
@@ -466,11 +528,11 @@ jobs:
     uses: ./.github/workflows/docs.yml
     with:
       jekyll_enabled: true
-      jekyll_environment: ${{ github.event.inputs.environment || 
-        (github.ref == 'refs/heads/main' && 'production') || 
+      jekyll_environment: ${{ github.event.inputs.environment ||
+        (github.ref == 'refs/heads/main' && 'production') ||
         (github.ref == 'refs/heads/staging' && 'staging') || 'development' }}
-      jekyll_config: "_config.yml,_config_${{ github.event.inputs.environment || 
-        (github.ref == 'refs/heads/main' && 'prod') || 
+      jekyll_config: "_config.yml,_config_${{ github.event.inputs.environment ||
+        (github.ref == 'refs/heads/main' && 'prod') ||
         (github.ref == 'refs/heads/staging' && 'staging') || 'dev' }}.yml"
 ```
 
