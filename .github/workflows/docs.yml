@@ -1689,6 +1689,13 @@ jobs:
             echo "✅ Branch $DEPLOYMENT_BRANCH exists, cloning..."
             git clone --branch=$DEPLOYMENT_BRANCH --depth=1 $REPO_URL gh-pages-deploy
             cd gh-pages-deploy
+
+            # Ensure the branch is clean (remove any non-documentation files)
+            echo "🧹 Ensuring clean documentation branch..."
+            # Delete all files and directories except .git and existing documentation
+            find . -maxdepth 1 -not -name '.git' -not -name '.' -not -name 'development' -not -name 'v*' -not -name 'index.html' -not -name 'version_selector.html' -not -name 'README.md' -exec rm -rf {} +
+
+            cd ..
           else
             echo "⚠️  Branch $DEPLOYMENT_BRANCH not found, creating it..."
 
@@ -1705,22 +1712,34 @@ jobs:
               exit 1
             fi
 
-            cd gh-pages-deploy
-
             # Create and switch to deployment branch
+            cd gh-pages-deploy
             git checkout -b $DEPLOYMENT_BRANCH
 
-            # Create initial commit
+            # Clear out all repository files to create a clean documentation-only branch
+            echo "🧹 Clearing repository files to create clean documentation branch..."
+            # Delete all files and directories except .git
+            find . -maxdepth 1 -not -name '.git' -not -name '.' -exec rm -rf {} +
+
+            # Create initial commit with clean documentation structure
             echo "# $DEPLOYMENT_BRANCH branch for documentation deployment" > README.md
             echo "" >> README.md
             echo "This branch is automatically created and managed by the documentation workflow." >> README.md
             echo "Do not edit files in this branch manually - they will be overwritten." >> README.md
-            git add README.md
-            git commit -m "Initialize $DEPLOYMENT_BRANCH branch for documentation deployment"
+            echo "" >> README.md
+            echo "## Structure" >> README.md
+            echo "- \`development/\` - Main branch documentation" >> README.md
+            echo "- \`v*.*.*/\` - Versioned documentation releases" >> README.md
+            echo "- \`index.html\` - Root redirect to latest version" >> README.md
+            echo "- \`version_selector.html\` - Version selector component" >> README.md
+
+            git add .
+            git commit -m "Initialize clean $DEPLOYMENT_BRANCH branch for documentation deployment"
 
             # Push the new branch
             git push $REPO_URL $DEPLOYMENT_BRANCH
             echo "✅ Created and pushed $DEPLOYMENT_BRANCH branch"
+            cd ..
           fi
 
           # Ensure we're in the deployment directory
