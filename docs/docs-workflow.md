@@ -650,6 +650,30 @@ yamllint _config.yml
 cat _config_generated.yml
 ```
 
+#### **Missing Deployment Branch**
+
+**Problem**: Workflow fails with `fatal: Remote branch gh-pages not found in upstream origin`
+
+**Solution**: The workflow automatically creates the deployment branch if it doesn't exist:
+
+1. **Auto-detection** - Checks if the deployment branch exists
+2. **Auto-creation** - Creates the branch from main/master if missing
+3. **Fallback handling** - Tries main branch first, then master
+4. **Clear messaging** - Provides informative output about branch creation
+
+**What happens automatically**:
+- ✅ Checks if `gh-pages` branch exists
+- ✅ Creates branch from main/master if missing
+- ✅ Pushes the new branch to origin
+- ✅ Continues with deployment normally
+
+**Manual creation** (if needed):
+```bash
+# Create gh-pages branch manually
+git checkout -b gh-pages
+git push origin gh-pages
+```
+
 ## 📚 Related Workflows
 
 - **[C/C++ Lint](c-cpp-lint-workflow.md)** - Code quality checks
