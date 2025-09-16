@@ -530,7 +530,11 @@ jobs:
           echo "✅ Versioned documentation with deployment branch: ${{ inputs.deployment_branch }}"
 
           # Auto detection from branch/tag
-          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+          # Detect default branch dynamically
+          DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
+          echo "🔍 Detected default branch: $DEFAULT_BRANCH"
+
+          if [[ "${{ github.ref }}" == "refs/heads/$DEFAULT_BRANCH" ]]; then
             VERSION_NAME="development"
             VERSION_TYPE="development"
             DEPLOY_STRATEGY="development"
@@ -1639,20 +1643,24 @@ jobs:
 
       - name: Check Pages deployment conditions
         run: |
+          # Detect default branch for Pages deployment
+          DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
+
           echo "🔍 Pages deployment conditions check:"
           echo "  deploy_pages: ${{ inputs.deploy_pages }}"
           echo "  event_name: ${{ github.event_name }}"
           echo "  ref: ${{ github.ref }}"
-          echo "  is_main_branch: ${{ github.ref == 'refs/heads/main' }}"
+          echo "  default_branch: $DEFAULT_BRANCH"
+          echo "  is_default_branch: ${{ github.ref == format('refs/heads/{0}', DEFAULT_BRANCH) }}"
           if [ "${{ inputs.deploy_pages }}" == "true" ] && \
              [ "${{ github.event_name }}" == "push" ] && \
-             [ "${{ github.ref }}" == "refs/heads/main" ]; then
+             [ "${{ github.ref }}" == "refs/heads/$DEFAULT_BRANCH" ]; then
           echo "✅ All conditions met - Pages deployment will proceed"
           else
           echo "⚠️  Pages deployment will be skipped because:"
             [ "${{ inputs.deploy_pages }}" != "true" ] && echo "   - deploy_pages is false"
             [ "${{ github.event_name }}" != "push" ] && echo "   - not a push event (current: ${{ github.event_name }})"
-            [ "${{ github.ref }}" != "refs/heads/main" ] && echo "   - not on main branch (current: ${{ github.ref }})"
+            [ "${{ github.ref }}" != "refs/heads/$DEFAULT_BRANCH" ] && echo "   - not on default branch (current: ${{ github.ref }}, expected: refs/heads/$DEFAULT_BRANCH)"
           fi
 
       # =============================================================================
@@ -1685,6 +1693,10 @@ jobs:
           git config --global credential.helper store
           echo "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com" > ~/.git-credentials
 
+          # Navigate to parent directory to clone gh-pages alongside the main repo
+          echo "📁 Navigating to parent directory to clone gh-pages branch..."
+          cd ..
+
           if git ls-remote --heads $REPO_URL $DEPLOYMENT_BRANCH | grep -q $DEPLOYMENT_BRANCH; then
             echo "✅ Branch $DEPLOYMENT_BRANCH exists, cloning..."
             git clone --branch=$DEPLOYMENT_BRANCH --depth=1 $REPO_URL gh-pages-deploy
@@ -1699,16 +1711,22 @@ jobs:
           else
             echo "⚠️  Branch $DEPLOYMENT_BRANCH not found, creating it..."
 
-            # Try to clone main branch first, fallback to master if main doesn't exist
-            if git ls-remote --heads $REPO_URL main | grep -q main; then
-              echo "📋 Using main branch as base..."
+            # Try to clone default branch, with fallbacks
+            DEFAULT_BRANCH=$(git ls-remote --symref $REPO_URL HEAD | head -n1 | sed 's/.*refs\/heads\///')
+            echo "🔍 Detected default branch: $DEFAULT_BRANCH"
+
+            if [[ -n "$DEFAULT_BRANCH" ]] && git ls-remote --heads $REPO_URL $DEFAULT_BRANCH | grep -q $DEFAULT_BRANCH; then
+              echo "📋 Using detected default branch: $DEFAULT_BRANCH"
+              git clone --branch=$DEFAULT_BRANCH --depth=1 $REPO_URL gh-pages-deploy
+            elif git ls-remote --heads $REPO_URL main | grep -q main; then
+              echo "📋 Using main branch as fallback..."
               git clone --branch=main --depth=1 $REPO_URL gh-pages-deploy
             elif git ls-remote --heads $REPO_URL master | grep -q master; then
-              echo "📋 Using master branch as base..."
+              echo "📋 Using master branch as fallback..."
               git clone --branch=master --depth=1 $REPO_URL gh-pages-deploy
             else
-              echo "❌ No main or master branch found. Cannot create $DEPLOYMENT_BRANCH branch."
-              echo "Please ensure your repository has a main or master branch."
+              echo "❌ No suitable default branch found. Cannot create $DEPLOYMENT_BRANCH branch."
+              echo "Please ensure your repository has a main, master, or other default branch."
               exit 1
             fi
 
@@ -1753,8 +1771,9 @@ jobs:
           mkdir -p "$VERSION_PATH"
 
           # Copy built documentation
-          if [[ -d "${{ env.DEPLOY_PATH || '_site' }}" ]]; then
-            DEPLOY_SOURCE="${{ env.DEPLOY_PATH || '_site' }}"
+          # The _site directory is in the main repo directory (../${{ github.event.repository.name }}/_site)
+          if [[ -d "../${{ github.event.repository.name }}/${{ env.DEPLOY_PATH || '_site' }}" ]]; then
+            DEPLOY_SOURCE="../${{ github.event.repository.name }}/${{ env.DEPLOY_PATH || '_site' }}"
           echo "📁 Copying documentation from $DEPLOY_SOURCE to $VERSION_PATH/"
             cp -r "$DEPLOY_SOURCE"/* "$VERSION_PATH"/
 
@@ -1780,14 +1799,14 @@ jobs:
           # Deploy centralized Doxygen artifacts
           # =============================================================================
 
-          if [[ -d "doxs" ]]; then
+          if [[ -d "../${{ github.event.repository.name }}/doxs" ]]; then
           echo "📚 Deploying centralized Doxygen artifacts..."
 
             # Copy centralized Doxygen artifacts to deployment branch
             if command -v rsync >/dev/null 2>&1; then
-              rsync -a --delete doxs/ ./
+              rsync -a --delete "../${{ github.event.repository.name }}/doxs/" ./
             else
-              cp -a doxs/* ./
+              cp -a "../${{ github.event.repository.name }}/doxs/"* ./
             fi
 
           echo "✅ Centralized Doxygen artifacts deployed to root"
