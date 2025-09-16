@@ -1664,243 +1664,364 @@ jobs:
           fi
 
       # =============================================================================
-      # Versioned GitHub Pages Deployment
+      # Deploy Jekyll Site to GitHub Pages using peaceiris/actions-gh-pages
       # =============================================================================
-      - name: Deploy to versioned GitHub Pages
+      - name: Deploy Jekyll site to GitHub Pages
+        if: ${{ inputs.deploy_pages == true }}
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ${{ env.DEPLOY_PATH || '_site' }}
+          destination_dir: ${{ needs.version-detection.outputs.deployment_path }}
+          keep_files: true
+          user_name: 'GitHub Actions'
+          user_email: 'actions@github.com'
+          commit_message: |
+            Deploy Jekyll site for ${{ needs.version-detection.outputs.deployment_path }}
+            
+            - Version: ${{ needs.version-detection.outputs.deployment_path }}
+            - Type: ${{ needs.version-detection.outputs.version_type }}
+            - Commit: ${{ github.sha }}
+            - Ref: ${{ github.ref }}
+            - Deployed: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+
+      # =============================================================================
+      # Deploy Centralized Doxygen Artifacts using peaceiris/actions-gh-pages
+      # =============================================================================
+      - name: Deploy Doxygen artifacts to GitHub Pages
+        if: ${{ inputs.deploy_pages == true && steps.doxygen-check.outputs.doxygen_needed == 'true' }}
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./doxs
+          destination_dir: doxs
+          keep_files: true
+          user_name: 'GitHub Actions'
+          user_email: 'actions@github.com'
+          commit_message: |
+            Deploy Doxygen artifacts for ${{ needs.version-detection.outputs.deployment_path }}
+            
+            - Version: ${{ needs.version-detection.outputs.deployment_path }}
+            - Type: ${{ needs.version-detection.outputs.version_type }}
+            - Commit: ${{ github.sha }}
+            - Ref: ${{ github.ref }}
+            - Deployed: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+
+      # =============================================================================
+      # Update Root Redirect and Version Selector
+      # =============================================================================
+      - name: Update root redirect and version selector
         if: ${{ inputs.deploy_pages == true }}
         run: |
           # =============================================================================
-          # Versioned Deployment Configuration
+          # Root Redirect and Version Selector Management
+          # =============================================================================
+          # This step updates the root redirect to point to the latest version and
+          # creates/updates the version selector for easy navigation between versions.
           # =============================================================================
 
           VERSION_PATH="${{ needs.version-detection.outputs.deployment_path }}"
-          DEPLOYMENT_BRANCH="${{ inputs.deployment_branch }}"
+          VERSION_TYPE="${{ needs.version-detection.outputs.version_type }}"
+          
+          echo "🔄 Updating root redirect and version selector..."
 
-          echo "🚀 Deploying to versioned path: $VERSION_PATH in branch: $DEPLOYMENT_BRANCH"
-
-          # =============================================================================
-          # Clone deployment branch
-          # =============================================================================
-
+          # Clone the gh-pages branch to update root files
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'actions@github.com'
-
-          # Clone deployment branch (create if it doesn't exist)
-          # Use standard HTTPS URL - authentication handled by GITHUB_TOKEN permissions
-          REPO_URL="https://github.com/${{ github.repository }}.git"
-
-          # Set up authentication for git operations
+          
+          # Set up authentication
           git config --global credential.helper store
           echo "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com" > ~/.git-credentials
-
-          # Navigate to parent directory to clone gh-pages alongside the main repo
-          echo "📁 Navigating to parent directory to clone gh-pages branch..."
-          cd ..
-
-          if git ls-remote --heads $REPO_URL $DEPLOYMENT_BRANCH | grep -q $DEPLOYMENT_BRANCH; then
-            echo "✅ Branch $DEPLOYMENT_BRANCH exists, cloning..."
-            git clone --branch=$DEPLOYMENT_BRANCH --depth=1 $REPO_URL gh-pages-deploy
-            cd gh-pages-deploy
-
-            # Ensure the branch is clean (remove any non-documentation files)
-            echo "🧹 Ensuring clean documentation branch..."
-            # Delete all files and directories except .git and existing documentation
-            find . -maxdepth 1 -not -name '.git' -not -name '.' -not -name 'development' -not -name 'v*' -not -name 'index.html' -not -name 'version_selector.html' -not -name 'README.md' -exec rm -rf {} +
-
-            cd ..
-          else
-            echo "⚠️  Branch $DEPLOYMENT_BRANCH not found, creating it..."
-
-            # Try to clone default branch, with fallbacks
-            DEFAULT_BRANCH=$(git ls-remote --symref $REPO_URL HEAD | head -n1 | sed 's/.*refs\/heads\///')
-            echo "🔍 Detected default branch: $DEFAULT_BRANCH"
-
-            if [[ -n "$DEFAULT_BRANCH" ]] && git ls-remote --heads $REPO_URL $DEFAULT_BRANCH | grep -q $DEFAULT_BRANCH; then
-              echo "📋 Using detected default branch: $DEFAULT_BRANCH"
-              git clone --branch=$DEFAULT_BRANCH --depth=1 $REPO_URL gh-pages-deploy
-            elif git ls-remote --heads $REPO_URL main | grep -q main; then
-              echo "📋 Using main branch as fallback..."
-              git clone --branch=main --depth=1 $REPO_URL gh-pages-deploy
-            elif git ls-remote --heads $REPO_URL master | grep -q master; then
-              echo "📋 Using master branch as fallback..."
-              git clone --branch=master --depth=1 $REPO_URL gh-pages-deploy
-            else
-              echo "❌ No suitable default branch found. Cannot create $DEPLOYMENT_BRANCH branch."
-              echo "Please ensure your repository has a main, master, or other default branch."
-              exit 1
-            fi
-
-            # Create and switch to deployment branch
-            cd gh-pages-deploy
-            git checkout -b $DEPLOYMENT_BRANCH
-
-            # Clear out all repository files to create a clean documentation-only branch
-            echo "🧹 Clearing repository files to create clean documentation branch..."
-            # Delete all files and directories except .git
-            find . -maxdepth 1 -not -name '.git' -not -name '.' -exec rm -rf {} +
-
-            # Create initial commit with clean documentation structure
-            echo "# $DEPLOYMENT_BRANCH branch for documentation deployment" > README.md
-            echo "" >> README.md
-            echo "This branch is automatically created and managed by the documentation workflow." >> README.md
-            echo "Do not edit files in this branch manually - they will be overwritten." >> README.md
-            echo "" >> README.md
-            echo "## Structure" >> README.md
-            echo "- \`development/\` - Main branch documentation" >> README.md
-            echo "- \`v*.*.*/\` - Versioned documentation releases" >> README.md
-            echo "- \`index.html\` - Root redirect to latest version" >> README.md
-            echo "- \`version_selector.html\` - Version selector component" >> README.md
-
-            git add .
-            git commit -m "Initialize clean $DEPLOYMENT_BRANCH branch for documentation deployment"
-
-            # Push the new branch
-            git push $REPO_URL $DEPLOYMENT_BRANCH
-            echo "✅ Created and pushed $DEPLOYMENT_BRANCH branch"
-            cd ..
-          fi
-
-          # Ensure we're in the deployment directory
-          cd gh-pages-deploy
+          
+          # Clone gh-pages branch
+          REPO_URL="https://github.com/${{ github.repository }}.git"
+          git clone --branch=gh-pages --depth=1 $REPO_URL gh-pages-update
+          cd gh-pages-update
 
           # =============================================================================
-          # Deploy versioned documentation
+          # Create version info file in deployed directory
           # =============================================================================
-
-          # Create version directory
-          mkdir -p "$VERSION_PATH"
-
-          # Copy built documentation
-          # The _site directory is in the main repo directory (../${{ github.event.repository.name }}/_site)
-          if [[ -d "../${{ github.event.repository.name }}/${{ env.DEPLOY_PATH || '_site' }}" ]]; then
-            DEPLOY_SOURCE="../${{ github.event.repository.name }}/${{ env.DEPLOY_PATH || '_site' }}"
-          echo "📁 Copying documentation from $DEPLOY_SOURCE to $VERSION_PATH/"
-            cp -r "$DEPLOY_SOURCE"/* "$VERSION_PATH"/
-
-            # Create version info file
-            cat > "$VERSION_PATH/version_info.json" << EOF
+          
+          echo "📝 Creating version info file..."
+          cat > "$VERSION_PATH/version_info.json" << EOF
           {
             "version": "$VERSION_PATH",
-            "type": "${{ needs.version-detection.outputs.version_type }}",
+            "type": "$VERSION_TYPE",
             "deployed_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
             "commit": "${{ github.sha }}",
             "ref": "${{ github.ref }}",
             "doxygen_version": "${{ needs.version-detection.outputs.doxygen_version }}"
           }
           EOF
+          
+          echo "✅ Version info file created: $VERSION_PATH/version_info.json"
 
-          echo "✅ Deployed documentation to $VERSION_PATH/"
+          # =============================================================================
+          # Update Root Redirect
+          # =============================================================================
+          
+          # Determine what to redirect to
+          REDIRECT_TARGET=""
+          
+          if [[ "$VERSION_TYPE" == "stable" ]]; then
+            # For stable releases, redirect to the specific version
+            REDIRECT_TARGET="$VERSION_PATH"
+          elif [[ "$VERSION_TYPE" == "development" ]]; then
+            # For development, redirect to development
+            REDIRECT_TARGET="development"
           else
-            echo "❌ No documentation found to deploy"
-            exit 1
+            # For preview or other types, redirect to development as fallback
+            REDIRECT_TARGET="development"
           fi
 
-          # =============================================================================
-          # Deploy centralized Doxygen artifacts
-          # =============================================================================
-
-          if [[ -d "../${{ github.event.repository.name }}/doxs" ]]; then
-          echo "📚 Deploying centralized Doxygen artifacts..."
-
-            # Copy centralized Doxygen artifacts to deployment branch
-            if command -v rsync >/dev/null 2>&1; then
-              rsync -a --delete "../${{ github.event.repository.name }}/doxs/" ./
-            else
-              cp -a "../${{ github.event.repository.name }}/doxs/"* ./
-            fi
-
-          echo "✅ Centralized Doxygen artifacts deployed to root"
-          fi
-
-          # =============================================================================
-          # Update root redirect (if enabled)
-          # =============================================================================
-
-          # Determine latest stable version
-          LATEST_STABLE=""
-          for dir in v*.*.*; do
-            if [[ -d "$dir" && "$dir" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-              if [[ -z "$LATEST_STABLE" || "$dir" > "$LATEST_STABLE" ]]; then
-                LATEST_STABLE="$dir"
-              fi
-            fi
-          done
-
-          if [[ -n "$LATEST_STABLE" ]]; then
-          echo "🔄 Creating redirect to latest stable: $LATEST_STABLE"
-            cat > index.html << EOF
+          echo "🎯 Creating root redirect to: $REDIRECT_TARGET"
+          
+          # Create root redirect
+          cat > index.html << EOF
           <!DOCTYPE html>
-          <html>
-            <head>
-              <meta http-equiv="refresh" content="0; url='/$LATEST_STABLE/'" />
-              <title>Redirecting to latest documentation...</title>
-            </head>
-            <body>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="refresh" content="0; url='/$REDIRECT_TARGET/'" />
+            <title>Documentation - Redirecting to $REDIRECT_TARGET</title>
+            <style>
+              body { 
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                max-width: 600px; 
+                margin: 100px auto; 
+                padding: 20px; 
+                text-align: center;
+                background: #f8f9fa;
+              }
+              .container {
+                background: white;
+                padding: 40px;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+              }
+              h1 { color: #333; margin-bottom: 20px; }
+              p { color: #666; margin-bottom: 20px; }
+              a { 
+                color: #0366d6; 
+                text-decoration: none; 
+                font-weight: 500;
+                padding: 10px 20px;
+                border: 1px solid #0366d6;
+                border-radius: 4px;
+                display: inline-block;
+                margin: 10px;
+              }
+              a:hover { background: #0366d6; color: white; }
+              .spinner {
+                border: 3px solid #f3f3f3;
+                border-top: 3px solid #0366d6;
+                border-radius: 50%;
+                width: 30px;
+                height: 30px;
+                animation: spin 1s linear infinite;
+                margin: 20px auto;
+              }
+              @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+              }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <h1>📚 Documentation</h1>
+              <div class="spinner"></div>
               <p>Redirecting to the latest documentation...</p>
-              <p><a href="/$LATEST_STABLE/">Click here if you are not redirected automatically.</a></p>
-            </body>
+              <p><a href="/$REDIRECT_TARGET/">Click here if you are not redirected automatically</a></p>
+              <p><a href="/version_selector.html">Browse all versions</a></p>
+            </div>
+          </body>
           </html>
           EOF
-          else
-          echo "⚠️  No stable version found for redirect"
-          fi
 
           # =============================================================================
-          # Create version selector (if enabled)
+          # Update Version Selector
           # =============================================================================
-
-          # Generate version list for selector
+          
+          echo "🎛️  Updating version selector..."
+          
+          # Get all version directories
           VERSIONS=()
           for dir in */; do
-            if [[ -d "$dir" && "$dir" != ".*" ]]; then
+            if [[ -d "$dir" && "$dir" != ".*" && "$dir" != "doxs/" ]]; then
               VERSIONS+=("${dir%/}")
             fi
           done
-
-          # Create version selector component
+          
+          # Sort versions (development first, then stable versions)
+          IFS=$'\n' VERSIONS=($(sort -V <<<"${VERSIONS[*]}"))
+          
+          # Create version selector
           cat > version_selector.html << EOF
-          <div class="version-selector">
-            <label for="version-select">Documentation Version:</label>
-            <select id="version-select" onchange="changeVersion(this.value)">
-              <option value="">Select Version</option>
-              $(for version in "${VERSIONS[@]}"; do
-                echo "<option value=\"$version\">$version</option>"
-              done)
-            </select>
-          </div>
-          <script>
-            function changeVersion(version) {
-              if (version) {
-                window.location.href = '/' + version + '/';
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Documentation Versions</title>
+            <style>
+              body { 
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                max-width: 800px; 
+                margin: 50px auto; 
+                padding: 20px;
+                background: #f8f9fa;
               }
-            }
+              .container {
+                background: white;
+                padding: 40px;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+              }
+              h1 { color: #333; margin-bottom: 30px; text-align: center; }
+              .version-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 20px;
+                margin-top: 30px;
+              }
+              .version-card {
+                border: 1px solid #e1e4e8;
+                border-radius: 6px;
+                padding: 20px;
+                text-align: center;
+                transition: all 0.2s;
+                background: white;
+              }
+              .version-card:hover {
+                border-color: #0366d6;
+                box-shadow: 0 2px 8px rgba(3, 102, 214, 0.1);
+                transform: translateY(-2px);
+              }
+              .version-card a {
+                text-decoration: none;
+                color: inherit;
+                display: block;
+              }
+              .version-name {
+                font-size: 18px;
+                font-weight: 600;
+                color: #0366d6;
+                margin-bottom: 8px;
+              }
+              .version-type {
+                font-size: 12px;
+                color: #666;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-bottom: 10px;
+              }
+              .version-description {
+                font-size: 14px;
+                color: #666;
+              }
+              .current-version {
+                border-color: #28a745;
+                background: #f8fff9;
+              }
+              .current-version .version-name {
+                color: #28a745;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <h1>📚 Documentation Versions</h1>
+              <p style="text-align: center; color: #666; margin-bottom: 30px;">
+                Select a version to view its documentation
+              </p>
+              
+              <div class="version-grid">
+                $(for version in "${VERSIONS[@]}"; do
+                  current_class=""
+                  if [[ "$version" == "$VERSION_PATH" ]]; then
+                    current_class="current-version"
+                  fi
+                  
+                  version_type=""
+                  if [[ "$version" == "development" ]]; then
+                    version_type="Development"
+                  elif [[ "$version" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+                    version_type="Stable Release"
+                  else
+                    version_type="Preview"
+                  fi
+                  
+                  echo "<div class=\"version-card $current_class\">"
+                  echo "  <a href=\"/$version/\">"
+                  echo "    <div class=\"version-name\">$version</div>"
+                  echo "    <div class=\"version-type\">$version_type</div>"
+                  echo "    <div class=\"version-description\">Click to view documentation</div>"
+                  echo "  </a>"
+                  echo "</div>"
+                done)
+              </div>
+              
+              <div style="text-align: center; margin-top: 40px;">
+                <a href="/" style="color: #0366d6; text-decoration: none;">← Back to latest documentation</a>
+              </div>
+            </div>
+          </body>
+          </html>
+          EOF
 
-            // Set current version in selector
-            const currentPath = window.location.pathname;
-            const pathParts = currentPath.split('/').filter(part => part);
-            if (pathParts.length > 0) {
-              document.getElementById('version-select').value = pathParts[0];
-            }
-          </script>
+          # =============================================================================
+          # Update README
+          # =============================================================================
+          
+          cat > README.md << EOF
+          # Documentation Branch
+
+          This branch contains the versioned documentation for this repository.
+
+          ## Structure
+
+          - \`development/\` - Main branch documentation (latest development)
+          - \`v*.*.*/\` - Versioned documentation releases
+          - \`index.html\` - Root redirect to latest version
+          - \`version_selector.html\` - Version selector for easy navigation
+          - \`doxs/\` - Centralized Doxygen API documentation
+
+          ## Access
+
+          - **Latest**: [https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/)
+          - **All Versions**: [https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/version_selector.html](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/version_selector.html)
+
+          ## Current Version
+
+          - **Version**: $VERSION_PATH
+          - **Type**: $VERSION_TYPE
+          - **Deployed**: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+          - **Commit**: ${{ github.sha }}
+
+          ---
+
+          *This branch is automatically managed by the documentation workflow. Do not edit files manually.*
           EOF
 
           # =============================================================================
           # Commit and push changes
           # =============================================================================
-
+          
           git add .
-          git commit -m "Deploy documentation for $VERSION_PATH
+          git commit -m "Update root redirect and version selector
 
-          - Version: $VERSION_PATH
-          - Type: ${{ needs.version-detection.outputs.version_type }}
-          - Commit: ${{ github.sha }}
-          - Ref: ${{ github.ref }}
-          - Deployed: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          - Updated root redirect to: $REDIRECT_TARGET
+          - Updated version selector with ${#VERSIONS[@]} versions
+          - Current version: $VERSION_PATH ($VERSION_TYPE)
+          - Updated: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
-          git push $REPO_URL $DEPLOYMENT_BRANCH
-
-          echo "✅ Successfully deployed versioned documentation"
+          git push $REPO_URL gh-pages
+          
+          echo "✅ Root redirect and version selector updated"
           echo "🌐 Access URLs:"
           echo "  Root: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
-          echo "  Version: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/$VERSION_PATH/"
+          echo "  Version Selector: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/version_selector.html"
+          echo "  Current Version: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/$VERSION_PATH/"
 

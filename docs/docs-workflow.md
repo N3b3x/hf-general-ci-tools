@@ -28,20 +28,96 @@ with link checking and artifact management.
 
 ## 🎯 Overview
 
-**Purpose**: Generate and deploy Doxygen documentation with optional Jekyll integration
+**Purpose**: Generate and deploy versioned documentation with Doxygen and Jekyll integration
 
 **Key Features**:
-- Doxygen + Graphviz integration (optimized installation)
-- Optional Jekyll static site generation
-- Advanced link checking with Lychee
-- Markdown linting (markdownlint)
-- Spell checking (cspell)
-- Modern GitHub Pages deployment
-- Concurrency control
-- Artifact storage
+- **Versioned Documentation Architecture**: Automatic version detection and deployment
+- **Doxygen + Graphviz integration** (optimized installation)
+- **Jekyll static site generation** with enhanced presentation
+- **Centralized Doxygen Management**: Single source of truth for all API versions
+- **Smart Root Redirects**: Always redirects to latest/development version
+- **Interactive Version Selector**: Beautiful UI for navigating between versions
+- **Advanced link checking** with Lychee
+- **Markdown linting** (markdownlint)
+- **Spell checking** (cspell)
+- **Modern GitHub Pages deployment** using peaceiris/actions-gh-pages
+- **Concurrency control** and artifact storage
 - **Fast dependency installation** using pre-built binaries
 
-**Use Case**: Automated documentation generation and deployment for C/C++ projects with enhanced presentation
+**Use Case**: Automated versioned documentation generation and deployment for C/C++ projects with comprehensive versioning support
+
+## 🏗️ Versioned Documentation Architecture
+
+The workflow implements a sophisticated versioned documentation system that automatically manages multiple versions of your documentation:
+
+### **Directory Structure**
+```
+gh-pages branch:
+├── .git/
+├── README.md
+├── index.html (redirect to latest/development)
+├── version_selector.html (interactive version browser)
+├── development/ (main branch docs from _site/)
+│   ├── index.html          # From Jekyll _site/
+│   ├── assets/             # From Jekyll _site/
+│   ├── docs/               # From Jekyll _site/
+│   ├── api/                # Symlink to ../../doxs/development/
+│   └── version_info.json   # Created by workflow
+├── v1.0.0/ (stable releases from _site/)
+│   ├── index.html          # From Jekyll _site/
+│   ├── assets/             # From Jekyll _site/
+│   ├── docs/               # From Jekyll _site/
+│   ├── api/                # Symlink to ../../doxs/v1.0.0/
+│   └── version_info.json   # Created by workflow
+└── doxs/ (centralized Doxygen artifacts)
+    ├── v1.0.0/
+    ├── development/
+    ├── latest -> v1.0.0/
+    ├── version_selector.js
+    └── versions.json
+```
+
+### **Version Detection Strategy**
+- **`main` branch** → `development` version
+- **`release/v*` branches** → versioned releases (e.g., `v1.2.0`)
+- **`v*` tags** → stable releases (e.g., `v1.2.0`)
+- **Other branches** → `preview` version
+
+### **Smart Root Redirects**
+- **Stable releases**: Redirects to the specific version
+- **Development**: Redirects to `development`
+- **Preview**: Redirects to `development` as fallback
+
+### **Interactive Version Selector**
+- Beautiful, responsive UI for version navigation
+- Shows version types (Development, Stable Release, Preview)
+- Highlights current version
+- Mobile-friendly design
+
+### **Deployment Flow**
+
+The deployment process follows this sequence:
+
+1. **Build Phase**:
+   - Jekyll generates static site in `_site/` directory
+   - Doxygen generates API docs in centralized `/doxs/` directory
+   - Quality checks run in parallel
+
+2. **Deploy Phase**:
+   - `peaceiris/actions-gh-pages` deploys `_site/` contents to `gh-pages/version/`
+   - `peaceiris/actions-gh-pages` deploys `doxs/` contents to `gh-pages/doxs/`
+   - Version metadata created in each deployed directory
+
+3. **Update Phase**:
+   - Root redirect updated to point to appropriate version
+   - Version selector updated with all available versions
+   - README updated with current deployment info
+
+**Key Benefits**:
+- ✅ **Direct Deployment**: Generated `_site` directory deployed directly to version folder
+- ✅ **Preserved History**: All previous versions remain accessible
+- ✅ **Centralized API**: Doxygen docs available at root level for all versions
+- ✅ **Smart Navigation**: Root always redirects to appropriate version
 
 ## ⚙️ Inputs
 
@@ -82,6 +158,7 @@ with link checking and artifact management.
 | Input | Type | Required | Default | Description |
 |-------|------|----------|---------|-------------|
 | `deploy_pages` | boolean | ❌ | `true` | Deploy to GitHub Pages |
+| `deployment_branch` | string | ✅ | `gh-pages` | Branch name for deployment (required for versioned documentation) |
 
 ### 🎨 Jekyll Configuration
 
@@ -116,9 +193,12 @@ with link checking and artifact management.
 
 | Output | Description |
 |--------|-------------|
-| HTML documentation | Generated Doxygen HTML files |
-| GitHub Pages | Deployed documentation (if enabled) |
-| Artifacts | Uploaded documentation files |
+| Versioned Documentation | Deployed to `gh-pages/version/` directories |
+| Centralized API Docs | Doxygen artifacts in `gh-pages/doxs/` directory |
+| Root Navigation | Smart redirects and version selector |
+| Version Metadata | `version_info.json` files in each deployed directory |
+| GitHub Pages | Live documentation site (if enabled) |
+| Artifacts | Uploaded documentation files for download |
 
 ## 🚀 Usage Examples
 
@@ -130,6 +210,7 @@ jobs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
       doxygen_config: Doxyfile
+      deployment_branch: gh-pages
 ```
 
 ### With Submodule Support
@@ -140,6 +221,7 @@ jobs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
       doxygen_config: Doxyfile
+      deployment_branch: gh-pages
       checkout_recursive: true  # Enable submodule checkout
 ```
 
@@ -151,6 +233,7 @@ jobs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
       doxygen_config: Doxyfile
+      deployment_branch: gh-pages
       run_link_check: true
       link_check_paths: "docs/** *.md **/docs/**"
       run_markdown_lint: true
@@ -169,6 +252,7 @@ jobs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
       doxygen_config: Doxyfile
+      deployment_branch: gh-pages
       jekyll_enabled: true
       jekyll_config: "_config.yml"
       jekyll_source: "docs"
@@ -185,6 +269,7 @@ jobs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
       doxygen_config: Doxyfile
+      deployment_branch: gh-pages
       jekyll_enabled: true
       jekyll_config: "_config.yml,_config_prod.yml"
       jekyll_source: "docs"
@@ -208,6 +293,7 @@ jobs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
       doxygen_config: docs/Doxyfile.custom
+      deployment_branch: gh-pages
       run_link_check: false
       deploy_pages: false
 ```
@@ -221,6 +307,7 @@ jobs:
     with:
       checkout_recursive: true  # Required for submodule-based docs
       doxygen_config: Doxyfile
+      deployment_branch: gh-pages
       jekyll_enabled: true
       jekyll_source: "docs"
       run_link_check: true
@@ -460,6 +547,16 @@ The workflow includes intelligent Jekyll configuration validation that:
 
 For detailed validation guidance, see the [Jekyll Configuration Guide](jekyll-guide.md#-configuration-validation).
 
+### Versioned Deployment Process
+
+The workflow uses a sophisticated deployment process that maintains versioned documentation:
+
+1. **Jekyll Site Deployment**: Deploys the generated `_site` directory to a version folder using `peaceiris/actions-gh-pages@v3`
+2. **Doxygen Artifacts Deployment**: Deploys Doxygen artifacts to the root `/doxs/` directory using `peaceiris/actions-gh-pages@v3`
+3. **Root Files Update**: Clones the `gh-pages` branch to update root redirects and version selector
+4. **Version Metadata**: Creates `version_info.json` files in each deployed version directory
+5. **Preserve History**: Uses `keep_files: true` to maintain all previous versions
+
 ### GitHub Pages Setup
 
 **Important**: GitHub Pages must be enabled in your repository settings before using this workflow.
@@ -482,6 +579,50 @@ permissions:
    - If Pages is not enabled, the workflow will continue but skip deployment
    - Documentation will still be built and artifacts uploaded
    - No errors will occur if Pages is not configured
+
+### Access URLs
+
+After deployment, your documentation will be available at:
+
+- **Root**: `https://username.github.io/repository/` → Redirects to latest version
+- **Version Selector**: `https://username.github.io/repository/version_selector.html`
+- **Specific Version**: `https://username.github.io/repository/v1.2.0/`
+- **Development**: `https://username.github.io/repository/development/`
+- **API Documentation**: `https://username.github.io/repository/v1.2.0/api/`
+- **Centralized API**: `https://username.github.io/repository/doxs/v1.2.0/`
+
+### Versioned Deployment Details
+
+The workflow creates a sophisticated versioned documentation system:
+
+#### **What Gets Deployed Where:**
+- **Jekyll `_site/` contents** → **`gh-pages/version/`** (e.g., `development/`, `v1.2.0/`) via `peaceiris/actions-gh-pages`
+- **Doxygen `doxs/` contents** → **`gh-pages/doxs/`** (centralized API docs) via `peaceiris/actions-gh-pages`
+- **Root navigation files** → **`gh-pages/`** (redirects, version selector, README) via manual git operations
+
+#### **Version Detection:**
+- **Main branch pushes** → `development/` version
+- **Release branch pushes** → `v1.2.0/` version (extracted from branch name)
+- **Tag creation** → `v1.2.0/` version (extracted from tag name)
+- **Other branches** → `preview/` version
+
+#### **Smart Root Redirects:**
+- **Stable releases** → Redirects to specific version (e.g., `v1.2.0/`)
+- **Development** → Redirects to `development/`
+- **Preview** → Redirects to `development/` as fallback
+
+#### **Version Metadata:**
+Each deployed version includes a `version_info.json` file with:
+```json
+{
+  "version": "v1.2.0",
+  "type": "stable",
+  "deployed_at": "2024-01-15T10:30:00Z",
+  "commit": "abc123...",
+  "ref": "refs/tags/v1.2.0",
+  "doxygen_version": "v1.2.0"
+}
+```
 
 ## 🌐 GitHub Pages Setup
 
