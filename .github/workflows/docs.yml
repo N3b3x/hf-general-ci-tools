@@ -531,31 +531,43 @@ jobs:
 
           # Auto detection from branch/tag
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-          echo "version_name=development" >> $GITHUB_OUTPUT
-          echo "version_type=development" >> $GITHUB_OUTPUT
-          echo "deploy_strategy=development" >> $GITHUB_OUTPUT
+            VERSION_NAME="development"
+            VERSION_TYPE="development"
+            DEPLOY_STRATEGY="development"
+          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "version_type=$VERSION_TYPE" >> $GITHUB_OUTPUT
+          echo "deploy_strategy=$DEPLOY_STRATEGY" >> $GITHUB_OUTPUT
           elif [[ "${{ github.ref }}" == refs/heads/release/v* ]]; then
             VERSION=$(echo "${{ github.ref }}" | sed 's|refs/heads/release/||')
-          echo "version_name=$VERSION" >> $GITHUB_OUTPUT
+            VERSION_NAME="$VERSION"
             if [[ "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-              echo "version_type=stable" >> $GITHUB_OUTPUT
-              echo "deploy_strategy=stable" >> $GITHUB_OUTPUT
+              VERSION_TYPE="stable"
+              DEPLOY_STRATEGY="stable"
             elif [[ "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+-(rc|beta|alpha)[0-9]*$ ]]; then
-              echo "version_type=prerelease" >> $GITHUB_OUTPUT
-              echo "deploy_strategy=prerelease" >> $GITHUB_OUTPUT
+              VERSION_TYPE="prerelease"
+              DEPLOY_STRATEGY="prerelease"
             else
-              echo "version_type=versioned" >> $GITHUB_OUTPUT
-              echo "deploy_strategy=versioned" >> $GITHUB_OUTPUT
+              VERSION_TYPE="versioned"
+              DEPLOY_STRATEGY="versioned"
             fi
+          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "version_type=$VERSION_TYPE" >> $GITHUB_OUTPUT
+          echo "deploy_strategy=$DEPLOY_STRATEGY" >> $GITHUB_OUTPUT
           elif [[ "${{ github.ref }}" == refs/tags/v* ]]; then
             VERSION=$(echo "${{ github.ref }}" | sed 's|refs/tags/||')
-          echo "version_name=$VERSION" >> $GITHUB_OUTPUT
-          echo "version_type=stable" >> $GITHUB_OUTPUT
-          echo "deploy_strategy=stable" >> $GITHUB_OUTPUT
+            VERSION_NAME="$VERSION"
+            VERSION_TYPE="stable"
+            DEPLOY_STRATEGY="stable"
+          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "version_type=$VERSION_TYPE" >> $GITHUB_OUTPUT
+          echo "deploy_strategy=$DEPLOY_STRATEGY" >> $GITHUB_OUTPUT
           else
-          echo "version_name=preview" >> $GITHUB_OUTPUT
-          echo "version_type=preview" >> $GITHUB_OUTPUT
-          echo "deploy_strategy=preview" >> $GITHUB_OUTPUT
+            VERSION_NAME="preview"
+            VERSION_TYPE="preview"
+            DEPLOY_STRATEGY="preview"
+          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "version_type=$VERSION_TYPE" >> $GITHUB_OUTPUT
+          echo "deploy_strategy=$DEPLOY_STRATEGY" >> $GITHUB_OUTPUT
           fi
 
           # =============================================================================
@@ -564,7 +576,7 @@ jobs:
 
           # Auto-synchronize Doxygen version with git-based versioning
           # Auto-determine Doxygen version based on git context
-          if [[ "${{ steps.version.outputs.version_type }}" == "development" ]]; then
+          if [[ "$VERSION_TYPE" == "development" ]]; then
             # For development, try to get latest tag or use commit hash
             LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
             if [[ -n "$LATEST_TAG" ]]; then
@@ -574,10 +586,10 @@ jobs:
               echo "doxygen_version=0.1.0-dev" >> $GITHUB_OUTPUT
               echo "doxygen_project_number=0.1.0-dev" >> $GITHUB_OUTPUT
             fi
-          elif [[ "${{ steps.version.outputs.version_type }}" == "stable" || "${{ steps.version.outputs.version_type }}" == "prerelease" ]]; then
+          elif [[ "$VERSION_TYPE" == "stable" || "$VERSION_TYPE" == "prerelease" ]]; then
             # Stable releases and pre-releases - use version as-is
-          echo "doxygen_version=${{ steps.version.outputs.version_name }}" >> $GITHUB_OUTPUT
-          echo "doxygen_project_number=${{ steps.version.outputs.version_name }}" >> $GITHUB_OUTPUT
+          echo "doxygen_version=$VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "doxygen_project_number=$VERSION_NAME" >> $GITHUB_OUTPUT
           else
             # For other cases (preview), try to get version from git or use default
             PREVIEW_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "0.1.0-preview")
@@ -596,10 +608,10 @@ jobs:
               sed 's/^ *//' | sed 's/ *$//' | sed 's/  #.*$//' | sed 's/"$//')
 
           # Add version to base URL if versioning is enabled
-            if [[ -n "${{ steps.version.outputs.version_name }}" && \
-                  "${{ steps.version.outputs.version_name }}" != "development" && \
-                  "${{ steps.version.outputs.version_name }}" != "preview" ]]; then
-              BASE_URL="$BASE_URL/${{ steps.version.outputs.version_name }}"
+            if [[ -n "$VERSION_NAME" && \
+                  "$VERSION_NAME" != "development" && \
+                  "$VERSION_NAME" != "preview" ]]; then
+              BASE_URL="$BASE_URL/$VERSION_NAME"
             fi
           else
             BASE_URL=""
@@ -615,12 +627,12 @@ jobs:
           # =============================================================================
 
           # Auto-generate standardized deployment path
-          if [[ "${{ steps.version.outputs.version_type }}" == "development" ]]; then
+          if [[ "$VERSION_TYPE" == "development" ]]; then
           echo "deployment_path=development" >> $GITHUB_OUTPUT
-          elif [[ "${{ steps.version.outputs.version_type }}" == "preview" ]]; then
+          elif [[ "$VERSION_TYPE" == "preview" ]]; then
           echo "deployment_path=preview" >> $GITHUB_OUTPUT
           else
-          echo "deployment_path=${{ steps.version.outputs.version_name }}" >> $GITHUB_OUTPUT
+          echo "deployment_path=$VERSION_NAME" >> $GITHUB_OUTPUT
           fi
 
           # =============================================================================
@@ -628,12 +640,12 @@ jobs:
           # =============================================================================
 
           echo "🎯 Version Detection Summary:"
-          echo "  Version Name: ${{ steps.version.outputs.version_name }}"
-          echo "  Version Type: ${{ steps.version.outputs.version_type }}"
-          echo "  Deploy Strategy: ${{ steps.version.outputs.deploy_strategy }}"
-          echo "  Base URL: ${{ steps.version.outputs.base_url }}"
-          echo "  Deployment Path: ${{ steps.version.outputs.deployment_path }}"
-          echo "  Doxygen Version: ${{ steps.version.outputs.doxygen_version }}"
+          echo "  Version Name: $VERSION_NAME"
+          echo "  Version Type: $VERSION_TYPE"
+          echo "  Deploy Strategy: $DEPLOY_STRATEGY"
+          echo "  Base URL: $BASE_URL"
+          echo "  Deployment Path: $VERSION_NAME"
+          echo "  Doxygen Version: $VERSION_NAME"
 
   # =============================================================================
   # Main Build Job (Depends on Input Validation, Quality Checks, and Version Detection)
@@ -1358,9 +1370,6 @@ jobs:
           JEKYLL_QUIET="${{ inputs.jekyll_quiet }}"
           JEKYLL_TRACE="${{ inputs.jekyll_trace }}"
           JEKYLL_SAFE="${{ inputs.jekyll_safe }}"
-          # Note: These inputs don't exist in the current workflow
-          # JEKYLL_FORCE_POLLING="${{ inputs.jekyll_force_polling }}"
-          # JEKYLL_DISABLE_DISK_CACHE="${{ inputs.jekyll_disable_disk_cache }}"
           JEKYLL_LSI="${{ inputs.jekyll_lsi }}"
           JEKYLL_STRICT_FRONT_MATTER="${{ inputs.jekyll_strict_front_matter }}"
 
