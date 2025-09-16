@@ -429,7 +429,7 @@ The workflow includes intelligent Jekyll configuration validation that:
 
 #### **Smart Directory Detection**
 - Reads your `_config.yml` to determine custom directory locations
-- Checks directories where they're actually configured (e.g., `docs/_layouts`)
+- Checks directories where they're actually configured (e.g., `_config/_layouts`)
 - Falls back to standard locations if custom paths aren't specified
 - Reports missing directories as "may be using theme defaults"
 
@@ -446,11 +446,11 @@ The workflow includes intelligent Jekyll configuration validation that:
 **Example Validation Output:**
 ```
 🔍 Validating Jekyll configuration...
-✅ Validating config file: docs/_config.yml
+✅ Validating config file: _config/_config.yml
   ✅ YAML syntax is valid
-✅ Found layouts directory: docs/_layouts
-✅ Found includes directory: docs/_includes
-⚠️  Directory not found: docs/_sass (may be using theme defaults)
+✅ Found layouts directory: _config/_layouts
+✅ Found includes directory: _config/_includes
+⚠️  Directory not found: _config/_sass (may be using theme defaults)
 ✅ Found file: index.md
 ✅ Found file: 404.html
 ✅ Found file: robots.txt
@@ -523,7 +523,7 @@ docs.yourproject.com
 **Jekyll Configuration Validation Issues**
 
 - **False warnings about missing directories**: Check if your `_config.yml` specifies custom directory
-  locations (e.g., `layouts_dir: docs/_layouts`)
+  locations (e.g., `layouts_dir: _config/_layouts`)
 - **Files not found warnings**: Ensure common files (`index.md`, `404.html`, `robots.txt`) are in the
   same directory as your `_config.yml`
 - **Trailing slash warnings**: Remove trailing slashes from `baseurl` and `url` in your configuration

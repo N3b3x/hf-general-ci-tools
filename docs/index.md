@@ -21,6 +21,7 @@ permalink: /docs/
 | **[C/C++ Lint](c-cpp-lint-workflow.md)** | Code quality checks using clang-format and clang-tidy | [→ Lint Guide](c-cpp-lint-workflow.md) |
 | **[Static Analysis](c-cpp-static-analysis-workflow.md)** | Security analysis using cppcheck | [→ Static Analysis Guide](c-cpp-static-analysis-workflow.md) |
 | **[Documentation](docs-workflow.md)** | Doxygen documentation generation and GitHub Pages deployment | [→ Docs Guide](docs-workflow.md) |
+| **[Versioning](versioning-guide.md)** | Multi-version documentation with Doxygen and Jekyll | [→ Versioning Guide](versioning-guide.md) |
 | **[Link Check](docs-link-check-workflow.md)** | Documentation link validation using Lychee | [→ Link Check Guide](docs-link-check-workflow.md) |
 | **[YAML Lint](yamllint-workflow.md)** | YAML file validation and formatting | [→ YAML Lint Guide](yamllint-workflow.md) |
 
@@ -40,6 +41,7 @@ Each workflow has comprehensive documentation with usage examples and configurat
 - **[C/C++ Lint Workflow](c-cpp-lint-workflow.md)** - Code quality checks using clang-format and clang-tidy
 - **[Static Analysis Workflow](c-cpp-static-analysis-workflow.md)** - Security analysis using cppcheck
 - **[Documentation Workflow](docs-workflow.md)** - Doxygen documentation generation and GitHub Pages deployment
+- **[Versioning Guide](versioning-guide.md)** - Multi-version documentation with Doxygen and Jekyll integration
 - **[Link Check Workflow](docs-link-check-workflow.md)** - Documentation link validation using Lychee
 - **[YAML Lint Workflow](yamllint-workflow.md)** - YAML file validation and formatting
 - **[Jekyll Guide](jekyll-guide.md)** - Complete Jekyll configuration and examples

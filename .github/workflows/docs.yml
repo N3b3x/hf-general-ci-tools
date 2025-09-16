@@ -1,11 +1,39 @@
 ---
+# =============================================================================
 # Documentation Workflow (Reusable)
+# =============================================================================
 #
-# Optimized workflow with:
-# - Conditional installation of doxygen/graphviz only when Doxyfile exists
-# - Optimized dependency installation with built-in caching
-# - Reduced redundant steps and improved performance
-# - Smart dependency management based on actual requirements
+# This workflow provides comprehensive documentation generation and deployment
+# with support for:
+# - Doxygen API documentation with centralized versioning
+# - Jekyll static site generation with front matter navigation
+# - Multi-version deployment to GitHub Pages (always enabled)
+# - Quality assurance (YAML/Markdown linting, link checking, spell checking)
+# - Centralized Doxygen artifact management in /doxs/ directory
+# - Git-synchronized versioning with automatic detection
+# - Parallel job execution for optimal performance
+# - Comprehensive input validation and security checks
+#
+# Architecture:
+# - Input Validation Job: Centralized validation of all workflow inputs
+# - Quality Checks Job: Parallel execution of linting and quality checks
+# - Version Detection Job: Git-based version detection and strategy determination
+# - Main Build Job: Documentation generation with caching and optimization
+# - Deploy Job: GitHub Pages deployment with versioned artifacts
+#
+# Performance Features:
+# - Comprehensive caching for all dependencies (Ruby, Node.js, pip, Jekyll, Doxygen)
+# - Parallel job execution to reduce total workflow time
+# - Conditional installation of tools only when needed
+# - Optimized dependency management based on actual requirements
+#
+# Security Features:
+# - Input validation with format checking and security pattern detection
+# - Pinned action versions for reproducible builds
+# - Safe handling of user inputs and file paths
+# - Comprehensive error handling and cleanup
+#
+# =============================================================================
 name: Documentation Workflow (Reusable)
 
 on:
@@ -16,21 +44,6 @@ on:
       # =============================================================================
       checkout_recursive:
         description: 'Checkout submodules recursively (useful for projects with documentation in submodules)'
-        required: false
-        type: boolean
-        default: false
-      # =============================================================================
-      # Doxygen Configuration Section
-      # =============================================================================
-      doxygen_config:
-        description: >-
-          Path to Doxyfile (relative to repo root) - output directory auto-detected
-          from OUTPUT_DIRECTORY and HTML_OUTPUT settings
-        required: false
-        type: string
-        default: 'Doxyfile'
-      doxygen_fail_on_warnings:
-        description: 'Treat Doxygen warnings as errors in CI'
         required: false
         type: boolean
         default: false
@@ -89,6 +102,37 @@ on:
         type: string
         default: '.cspell.json'
       # =============================================================================
+      # Versioned Deployment Configuration Section
+      # =============================================================================
+      deployment_branch:
+        description: 'Branch name for deployment (required for versioned documentation)'
+        required: true
+        type: string
+        default: 'gh-pages'
+      # =============================================================================
+      # Deployment Configuration Section
+      # =============================================================================
+      deploy_pages:
+        description: 'Deploy to GitHub Pages'
+        required: false
+        type: boolean
+        default: true
+      # =============================================================================
+      # Doxygen Configuration Section
+      # =============================================================================
+      doxygen_config:
+        description: >-
+          Path to Doxyfile (relative to repo root) - output directory auto-detected
+          from OUTPUT_DIRECTORY and HTML_OUTPUT settings
+        required: false
+        type: string
+        default: 'Doxyfile'
+      doxygen_fail_on_warnings:
+        description: 'Treat Doxygen warnings as errors in CI'
+        required: false
+        type: boolean
+        default: false
+      # =============================================================================
       # Jekyll Configuration Section
       # =============================================================================
       jekyll_enabled:
@@ -96,11 +140,6 @@ on:
         required: false
         type: boolean
         default: false
-      deploy_pages:
-        description: 'Deploy to GitHub Pages'
-        required: false
-        type: boolean
-        default: true
       jekyll_config:
         description: 'Comma-separated list of Jekyll configuration files (e.g., "_config.yml,_config_prod.yml")'
         required: false
@@ -204,8 +243,403 @@ permissions:
   id-token: write
 
 jobs:
+  # =============================================================================
+  # Input Validation Job (Centralized Validation)
+  # =============================================================================
+  input-validation:
+    runs-on: ubuntu-latest
+    outputs:
+      validation_passed: ${{ steps.validate.outcome }}
+    steps:
+      - name: Validate workflow inputs
+        id: validate
+        run: |
+          echo "🔍 Validating workflow inputs..."
+          
+          # =============================================================================
+          # Required Input Validation
+          # =============================================================================
+          
+          # Validate deployment_branch (always required for versioned documentation)
+          if [[ -z "${{ inputs.deployment_branch }}" ]]; then
+            echo "❌ Error: deployment_branch is required for versioned documentation"
+            echo "Please specify a deployment branch (e.g., 'gh-pages')"
+            exit 1
+          fi
+          echo "✅ Versioned documentation with deployment branch: ${{ inputs.deployment_branch }}"
+          
+          # =============================================================================
+          # Input Format Validation
+          # =============================================================================
+          
+          # Validate Jekyll config format
+          if [[ -n "${{ inputs.jekyll_config }}" ]]; then
+            if [[ "${{ inputs.jekyll_config }}" =~ ^[a-zA-Z0-9_/.-]+(,[a-zA-Z0-9_/.-]+)*$ ]]; then
+              echo "✅ Jekyll config format is valid: ${{ inputs.jekyll_config }}"
+            else
+              echo "❌ Error: Invalid Jekyll config format. Expected: 'file1,file2' or 'file1'"
+              exit 1
+            fi
+          fi
+          
+          # Validate markdown lint paths format
+          if [[ -n "${{ inputs.markdown_lint_paths }}" ]]; then
+            if [[ "${{ inputs.markdown_lint_paths }}" =~ ^[a-zA-Z0-9_/.*-]+(\s+[a-zA-Z0-9_/.*-]+)*$ ]]; then
+              echo "✅ Markdown lint paths format is valid: ${{ inputs.markdown_lint_paths }}"
+            else
+              echo "❌ Error: Invalid markdown lint paths format. Expected: 'pattern1 pattern2' or 'pattern1'"
+              exit 1
+            fi
+          fi
+          
+          # Validate spell check paths format
+          if [[ -n "${{ inputs.spell_check_paths }}" ]]; then
+            if [[ "${{ inputs.spell_check_paths }}" =~ ^[a-zA-Z0-9_/.*-]+(\s+[a-zA-Z0-9_/.*-]+)*$ ]]; then
+              echo "✅ Spell check paths format is valid: ${{ inputs.spell_check_paths }}"
+            else
+              echo "❌ Error: Invalid spell check paths format. Expected: 'pattern1 pattern2' or 'pattern1'"
+              exit 1
+            fi
+          fi
+          
+          # =============================================================================
+          # Logical Consistency Validation
+          # =============================================================================
+          
+          # Validate Jekyll configuration consistency
+          if [[ "${{ inputs.jekyll_enabled }}" == "true" ]]; then
+            if [[ -z "${{ inputs.jekyll_source }}" ]]; then
+              echo "❌ Error: jekyll_source is required when jekyll_enabled is true"
+              exit 1
+            fi
+            echo "✅ Jekyll configuration is consistent"
+          fi
+          
+          # Validate Doxygen configuration consistency
+          if [[ -n "${{ inputs.doxygen_config }}" ]]; then
+            if [[ ! "${{ inputs.doxygen_config }}" =~ ^[a-zA-Z0-9_/.-]+$ ]]; then
+              echo "❌ Error: Invalid Doxygen config path format: ${{ inputs.doxygen_config }}"
+              exit 1
+            fi
+          echo "✅ Doxygen configuration is valid"
+          fi
+          
+          # =============================================================================
+          # Security Validation
+          # =============================================================================
+          
+          # Check for potentially dangerous patterns in inputs
+          DANGEROUS_PATTERNS=("rm -rf" "sudo" "chmod 777" "wget" "curl.*http" "eval" "exec")
+          for pattern in "${DANGEROUS_PATTERNS[@]}"; do
+            if echo "${{ inputs.jekyll_source }}" | grep -qi "$pattern"; then
+              echo "❌ Error: Potentially dangerous pattern detected in jekyll_source: $pattern"
+              exit 1
+            fi
+            if echo "${{ inputs.jekyll_destination }}" | grep -qi "$pattern"; then
+              echo "❌ Error: Potentially dangerous pattern detected in jekyll_destination: $pattern"
+              exit 1
+            fi
+          done
+          
+          echo "✅ Security validation passed"
+          
+          # =============================================================================
+          # Summary
+          # =============================================================================
+          
+          echo "✅ All input validations passed successfully"
+          echo "📋 Validation Summary:"
+          echo "  - Versioning: enabled (default)"
+          echo "  - Jekyll enabled: ${{ inputs.jekyll_enabled }}"
+          echo "  - Doxygen config: ${{ inputs.doxygen_config }}"
+          echo "  - Quality checks enabled:"
+          echo "    - YAML linting: true"
+          echo "    - Markdown linting: ${{ inputs.run_markdown_lint }}"
+          echo "    - Spell checking: ${{ inputs.run_spell_check }}"
+          echo "    - Link checking: ${{ inputs.run_link_check }}"
+
+  # =============================================================================
+  # Quality Checks Job (Parallel Execution)
+  # =============================================================================
+  quality-checks:
+    runs-on: ubuntu-latest
+    needs: [input-validation]
+    if: needs.input-validation.outputs.validation_passed == 'success'
+    outputs:
+      yaml_lint_passed: ${{ steps.yaml-lint.outcome }}
+      markdown_lint_passed: ${{ steps.markdown-lint.outcome }}
+      spell_check_passed: ${{ steps.spell-check.outcome }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js for quality tools
+        if: ${{ inputs.run_markdown_lint == true || inputs.run_spell_check == true }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Cache pip dependencies
+        if: ${{ inputs.run_markdown_lint == true || inputs.run_spell_check == true }}
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt', '**/pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install quality tools
+        run: |
+          echo "📦 Installing quality assurance tools..."
+          
+          # Create cache directories to ensure caching works properly
+          echo "🔧 Creating cache directories..."
+          mkdir -p ~/.cache/pip
+          mkdir -p ~/.npm
+          
+          # Check for dependency files and log status
+          echo "🔍 Checking for dependency files..."
+          if [ -f "requirements.txt" ] || [ -f "pyproject.toml" ]; then
+            echo "✅ Found Python dependency files - pip caching will be effective"
+          else
+            echo "⚠️  No Python dependency files found - pip caching will use fallback key"
+          fi
+          
+          if [ -f "package-lock.json" ] || [ -f "yarn.lock" ]; then
+            echo "✅ Found Node.js dependency files - npm caching will be effective"
+          else
+            echo "⚠️  No Node.js dependency files found - npm caching will use fallback key"
+          fi
+          
+          # Install YAML linting tools
+          echo "📦 Installing yamllint..."
+          pip install yamllint
+          yamllint --version
+          echo "✅ yamllint installed successfully"
+          
+          # Install Node.js tools if needed
+          if [ "${{ inputs.run_markdown_lint }}" == "true" ]; then
+          echo "📦 Installing markdownlint..."
+            npm install -g markdownlint-cli
+            markdownlint --version
+          echo "✅ markdownlint installed successfully"
+          fi
+          
+          if [ "${{ inputs.run_spell_check }}" == "true" ]; then
+          echo "📦 Installing cspell..."
+            npm install -g cspell
+            cspell --version
+          echo "✅ cspell installed successfully"
+          fi
+
+      - name: Run YAML linting
+        id: yaml-lint
+        run: |
+          echo "🔍 Running YAML linting..."
+          yamllint . || {
+          echo "❌ YAML linting failed"
+            exit 1
+          }
+          echo "✅ YAML linting passed"
+
+      - name: Run markdown linting
+        id: markdown-lint
+        if: ${{ inputs.run_markdown_lint == true }}
+        run: |
+          echo "🔍 Running markdown linting..."
+          markdownlint ${{ inputs.markdown_lint_paths }} || {
+          echo "❌ Markdown linting failed"
+            exit 1
+          }
+          echo "✅ Markdown linting passed"
+
+      - name: Run spell checking
+        id: spell-check
+        if: ${{ inputs.run_spell_check == true }}
+        run: |
+          echo "🔍 Running spell check on: ${{ inputs.spell_check_paths }}"
+          # Check if files exist before running cspell (handle multiple globs)
+          found_any=false
+          # Split on spaces and newlines
+          for pat in ${{ inputs.spell_check_paths }}; do
+            matches=$(ls $pat 2>/dev/null | wc -l || true)
+            if [ "$matches" -gt 0 ]; then found_any=true; break; fi
+          done
+          if [ "$found_any" != "true" ]; then
+          echo "⚠️  No files found matching pattern: ${{ inputs.spell_check_paths }}"
+          echo "✅ Spell checking skipped (no files to check)"
+            exit 0
+          fi
+          # Run cspell and capture output
+          if [ -f "${{ inputs.spell_check_config }}" ]; then
+          echo "📝 Using config file: ${{ inputs.spell_check_config }}"
+            cspell_output=$(cspell ${{ inputs.spell_check_paths }} --config ${{ inputs.spell_check_config }} 2>&1)
+            cspell_exit_code=$?
+          else
+          echo "📝 Using default configuration"
+            cspell_output=$(cspell ${{ inputs.spell_check_paths }} 2>&1)
+            cspell_exit_code=$?
+          fi
+          # Display cspell output
+          echo "$cspell_output"
+          # Check if cspell found any spelling issues
+          if echo "$cspell_output" | grep -q "Issues found: [1-9]"; then
+          echo "❌ Spell checking failed - spelling issues found"
+            exit 1
+          elif [ $cspell_exit_code -eq 0 ]; then
+          echo "✅ Spell checking passed"
+          else
+          echo "⚠️  cspell exited with code $cspell_exit_code but no spelling issues detected"
+          echo "✅ Spell checking passed"
+          fi
+
+  # =============================================================================
+  # Version Detection Job
+  # =============================================================================
+  version-detection:
+    runs-on: ubuntu-latest
+    outputs:
+      version_name: ${{ steps.version.outputs.version_name }}
+      version_type: ${{ steps.version.outputs.version_type }}
+      deploy_strategy: ${{ steps.version.outputs.deploy_strategy }}
+      base_url: ${{ steps.version.outputs.base_url }}
+      jekyll_config: ${{ steps.version.outputs.jekyll_config }}
+      doxygen_version: ${{ steps.version.outputs.doxygen_version }}
+      doxygen_project_number: ${{ steps.version.outputs.doxygen_project_number }}
+      deployment_path: ${{ steps.version.outputs.deployment_path }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for version detection
+
+      - name: Detect version and strategy
+        id: version
+        run: |
+          # =============================================================================
+          # Version Detection Logic
+          # =============================================================================
+          
+          # Validate required inputs for versioning
+          if [[ -z "${{ inputs.deployment_branch }}" ]]; then
+            echo "❌ Error: deployment_branch is required for versioned documentation"
+            echo "Please specify a deployment branch (e.g., 'gh-pages')"
+            exit 1
+          fi
+          echo "✅ Versioned documentation with deployment branch: ${{ inputs.deployment_branch }}"
+          
+          # Auto detection from branch/tag
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+          echo "version_name=development" >> $GITHUB_OUTPUT
+          echo "version_type=development" >> $GITHUB_OUTPUT
+          echo "deploy_strategy=development" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.ref }}" == refs/heads/release/v* ]]; then
+            VERSION=$(echo "${{ github.ref }}" | sed 's|refs/heads/release/||')
+          echo "version_name=$VERSION" >> $GITHUB_OUTPUT
+            if [[ "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+              echo "version_type=stable" >> $GITHUB_OUTPUT
+              echo "deploy_strategy=stable" >> $GITHUB_OUTPUT
+            elif [[ "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+-(rc|beta|alpha)[0-9]*$ ]]; then
+              echo "version_type=prerelease" >> $GITHUB_OUTPUT
+              echo "deploy_strategy=prerelease" >> $GITHUB_OUTPUT
+            else
+              echo "version_type=versioned" >> $GITHUB_OUTPUT
+              echo "deploy_strategy=versioned" >> $GITHUB_OUTPUT
+            fi
+          elif [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+            VERSION=$(echo "${{ github.ref }}" | sed 's|refs/tags/||')
+          echo "version_name=$VERSION" >> $GITHUB_OUTPUT
+          echo "version_type=stable" >> $GITHUB_OUTPUT
+          echo "deploy_strategy=stable" >> $GITHUB_OUTPUT
+          else
+          echo "version_name=preview" >> $GITHUB_OUTPUT
+          echo "version_type=preview" >> $GITHUB_OUTPUT
+          echo "deploy_strategy=preview" >> $GITHUB_OUTPUT
+          fi
+
+          # =============================================================================
+          # Doxygen Version Detection (Auto-synchronized with git versioning)
+          # =============================================================================
+          
+          # Auto-synchronize Doxygen version with git-based versioning
+          # Auto-determine Doxygen version based on git context
+          if [[ "${{ steps.version.outputs.version_type }}" == "development" ]]; then
+            # For development, try to get latest tag or use commit hash
+            LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+            if [[ -n "$LATEST_TAG" ]]; then
+              echo "doxygen_version=${LATEST_TAG}-dev" >> $GITHUB_OUTPUT
+              echo "doxygen_project_number=${LATEST_TAG}-dev" >> $GITHUB_OUTPUT
+            else
+              echo "doxygen_version=0.1.0-dev" >> $GITHUB_OUTPUT
+              echo "doxygen_project_number=0.1.0-dev" >> $GITHUB_OUTPUT
+            fi
+          elif [[ "${{ steps.version.outputs.version_type }}" == "stable" || "${{ steps.version.outputs.version_type }}" == "prerelease" ]]; then
+            # Stable releases and pre-releases - use version as-is
+          echo "doxygen_version=${{ steps.version.outputs.version_name }}" >> $GITHUB_OUTPUT
+          echo "doxygen_project_number=${{ steps.version.outputs.version_name }}" >> $GITHUB_OUTPUT
+          else
+            # For other cases (preview), try to get version from git or use default
+            PREVIEW_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "0.1.0-preview")
+          echo "doxygen_version=$PREVIEW_VERSION" >> $GITHUB_OUTPUT
+          echo "doxygen_project_number=$PREVIEW_VERSION" >> $GITHUB_OUTPUT
+          fi
+
+          # =============================================================================
+          # URL and Configuration Generation
+          # =============================================================================
+          
+          # Extract base URL from Jekyll config and add version
+          if [[ -f "${{ inputs.jekyll_config || '_config.yml' }}" ]]; then
+            BASE_URL=$(grep '^baseurl:' "${{ inputs.jekyll_config || '_config.yml' }}" | sed 's/^baseurl: *//' | sed 's/^"//' | sed 's/"$//' | sed 's/^ *//' | sed 's/ *$//')
+          
+          # Add version to base URL if versioning is enabled
+            if [[ -n "${{ steps.version.outputs.version_name }}" && "${{ steps.version.outputs.version_name }}" != "development" && "${{ steps.version.outputs.version_name }}" != "preview" ]]; then
+              BASE_URL="$BASE_URL/${{ steps.version.outputs.version_name }}"
+            fi
+          else
+            BASE_URL=""
+          fi
+          echo "base_url=$BASE_URL" >> $GITHUB_OUTPUT
+
+          # Generate config file names
+          # Always use main config as base - versioning is handled dynamically
+          echo "jekyll_config=${{ inputs.jekyll_config || '_config.yml' }}" >> $GITHUB_OUTPUT
+
+          # =============================================================================
+          # Deployment Path Generation (Standardized)
+          # =============================================================================
+          
+          # Auto-generate standardized deployment path
+          if [[ "${{ steps.version.outputs.version_type }}" == "development" ]]; then
+          echo "deployment_path=development" >> $GITHUB_OUTPUT
+          elif [[ "${{ steps.version.outputs.version_type }}" == "preview" ]]; then
+          echo "deployment_path=preview" >> $GITHUB_OUTPUT
+          else
+          echo "deployment_path=${{ steps.version.outputs.version_name }}" >> $GITHUB_OUTPUT
+          fi
+
+          # =============================================================================
+          # Output Summary
+          # =============================================================================
+          
+          echo "🎯 Version Detection Summary:"
+          echo "  Version Name: ${{ steps.version.outputs.version_name }}"
+          echo "  Version Type: ${{ steps.version.outputs.version_type }}"
+          echo "  Deploy Strategy: ${{ steps.version.outputs.deploy_strategy }}"
+          echo "  Base URL: ${{ steps.version.outputs.base_url }}"
+          echo "  Deployment Path: ${{ steps.version.outputs.deployment_path }}"
+          echo "  Doxygen Version: ${{ steps.version.outputs.doxygen_version }}"
+
+  # =============================================================================
+  # Main Build Job (Depends on Input Validation, Quality Checks, and Version Detection)
+  # =============================================================================
   build:
     runs-on: ubuntu-latest
+    needs: [input-validation, quality-checks, version-detection]
+    if: always() && needs.input-validation.outputs.validation_passed == 'success' && needs.version-detection.result == 'success' && needs.quality-checks.result == 'success'
     env:
       CACHE_VERSION: v1
     steps:
@@ -230,12 +664,25 @@ jobs:
       - name: Check for Doxygen configuration
         id: doxygen-check
         run: |
+          # =============================================================================
+          # Doxygen Configuration Detection
+          # =============================================================================
+          # This step checks if a Doxyfile exists in the repository to determine
+          # whether Doxygen dependencies should be installed. This optimization
+          # prevents unnecessary installation of Doxygen and Graphviz when not needed.
+          #
+          # Input: doxygen_config (path to Doxyfile, default: 'Doxyfile')
+          # Output: doxygen_needed (boolean indicating if Doxygen is required)
+          # =============================================================================
+          
           if [ -f "${{ inputs.doxygen_config }}" ]; then
-            echo "doxygen_needed=true" >> $GITHUB_OUTPUT
-            echo "✅ Doxyfile found at ${{ inputs.doxygen_config }}"
+          echo "doxygen_needed=true" >> $GITHUB_OUTPUT
+          echo "✅ Doxyfile found at ${{ inputs.doxygen_config }}"
+          echo "📋 Doxygen dependencies will be installed"
           else
-            echo "doxygen_needed=false" >> $GITHUB_OUTPUT
-            echo "⚠️  No Doxyfile found at ${{ inputs.doxygen_config }}, skipping Doxygen dependencies"
+          echo "doxygen_needed=false" >> $GITHUB_OUTPUT
+          echo "⚠️  No Doxyfile found at ${{ inputs.doxygen_config }}, skipping Doxygen dependencies"
+          echo "📋 Doxygen and Graphviz will not be installed"
           fi
 
       # =============================================================================
@@ -252,11 +699,11 @@ jobs:
         id: graphviz-check
         run: |
           if command -v dot >/dev/null 2>&1; then
-            echo "graphviz_available=true" >> $GITHUB_OUTPUT
-            echo "✅ Graphviz pre-installed: $(dot -V 2>&1 | head -1)"
+          echo "graphviz_available=true" >> $GITHUB_OUTPUT
+          echo "✅ Graphviz pre-installed: $(dot -V 2>&1 | head -1)"
           else
-            echo "graphviz_available=false" >> $GITHUB_OUTPUT
-            echo "⚠️  Graphviz not pre-installed, will install via action"
+          echo "graphviz_available=false" >> $GITHUB_OUTPUT
+          echo "⚠️  Graphviz not pre-installed, will install via action"
           fi
 
       - name: Install Graphviz (Optimized)
@@ -264,7 +711,7 @@ jobs:
         uses: tlylt/install-graphviz@v1
 
       # =============================================================================
-      # Language Runtime Setup
+      # Language Runtime Setup with Comprehensive Caching
       # =============================================================================
       - name: Setup Ruby (bundler cache)
         if: ${{ inputs.jekyll_enabled == true }}
@@ -278,6 +725,49 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
+
+      # =============================================================================
+      # Comprehensive Dependency Caching
+      # =============================================================================
+      - name: Cache pip dependencies
+        if: ${{ inputs.run_markdown_lint == true || inputs.run_spell_check == true }}
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt', '**/pyproject.toml') || 'no-deps' }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Cache Node.js dependencies
+        if: ${{ inputs.run_markdown_lint == true || inputs.run_spell_check == true }}
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json', '**/yarn.lock') || 'no-deps' }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Cache Jekyll dependencies
+        if: ${{ inputs.jekyll_enabled == true }}
+        uses: actions/cache@v3
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-jekyll-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-jekyll-
+
+      - name: Cache Doxygen build artifacts
+        if: steps.doxygen-check.outputs.doxygen_needed == 'true'
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ steps.doxy-out.outputs.html_dir }}
+            doxygen.log
+          key: ${{ runner.os }}-doxygen-${{ github.sha }}-${{ hashFiles('**/Doxyfile', '**/*.h', '**/*.cpp', '**/*.c') }}
+          restore-keys: |
+            ${{ runner.os }}-doxygen-${{ github.sha }}-
+            ${{ runner.os }}-doxygen-
 
       # =============================================================================
       # Jekyll Dependencies and Configuration
@@ -288,13 +778,13 @@ jobs:
           echo "📦 Installing Jekyll dependencies..."
           # Check if a custom Gemfile exists
           if [ -f "Gemfile" ]; then
-            echo "✅ Using existing custom Gemfile"
-            echo "📋 Gemfile contents:"
+          echo "✅ Using existing custom Gemfile"
+          echo "📋 Gemfile contents:"
             cat Gemfile
           else
-            echo "✅ Creating GitHub Pages-compatible Gemfile for consistent builds"
-            echo "source 'https://rubygems.org'" > Gemfile
-            echo "gem 'github-pages', group: :jekyll_plugins" >> Gemfile
+          echo "✅ Creating GitHub Pages-compatible Gemfile for consistent builds"
+          echo "source 'https://rubygems.org'" > Gemfile
+          echo "gem 'github-pages', group: :jekyll_plugins" >> Gemfile
           fi
 
           # Install gems to local directory to avoid permission issues
@@ -359,29 +849,29 @@ jobs:
 
           # Check layouts directory
           if [ -n "$LAYOUTS_DIR" ] && [ -d "$JEKYLL_SOURCE/$LAYOUTS_DIR" ]; then
-            echo "✅ Found layouts directory: $LAYOUTS_DIR"
+          echo "✅ Found layouts directory: $LAYOUTS_DIR"
           elif [ -d "$JEKYLL_SOURCE/_layouts" ]; then
-            echo "✅ Found layouts directory: _layouts"
+          echo "✅ Found layouts directory: _layouts"
           else
-            echo "⚠️  Directory not found: _layouts (may be using theme defaults)"
+          echo "⚠️  Directory not found: _layouts (may be using theme defaults)"
           fi
 
           # Check includes directory
           if [ -n "$INCLUDES_DIR" ] && [ -d "$JEKYLL_SOURCE/$INCLUDES_DIR" ]; then
-            echo "✅ Found includes directory: $INCLUDES_DIR"
+          echo "✅ Found includes directory: $INCLUDES_DIR"
           elif [ -d "$JEKYLL_SOURCE/_includes" ]; then
-            echo "✅ Found includes directory: _includes"
+          echo "✅ Found includes directory: _includes"
           else
-            echo "⚠️  Directory not found: _includes (may be using theme defaults)"
+          echo "⚠️  Directory not found: _includes (may be using theme defaults)"
           fi
 
           # Check sass directory
           if [ -n "$SASS_DIR" ] && [ -d "$JEKYLL_SOURCE/$SASS_DIR" ]; then
-            echo "✅ Found sass directory: $SASS_DIR"
+          echo "✅ Found sass directory: $SASS_DIR"
           elif [ -d "$JEKYLL_SOURCE/_sass" ]; then
-            echo "✅ Found sass directory: _sass"
+          echo "✅ Found sass directory: _sass"
           else
-            echo "⚠️  Directory not found: _sass (may be using theme defaults)"
+          echo "⚠️  Directory not found: _sass (may be using theme defaults)"
           fi
 
           # Check for common files in the same directory as the config file
@@ -403,24 +893,52 @@ jobs:
           echo "✅ Jekyll configuration validation completed"
 
       # =============================================================================
-      # MARKDOWN AND SPELL CHECK Documentation Quality Tools Installation
+      # Documentation Quality Tools Installation
       # =============================================================================
       - name: Install Node.js tools
         if: ${{ inputs.run_markdown_lint == true || inputs.run_spell_check == true }}
         run: |
           echo "📦 Installing Node.js tools..."
           if [ "${{ inputs.run_markdown_lint }}" == "true" ]; then
-            echo "Installing markdownlint..."
+          echo "Installing markdownlint..."
             npm install -g markdownlint-cli
             markdownlint --version
-            echo "✅ markdownlint installed successfully"
+          echo "✅ markdownlint installed successfully"
           fi
           if [ "${{ inputs.run_spell_check }}" == "true" ]; then
-            echo "Installing cspell..."
+          echo "Installing cspell..."
             npm install -g cspell
             cspell --version
-            echo "✅ cspell installed successfully"
+          echo "✅ cspell installed successfully"
           fi
+
+      - name: Install YAML linting tools
+        run: |
+          echo "📦 Installing YAML linting tools..."
+          
+          # Create cache directories to ensure caching works properly
+          echo "🔧 Creating cache directories..."
+          mkdir -p ~/.cache/pip
+          mkdir -p ~/.npm
+          
+          # Check for dependency files and log status
+          echo "🔍 Checking for dependency files..."
+          if [ -f "requirements.txt" ] || [ -f "pyproject.toml" ]; then
+            echo "✅ Found Python dependency files - pip caching will be effective"
+          else
+            echo "⚠️  No Python dependency files found - pip caching will use fallback key"
+          fi
+          
+          if [ -f "package-lock.json" ] || [ -f "yarn.lock" ]; then
+            echo "✅ Found Node.js dependency files - npm caching will be effective"
+          else
+            echo "⚠️  No Node.js dependency files found - npm caching will use fallback key"
+          fi
+          
+          # Install yamllint
+          pip install yamllint
+          yamllint --version
+          echo "✅ yamllint installed successfully"
 
       # =============================================================================
       # Doxygen Documentation Generation
@@ -445,16 +963,52 @@ jobs:
           echo "html_dir=$HTML_DIR" >> "$GITHUB_OUTPUT"
           echo "Resolved Doxygen HTML dir: $HTML_DIR"
 
-      - name: Generate Doxygen documentation
+      - name: Generate Doxygen documentation with versioning
         if: steps.doxygen-check.outputs.doxygen_needed == 'true'
         run: |
           set -o pipefail
-          doxygen ${{ inputs.doxygen_config }} 2>&1 | tee doxygen.log
+          
+          # =============================================================================
+          # Doxygen Version Integration
+          # =============================================================================
+          
+          if [[ -n "${{ needs.version-detection.outputs.doxygen_project_number }}" ]]; then
+          echo "🔧 Setting Doxygen PROJECT_NUMBER to: ${{ needs.version-detection.outputs.doxygen_project_number }}"
+          
+            # Create a temporary Doxyfile with version
+            TEMP_DOXYFILE="Doxyfile.temp"
+            cp "${{ inputs.doxygen_config }}" "$TEMP_DOXYFILE"
+          
+            # Update PROJECT_NUMBER in the temporary file
+            if grep -q "^PROJECT_NUMBER" "$TEMP_DOXYFILE"; then
+              # Replace existing PROJECT_NUMBER
+              sed -i "s|^PROJECT_NUMBER.*|PROJECT_NUMBER = ${{ needs.version-detection.outputs.doxygen_project_number }}|" "$TEMP_DOXYFILE"
+            else
+              # Add PROJECT_NUMBER if it doesn't exist
+              echo "PROJECT_NUMBER = ${{ needs.version-detection.outputs.doxygen_project_number }}" >> "$TEMP_DOXYFILE"
+            fi
+          
+            # Show the updated PROJECT_NUMBER
+          echo "📋 Updated Doxyfile PROJECT_NUMBER:"
+            grep "^PROJECT_NUMBER" "$TEMP_DOXYFILE" || echo "PROJECT_NUMBER not found in Doxyfile"
+          
+            # Run Doxygen with the temporary file
+            doxygen "$TEMP_DOXYFILE" 2>&1 | tee doxygen.log
+          
+            # Clean up temporary file
+            rm -f "$TEMP_DOXYFILE"
+          else
+            # Run Doxygen without version modification
+            doxygen "${{ inputs.doxygen_config }}" 2>&1 | tee doxygen.log
+          fi
+          
+          # Check for warnings if configured to fail on them
           if [ "${{ inputs.doxygen_fail_on_warnings }}" = "true" ] && grep -q "[Ww]arning:" doxygen.log; then
-            echo "❌ Doxygen warnings found; failing per policy"
+          echo "❌ Doxygen warnings found; failing per policy"
             exit 1
           fi
-          echo "✅ Doxygen documentation generated successfully"
+          
+          echo "✅ Doxygen documentation generated successfully with version: ${{ needs.version-detection.outputs.doxygen_version }}"
 
       - name: Stage Doxygen into Jekyll (if enabled)
         if: ${{ inputs.jekyll_enabled == true && steps.doxygen-check.outputs.doxygen_needed == 'true' }}
@@ -469,65 +1023,207 @@ jobs:
               rm -rf "$DEST" && mkdir -p "$DEST"
               cp -a "$SRC"/. "$DEST"/
             fi
-            echo "✅ Staged Doxygen HTML into $DEST"
+          echo "✅ Staged Doxygen HTML into $DEST"
           else
-            echo "⚠️  Skipping stage: no Doxygen HTML at $SRC"
+          echo "⚠️  Skipping stage: no Doxygen HTML at $SRC"
           fi
 
-      # =============================================================================
-      # Documentation Quality Checks
-      # =============================================================================
-      - name: Run markdown linting
-        if: ${{ inputs.run_markdown_lint == true }}
+      - name: Manage Doxygen versioned artifacts
+        if: ${{ steps.doxygen-check.outputs.doxygen_needed == 'true' }}
         run: |
-          markdownlint ${{ inputs.markdown_lint_paths }} || {
-            echo "❌ Markdown linting failed"
-            exit 1
+          # =============================================================================
+          # Centralized Doxygen Versioned Artifacts Management
+          # =============================================================================
+          # This step implements the revolutionary centralized Doxygen architecture
+          # that stores all API documentation versions in a single /doxs/ directory.
+          #
+          # Architecture Benefits:
+          # - Single source of truth for all API versions
+          # - Easy discovery and navigation between versions
+          # - Efficient storage with no duplication
+          # - Flexible integration with or without Jekyll
+          # - Built-in version selector for seamless navigation
+          #
+          # Directory Structure Created:
+          # /doxs/
+          # ├── v1.0.0/              # Version 1.0.0 Doxygen docs
+          # ├── v1.1.0/              # Version 1.1.0 Doxygen docs
+          # ├── development/          # Main branch Doxygen docs
+          # ├── latest -> v1.1.0/    # Symlink to latest stable
+          # ├── version_selector.js   # Centralized version selector
+          # └── versions.json         # Centralized version metadata
+          #
+          # Jekyll Integration:
+          # - Creates symlinks from Jekyll sites to centralized API docs
+          # - Example: v1.0.0/api -> ../../doxs/v1.0.0/
+          # - Enables seamless navigation between Jekyll content and API docs
+          # =============================================================================
+          
+          if [ -d "${{ steps.doxy-out.outputs.html_dir }}" ]; then
+            # Create centralized Doxygen directory structure
+            DOXS_BASE="doxs"
+            VERSIONED_DOXS="$DOXS_BASE/${{ needs.version-detection.outputs.version_name }}"
+          
+          echo "📚 Creating centralized Doxygen directory: $VERSIONED_DOXS"
+            mkdir -p "$VERSIONED_DOXS"
+          
+            # Copy Doxygen output to centralized versioned directory
+            if command -v rsync >/dev/null 2>&1; then
+              rsync -a --delete "${{ steps.doxy-out.outputs.html_dir }}"/ "$VERSIONED_DOXS"/
+            else
+              cp -a "${{ steps.doxy-out.outputs.html_dir }}"/. "$VERSIONED_DOXS"/
+            fi
+          
+            # Create symlink to latest stable version
+            if [[ "${{ needs.version-detection.outputs.version_type }}" == "stable" ]]; then
+              echo "🔗 Creating symlink to latest stable version"
+              rm -f "$DOXS_BASE/latest"
+              ln -sf "${{ needs.version-detection.outputs.version_name }}" "$DOXS_BASE/latest"
+            fi
+          
+            # Create centralized version selector for Doxygen
+          echo "🎛️  Creating centralized Doxygen version selector"
+            cat > "$DOXS_BASE/version_selector.js" << 'EOF'
+          // Centralized Doxygen Version Selector
+          (function() {
+            const versions = [];
+          
+            function createVersionSelector() {
+              const selector = document.createElement('div');
+              selector.id = 'doxygen-version-selector';
+              selector.style.cssText = 'position: fixed; top: 10px; right: 10px; z-index: 1000; background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);';
+              
+              const select = document.createElement('select');
+              select.style.cssText = 'margin-right: 8px; padding: 4px;';
+              
+              const currentVersion = window.location.pathname.split('/')[2] || 'latest';
+              
+              versions.forEach(version => {
+                const option = document.createElement('option');
+                option.value = version;
+                option.textContent = version;
+                if (version === currentVersion) option.selected = true;
+                select.appendChild(option);
+              });
+              
+              select.addEventListener('change', function() {
+                const selectedVersion = this.value;
+                if (selectedVersion && selectedVersion !== currentVersion) {
+                  const currentPath = window.location.pathname;
+                  const newPath = currentPath.replace(/\/[^\/]+\//, `/${selectedVersion}/`);
+                  window.location.href = newPath;
+                }
+              });
+              
+              const label = document.createElement('label');
+              label.textContent = 'API Version: ';
+              label.style.cssText = 'margin-right: 8px; font-weight: bold;';
+              
+              selector.appendChild(label);
+              selector.appendChild(select);
+              
+              document.body.appendChild(selector);
+            }
+          
+            // Load versions dynamically from centralized location
+            fetch('/doxs/versions.json')
+              .then(response => response.json())
+              .then(data => {
+                versions.push(...data.versions);
+                createVersionSelector();
+              })
+              .catch(() => {
+                // Fallback: create selector with current version only
+                versions.push(currentVersion);
+                createVersionSelector();
+              });
+          })();
+          EOF
+          
+            # Create centralized versions.json for version selector
+          echo "📋 Creating centralized versions.json for Doxygen version selector"
+            cat > "$DOXS_BASE/versions.json" << EOF
+          {
+            "versions": ["${{ needs.version-detection.outputs.version_name }}"],
+            "current": "${{ needs.version-detection.outputs.version_name }}",
+            "latest": "${{ needs.version-detection.outputs.version_name }}"
           }
-          echo "✅ Markdown linting passed"
+          EOF
+          
+            # If Jekyll is enabled, create symlink from Jekyll site to centralized API
+            if [[ "${{ inputs.jekyll_enabled }}" == "true" ]]; then
+              echo "🔗 Creating symlink from Jekyll site to centralized API"
+              Jekyll_API_DIR="${{ inputs.jekyll_source }}/api"
+              mkdir -p "$Jekyll_API_DIR"
+              
+              # Remove existing API directory if it exists
+              rm -rf "$Jekyll_API_DIR"
+              
+              # Create symlink to centralized Doxygen
+              ln -sf "../../doxs/${{ needs.version-detection.outputs.version_name }}" "$Jekyll_API_DIR"
+              
+              echo "✅ Jekyll API symlink created: $Jekyll_API_DIR -> ../../doxs/${{ needs.version-detection.outputs.version_name }}"
+            fi
+          
+          echo "✅ Centralized Doxygen versioned artifacts created successfully"
+          else
+          echo "⚠️  No Doxygen output found at ${{ steps.doxy-out.outputs.html_dir }}"
+          fi
 
-      - name: Run spell checking
-        if: ${{ inputs.run_spell_check == true }}
+      # =============================================================================
+      # Quality Checks Summary (Already completed in parallel job)
+      # =============================================================================
+      - name: Quality checks summary
         run: |
-          echo "🔍 Running spell check on: ${{ inputs.spell_check_paths }}"
-          # Check if files exist before running cspell (handle multiple globs)
-          found_any=false
-          # Split on spaces and newlines
-          for pat in ${{ inputs.spell_check_paths }}; do
-            matches=$(ls $pat 2>/dev/null | wc -l || true)
-            if [ "$matches" -gt 0 ]; then found_any=true; break; fi
-          done
-          if [ "$found_any" != "true" ]; then
-            echo "⚠️  No files found matching pattern: ${{ inputs.spell_check_paths }}"
-            echo "✅ Spell checking skipped (no files to check)"
-            exit 0
-          fi
-          # Run cspell and capture output
-          if [ -f "${{ inputs.spell_check_config }}" ]; then
-            echo "📝 Using config file: ${{ inputs.spell_check_config }}"
-            cspell_output=$(cspell ${{ inputs.spell_check_paths }} --config ${{ inputs.spell_check_config }} 2>&1)
-            cspell_exit_code=$?
-          else
-            echo "📝 Using default configuration"
-            cspell_output=$(cspell ${{ inputs.spell_check_paths }} 2>&1)
-            cspell_exit_code=$?
-          fi
-          # Display cspell output
-          echo "$cspell_output"
-          # Check if cspell found any spelling issues
-          if echo "$cspell_output" | grep -q "Issues found: [1-9]"; then
-            echo "❌ Spell checking failed - spelling issues found"
-            exit 1
-          elif [ $cspell_exit_code -eq 0 ]; then
-            echo "✅ Spell checking passed"
-          else
-            echo "⚠️  cspell exited with code $cspell_exit_code but no spelling issues detected"
-            echo "✅ Spell checking passed"
-          fi
+          echo "✅ Quality checks completed in parallel job:"
+          echo "  - YAML linting: ${{ needs.quality-checks.outputs.yaml_lint_passed }}"
+          echo "  - Markdown linting: ${{ needs.quality-checks.outputs.markdown_lint_passed }}"
+          echo "  - Spell checking: ${{ needs.quality-checks.outputs.spell_check_passed }}"
+
+      # =============================================================================
+      # Caching Status Summary
+      # =============================================================================
+      - name: Caching status summary
+        run: |
+          echo "📊 Caching Status Summary:"
+          echo "  - Pip cache directory: $(ls -la ~/.cache/pip 2>/dev/null | wc -l || echo '0') files"
+          echo "  - NPM cache directory: $(ls -la ~/.npm 2>/dev/null | wc -l || echo '0') files"
+          echo "  - Jekyll cache directory: $(ls -la vendor/bundle 2>/dev/null | wc -l || echo '0') files"
+          echo "  - Doxygen cache: $(ls -la ${{ steps.doxy-out.outputs.html_dir }} 2>/dev/null | wc -l || echo '0') files"
+          
+          # Check if dependency files exist for future cache effectiveness
+          echo "🔍 Dependency Files Status:"
+          [ -f "requirements.txt" ] && echo "  ✅ requirements.txt found" || echo "  ❌ requirements.txt not found"
+          [ -f "pyproject.toml" ] && echo "  ✅ pyproject.toml found" || echo "  ❌ pyproject.toml not found"
+          [ -f "package-lock.json" ] && echo "  ✅ package-lock.json found" || echo "  ❌ package-lock.json not found"
+          [ -f "yarn.lock" ] && echo "  ✅ yarn.lock found" || echo "  ❌ yarn.lock not found"
+          [ -f "Gemfile.lock" ] && echo "  ✅ Gemfile.lock found" || echo "  ❌ Gemfile.lock not found"
 
       # =============================================================================
       # Jekyll Site Generation
       # =============================================================================
+      - name: Generate version-specific configuration
+        if: ${{ inputs.jekyll_enabled == true }}
+        run: |
+          # Generate Jekyll config for versioned documentation
+          echo "📝 Generating versioned Jekyll configuration..."
+          
+          # Use main config as base and inject version info
+          cp "${{ inputs.jekyll_config || '_config.yml' }}" "${{ inputs.jekyll_source }}/_config_generated.yml"
+          
+          # Inject version-specific values
+          sed -i "s|^title:.*|title: \"$(grep '^title:' "${{ inputs.jekyll_config || '_config.yml' }}" | sed 's/^title: *//' | sed 's/^"//' | sed 's/"$//') - ${{ needs.version-detection.outputs.version_name }}\"|" "${{ inputs.jekyll_source }}/_config_generated.yml"
+          sed -i "s|^baseurl:.*|baseurl: \"${{ needs.version-detection.outputs.base_url }}\"|" "${{ inputs.jekyll_source }}/_config_generated.yml"
+          
+          # Add version information
+          echo "" >> "${{ inputs.jekyll_source }}/_config_generated.yml"
+          echo "# Version information (auto-generated)" >> "${{ inputs.jekyll_source }}/_config_generated.yml"
+          echo "version: \"${{ needs.version-detection.outputs.version_name }}\"" >> "${{ inputs.jekyll_source }}/_config_generated.yml"
+          echo "version_type: \"${{ needs.version-detection.outputs.version_type }}\"" >> "${{ inputs.jekyll_source }}/_config_generated.yml"
+          
+          # Update jekyll_config to use generated config
+          echo "jekyll_config=_config_generated.yml" >> $GITHUB_ENV
+
       - name: Build Jekyll site
         if: ${{ inputs.jekyll_enabled == true }}
         run: |
@@ -535,7 +1231,14 @@ jobs:
           # Jekyll Build Configuration
           # =============================================================================
           JEKYLL_SOURCE="${{ inputs.jekyll_source }}"
+          
+          # Use versioned config if available, otherwise use input config
+          if [[ -f "${{ inputs.jekyll_source }}/_config_generated.yml" ]]; then
+            JEKYLL_CONFIG="_config_generated.yml"
+          else
           JEKYLL_CONFIG="${{ inputs.jekyll_config }}"
+          fi
+          
           JEKYLL_DEST="${{ inputs.jekyll_destination }}"
           JEKYLL_ENV="${{ inputs.jekyll_environment }}"
 
@@ -646,8 +1349,9 @@ jobs:
           JEKYLL_QUIET="${{ inputs.jekyll_quiet }}"
           JEKYLL_TRACE="${{ inputs.jekyll_trace }}"
           JEKYLL_SAFE="${{ inputs.jekyll_safe }}"
-          JEKYLL_FORCE_POLLING="${{ inputs.jekyll_force_polling }}"
-          JEKYLL_DISABLE_DISK_CACHE="${{ inputs.jekyll_disable_disk_cache }}"
+          # Note: These inputs don't exist in the current workflow
+          # JEKYLL_FORCE_POLLING="${{ inputs.jekyll_force_polling }}"
+          # JEKYLL_DISABLE_DISK_CACHE="${{ inputs.jekyll_disable_disk_cache }}"
           JEKYLL_LSI="${{ inputs.jekyll_lsi }}"
           JEKYLL_STRICT_FRONT_MATTER="${{ inputs.jekyll_strict_front_matter }}"
 
@@ -657,56 +1361,56 @@ jobs:
           # Disable incremental builds in CI (prevents stale content issues)
           if [ "$JEKYLL_INCREMENTAL" = "" ] || [ "$JEKYLL_INCREMENTAL" = "null" ]; then
             JEKYLL_INCREMENTAL="false"
-            echo "🔧 CI Optimization: Disabled incremental builds (not recommended for CI)"
+          echo "🔧 CI Optimization: Disabled incremental builds (not recommended for CI)"
           fi
 
 
           # Enable safe mode in CI by default (more secure and predictable)
           if [ "$JEKYLL_SAFE" = "" ] || [ "$JEKYLL_SAFE" = "null" ]; then
             JEKYLL_SAFE="true"
-            echo "🔧 CI Optimization: Enabled safe mode (recommended for CI)"
+          echo "🔧 CI Optimization: Enabled safe mode (recommended for CI)"
           fi
 
           # Enable verbose output in CI by default (better debugging)
           if [ "$JEKYLL_VERBOSE" = "" ] || [ "$JEKYLL_VERBOSE" = "null" ]; then
             JEKYLL_VERBOSE="true"
-            echo "🔧 CI Optimization: Enabled verbose output (better for CI debugging)"
+          echo "🔧 CI Optimization: Enabled verbose output (better for CI debugging)"
           fi
 
           # Disable profile by default in CI (reduces build time unless needed)
           if [ "$JEKYLL_PROFILE" = "" ] || [ "$JEKYLL_PROFILE" = "null" ]; then
             JEKYLL_PROFILE="false"
-            echo "🔧 CI Optimization: Disabled profiling (reduces build time)"
+          echo "🔧 CI Optimization: Disabled profiling (reduces build time)"
           fi
 
           # Disable drafts by default in CI (focus on finalized content)
           if [ "$JEKYLL_DRAFTS" = "" ] || [ "$JEKYLL_DRAFTS" = "null" ]; then
             JEKYLL_DRAFTS="false"
-            echo "🔧 CI Optimization: Disabled drafts (focus on finalized content)"
+          echo "🔧 CI Optimization: Disabled drafts (focus on finalized content)"
           fi
 
           # Disable future posts by default in CI (prevent publishing future content)
           if [ "$JEKYLL_FUTURE" = "" ] || [ "$JEKYLL_FUTURE" = "null" ]; then
             JEKYLL_FUTURE="false"
-            echo "🔧 CI Optimization: Disabled future posts (prevent future content publishing)"
+          echo "🔧 CI Optimization: Disabled future posts (prevent future content publishing)"
           fi
 
           # Disable unpublished posts by default in CI (focus on published content)
           if [ "$JEKYLL_UNPUBLISHED" = "" ] || [ "$JEKYLL_UNPUBLISHED" = "null" ]; then
             JEKYLL_UNPUBLISHED="false"
-            echo "🔧 CI Optimization: Disabled unpublished posts (focus on published content)"
+          echo "🔧 CI Optimization: Disabled unpublished posts (focus on published content)"
           fi
 
           # Disable LSI by default in CI (resource-intensive, not needed for CI)
           if [ "$JEKYLL_LSI" = "" ] || [ "$JEKYLL_LSI" = "null" ]; then
             JEKYLL_LSI="false"
-            echo "🔧 CI Optimization: Disabled LSI (resource-intensive, not needed for CI)"
+          echo "🔧 CI Optimization: Disabled LSI (resource-intensive, not needed for CI)"
           fi
 
           # Enable strict front matter by default in CI (ensure content integrity)
           if [ "$JEKYLL_STRICT_FRONT_MATTER" = "" ] || [ "$JEKYLL_STRICT_FRONT_MATTER" = "null" ]; then
             JEKYLL_STRICT_FRONT_MATTER="true"
-            echo "🔧 CI Optimization: Enabled strict front matter (ensure content integrity)"
+          echo "🔧 CI Optimization: Enabled strict front matter (ensure content integrity)"
           fi
 
           # =============================================================================
@@ -754,8 +1458,8 @@ jobs:
 
           # Verify build output
           if [ -d "$JEKYLL_DEST" ] && [ "$(ls -A "$JEKYLL_DEST")" ]; then
-            echo "✅ Jekyll site built successfully"
-            echo "📁 Build output contents:"
+          echo "✅ Jekyll site built successfully"
+          echo "📁 Build output contents:"
             ls -la "$JEKYLL_DEST"
 
             # Show Doxygen API integration details if Doxygen was enabled
@@ -785,15 +1489,15 @@ jobs:
             fi
 
             # Show build statistics
-            echo ""
-            echo "📊 Build Statistics:"
-            echo "  Total files: $(find "$JEKYLL_DEST" -type f | wc -l)"
-            echo "  Total size: $(du -sh "$JEKYLL_DEST" | cut -f1)"
-            echo "  HTML files: $(find "$JEKYLL_DEST" -name "*.html" | wc -l)"
-            echo "  CSS files: $(find "$JEKYLL_DEST" -name "*.css" | wc -l)"
-            echo "  JS files: $(find "$JEKYLL_DEST" -name "*.js" | wc -l)"
+          echo ""
+          echo "📊 Build Statistics:"
+          echo "  Total files: $(find "$JEKYLL_DEST" -type f | wc -l)"
+          echo "  Total size: $(du -sh "$JEKYLL_DEST" | cut -f1)"
+          echo "  HTML files: $(find "$JEKYLL_DEST" -name "*.html" | wc -l)"
+          echo "  CSS files: $(find "$JEKYLL_DEST" -name "*.css" | wc -l)"
+          echo "  JS files: $(find "$JEKYLL_DEST" -name "*.js" | wc -l)"
           else
-            echo "❌ Jekyll build failed - no output directory or empty directory"
+          echo "❌ Jekyll build failed - no output directory or empty directory"
             exit 1
           fi
 
@@ -830,7 +1534,7 @@ jobs:
 
           # Check for Jekyll output first (if enabled)
           if [ "${{ inputs.jekyll_enabled }}" == "true" ]; then
-            echo "🔍 Checking Jekyll build output..."
+          echo "🔍 Checking Jekyll build output..."
             if [ -d "${{ inputs.jekyll_destination }}" ]; then
               echo "✅ Jekyll build output found: ${{ inputs.jekyll_destination }}"
               echo "📁 Jekyll output contents:"
@@ -843,8 +1547,8 @@ jobs:
 
           # Check for Doxygen output (if Jekyll not available or not enabled)
           if [ -z "$DEPLOY_PATH" ] && [ "${{ steps.doxygen-check.outputs.doxygen_needed }}" == "true" ]; then
-            echo "🔍 Checking Doxygen build output..."
-            echo "Doxygen output dir (auto-detected): ${{ steps.doxy-out.outputs.html_dir }}"
+          echo "🔍 Checking Doxygen build output..."
+          echo "Doxygen output dir (auto-detected): ${{ steps.doxy-out.outputs.html_dir }}"
 
             if [ -d "${{ steps.doxy-out.outputs.html_dir }}" ]; then
               echo "✅ Doxygen build output found: ${{ steps.doxy-out.outputs.html_dir }}"
@@ -858,7 +1562,7 @@ jobs:
 
           # If still no path found, check for any documentation directories
           if [ -z "$DEPLOY_PATH" ]; then
-            echo "🔍 Searching for any documentation directories..."
+          echo "🔍 Searching for any documentation directories..."
             DOC_DIRS=$(find . -type d -name "*site*" -o -name "*docs*" -o -name "*html*" | head -5)
             if [ -n "$DOC_DIRS" ]; then
               echo "📁 Found potential documentation directories:"
@@ -876,12 +1580,12 @@ jobs:
 
           if [ -z "$DEPLOY_PATH" ]; then
             echo "❌ No documentation found to deploy"
-            echo "Available directories:"
+          echo "Available directories:"
             find . -type d -name "*site*" -o -name "*docs*" -o -name "*html*" | head -10
             echo "⚠️  This may be expected if:"
-            echo "   - No Doxyfile exists and Jekyll is disabled"
-            echo "   - Documentation generation failed"
-            echo "   - Output directories are empty"
+          echo "   - No Doxyfile exists and Jekyll is disabled"
+          echo "   - Documentation generation failed"
+          echo "   - Output directories are empty"
             exit 1
           fi
 
@@ -889,9 +1593,9 @@ jobs:
 
           # Create .nojekyll file for Doxygen-only deployments
           if [ "${{ inputs.jekyll_enabled }}" != "true" ]; then
-            echo "📝 Creating .nojekyll file for Doxygen-only deployment"
+          echo "📝 Creating .nojekyll file for Doxygen-only deployment"
             touch "$DEPLOY_PATH/.nojekyll"
-            echo "✅ Created .nojekyll file to bypass Jekyll processing"
+          echo "✅ Created .nojekyll file to bypass Jekyll processing"
           fi
 
           echo "DEPLOY_PATH=$DEPLOY_PATH" >> $GITHUB_ENV
@@ -916,32 +1620,177 @@ jobs:
           if [ "${{ inputs.deploy_pages }}" == "true" ] && \
              [ "${{ github.event_name }}" == "push" ] && \
              [ "${{ github.ref }}" == "refs/heads/main" ]; then
-            echo "✅ All conditions met - Pages deployment will proceed"
+          echo "✅ All conditions met - Pages deployment will proceed"
           else
-            echo "⚠️  Pages deployment will be skipped because:"
+          echo "⚠️  Pages deployment will be skipped because:"
             [ "${{ inputs.deploy_pages }}" != "true" ] && echo "   - deploy_pages is false"
             [ "${{ github.event_name }}" != "push" ] && echo "   - not a push event (current: ${{ github.event_name }})"
             [ "${{ github.ref }}" != "refs/heads/main" ] && echo "   - not on main branch (current: ${{ github.ref }})"
           fi
 
-      - name: Upload Pages artifact
-        if: ${{ inputs.deploy_pages == true && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ${{ env.DEPLOY_PATH }}
+      # =============================================================================
+      # Versioned GitHub Pages Deployment
+      # =============================================================================
+      - name: Deploy to versioned GitHub Pages
+        if: ${{ inputs.deploy_pages == true }}
+        run: |
+          # =============================================================================
+          # Versioned Deployment Configuration
+          # =============================================================================
+          
+          VERSION_PATH="${{ needs.version-detection.outputs.deployment_path }}"
+          DEPLOYMENT_BRANCH="${{ inputs.deployment_branch }}"
+          
+          echo "🚀 Deploying to versioned path: $VERSION_PATH in branch: $DEPLOYMENT_BRANCH"
 
-  # =============================================================================
-  # GitHub Pages Deployment Job
-  # =============================================================================
-  deploy:
-    if: ${{ inputs.deploy_pages == true && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deploy
-        uses: actions/deploy-pages@v4
-        continue-on-error: true
+          # =============================================================================
+          # Clone deployment branch
+          # =============================================================================
+          
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          
+          # Clone deployment branch
+          git clone --branch=$DEPLOYMENT_BRANCH --depth=1 https://github.com/${{ github.repository }}.git gh-pages-deploy
+          cd gh-pages-deploy
+          
+          # =============================================================================
+          # Deploy versioned documentation
+          # =============================================================================
+          
+          # Create version directory
+          mkdir -p "$VERSION_PATH"
+          
+          # Copy built documentation
+          if [[ -d "${{ env.DEPLOY_PATH || '_site' }}" ]]; then
+            DEPLOY_SOURCE="${{ env.DEPLOY_PATH || '_site' }}"
+          echo "📁 Copying documentation from $DEPLOY_SOURCE to $VERSION_PATH/"
+            cp -r "$DEPLOY_SOURCE"/* "$VERSION_PATH"/
+          
+            # Create version info file
+            cat > "$VERSION_PATH/version_info.json" << EOF
+          {
+            "version": "$VERSION_PATH",
+            "type": "${{ needs.version-detection.outputs.version_type }}",
+            "deployed_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "commit": "${{ github.sha }}",
+            "ref": "${{ github.ref }}",
+            "doxygen_version": "${{ needs.version-detection.outputs.doxygen_version }}"
+          }
+          EOF
+          
+          echo "✅ Deployed documentation to $VERSION_PATH/"
+          else
+            echo "❌ No documentation found to deploy"
+            exit 1
+          fi
+          
+          # =============================================================================
+          # Deploy centralized Doxygen artifacts
+          # =============================================================================
+          
+          if [[ -d "doxs" ]]; then
+          echo "📚 Deploying centralized Doxygen artifacts..."
+          
+            # Copy centralized Doxygen artifacts to deployment branch
+            if command -v rsync >/dev/null 2>&1; then
+              rsync -a --delete doxs/ ./
+            else
+              cp -a doxs/* ./
+            fi
+          
+          echo "✅ Centralized Doxygen artifacts deployed to root"
+          fi
+          
+          # =============================================================================
+          # Update root redirect (if enabled)
+          # =============================================================================
+          
+          # Determine latest stable version
+          LATEST_STABLE=""
+          for dir in v*.*.*; do
+            if [[ -d "$dir" && "$dir" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+              if [[ -z "$LATEST_STABLE" || "$dir" > "$LATEST_STABLE" ]]; then
+                LATEST_STABLE="$dir"
+              fi
+            fi
+          done
+          
+          if [[ -n "$LATEST_STABLE" ]]; then
+          echo "🔄 Creating redirect to latest stable: $LATEST_STABLE"
+            cat > index.html << EOF
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <meta http-equiv="refresh" content="0; url='/$LATEST_STABLE/'" />
+              <title>Redirecting to latest documentation...</title>
+            </head>
+            <body>
+              <p>Redirecting to the latest documentation...</p>
+              <p><a href="/$LATEST_STABLE/">Click here if you are not redirected automatically.</a></p>
+            </body>
+          </html>
+          EOF
+          else
+          echo "⚠️  No stable version found for redirect"
+          fi
+          
+          # =============================================================================
+          # Create version selector (if enabled)
+          # =============================================================================
+          
+          # Generate version list for selector
+          VERSIONS=()
+          for dir in */; do
+            if [[ -d "$dir" && "$dir" != ".*" ]]; then
+              VERSIONS+=("${dir%/}")
+            fi
+          done
+          
+          # Create version selector component
+          cat > version_selector.html << EOF
+          <div class="version-selector">
+            <label for="version-select">Documentation Version:</label>
+            <select id="version-select" onchange="changeVersion(this.value)">
+              <option value="">Select Version</option>
+              $(for version in "${VERSIONS[@]}"; do
+                echo "<option value=\"$version\">$version</option>"
+              done)
+            </select>
+          </div>
+          <script>
+            function changeVersion(version) {
+              if (version) {
+                window.location.href = '/' + version + '/';
+              }
+            }
+          
+            // Set current version in selector
+            const currentPath = window.location.pathname;
+            const pathParts = currentPath.split('/').filter(part => part);
+            if (pathParts.length > 0) {
+              document.getElementById('version-select').value = pathParts[0];
+            }
+          </script>
+          EOF
+          
+          # =============================================================================
+          # Commit and push changes
+          # =============================================================================
+          
+          git add .
+          git commit -m "Deploy documentation for $VERSION_PATH
+
+          - Version: $VERSION_PATH
+          - Type: ${{ needs.version-detection.outputs.version_type }}
+          - Commit: ${{ github.sha }}
+          - Ref: ${{ github.ref }}
+          - Deployed: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          
+          git push origin $DEPLOYMENT_BRANCH
+          
+          echo "✅ Successfully deployed versioned documentation"
+          echo "🌐 Access URLs:"
+          echo "  Root: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
+          echo "  Version: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/$VERSION_PATH/"
+

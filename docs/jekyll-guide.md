@@ -73,16 +73,16 @@ The validation reads your `_config.yml` to determine where directories should be
 
 ```yaml
 # Your _config.yml specifies custom locations
-layouts_dir: docs/_layouts
-includes_dir: docs/_includes
+layouts_dir: _config/_layouts
+includes_dir: _config/_includes
 sass:
-  sass_dir: docs/_sass
+  sass_dir: _config/_sass
 ```
 
 **Validation Logic:**
-- ✅ Checks `docs/_layouts` (from config) → Found!
-- ✅ Checks `docs/_includes` (from config) → Found!
-- ⚠️ Checks `docs/_sass` (from config) → Not found (using theme defaults)
+- ✅ Checks `_config/_layouts` (from config) → Found!
+- ✅ Checks `_config/_includes` (from config) → Found!
+- ⚠️ Checks `_config/_sass` (from config) → Not found (using theme defaults)
 
 #### 2. **File Location Validation**
 Files are checked relative to where your `_config.yml` is located:
@@ -95,11 +95,11 @@ Files are checked relative to where your `_config.yml` is located:
 **Example Output:**
 ```
 🔍 Validating Jekyll configuration...
-✅ Validating config file: docs/_config.yml
+✅ Validating config file: _config/_config.yml
   ✅ YAML syntax is valid
-✅ Found layouts directory: docs/_layouts
-✅ Found includes directory: docs/_includes
-⚠️  Directory not found: docs/_sass (may be using theme defaults)
+✅ Found layouts directory: _config/_layouts
+✅ Found includes directory: _config/_includes
+⚠️  Directory not found: _config/_sass (may be using theme defaults)
 ✅ Found file: index.md
 ✅ Found file: 404.html
 ✅ Found file: robots.txt
@@ -125,8 +125,8 @@ baseurl: "/my-project"
 url: "https://username.github.io"
 
 # Specify custom directory locations
-layouts_dir: docs/_layouts
-includes_dir: docs/_includes
+layouts_dir: _config/_layouts
+includes_dir: _config/_includes
 ```
 
 #### ❌ **Avoid This:**
@@ -156,16 +156,22 @@ Common files (`index.md`, `404.html`, `robots.txt`) are checked in the same dire
 
 ## 📁 Configuration Files
 
+### Navigation in Just the Docs
+
+Just the Docs uses **front matter navigation**:
+
+- **Front matter attributes** - `nav_order`, `parent`, `has_children` in page front matter
+- **Folder structure** - Pages are organized in directories
+- **Auto-detection** - Just the Docs automatically builds navigation from page structure
+
 ### Standard Naming Convention
 
 Use these standard naming conventions for your Jekyll configuration files:
 
 - `_config.yml` - Base configuration
-- `_config_dev.yml` - Development overrides
-- `_config_staging.yml` - Staging overrides
-- `_config_prod.yml` - Production overrides
-- `_config_theme.yml` - Theme-specific settings
-- `_config_analytics.yml` - Analytics settings
+- `_config_staging.yml` - Staging overrides (optional)
+- `_config_theme.yml` - Theme-specific settings (optional)
+- `_config_analytics.yml` - Analytics settings (optional)
 
 ### Base Configuration (`_config.yml`)
 
@@ -229,7 +235,9 @@ exclude:
 
 ### Environment-Specific Configurations
 
-#### Development (`_config_dev.yml`)
+> **Note**: For versioned documentation, the main `_config.yml` is dynamically modified by default. See the [Versioning Guide](versioning-guide.md) for details.
+
+#### Development Configuration
 
 ```yaml
 # Development URL settings
@@ -255,10 +263,9 @@ exclude:
   - .github
   - README.md
   - LICENSE
-  - _config_prod.yml
 ```
 
-#### Production (`_config_prod.yml`)
+#### Production Configuration
 
 ```yaml
 # Production URL settings

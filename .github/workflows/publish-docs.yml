@@ -1,5 +1,23 @@
 ---
-name: 📚 Publish Documentation
+# =============================================================================
+# Publish Versioned Documentation
+# =============================================================================
+# This workflow publishes the repository's documentation using the enhanced
+# docs.yml workflow with versioning enabled by default.
+#
+# Key Features:
+# - Automatic version detection from git branches/tags
+# - Versioned deployment to gh-pages branch
+# - Jekyll site generation with front matter navigation
+# - Quality assurance (link checking, markdown linting)
+# - Centralized Doxygen artifact management (if Doxygen is enabled)
+#
+# Versioning Strategy:
+# - main branch → development version
+# - release/* branches → versioned releases
+# - v* tags → stable releases
+# =============================================================================
+name: 📚 Publish Versioned Documentation
 
 on:
   push:
@@ -14,21 +32,30 @@ permissions:
   id-token: write
 
 concurrency:
-  group: docs-no-doxygen-${{ github.ref }}
+  group: docs-versioned-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   publish-docs:
     uses: ./.github/workflows/docs.yml
     with:
-      # Jekyll configuration for this repo's docs
+      # =============================================================================
+      # Versioning Configuration (Always Enabled)
+      # =============================================================================
+      deployment_branch: 'gh-pages'  # Required for versioned documentation
+
+      # =============================================================================
+      # Jekyll Configuration
+      # =============================================================================
       jekyll_enabled: true
-      jekyll_config: "docs/_config.yml"
+      jekyll_config: "_config/_config.yml"
       jekyll_source: "."
       jekyll_destination: "_site"
-      jekyll_layouts_dir: "docs/_layouts"
+      jekyll_layouts_dir: "_config/_layouts"
 
-      # Link checking
+      # =============================================================================
+      # Quality Assurance
+      # =============================================================================
       run_link_check: true
       link_check_paths: "**/*.md"
       verbose: true
@@ -41,5 +68,7 @@ jobs:
       run_spell_check: false
       spell_check_paths: "**/*.md"
 
-      # Deploy to GitHub Pages
+      # =============================================================================
+      # GitHub Pages Deployment
+      # =============================================================================
       deploy_pages: true
