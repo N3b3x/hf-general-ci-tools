@@ -21,11 +21,9 @@ name: 📚 Publish Documentation
 
 on:
   push:
-    branches: [main]
-    branches-ignore: [gh-pages]  # Explicitly exclude gh-pages to prevent infinite loops
+    branches: [main]  # Only run on main branch (gh-pages excluded by default)
   pull_request:
-    branches: [main]
-    branches-ignore: [gh-pages]  # Explicitly exclude gh-pages to prevent infinite loops
+    branches: [main]  # Only run on PRs targeting main branch
   workflow_dispatch:
 
 permissions:
