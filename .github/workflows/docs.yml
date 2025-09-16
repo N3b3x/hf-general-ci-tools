@@ -1798,23 +1798,9 @@ jobs:
           # Update Root Redirect
           # =============================================================================
           
-          # Determine what to redirect to
-          REDIRECT_TARGET=""
-          
-          if [[ "$VERSION_TYPE" == "stable" ]]; then
-            # For stable releases, redirect to the specific version
-            REDIRECT_TARGET="$VERSION_PATH"
-          elif [[ "$VERSION_TYPE" == "development" ]]; then
-            # For development, redirect to development
-            REDIRECT_TARGET="development"
-          else
-            # For preview or other types, redirect to development as fallback
-            REDIRECT_TARGET="development"
-          fi
-          
-          # Add repository name to redirect target
+          # Redirect to version selector instead of specific version
           REPO_NAME="${{ github.event.repository.name }}"
-          REDIRECT_TARGET="/$REPO_NAME/$REDIRECT_TARGET"
+          REDIRECT_TARGET="/$REPO_NAME/version_selector.html"
 
           echo "🎯 Creating root redirect to: $REDIRECT_TARGET"
           
@@ -1825,8 +1811,8 @@ jobs:
           <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <meta http-equiv="refresh" content="0; url='$REDIRECT_TARGET/'" />
-            <title>Documentation - Redirecting to $REDIRECT_TARGET</title>
+            <meta http-equiv="refresh" content="0; url='$REDIRECT_TARGET'" />
+            <title>Documentation - Redirecting to Version Selector</title>
             <style>
               body { 
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -1874,9 +1860,9 @@ jobs:
             <div class="container">
               <h1>📚 Documentation</h1>
               <div class="spinner"></div>
-              <p>Redirecting to the latest documentation...</p>
-              <p><a href="$REDIRECT_TARGET/">Click here if you are not redirected automatically</a></p>
-              <p><a href="/$REPO_NAME/version_selector.html">Browse all versions</a></p>
+              <p>Redirecting to the version selector...</p>
+              <p><a href="$REDIRECT_TARGET">Click here if you are not redirected automatically</a></p>
+              <p><a href="/$REPO_NAME/">Back to repository root</a></p>
             </div>
           </body>
           </html>
@@ -2054,7 +2040,7 @@ jobs:
           git add .
           git commit -m "Update root redirect and version selector
 
-          - Updated root redirect to: $REDIRECT_TARGET
+          - Updated root redirect to version selector: $REDIRECT_TARGET
           - Updated version selector with ${#VERSIONS[@]} versions
           - Current version: $VERSION_PATH ($VERSION_TYPE)
           - Updated: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
