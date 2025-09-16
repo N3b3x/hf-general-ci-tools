@@ -102,8 +102,32 @@ jobs:
               # Single file
               files=("$path")
             else
-              # Pattern - find files
-              files=($(find . -name "$path" -type f 2>/dev/null || true))
+              # Pattern - use proper glob expansion
+              # Enable globstar for ** patterns
+              shopt -s globstar nullglob
+              
+              # Expand glob patterns
+              files=()
+              for expanded_path in $path; do
+                if [ -f "$expanded_path" ]; then
+                  files+=("$expanded_path")
+                fi
+              done
+              
+              # If no files found with glob, try find as fallback
+              if [ ${#files[@]} -eq 0 ]; then
+                files=($(find . -path "$path" -type f 2>/dev/null || true))
+              fi
+            fi
+
+            # Debug: Show found files before filtering
+            if [ ${#files[@]} -gt 0 ]; then
+              echo "  📁 Found ${#files[@]} files matching pattern:"
+              for file in "${files[@]}"; do
+                echo "    - $file"
+              done
+            else
+              echo "  ⚠️  No files found matching pattern: $path"
             fi
 
             # Filter out excluded patterns
@@ -113,6 +137,7 @@ jobs:
               for exclude in "${EXCLUDE_ARRAY[@]}"; do
                 exclude=$(echo "$exclude" | xargs)
                 if [[ "$file" == *"$exclude"* ]]; then
+                  echo "  🚫 Excluding: $file (matches: $exclude)"
                   skip=true
                   break
                 fi
@@ -121,6 +146,16 @@ jobs:
                 filtered_files+=("$file")
               fi
             done
+            
+            # Debug: Show filtered files
+            if [ ${#filtered_files[@]} -gt 0 ]; then
+              echo "  ✅ ${#filtered_files[@]} files after filtering:"
+              for file in "${filtered_files[@]}"; do
+                echo "    - $file"
+              done
+            else
+              echo "  ⚠️  No files remaining after filtering"
+            fi
 
             # Run yamllint on filtered files
             for file in "${filtered_files[@]}"; do
