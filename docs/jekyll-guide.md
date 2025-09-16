@@ -235,7 +235,8 @@ exclude:
 
 ### Environment-Specific Configurations
 
-> **Note**: For versioned documentation, the main `_config.yml` is dynamically modified by default. See the [Versioning Guide](versioning-guide.md) for details.
+> **Note**: For versioned documentation, the main `_config.yml` is dynamically modified by default. See the
+> [Versioning Guide](versioning-guide.md) for details.
 
 #### Development Configuration
 
