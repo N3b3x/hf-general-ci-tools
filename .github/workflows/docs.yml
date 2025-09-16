@@ -651,6 +651,8 @@ jobs:
           
           echo "🔍 Generated base_url: $BASE_URL"
           echo "🔍 Version name: $VERSION_NAME"
+          echo "🔍 Repository name: ${{ github.event.repository.name }}"
+          echo "🔍 Expected final URL: https://n3b3x.github.io$BASE_URL/"
           echo "base_url=$BASE_URL" >> $GITHUB_OUTPUT
 
           # Generate config file names
@@ -1284,6 +1286,10 @@ jobs:
           # Verify the baseurl was set correctly
           echo "🔍 Verifying baseurl in generated config:"
           grep "baseurl:" "${{ inputs.jekyll_source }}/_config_generated.yml" || echo "⚠️  baseurl not found in config"
+          
+          # Show the full generated config for debugging
+          echo "🔍 Full generated config file:"
+          cat "${{ inputs.jekyll_source }}/_config_generated.yml"
 
           # Add version information
           echo "" >> "${{ inputs.jekyll_source }}/_config_generated.yml"
