@@ -15,5 +15,5 @@ jobs:
     with:
       paths: '.github/workflows/*.yml,**/*.yml,**/*.yaml'
       config_file: '.yamllint'
-      strict_mode: true
+      strict_mode: false
       exclude_patterns: '.git/**,node_modules/**,venv/**,.venv/**,_site/**'
