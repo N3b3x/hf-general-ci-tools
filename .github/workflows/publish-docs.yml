@@ -17,7 +17,7 @@
 # - release/* branches → versioned releases
 # - v* tags → stable releases
 # =============================================================================
-name: 📚 Publish Versioned Documentation
+name: 📚 Publish Documentation
 
 on:
   push:
