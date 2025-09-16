@@ -655,7 +655,7 @@ ls -la gh-pages-deploy/
 
 ## 📚 Further Reading
 
-- [VERSIONING_STRATEGY.md](VERSIONING_STRATEGY.md) - Complete versioning strategy
+- [HardFOC Versioning Policy](https://github.com/orgs/hardfoc/discussions/1) - Organization versioning strategy and guidelines
 - [Jekyll Guide](jekyll-guide.md) - Jekyll configuration details
 - [Doxygen Documentation](https://www.doxygen.nl/manual/) - Doxygen reference
 - [Semantic Versioning](https://semver.org/) - Version numbering standard
