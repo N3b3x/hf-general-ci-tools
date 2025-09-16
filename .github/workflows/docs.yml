@@ -620,15 +620,22 @@ jobs:
               sed 's/^baseurl: *//' | sed 's/^"//' | sed 's/"$//' | \
               sed 's/^ *//' | sed 's/ *$//' | sed 's/  #.*$//' | sed 's/"$//')
 
-          # Add version to base URL if versioning is enabled
-            if [[ -n "$VERSION_NAME" && \
-                  "$VERSION_NAME" != "development" && \
-                  "$VERSION_NAME" != "preview" ]]; then
+            # ALWAYS add version to base URL for versioned documentation
+            if [[ -n "$VERSION_NAME" ]]; then
               BASE_URL="$BASE_URL/$VERSION_NAME"
             fi
           else
-            BASE_URL=""
+            # If no config file, create base URL with repository name and version
+            REPO_NAME="${{ github.event.repository.name }}"
+            if [[ -n "$VERSION_NAME" ]]; then
+              BASE_URL="/$REPO_NAME/$VERSION_NAME"
+            else
+              BASE_URL="/$REPO_NAME"
+            fi
           fi
+          
+          echo "🔍 Generated base_url: $BASE_URL"
+          echo "🔍 Version name: $VERSION_NAME"
           echo "base_url=$BASE_URL" >> $GITHUB_OUTPUT
 
           # Generate config file names
@@ -1255,8 +1262,13 @@ jobs:
             sed 's/  #.*$//' | sed 's/^ *//' | sed 's/ *$//')
           sed -i "s|^title:.*|title: \"$TITLE - ${{ needs.version-detection.outputs.version_name }}\"|" \
             "${{ inputs.jekyll_source }}/_config_generated.yml"
+          echo "🔍 Setting baseurl to: ${{ needs.version-detection.outputs.base_url }}"
           sed -i "s|^baseurl:.*|baseurl: \"${{ needs.version-detection.outputs.base_url }}\"|" \
             "${{ inputs.jekyll_source }}/_config_generated.yml"
+          
+          # Verify the baseurl was set correctly
+          echo "🔍 Verifying baseurl in generated config:"
+          grep "baseurl:" "${{ inputs.jekyll_source }}/_config_generated.yml" || echo "⚠️  baseurl not found in config"
 
           # Add version information
           echo "" >> "${{ inputs.jekyll_source }}/_config_generated.yml"
