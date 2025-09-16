@@ -259,7 +259,7 @@ jobs:
           # =============================================================================
           # Branch Protection - Prevent infinite loops
           # =============================================================================
-          
+
           # Check if we're running on the deployment branch (gh-pages)
           if [[ "${{ github.ref }}" == "refs/heads/${{ inputs.deployment_branch }}" ]]; then
             echo "❌ Error: This workflow cannot run on the deployment branch (${{ inputs.deployment_branch }})"
@@ -268,7 +268,7 @@ jobs:
             echo "Deployment branch: ${{ inputs.deployment_branch }}"
             exit 1
           fi
-          
+
           echo "✅ Branch check passed - not running on deployment branch"
 
           # =============================================================================
@@ -546,7 +546,8 @@ jobs:
 
           # Auto detection from branch/tag
           # Detect default branch with fallback
-          DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@' || echo "")
+          DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | \
+            sed 's@^refs/remotes/origin/@@' || echo "")
           if [[ -z "$DEFAULT_BRANCH" ]]; then
             # Fallback: try to detect from github context or common defaults
             DEFAULT_BRANCH="${{ github.event.repository.default_branch }}"
@@ -648,7 +649,7 @@ jobs:
               BASE_URL="/$REPO_NAME"
             fi
           fi
-          
+
           echo "🔍 Generated base_url: $BASE_URL"
           echo "🔍 Version name: $VERSION_NAME"
           echo "🔍 Repository name: ${{ github.event.repository.name }}"
@@ -1041,7 +1042,8 @@ jobs:
             # Update PROJECT_NUMBER in the temporary file
             if grep -q "^PROJECT_NUMBER" "$TEMP_DOXYFILE"; then
               # Replace existing PROJECT_NUMBER
-              sed -i "s|^PROJECT_NUMBER.*|PROJECT_NUMBER = ${{ needs.version-detection.outputs.doxygen_project_number }}|" "$TEMP_DOXYFILE"
+              sed -i "s|^PROJECT_NUMBER.*|PROJECT_NUMBER = ${{ needs.version-detection.outputs.doxygen_project_number }}|" \
+                "$TEMP_DOXYFILE"
             else
               # Add PROJECT_NUMBER if it doesn't exist
               echo "PROJECT_NUMBER = ${{ needs.version-detection.outputs.doxygen_project_number }}" >> "$TEMP_DOXYFILE"
@@ -1062,12 +1064,14 @@ jobs:
           fi
 
           # Check for warnings if configured to fail on them
-          if [ "${{ inputs.doxygen_fail_on_warnings }}" = "true" ] && grep -q "[Ww]arning:" doxygen.log; then
-          echo "❌ Doxygen warnings found; failing per policy"
+          if [ "${{ inputs.doxygen_fail_on_warnings }}" = "true" ] && \
+             grep -q "[Ww]arning:" doxygen.log; then
+            echo "❌ Doxygen warnings found; failing per policy"
             exit 1
           fi
 
-          echo "✅ Doxygen documentation generated successfully with version: ${{ needs.version-detection.outputs.doxygen_version }}"
+          echo "✅ Doxygen documentation generated successfully with version: " \
+            "${{ needs.version-detection.outputs.doxygen_version }}"
 
       - name: Stage Doxygen into Jekyll (if enabled)
         if: ${{ inputs.jekyll_enabled == true && steps.doxygen-check.outputs.doxygen_needed == 'true' }}
@@ -1221,9 +1225,11 @@ jobs:
               rm -rf "$Jekyll_API_DIR"
 
               # Create symlink to centralized Doxygen
-              ln -sf "../../doxs/${{ needs.version-detection.outputs.version_name }}" "$Jekyll_API_DIR"
+              ln -sf "../../doxs/${{ needs.version-detection.outputs.version_name }}" \
+                "$Jekyll_API_DIR"
 
-              echo "✅ Jekyll API symlink created: $Jekyll_API_DIR -> ../../doxs/${{ needs.version-detection.outputs.version_name }}"
+              echo "✅ Jekyll API symlink created: $Jekyll_API_DIR -> " \
+                "../../doxs/${{ needs.version-detection.outputs.version_name }}"
             fi
 
           echo "✅ Centralized Doxygen versioned artifacts created successfully"
