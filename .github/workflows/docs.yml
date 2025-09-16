@@ -530,9 +530,18 @@ jobs:
           echo "✅ Versioned documentation with deployment branch: ${{ inputs.deployment_branch }}"
 
           # Auto detection from branch/tag
-          # Detect default branch dynamically
-          DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
+          # Detect default branch with fallback
+          DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@' || echo "")
+          if [[ -z "$DEFAULT_BRANCH" ]]; then
+            # Fallback: try to detect from github context or common defaults
+            DEFAULT_BRANCH="${{ github.event.repository.default_branch }}"
+            if [[ -z "$DEFAULT_BRANCH" ]]; then
+              DEFAULT_BRANCH="main"  # Final fallback
+            fi
+          fi
           echo "🔍 Detected default branch: $DEFAULT_BRANCH"
+          echo "🔍 Current github.ref: ${{ github.ref }}"
+          echo "🔍 Expected pattern: refs/heads/$DEFAULT_BRANCH"
 
           if [[ "${{ github.ref }}" == "refs/heads/$DEFAULT_BRANCH" ]]; then
             VERSION_NAME="development"
