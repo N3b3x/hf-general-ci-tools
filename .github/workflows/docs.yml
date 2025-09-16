@@ -1395,9 +1395,6 @@ jobs:
           # Build Command Construction
           # =============================================================================
 
-          BASEURL="${{ steps.pages.outputs.base_path }}"
-          echo "Using Pages base_path: $BASEURL"
-
           # Create destination directory if it doesn't exist
           mkdir -p "$JEKYLL_DEST"
 
@@ -1406,7 +1403,6 @@ jobs:
           JEKYLL_CMD="$JEKYLL_CMD --source \"$JEKYLL_SOURCE\""
           JEKYLL_CMD="$JEKYLL_CMD --destination \"$JEKYLL_DEST\""
           JEKYLL_CMD="$JEKYLL_CMD --config \"$ENV_CONFIG_FILES\""
-          JEKYLL_CMD="$JEKYLL_CMD --baseurl \"$BASEURL\""
 
           # =============================================================================
           # CI-Optimized Default Values
