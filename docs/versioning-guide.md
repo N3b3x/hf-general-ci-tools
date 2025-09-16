@@ -8,7 +8,8 @@ parent: "📖 Examples & Guides"
 
 # 🔀 Documentation Versioning Guide
 
-Complete guide to implementing versioned documentation with automatic Doxygen and Jekyll integration using the enhanced `docs.yml` workflow.
+Complete guide to implementing versioned documentation with automatic Doxygen and Jekyll integration using the
+enhanced `docs.yml` workflow.
 
 ## 📋 Table of Contents
 
@@ -117,7 +118,8 @@ No custom templates are needed - the workflow handles everything automatically.
 
 **Navigation for Versioned Docs:**
 
-Just the Docs uses **front matter navigation** (not `_data/navigation.yml`), so versioned navigation is handled automatically through page front matter:
+Just the Docs uses **front matter navigation** (not `_data/navigation.yml`), so versioned navigation is handled
+automatically through page front matter:
 
 ```yaml
 ---
