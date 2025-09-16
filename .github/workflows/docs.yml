@@ -1288,11 +1288,11 @@ jobs:
           echo "🔍 Setting baseurl to: ${{ needs.version-detection.outputs.base_url }}"
           sed -i "s|^baseurl:.*|baseurl: \"${{ needs.version-detection.outputs.base_url }}\"|" \
             "${{ inputs.jekyll_source }}/_config_generated.yml"
-          
+
           # Verify the baseurl was set correctly
           echo "🔍 Verifying baseurl in generated config:"
           grep "baseurl:" "${{ inputs.jekyll_source }}/_config_generated.yml" || echo "⚠️  baseurl not found in config"
-          
+
           # Show the full generated config for debugging
           echo "🔍 Full generated config file:"
           cat "${{ inputs.jekyll_source }}/_config_generated.yml"
@@ -1722,7 +1722,7 @@ jobs:
           user_email: 'actions@github.com'
           commit_message: |
             Deploy Jekyll site for ${{ needs.version-detection.outputs.deployment_path }}
-            
+
             - Version: ${{ needs.version-detection.outputs.deployment_path }}
             - Type: ${{ needs.version-detection.outputs.version_type }}
             - Commit: ${{ github.sha }}
@@ -1744,7 +1744,7 @@ jobs:
           user_email: 'actions@github.com'
           commit_message: |
             Deploy Doxygen artifacts for ${{ needs.version-detection.outputs.deployment_path }}
-            
+
             - Version: ${{ needs.version-detection.outputs.deployment_path }}
             - Type: ${{ needs.version-detection.outputs.version_type }}
             - Commit: ${{ github.sha }}
@@ -1766,17 +1766,17 @@ jobs:
 
           VERSION_PATH="${{ needs.version-detection.outputs.deployment_path }}"
           VERSION_TYPE="${{ needs.version-detection.outputs.version_type }}"
-          
+
           echo "🔄 Updating root redirect and version selector..."
 
           # Clone the gh-pages branch to update root files
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'actions@github.com'
-          
+
           # Set up authentication
           git config --global credential.helper store
           echo "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com" > ~/.git-credentials
-          
+
           # Clone gh-pages branch
           REPO_URL="https://github.com/${{ github.repository }}.git"
           git clone --branch=gh-pages --depth=1 $REPO_URL gh-pages-update
@@ -1785,7 +1785,7 @@ jobs:
           # =============================================================================
           # Create version info file in deployed directory
           # =============================================================================
-          
+
           echo "📝 Creating version info file..."
           cat > "$VERSION_PATH/version_info.json" << EOF
           {
@@ -1797,19 +1797,19 @@ jobs:
             "doxygen_version": "${{ needs.version-detection.outputs.doxygen_version }}"
           }
           EOF
-          
+
           echo "✅ Version info file created: $VERSION_PATH/version_info.json"
 
           # =============================================================================
           # Update Root Redirect
           # =============================================================================
-          
+
           # Redirect to version selector instead of specific version
           REPO_NAME="${{ github.event.repository.name }}"
           REDIRECT_TARGET="/$REPO_NAME/version_selector.html"
 
           echo "🎯 Creating root redirect to: $REDIRECT_TARGET"
-          
+
           # Create root redirect
           cat > index.html << EOF
           <!DOCTYPE html>
@@ -1820,11 +1820,11 @@ jobs:
             <meta http-equiv="refresh" content="0; url='$REDIRECT_TARGET'" />
             <title>Documentation - Redirecting to Version Selector</title>
             <style>
-              body { 
+              body {
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                max-width: 600px; 
-                margin: 100px auto; 
-                padding: 20px; 
+                max-width: 600px;
+                margin: 100px auto;
+                padding: 20px;
                 text-align: center;
                 background: #f8f9fa;
               }
@@ -1836,9 +1836,9 @@ jobs:
               }
               h1 { color: #333; margin-bottom: 20px; }
               p { color: #666; margin-bottom: 20px; }
-              a { 
-                color: #0366d6; 
-                text-decoration: none; 
+              a {
+                color: #0366d6;
+                text-decoration: none;
                 font-weight: 500;
                 padding: 10px 20px;
                 border: 1px solid #0366d6;
@@ -1877,9 +1877,9 @@ jobs:
           # =============================================================================
           # Update Version Selector
           # =============================================================================
-          
+
           echo "🎛️  Updating version selector..."
-          
+
           # Get all version directories
           VERSIONS=()
           for dir in */; do
@@ -1887,10 +1887,10 @@ jobs:
               VERSIONS+=("${dir%/}")
             fi
           done
-          
+
           # Sort versions (development first, then stable versions)
           IFS=$'\n' VERSIONS=($(sort -V <<<"${VERSIONS[*]}"))
-          
+
           # Create version selector
           cat > version_selector.html << EOF
           <!DOCTYPE html>
@@ -1900,10 +1900,10 @@ jobs:
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Documentation Versions</title>
             <style>
-              body { 
+              body {
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                max-width: 800px; 
-                margin: 50px auto; 
+                max-width: 800px;
+                margin: 50px auto;
                 padding: 20px;
                 background: #f8f9fa;
               }
@@ -1970,14 +1970,14 @@ jobs:
               <p style="text-align: center; color: #666; margin-bottom: 30px;">
                 Select a version to view its documentation
               </p>
-              
+
               <div class="version-grid">
                 $(for version in "${VERSIONS[@]}"; do
                   current_class=""
                   if [[ "$version" == "$VERSION_PATH" ]]; then
                     current_class="current-version"
                   fi
-                  
+
                   version_type=""
                   if [[ "$version" == "development" ]]; then
                     version_type="Development"
@@ -1986,7 +1986,7 @@ jobs:
                   else
                     version_type="Preview"
                   fi
-                  
+
                   echo "<div class=\"version-card $current_class\">"
                   echo "  <a href=\"/$REPO_NAME/$version/\">"
                   echo "    <div class=\"version-name\">$version</div>"
@@ -1996,7 +1996,7 @@ jobs:
                   echo "</div>"
                 done)
               </div>
-              
+
               <div style="text-align: center; margin-top: 40px;">
                 <a href="/$REPO_NAME/" style="color: #0366d6; text-decoration: none;">← Back to latest documentation</a>
               </div>
@@ -2008,9 +2008,9 @@ jobs:
           # =============================================================================
           # Create Root-Level Files for GitHub Pages
           # =============================================================================
-          
+
           echo "📄 Creating root-level files for GitHub Pages (if not existing)..."
-          
+
           # Create robots.txt at root of gh-pages (only if it doesn't exist)
           if [[ ! -f "robots.txt" ]]; then
             echo "📄 Creating restrictive robots.txt..."
@@ -2023,7 +2023,7 @@ jobs:
           else
             echo "⚠️  robots.txt already exists, skipping"
           fi
-          
+
           # Create 404.html at root of gh-pages (only if it doesn't exist)
           if [[ ! -f "404.html" ]]; then
             echo "📄 Creating 404.html..."
@@ -2035,11 +2035,11 @@ jobs:
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>404 - Page Not Found</title>
             <style>
-              body { 
+              body {
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                max-width: 600px; 
-                margin: 100px auto; 
-                padding: 20px; 
+                max-width: 600px;
+                margin: 100px auto;
+                padding: 20px;
                 text-align: center;
                 background: #f8f9fa;
               }
@@ -2051,9 +2051,9 @@ jobs:
               }
               h1 { color: #e74c3c; margin-bottom: 20px; }
               p { color: #666; margin-bottom: 20px; }
-              a { 
-                color: #0366d6; 
-                text-decoration: none; 
+              a {
+                color: #0366d6;
+                text-decoration: none;
                 font-weight: 500;
                 padding: 10px 20px;
                 border: 1px solid #0366d6;
@@ -2082,7 +2082,7 @@ jobs:
           # =============================================================================
           # Update README
           # =============================================================================
-          
+
           cat > README.md << EOF
           # Documentation Branch
 
@@ -2116,7 +2116,7 @@ jobs:
           # =============================================================================
           # Commit and push changes
           # =============================================================================
-          
+
           git add .
           git commit -m "Update root redirect and version selector
 
@@ -2126,7 +2126,7 @@ jobs:
           - Updated: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
           git push $REPO_URL gh-pages
-          
+
           echo "✅ Root redirect and version selector updated"
           echo "🌐 Access URLs:"
           echo "  Root: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"

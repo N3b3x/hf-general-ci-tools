@@ -105,7 +105,7 @@ jobs:
               # Pattern - use proper glob expansion
               # Enable globstar for ** patterns
               shopt -s globstar nullglob
-              
+
               # Expand glob patterns
               files=()
               for expanded_path in $path; do
@@ -113,7 +113,7 @@ jobs:
                   files+=("$expanded_path")
                 fi
               done
-              
+
               # If no files found with glob, try find as fallback
               if [ ${#files[@]} -eq 0 ]; then
                 files=($(find . -path "$path" -type f 2>/dev/null || true))
@@ -146,7 +146,7 @@ jobs:
                 filtered_files+=("$file")
               fi
             done
-            
+
             # Debug: Show filtered files
             if [ ${#filtered_files[@]} -gt 0 ]; then
               echo "  ✅ ${#filtered_files[@]} files after filtering:"
