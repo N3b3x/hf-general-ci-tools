@@ -1659,19 +1659,22 @@ jobs:
           git config --global user.email 'actions@github.com'
 
           # Clone deployment branch (create if it doesn't exist)
-          if git ls-remote --heads https://github.com/${{ github.repository }}.git $DEPLOYMENT_BRANCH | grep -q $DEPLOYMENT_BRANCH; then
+          # Use GitHub token for authentication
+          REPO_URL="https://${{ github.token }}@github.com/${{ github.repository }}.git"
+          
+          if git ls-remote --heads $REPO_URL $DEPLOYMENT_BRANCH | grep -q $DEPLOYMENT_BRANCH; then
             echo "✅ Branch $DEPLOYMENT_BRANCH exists, cloning..."
-            git clone --branch=$DEPLOYMENT_BRANCH --depth=1 https://github.com/${{ github.repository }}.git gh-pages-deploy
+            git clone --branch=$DEPLOYMENT_BRANCH --depth=1 $REPO_URL gh-pages-deploy
           else
             echo "⚠️  Branch $DEPLOYMENT_BRANCH not found, creating it..."
             
             # Try to clone main branch first, fallback to master if main doesn't exist
-            if git ls-remote --heads https://github.com/${{ github.repository }}.git main | grep -q main; then
+            if git ls-remote --heads $REPO_URL main | grep -q main; then
               echo "📋 Using main branch as base..."
-              git clone --branch=main --depth=1 https://github.com/${{ github.repository }}.git gh-pages-deploy
-            elif git ls-remote --heads https://github.com/${{ github.repository }}.git master | grep -q master; then
+              git clone --branch=main --depth=1 $REPO_URL gh-pages-deploy
+            elif git ls-remote --heads $REPO_URL master | grep -q master; then
               echo "📋 Using master branch as base..."
-              git clone --branch=master --depth=1 https://github.com/${{ github.repository }}.git gh-pages-deploy
+              git clone --branch=master --depth=1 $REPO_URL gh-pages-deploy
             else
               echo "❌ No main or master branch found. Cannot create $DEPLOYMENT_BRANCH branch."
               echo "Please ensure your repository has a main or master branch."
@@ -1691,8 +1694,8 @@ jobs:
             git add README.md
             git commit -m "Initialize $DEPLOYMENT_BRANCH branch for documentation deployment"
             
-            # Push the new branch
-            git push origin $DEPLOYMENT_BRANCH
+            # Push the new branch using authenticated URL
+            git push $REPO_URL $DEPLOYMENT_BRANCH
             echo "✅ Created and pushed $DEPLOYMENT_BRANCH branch"
           fi
           
@@ -1831,7 +1834,7 @@ jobs:
           - Ref: ${{ github.ref }}
           - Deployed: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
-          git push origin $DEPLOYMENT_BRANCH
+          git push $REPO_URL $DEPLOYMENT_BRANCH
 
           echo "✅ Successfully deployed versioned documentation"
           echo "🌐 Access URLs:"

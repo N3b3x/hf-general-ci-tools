@@ -674,6 +674,22 @@ git checkout -b gh-pages
 git push origin gh-pages
 ```
 
+#### **Git Authentication Errors**
+
+**Problem**: Workflow fails with `fatal: could not read Username for 'https://github.com': No such device or address`
+
+**Solution**: The workflow now uses proper GitHub token authentication:
+
+1. **Automatic authentication** - Uses `${{ github.token }}` for all Git operations
+2. **Secure URLs** - All repository URLs include authentication tokens
+3. **No manual setup** - Works automatically in GitHub Actions environment
+
+**What happens automatically**:
+- ✅ Uses GitHub Actions token for authentication
+- ✅ Clones and pushes using authenticated URLs
+- ✅ No manual token configuration needed
+- ✅ Works with private repositories (with proper permissions)
+
 ## 📚 Related Workflows
 
 - **[C/C++ Lint](c-cpp-lint-workflow.md)** - Code quality checks
