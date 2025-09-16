@@ -653,7 +653,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     needs: [input-validation, quality-checks, version-detection]
-    if: always() && needs.input-validation.outputs.validation_passed == 'success' && needs.version-detection.result == 'success' && needs.quality-checks.result == 'success'
+    if: >-
+      always() &&
+      needs.input-validation.outputs.validation_passed == 'success' &&
+      needs.version-detection.result == 'success' &&
+      needs.quality-checks.result == 'success'
     env:
       CACHE_VERSION: v1
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -722,7 +726,9 @@ jobs:
           fi
 
       - name: Install Graphviz (Optimized)
-        if: steps.doxygen-check.outputs.doxygen_needed == 'true' && steps.graphviz-check.outputs.graphviz_available == 'false'
+        if: >-
+          steps.doxygen-check.outputs.doxygen_needed == 'true' &&
+          steps.graphviz-check.outputs.graphviz_available == 'false'
         uses: tlylt/install-graphviz@v1
 
       # =============================================================================
@@ -778,7 +784,8 @@ jobs:
           path: |
             ${{ steps.doxy-out.outputs.html_dir }}
             doxygen.log
-          key: ${{ runner.os }}-doxygen-${{ github.sha }}-${{ hashFiles('**/Doxyfile', '**/*.h', '**/*.cpp', '**/*.c') }}
+          key: >-
+            ${{ runner.os }}-doxygen-${{ github.sha }}-${{ hashFiles('**/Doxyfile', '**/*.h', '**/*.cpp', '**/*.c') }}
           restore-keys: |
             ${{ runner.os }}-doxygen-${{ github.sha }}-
             ${{ runner.os }}-doxygen-
@@ -1106,7 +1113,9 @@ jobs:
             function createVersionSelector() {
               const selector = document.createElement('div');
               selector.id = 'doxygen-version-selector';
-              selector.style.cssText = 'position: fixed; top: 10px; right: 10px; z-index: 1000; background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);';
+              selector.style.cssText = 'position: fixed; top: 10px; right: 10px; ' +
+                'z-index: 1000; background: #fff; border: 1px solid #ccc; ' +
+                'border-radius: 4px; padding: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);';
 
               const select = document.createElement('select');
               select.style.cssText = 'margin-right: 8px; padding: 4px;';
@@ -1672,6 +1681,10 @@ jobs:
           # Use standard HTTPS URL - authentication handled by GITHUB_TOKEN permissions
           REPO_URL="https://github.com/${{ github.repository }}.git"
 
+          # Set up authentication for git operations
+          git config --global credential.helper store
+          echo "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com" > ~/.git-credentials
+
           if git ls-remote --heads $REPO_URL $DEPLOYMENT_BRANCH | grep -q $DEPLOYMENT_BRANCH; then
             echo "✅ Branch $DEPLOYMENT_BRANCH exists, cloning..."
             git clone --branch=$DEPLOYMENT_BRANCH --depth=1 $REPO_URL gh-pages-deploy
@@ -1706,7 +1719,7 @@ jobs:
             git commit -m "Initialize $DEPLOYMENT_BRANCH branch for documentation deployment"
 
             # Push the new branch
-            git push origin $DEPLOYMENT_BRANCH
+            git push $REPO_URL $DEPLOYMENT_BRANCH
             echo "✅ Created and pushed $DEPLOYMENT_BRANCH branch"
           fi
 
@@ -1846,7 +1859,7 @@ jobs:
           - Ref: ${{ github.ref }}
           - Deployed: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
-          git push origin $DEPLOYMENT_BRANCH
+          git push $REPO_URL $DEPLOYMENT_BRANCH
 
           echo "✅ Successfully deployed versioned documentation"
           echo "🌐 Access URLs:"
