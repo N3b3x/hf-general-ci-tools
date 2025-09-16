@@ -257,6 +257,21 @@ jobs:
           echo "🔍 Validating workflow inputs..."
 
           # =============================================================================
+          # Branch Protection - Prevent infinite loops
+          # =============================================================================
+          
+          # Check if we're running on the deployment branch (gh-pages)
+          if [[ "${{ github.ref }}" == "refs/heads/${{ inputs.deployment_branch }}" ]]; then
+            echo "❌ Error: This workflow cannot run on the deployment branch (${{ inputs.deployment_branch }})"
+            echo "This prevents infinite loops when the workflow deploys to the same branch it's running on."
+            echo "Current branch: ${{ github.ref }}"
+            echo "Deployment branch: ${{ inputs.deployment_branch }}"
+            exit 1
+          fi
+          
+          echo "✅ Branch check passed - not running on deployment branch"
+
+          # =============================================================================
           # Required Input Validation
           # =============================================================================
 

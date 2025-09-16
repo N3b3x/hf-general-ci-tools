@@ -22,8 +22,10 @@ name: 📚 Publish Documentation
 on:
   push:
     branches: [main]
+    branches-ignore: [gh-pages]  # Explicitly exclude gh-pages to prevent infinite loops
   pull_request:
     branches: [main]
+    branches-ignore: [gh-pages]  # Explicitly exclude gh-pages to prevent infinite loops
   workflow_dispatch:
 
 permissions:
