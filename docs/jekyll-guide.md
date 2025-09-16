@@ -8,7 +8,8 @@ parent: "📖 Examples & Guides"
 
 # 🔧 Jekyll Configuration Guide
 
-Complete guide to configuring Jekyll with the enhanced documentation workflow, including CI optimization and practical examples.
+Complete guide to configuring Jekyll with the enhanced documentation workflow, including CI
+optimization and practical examples.
 
 ## 📋 Table of Contents
 
@@ -160,7 +161,8 @@ Common files (`index.md`, `404.html`, `robots.txt`) are checked in the same dire
 
 #### **Robust Configuration Processing**
 
-The workflow includes advanced configuration processing that safely handles inline comments and generates clean, versioned configurations:
+The workflow includes advanced configuration processing that safely handles inline comments and
+generates clean, versioned configurations:
 
 **Key Features:**
 - **Comment-safe extraction** - Automatically strips inline comments during configuration processing
@@ -612,4 +614,5 @@ jobs:
 
 ---
 
-*This guide provides everything you need to configure Jekyll with the enhanced documentation workflow. For more information, see the [main documentation](index.md).*
+*This guide provides everything you need to configure Jekyll with the enhanced documentation
+workflow. For more information, see the [main documentation](index.md).*
