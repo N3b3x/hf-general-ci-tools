@@ -1,19 +1,20 @@
----
-layout: default
-title: "404 - Page Not Found"
-description: "The page you're looking for doesn't exist. Play the dinosaur game while you're here!"
-permalink: /404.html
-nav_exclude: true
-search_exclude: true
----
-
 <style>
+  body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    margin: 0;
+    padding: 2rem 1rem;
+  }
+  
   .error-container {
     text-align: center;
     padding: 2rem;
     max-width: 800px;
     margin: 0 auto;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
   }
   
   .error-code {
@@ -65,9 +66,10 @@ search_exclude: true
     margin: 0 auto;
     border: 2px solid #dee2e6;
     border-radius: 8px;
-    background: #ffffff;
+    background: linear-gradient(135deg, #87CEEB 0%, #E0F6FF 50%, #F0F8FF 100%);
     position: relative;
     overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
   }
   
   .navigation-links {
@@ -187,6 +189,7 @@ search_exclude: true
     canvas.style.width = '100%';
     canvas.style.height = '100%';
     canvas.style.display = 'block';
+    canvas.style.background = 'transparent'; // Ensure canvas is transparent
     gameContainer.appendChild(canvas);
     
     let ctx = canvas.getContext('2d');
@@ -472,22 +475,45 @@ search_exclude: true
     }
     
     function drawBackground(ctx) {
-      // Sky gradient
+      // Enhanced sky gradient with more colors
       const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-      gradient.addColorStop(0, '#87CEEB');
-      gradient.addColorStop(1, '#E0F6FF');
+      gradient.addColorStop(0, '#87CEEB');      // Sky blue
+      gradient.addColorStop(0.3, '#B0E0E6');    // Powder blue
+      gradient.addColorStop(0.7, '#E0F6FF');    // Alice blue
+      gradient.addColorStop(1, '#F0F8FF');      // Alice blue (lighter)
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       
-      // Mountains in background
-      ctx.fillStyle = '#A8A8A8';
+      // Add some subtle clouds in the background
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+      for (let i = 0; i < 3; i++) {
+        const cloudX = (backgroundOffset * 0.3 + i * canvas.width * 0.8) % (canvas.width * 2);
+        const cloudY = 20 + i * 15;
+        const cloudSize = 40 + i * 10;
+        
+        if (cloudX + cloudSize > 0 && cloudX < canvas.width) {
+          ctx.beginPath();
+          ctx.arc(cloudX, cloudY, cloudSize * 0.3, 0, Math.PI * 2);
+          ctx.arc(cloudX + cloudSize * 0.2, cloudY, cloudSize * 0.4, 0, Math.PI * 2);
+          ctx.arc(cloudX + cloudSize * 0.5, cloudY, cloudSize * 0.3, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      
+      // Enhanced mountains with gradient
       for (let i = 0; i < 5; i++) {
         const x = (backgroundOffset + i * canvas.width) % (canvas.width * 3);
         const height = 80 + i * 15;
         const width = 200;
         
-        // Only draw if the mountain is at least partially visible
         if (x + width > 0 && x < canvas.width) {
+          // Mountain gradient
+          const mountainGradient = ctx.createLinearGradient(x, canvas.height - height, x, canvas.height);
+          mountainGradient.addColorStop(0, '#A8A8A8');
+          mountainGradient.addColorStop(0.7, '#C0C0C0');
+          mountainGradient.addColorStop(1, '#D3D3D3');
+          
+          ctx.fillStyle = mountainGradient;
           ctx.beginPath();
           ctx.moveTo(x, canvas.height - height);
           ctx.lineTo(x + width/2, canvas.height - height - 30);
@@ -496,26 +522,50 @@ search_exclude: true
           ctx.lineTo(x, canvas.height);
           ctx.closePath();
           ctx.fill();
+          
+          // Mountain outline
+          ctx.strokeStyle = '#8A8A8A';
+          ctx.lineWidth = 1;
+          ctx.stroke();
         }
       }
       
-      // Ground with texture
-      ctx.fillStyle = '#95a5a6';
+      // Enhanced ground with gradient and texture
+      const groundGradient = ctx.createLinearGradient(0, canvas.height - 20, 0, canvas.height);
+      groundGradient.addColorStop(0, '#95a5a6');
+      groundGradient.addColorStop(1, '#7f8c8d');
+      ctx.fillStyle = groundGradient;
       ctx.fillRect(0, canvas.height - 20, canvas.width, 20);
       
-      // Ground pattern for scrolling effect
-      ctx.fillStyle = '#7f8c8d';
+      // Ground pattern for scrolling effect with better colors
+      ctx.fillStyle = '#6c7b7d';
       for (let x = groundOffset; x < canvas.width + 20; x += 20) {
         ctx.fillRect(x, canvas.height - 20, 10, 5);
         ctx.fillRect(x + 10, canvas.height - 15, 10, 5);
       }
       
-      // Ground line
-      ctx.strokeStyle = '#6c7b7d';
+      // Add some grass details
+      ctx.fillStyle = '#27ae60';
+      for (let x = groundOffset; x < canvas.width + 10; x += 15) {
+        ctx.fillRect(x, canvas.height - 20, 2, 3);
+        ctx.fillRect(x + 5, canvas.height - 18, 1, 2);
+        ctx.fillRect(x + 8, canvas.height - 19, 1, 3);
+      }
+      
+      // Ground line with shadow
+      ctx.strokeStyle = '#5a6b6d';
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(0, canvas.height - 20);
       ctx.lineTo(canvas.width, canvas.height - 20);
+      ctx.stroke();
+      
+      // Add a subtle shadow below the ground line
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(0, canvas.height - 19);
+      ctx.lineTo(canvas.width, canvas.height - 19);
       ctx.stroke();
     }
     
@@ -654,6 +704,9 @@ search_exclude: true
     }
     
     function draw() {
+      // Always draw background first
+      drawBackground(ctx);
+      
       // Draw score popup at top of page
       if (showScorePopup && scorePopupTimer > 0) {
         scorePopupTimer--;
@@ -664,7 +717,6 @@ search_exclude: true
       
       if (showDinoSelection) {
         // Draw dinosaur selection screen
-        drawBackground(ctx);
         
         // Title
         ctx.fillStyle = '#2c3e50';
@@ -736,9 +788,6 @@ search_exclude: true
           // Draw pick dino button on game over screen
           drawPickDinoButton(ctx);
         } else {
-          // Draw static background for start screen
-          drawBackground(ctx);
-          
           // Draw start screen
           ctx.fillStyle = '#2c3e50';
           ctx.font = 'bold 20px Arial';
@@ -771,9 +820,6 @@ search_exclude: true
         }
         return;
       }
-      
-      // Draw scrolling background
-      drawBackground(ctx);
       
       // Draw clouds
       ctx.fillStyle = '#ecf0f1';
