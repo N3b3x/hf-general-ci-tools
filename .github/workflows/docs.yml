@@ -1116,8 +1116,8 @@ jobs:
           # └── versions.json         # Centralized version metadata
           #
           # Jekyll Integration:
-          # - Creates symlinks from Jekyll sites to centralized API docs
-          # - Example: v1.0.0/api -> ../../doxs/v1.0.0/
+          # - Copies Doxygen files to Jekyll source for build compatibility
+          # - Example: doxs/v1.0.0/ -> jekyll_source/api/ (copied, not symlinked)
           # - Enables seamless navigation between Jekyll content and API docs
           # =============================================================================
 
@@ -1214,21 +1214,24 @@ jobs:
           }
           EOF
 
-            # If Jekyll is enabled, create symlink from Jekyll site to centralized API
+            # If Jekyll is enabled, copy Doxygen files to Jekyll source (not symlink)
+            # Note: We don't create symlinks in Jekyll source as they cause build failures
+            # The centralized /doxs/ structure is maintained for deployment purposes
             if [[ "${{ inputs.jekyll_enabled }}" == "true" ]]; then
-              echo "🔗 Creating symlink from Jekyll site to centralized API"
+              echo "📚 Copying Doxygen files to Jekyll source for build compatibility"
               Jekyll_API_DIR="${{ inputs.jekyll_source }}/api"
+
+              # Ensure the API directory exists
               mkdir -p "$Jekyll_API_DIR"
-
-              # Remove existing API directory if it exists
-              rm -rf "$Jekyll_API_DIR"
-
-              # Create symlink to centralized Doxygen
-              ln -sf "../../doxs/${{ needs.version-detection.outputs.version_name }}" \
-                "$Jekyll_API_DIR"
-
-              echo "✅ Jekyll API symlink created: $Jekyll_API_DIR -> " \
-                "../../doxs/${{ needs.version-detection.outputs.version_name }}"
+              # Copy Doxygen files to Jekyll source (this was already done in the staging step)
+              # The staging step above already copies files to ${{ inputs.jekyll_source }}/api
+              # So we just need to verify it exists and log the status
+              if [ -d "$Jekyll_API_DIR" ] && [ "$(ls -A "$Jekyll_API_DIR" 2>/dev/null)" ]; then
+                echo "✅ Jekyll API directory ready: $Jekyll_API_DIR"
+                echo "📊 API files in Jekyll source: $(find "$Jekyll_API_DIR" -type f | wc -l)"
+              else
+                echo "⚠️  Jekyll API directory not found or empty: $Jekyll_API_DIR"
+              fi
             fi
 
           echo "✅ Centralized Doxygen versioned artifacts created successfully"
