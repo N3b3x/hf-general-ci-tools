@@ -463,6 +463,7 @@ highlighter: rouge
 - Support for custom layouts and includes
 - Automatic baseurl configuration for GitHub Pages
 - **Smart configuration validation** with directory-aware checking
+- **Automatic API reference link injection** into Jekyll navigation
 
 **Advanced Jekyll Configuration:**
 
@@ -548,6 +549,64 @@ The workflow includes intelligent Jekyll configuration validation that:
 ```
 
 For detailed validation guidance, see the [Jekyll Configuration Guide](jekyll-guide.md#-configuration-validation).
+
+### 🔗 Automatic API Reference Link Injection
+
+The workflow automatically injects API reference links into your Jekyll configuration when Doxygen is enabled. This provides seamless navigation from your documentation site to the API documentation.
+
+#### **How It Works:**
+
+1. **Detection**: When Doxygen is enabled (`doxygen_config` is specified), the workflow detects this
+2. **URL Generation**: Creates the appropriate API reference URL based on version and repository
+3. **Configuration Injection**: Automatically adds the link to Jekyll's `aux_links` section
+4. **Navigation Integration**: The link appears in your Jekyll site's navigation menu
+
+#### **Generated URL Format:**
+```
+https://username.github.io/repository/version/api/index.html
+```
+
+**Examples:**
+- Development: `https://username.github.io/my-project/development/api/index.html`
+- Stable Release: `https://username.github.io/my-project/v1.2.0/api/index.html`
+- Preview: `https://username.github.io/my-project/preview/api/index.html`
+
+#### **Configuration Behavior:**
+
+**If `aux_links` section exists:**
+```yaml
+# Your existing config
+aux_links:
+  "🏠 Home": "/"
+  "📚 Documentation": "/docs/"
+
+# Workflow automatically adds:
+aux_links:
+  "🏠 Home": "/"
+  "📚 Documentation": "/docs/"
+  "📖 API Reference":
+    - "/my-project/development/api/index.html"
+```
+
+**If `aux_links` section doesn't exist:**
+```yaml
+# Workflow creates new section:
+aux_links:
+  "📖 API Reference":
+    - "/my-project/development/api/index.html"
+```
+
+#### **Smart Updates:**
+- **Existing API Reference**: If an API reference already exists, it's updated with the new URL
+- **Version-Aware**: The URL automatically reflects the current version being deployed
+- **Repository-Aware**: The URL includes the correct repository name
+
+#### **Benefits:**
+- ✅ **Zero Configuration**: Works automatically when Doxygen is enabled
+- ✅ **Version-Aware**: Always points to the correct version's API docs
+- ✅ **Theme Compatible**: Works with any Jekyll theme that supports `aux_links`
+- ✅ **Non-Destructive**: Preserves existing `aux_links` configuration
+- ✅ **Smart Updates**: Updates existing API references instead of duplicating
 
 ### Versioned Deployment Process
 
