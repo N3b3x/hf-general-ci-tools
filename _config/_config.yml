@@ -99,6 +99,8 @@ aux_links:
     - "https://github.com/n3b3x/hf-general-ci-tools/issues"
   "⭐ Star on GitHub":
     - "https://github.com/n3b3x/hf-general-ci-tools/stargazers"
+  "📖 API Reference":
+    - "/hf-general-ci-tools/doxs/index.html"
 
 # Footer customization
 footer_content: >
@@ -122,6 +124,8 @@ just_the_docs:
       url: https://github.com/n3b3x/hf-general-ci-tools
     - title: "🐛 Issues"
       url: https://github.com/n3b3x/hf-general-ci-tools/issues
+    - title: "📖 API Reference"
+      url: /hf-general-ci-tools/doxs/index.html
 
   # Custom head content
   head_custom: _includes/head_custom.html
