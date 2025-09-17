@@ -236,14 +236,6 @@
         </a>
       </li>
     
-      <li class="aux-nav-list-item">
-        <a href="/hf-general-ci-tools/doxs/index.html" class="site-button"
-          
-        >
-          📖 API Reference
-        </a>
-      </li>
-    
   </ul>
 </nav>
 
@@ -1383,6 +1375,7 @@ For comprehensive Jekyll configuration, see the <a href="/hf-general-ci-tools/pr
   <li>Support for custom layouts and includes</li>
   <li>Automatic baseurl configuration for GitHub Pages</li>
   <li><strong>Smart configuration validation</strong> with directory-aware checking</li>
+  <li><strong>Automatic API reference link injection</strong> into Jekyll navigation</li>
 </ul>
 
 <p><strong>Advanced Jekyll Configuration:</strong></p>
@@ -1541,6 +1534,122 @@ The workflow automatically applies CI-optimized defaults for better reliability:
 </pre></td></tr></tbody></table></div></code></pre></div></div>
 
 <p>For detailed validation guidance, see the <a href="/hf-general-ci-tools/preview/docs/jekyll-guide.html#-configuration-validation">Jekyll Configuration Guide</a>.</p>
+<h3 id="-automatic-api-reference-link-injection">
+  
+  
+    <a href="#-automatic-api-reference-link-injection" class="anchor-heading" aria-labelledby="-automatic-api-reference-link-injection"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 🔗 Automatic API Reference Link Injection
+  
+  
+</h3>
+    
+
+<p>The workflow automatically injects API reference links into your Jekyll configuration when Doxygen is enabled.
+This provides seamless navigation from your documentation site to the API documentation.</p>
+<h4 id="how-it-works">
+  
+  
+    <a href="#how-it-works" class="anchor-heading" aria-labelledby="how-it-works"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> <strong>How It Works:</strong>
+  
+  
+</h4>
+    
+
+<ol>
+  <li><strong>Detection</strong>: When Doxygen is enabled (<code class="language-plaintext highlighter-rouge">doxygen_config</code> is specified), the workflow detects this</li>
+  <li><strong>URL Generation</strong>: Creates the appropriate API reference URL based on version and repository</li>
+  <li><strong>Configuration Injection</strong>: Automatically adds the link to Jekyll’s <code class="language-plaintext highlighter-rouge">aux_links</code> section</li>
+  <li><strong>Navigation Integration</strong>: The link appears in your Jekyll site’s navigation menu</li>
+</ol>
+<h4 id="generated-url-format">
+  
+  
+    <a href="#generated-url-format" class="anchor-heading" aria-labelledby="generated-url-format"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> <strong>Generated URL Format:</strong>
+  
+  
+</h4>
+    
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>https://username.github.io/repository/version/api/index.html
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p><strong>Examples:</strong></p>
+<ul>
+  <li>Development: <code class="language-plaintext highlighter-rouge">https://username.github.io/my-project/development/api/index.html</code></li>
+  <li>Stable Release: <code class="language-plaintext highlighter-rouge">https://username.github.io/my-project/v1.2.0/api/index.html</code></li>
+  <li>Preview: <code class="language-plaintext highlighter-rouge">https://username.github.io/my-project/preview/api/index.html</code></li>
+</ul>
+<h4 id="configuration-behavior">
+  
+  
+    <a href="#configuration-behavior" class="anchor-heading" aria-labelledby="configuration-behavior"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> <strong>Configuration Behavior:</strong>
+  
+  
+</h4>
+    
+
+<p><strong>If <code class="language-plaintext highlighter-rouge">aux_links</code> section exists:</strong></p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="c1"># Your existing config</span>
+<span class="na">aux_links</span><span class="pi">:</span>
+  <span class="s2">"</span><span class="s">🏠</span><span class="nv"> </span><span class="s">Home"</span><span class="err">:</span> <span class="s2">"</span><span class="s">/"</span>
+  <span class="s2">"</span><span class="s">📚</span><span class="nv"> </span><span class="s">Documentation"</span><span class="err">:</span> <span class="s2">"</span><span class="s">/docs/"</span>
+
+<span class="c1"># Workflow automatically adds:</span>
+<span class="na">aux_links</span><span class="pi">:</span>
+  <span class="s2">"</span><span class="s">🏠</span><span class="nv"> </span><span class="s">Home"</span><span class="err">:</span> <span class="s2">"</span><span class="s">/"</span>
+  <span class="s2">"</span><span class="s">📚</span><span class="nv"> </span><span class="s">Documentation"</span><span class="err">:</span> <span class="s2">"</span><span class="s">/docs/"</span>
+  <span class="s2">"</span><span class="s">📖</span><span class="nv"> </span><span class="s">API</span><span class="nv"> </span><span class="s">Reference"</span><span class="err">:</span>
+    <span class="pi">-</span> <span class="s2">"</span><span class="s">/my-project/development/api/index.html"</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p><strong>If <code class="language-plaintext highlighter-rouge">aux_links</code> section doesn’t exist:</strong></p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="c1"># Workflow creates new section:</span>
+<span class="na">aux_links</span><span class="pi">:</span>
+  <span class="s2">"</span><span class="s">📖</span><span class="nv"> </span><span class="s">API</span><span class="nv"> </span><span class="s">Reference"</span><span class="err">:</span>
+    <span class="pi">-</span> <span class="s2">"</span><span class="s">/my-project/development/api/index.html"</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h4 id="smart-updates">
+  
+  
+    <a href="#smart-updates" class="anchor-heading" aria-labelledby="smart-updates"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> <strong>Smart Updates:</strong>
+  
+  
+</h4>
+    
+<ul>
+  <li><strong>Existing API Reference</strong>: If an API reference already exists, it’s updated with the new URL</li>
+  <li><strong>Version-Aware</strong>: The URL automatically reflects the current version being deployed</li>
+  <li><strong>Repository-Aware</strong>: The URL includes the correct repository name</li>
+</ul>
+<h4 id="benefits">
+  
+  
+    <a href="#benefits" class="anchor-heading" aria-labelledby="benefits"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> <strong>Benefits:</strong>
+  
+  
+</h4>
+    
+<ul>
+  <li>✅ <strong>Zero Configuration</strong>: Works automatically when Doxygen is enabled</li>
+  <li>✅ <strong>Version-Aware</strong>: Always points to the correct version’s API docs</li>
+  <li>✅ <strong>Theme Compatible</strong>: Works with any Jekyll theme that supports <code class="language-plaintext highlighter-rouge">aux_links</code></li>
+  <li>✅ <strong>Non-Destructive</strong>: Preserves existing <code class="language-plaintext highlighter-rouge">aux_links</code> configuration</li>
+  <li>✅ <strong>Smart Updates</strong>: Updates existing API references instead of duplicating</li>
+</ul>
 <h3 id="versioned-deployment-process">
   
   
