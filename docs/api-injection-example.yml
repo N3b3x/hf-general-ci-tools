@@ -1,0 +1,264 @@
+---
+# Example: Enhanced docs.yml workflow with API link injection
+# This shows how to modify the docs workflow to dynamically inject API links
+# based on version type and deployment context
+
+name: '📚 Enhanced Documentation with API Injection'
+
+on:
+  push:
+    branches: ['main', 'release/*']
+  pull_request:
+    branches: ['main']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Manual version to deploy (optional)'
+        required: false
+        type: string
+
+permissions:
+  contents: 'read'
+  pages: 'write'
+  id-token: 'write'
+
+concurrency:
+  group: 'docs-with-api-injection-${{ github.ref }}'
+  cancel-in-progress: true
+
+jobs:
+  # =============================================================================
+  # Version Detection and API Link Generation
+  # =============================================================================
+  version-detection:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      version_type: ${{ steps.version.outputs.version_type }}
+      baseurl: ${{ steps.version.outputs.baseurl }}
+      api_url: ${{ steps.api-url.outputs.api_url }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect version and type
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ github.event.inputs.version }}" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+            VERSION_TYPE="manual"
+          elif [[ "${{ github.ref }}" =~ ^refs/tags/ ]]; then
+            VERSION="${GITHUB_REF#refs/tags/}"
+            VERSION_TYPE="release"
+          elif [[ "${{ github.ref }}" =~ ^refs/heads/release/ ]]; then
+            VERSION="${GITHUB_REF#refs/heads/release/}"
+            VERSION_TYPE="release-candidate"
+          elif [[ "${{ github.ref }}" =~ ^refs/heads/main$ ]] || [[ "${{ github.ref }}" =~ ^refs/heads/master$ ]]; then
+            VERSION="development"
+            VERSION_TYPE="development"
+          else
+            VERSION="development"
+            VERSION_TYPE="development"
+          fi
+          
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "version_type=$VERSION_TYPE" >> $GITHUB_OUTPUT
+          echo "Detected version: $VERSION (type: $VERSION_TYPE)"
+
+      - name: Generate baseurl
+        id: baseurl
+        run: |
+          REPO_NAME="${{ github.repository_owner }}/${{ github.event.repository.name }}"
+          REPO_NAME="${REPO_NAME#*/}"  # Remove owner part
+          
+          if [ "${{ steps.version.outputs.version_type }}" = "release" ]; then
+            BASEURL="/$REPO_NAME/${{ steps.version.outputs.version }}"
+          elif [ "${{ steps.version.outputs.version_type }}" = "release-candidate" ]; then
+            BASEURL="/$REPO_NAME/${{ steps.version.outputs.version }}"
+          else
+            BASEURL="/$REPO_NAME"
+          fi
+          
+          echo "baseurl=$BASEURL" >> $GITHUB_OUTPUT
+          echo "Generated baseurl: $BASEURL"
+
+      - name: Generate API URL
+        id: api-url
+        run: |
+          if [ "${{ steps.version.outputs.version_type }}" = "release" ]; then
+            # For releases: /repo-name/v1.2.3/doxs/index.html
+            API_URL="${{ steps.baseurl.outputs.baseurl }}/doxs/index.html"
+          elif [ "${{ steps.version.outputs.version_type }}" = "release-candidate" ]; then
+            # For release candidates: /repo-name/v1.2.3-rc1/doxs/index.html
+            API_URL="${{ steps.baseurl.outputs.baseurl }}/doxs/index.html"
+          else
+            # For development: /repo-name/doxs/index.html
+            API_URL="${{ steps.baseurl.outputs.baseurl }}/doxs/index.html"
+          fi
+          
+          echo "api_url=$API_URL" >> $GITHUB_OUTPUT
+          echo "Generated API URL: $API_URL"
+
+  # =============================================================================
+  # Documentation Build with API Injection
+  # =============================================================================
+  build-docs:
+    needs: version-detection
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true
+
+      - name: Install Jekyll dependencies
+        run: |
+          gem install jekyll bundler
+          bundle install
+
+      - name: Inject API links into _config.yml
+        run: |
+          CONFIG_FILE="_config/_config.yml"
+          
+          # Create backup
+          cp "$CONFIG_FILE" "${CONFIG_FILE}.backup"
+          
+          # Inject API link into aux_links section
+          if grep -q "aux_links:" "$CONFIG_FILE"; then
+            # Remove existing API Reference if present
+            sed -i '/"📖 API Reference":/,+1d' "$CONFIG_FILE"
+            
+            # Add API Reference after the last existing aux link
+            sed -i '/"⭐ Star on GitHub":/a\  "📖 API Reference":\n    - "'"${{ needs.version-detection.outputs.api_url }}"'"' "$CONFIG_FILE"
+          else
+            echo "Warning: aux_links section not found in $CONFIG_FILE"
+          fi
+          
+          # Inject API link into nav_external_links section
+          if grep -q "nav_external_links:" "$CONFIG_FILE"; then
+            # Remove existing API Reference if present
+            sed -i '/- title: "📖 API Reference"/,+1d' "$CONFIG_FILE"
+            
+            # Add API Reference after the last existing nav link
+            sed -i '/- title: "🐛 Issues"/a\    - title: "📖 API Reference"\n      url: '"${{ needs.version-detection.outputs.api_url }}" "$CONFIG_FILE"
+          else
+            echo "Warning: nav_external_links section not found in $CONFIG_FILE"
+          fi
+          
+          # Update baseurl if needed (similar to existing workflow logic)
+          sed -i "s|baseurl: \".*\"|baseurl: \"${{ needs.version-detection.outputs.baseurl }}\"|" "$CONFIG_FILE"
+          
+          # Update title with version if it's a release
+          if [ "${{ needs.version-detection.outputs.version_type }}" = "release" ]; then
+            sed -i "s|title: \".*\"|title: \"hf-general-ci-tools - ${{ needs.version-detection.outputs.version }}\"|" "$CONFIG_FILE"
+          fi
+          
+          echo "✅ API links injected successfully"
+          echo "📖 API URL: ${{ needs.version-detection.outputs.api_url }}"
+          echo "🔗 Base URL: ${{ needs.version-detection.outputs.baseurl }}"
+
+      - name: Verify configuration
+        run: |
+          echo "=== Verifying _config.yml ==="
+          cat _config/_config.yml | grep -A 10 "aux_links:"
+          echo ""
+          cat _config/_config.yml | grep -A 10 "nav_external_links:"
+          echo ""
+          echo "=== Base URL ==="
+          grep "baseurl:" _config/_config.yml
+
+      - name: Build Jekyll site
+        run: |
+          jekyll build --source . --destination _site --config _config/_config.yml
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: jekyll-site
+          path: _site/
+
+  # =============================================================================
+  # Doxygen API Documentation Generation
+  # =============================================================================
+  build-api-docs:
+    needs: version-detection
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Doxygen
+        uses: ssciwr/doxygen-install@v1
+        with:
+          doxygen-version: '1.9.8'
+
+      - name: Generate API documentation
+        run: |
+          # Create Doxyfile if it doesn't exist
+          if [ ! -f "Doxyfile" ]; then
+            doxygen -g
+            # Configure basic settings
+            sed -i 's|PROJECT_NAME           = "My Project"|PROJECT_NAME           = "hf-general-ci-tools"|' Doxyfile
+            sed -i 's|PROJECT_NUMBER         =|PROJECT_NUMBER         = '"${{ needs.version-detection.outputs.version }}"'|' Doxyfile
+            sed -i 's|OUTPUT_DIRECTORY       =|OUTPUT_DIRECTORY       = doxs|' Doxyfile
+            sed -i 's|INPUT                  =|INPUT                  = .|' Doxyfile
+            sed -i 's|RECURSIVE              = NO|RECURSIVE              = YES|' Doxyfile
+            sed -i 's|GENERATE_HTML          = YES|GENERATE_HTML          = YES|' Doxyfile
+            sed -i 's|GENERATE_LATEX         = YES|GENERATE_LATEX         = NO|' Doxyfile
+          fi
+          
+          # Generate documentation
+          doxygen Doxyfile
+          
+          echo "✅ API documentation generated in doxs/ directory"
+
+      - name: Upload API docs
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-docs
+          path: doxs/
+
+  # =============================================================================
+  # Deploy to GitHub Pages
+  # =============================================================================
+  deploy:
+    needs: [build-docs, build-api-docs, version-detection]
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Download Jekyll site
+        uses: actions/download-artifact@v4
+        with:
+          name: jekyll-site
+          path: _site/
+
+      - name: Download API docs
+        uses: actions/download-artifact@v4
+        with:
+          name: api-docs
+          path: doxs/
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Output deployment info
+        run: |
+          echo "🚀 Documentation deployed successfully!"
+          echo "📖 Site URL: ${{ steps.deployment.outputs.page_url }}"
+          echo "🔗 API URL: ${{ steps.deployment.outputs.page_url }}${{ needs.version-detection.outputs.api_url }}"
+          echo "📋 Version: ${{ needs.version-detection.outputs.version }}"
+          echo "🏷️  Type: ${{ needs.version-detection.outputs.version_type }}"

@@ -98,10 +98,10 @@ aux_links:
   "🐛 Report Issues":
     - "https://github.com/n3b3x/hf-general-ci-tools/issues"
   "⭐ Star on GitHub":
-    - "https://github.com/n3b3x/hf-general-ci-tools/stargazers"
-
   "📖 API Reference":
     - "/hf-general-ci-tools/v1.2.3/doxs/index.html"
+    - "https://github.com/n3b3x/hf-general-ci-tools/stargazers"
+
 # Footer customization
 footer_content: >
   Built with ❤️ using <a href='https://just-the-docs.github.io/just-the-docs/'>Just the Docs</a> •
@@ -122,8 +122,6 @@ just_the_docs:
   nav_external_links:
     - title: "hf-general-ci-tools - v1.2.3"
       url: https://github.com/n3b3x/hf-general-ci-tools
-    - title: "hf-general-ci-tools - v1.2.3"
-      url: /hf-general-ci-tools/v1.2.3/doxs/index.html
     - title: "hf-general-ci-tools - v1.2.3"
     - title: "hf-general-ci-tools - v1.2.3"
       url: /hf-general-ci-tools/v1.2.3/doxs/index.html
