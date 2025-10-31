@@ -552,7 +552,8 @@ For detailed validation guidance, see the [Jekyll Configuration Guide](jekyll-gu
 
 ### 🔗 Automatic API Reference Link Injection
 
-The workflow automatically injects API reference links into your Jekyll configuration when Doxygen is enabled. This provides seamless navigation from your documentation site to the API documentation.
+The workflow automatically injects API reference links into your Jekyll configuration when Doxygen is
+enabled. This provides seamless navigation from your documentation site to the API documentation.
 
 #### **How It Works:**
 
