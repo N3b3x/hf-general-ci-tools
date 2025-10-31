@@ -55,7 +55,7 @@ This repository provides a curated set of **reusable GitHub Actions workflows** 
 
 ## 🏠 Repository-Specific Workflows
 
-> **Internal workflows** - These are used by this repository itself
+> **Internal workflows** - These are used by this repository itself.
 
 | Workflow | Purpose | Trigger | Status |
 |----------|---------|---------|--------|
