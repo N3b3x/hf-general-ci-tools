@@ -29,7 +29,7 @@
   },"4": {
     "doc": "🚀 hf-general-ci-tools",
     "title": "🏠 Repository-Specific Workflows",
-    "content": "Internal workflows - These are used by this repository itself . | Workflow | Purpose | Trigger | Status | . | 📚 Publish Documentation | Builds and deploys this repo’s documentation site | Push to main, PRs | ✅ Active | . | 📝 YAML Lint | Validates YAML syntax in this repository | Push, PRs | ✅ Active | . ",
+    "content": "Internal workflows - These are used by this repository itself. | Workflow | Purpose | Trigger | Status | . | 📚 Publish Documentation | Builds and deploys this repo’s documentation site | Push to main, PRs | ✅ Active | . | 📝 YAML Lint | Validates YAML syntax in this repository | Push, PRs | ✅ Active | . ",
     "url": "/hf-general-ci-tools/preview/#-repository-specific-workflows",
     
     "relUrl": "/#-repository-specific-workflows"
