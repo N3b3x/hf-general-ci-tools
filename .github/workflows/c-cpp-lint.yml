@@ -9,11 +9,6 @@ on:
         type: string
         required: false
         default: "20"
-      style:
-        description: "clang-format style (llvm, google, webkit, or 'file' to use configured clang-format file)"
-        type: string
-        required: false
-        default: "file"
       clang_format_config:
         description: "Path to clang-format configuration file"
         type: string
@@ -109,7 +104,7 @@ jobs:
       - name: Run C/C++ Linter
         uses: cpp-linter/cpp-linter-action@v2
         with:
-          style: ${{ inputs.style }}
+          style: file
           tidy-checks: ${{ inputs.tidy_checks }}
           version: ${{ inputs.clang_version }}
           extensions: ${{ inputs.extensions }}

@@ -45,7 +45,6 @@ The C/C++ Lint workflow runs clang-format and clang-tidy using cpp-linter for co
 | Input | Type | Required | Default | Description |
 |-------|------|----------|---------|-------------|
 | `clang_version` | string | ❌ | `20` | Clang major version |
-| `style` | string | ❌ | `"file"` | clang-format style (llvm, google, webkit, or `file` to use `clang_format_config`) |
 | `clang_format_config` | string | ❌ | `_config/.clang-format` | Path to clang-format configuration file |
 | `clang_tidy_config` | string | ❌ | `_config/.clang-tidy` | Path to clang-tidy configuration file |
 | `tidy_checks` | string | ❌ | `""` | clang-tidy checks (comma-separated glob patterns, use - prefix to disable) |
@@ -117,7 +116,6 @@ jobs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1
     with:
       clang_version: "20"
-      style: "google"  # Override the default clang-format configuration
       tidy_checks: "readability-*,performance-*,modernize-*"  # Specific checks
       extensions: "c,cpp,h,hpp"
       ignore: "build|.git|third_party"
@@ -170,6 +168,8 @@ IndentWidth: 2
 ColumnLimit: 100
 AccessModifierOffset: -2
 ```
+
+> Need a different configuration? Point the `clang_format_config` input to any other `.clang-format` file in your repository.
 
 ### `_config/.clang-tidy`
 
