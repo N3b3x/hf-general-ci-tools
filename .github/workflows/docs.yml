@@ -487,26 +487,26 @@ jobs:
       - name: Run markdown linting
         id: markdown-lint
         if: ${{ inputs.run_markdown_lint == true }}
-          run: |
-            echo "🔍 Running markdown linting..."
-            CONFIG_FILE="${{ inputs.markdown_lint_config }}"
+        run: |
+          echo "🔍 Running markdown linting..."
+          CONFIG_FILE="${{ inputs.markdown_lint_config }}"
 
-            if [ -n "$CONFIG_FILE" ] && [ -f "$CONFIG_FILE" ]; then
-              echo "📝 Using markdownlint config: $CONFIG_FILE"
-              if ! markdownlint --config "$CONFIG_FILE" ${{ inputs.markdown_lint_paths }}; then
-                echo "❌ Markdown linting failed"
-                exit 1
-              fi
-            else
-              if [ -n "$CONFIG_FILE" ]; then
-                echo "⚠️  Markdownlint config not found at $CONFIG_FILE, using defaults"
-              fi
-              if ! markdownlint ${{ inputs.markdown_lint_paths }}; then
-                echo "❌ Markdown linting failed"
-                exit 1
-              fi
+          if [ -n "$CONFIG_FILE" ] && [ -f "$CONFIG_FILE" ]; then
+            echo "📝 Using markdownlint config: $CONFIG_FILE"
+            if ! markdownlint --config "$CONFIG_FILE" ${{ inputs.markdown_lint_paths }}; then
+              echo "❌ Markdown linting failed"
+              exit 1
             fi
-            echo "✅ Markdown linting passed"
+          else
+            if [ -n "$CONFIG_FILE" ]; then
+              echo "⚠️  Markdownlint config not found at $CONFIG_FILE, using defaults"
+            fi
+            if ! markdownlint ${{ inputs.markdown_lint_paths }}; then
+              echo "❌ Markdown linting failed"
+              exit 1
+            fi
+          fi
+          echo "✅ Markdown linting passed"
 
       - name: Run spell checking
         id: spell-check
