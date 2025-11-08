@@ -10,10 +10,10 @@ on:
         type: string
         default: '**/*.yml,**/*.yaml'
       config_file:
-        description: 'Path to yamllint configuration file (default: .yamllint)'
+        description: 'Path to yamllint configuration file (default: _config/.yamllint)'
         required: false
         type: string
-        default: '.yamllint'
+        default: '_config/.yamllint'
       strict_mode:
         description: 'Enable strict mode (fail on warnings)'
         required: false

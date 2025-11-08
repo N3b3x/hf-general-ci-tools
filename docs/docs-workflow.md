@@ -151,6 +151,8 @@ The deployment process follows this sequence:
 |-------|------|----------|---------|-------------|
 | `run_markdown_lint` | boolean | ❌ | `false` | Run markdown linting on documentation files |
 | `markdown_lint_paths` | string | ❌ | `**/*.md` | Space-separated glob patterns for markdown files to lint |
+| `yamllint_config` | string | ❌ | `_config/.yamllint` | Path to yamllint configuration file |
+| `markdown_lint_config` | string | ❌ | `_config/.markdownlint.json` | Path to markdownlint configuration file |
 | `run_spell_check` | boolean | ❌ | `false` | Run spell checking on documentation files |
 | `spell_check_paths` | string | ❌ | `**/*.md` | Space-separated glob patterns for files to spell check |
 | `spell_check_config` | string | ❌ | `.cspell.json` | Path to cspell configuration file |
@@ -404,12 +406,13 @@ Optional markdown linting using `markdownlint-cli` to enforce consistent markdow
 ```yaml
 run_markdown_lint: true  # Enable markdown linting (default: false)
 markdown_lint_paths: "**/*.md"  # Glob patterns for files to lint
+markdown_lint_config: "_config/.markdownlint.json"  # Path to markdownlint config
 ```
 
 Features:
 - Enforces consistent markdown formatting
 - Catches common markdown issues
-- Configurable via `.markdownlint.json` file
+- Configurable via `_config/.markdownlint.json` (override with `markdown_lint_config`)
 - Ignores `node_modules` by default
 
 ### Spell Checking
@@ -746,7 +749,7 @@ docs.yourproject.com
 
 **Markdown Lint Fails**
 - Check markdown syntax and formatting
-- Review `.markdownlint.json` configuration if present
+- Review `_config/.markdownlint.json` (or your configured `markdown_lint_config`) if present
 - Fix linting errors reported by markdownlint
 
 **Spell Check Fails**

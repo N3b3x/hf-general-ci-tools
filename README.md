@@ -211,7 +211,10 @@ your-awesome-project/
 ├── .clang-format              # Code style configuration
 ├── .clang-tidy                # Static analysis configuration
 ├── Doxyfile                   # Documentation configuration
-├── .yamllint                  # YAML linting configuration
+├── _config/                   # Centralized lint/documentation configs
+│   ├── .markdownlint.json
+│   ├── .markdownlint-rules.md
+│   └── .yamllint
 └── README.md                  # Project documentation
 ```
 
