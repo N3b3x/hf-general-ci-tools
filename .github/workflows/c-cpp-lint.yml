@@ -10,10 +10,20 @@ on:
         required: false
         default: "20"
       style:
-        description: "clang-format style (llvm, google, webkit, or 'file' to use .clang-format)"
+        description: "clang-format style (llvm, google, webkit, or 'file' to use configured clang-format file)"
         type: string
         required: false
         default: "file"
+      clang_format_config:
+        description: "Path to clang-format configuration file"
+        type: string
+        required: false
+        default: "_config/.clang-format"
+      clang_tidy_config:
+        description: "Path to clang-tidy configuration file"
+        type: string
+        required: false
+        default: "_config/.clang-tidy"
       tidy_checks:
         description: "clang-tidy checks (comma-separated glob patterns, use - prefix to disable)"
         type: string
@@ -62,6 +72,39 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Prepare clang configuration
+        run: |
+          set -e
+
+          FORMAT_CONFIG="${{ inputs.clang_format_config }}"
+          TIDY_CONFIG="${{ inputs.clang_tidy_config }}"
+
+          if [ -n "$FORMAT_CONFIG" ]; then
+            if [ -f "$FORMAT_CONFIG" ]; then
+              if [ "$FORMAT_CONFIG" = ".clang-format" ]; then
+                echo "✅ Using existing .clang-format in repository root"
+              else
+                echo "✅ Linking clang-format config from $FORMAT_CONFIG"
+                ln -sf "$FORMAT_CONFIG" .clang-format
+              fi
+            else
+              echo "⚠️  clang-format config not found at $FORMAT_CONFIG"
+            fi
+          fi
+
+          if [ -n "$TIDY_CONFIG" ]; then
+            if [ -f "$TIDY_CONFIG" ]; then
+              if [ "$TIDY_CONFIG" = ".clang-tidy" ]; then
+                echo "✅ Using existing .clang-tidy in repository root"
+              else
+                echo "✅ Linking clang-tidy config from $TIDY_CONFIG"
+                ln -sf "$TIDY_CONFIG" .clang-tidy
+              fi
+            else
+              echo "⚠️  clang-tidy config not found at $TIDY_CONFIG"
+            fi
+          fi
 
       - name: Run C/C++ Linter
         uses: cpp-linter/cpp-linter-action@v2
