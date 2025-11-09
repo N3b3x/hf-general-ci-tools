@@ -529,6 +529,13 @@ multiple versions of your documentation:</p>
       <td>Path to Doxyfile (relative to repo root)</td>
     </tr>
     <tr>
+      <td><code class="language-plaintext highlighter-rouge">doxygen_working_directory</code></td>
+      <td>string</td>
+      <td>❌</td>
+      <td><code class="language-plaintext highlighter-rouge">.</code></td>
+      <td>Directory to execute Doxygen from (relative to repo root). Relative paths in your Doxyfile are resolved from here.</td>
+    </tr>
+    <tr>
       <td><code class="language-plaintext highlighter-rouge">doxygen_fail_on_warnings</code></td>
       <td>boolean</td>
       <td>❌</td>
@@ -537,6 +544,10 @@ multiple versions of your documentation:</p>
     </tr>
   </tbody>
 </table></div>
+
+<blockquote>
+  <p>💡 <strong>Tip:</strong> When your <code class="language-plaintext highlighter-rouge">Doxyfile</code> lives in a subdirectory (for example <code class="language-plaintext highlighter-rouge">docs/api/Doxyfile</code>) or assumes it will be executed from a specific folder, point <code class="language-plaintext highlighter-rouge">doxygen_config</code> to the file itself and set <code class="language-plaintext highlighter-rouge">doxygen_working_directory</code> to the directory you want Doxygen to run from. This keeps relative <code class="language-plaintext highlighter-rouge">INPUT</code> and <code class="language-plaintext highlighter-rouge">OUTPUT_DIRECTORY</code> values working exactly as they do locally.</p>
+</blockquote>
 <h3 id="-link-checking">
   
   
@@ -658,6 +669,10 @@ multiple versions of your documentation:</p>
     </tr>
   </tbody>
 </table></div>
+
+<blockquote>
+  <p>ℹ️ <strong>Visibility:</strong> The workflow lists every YAML and Markdown file that will be linted before running <code class="language-plaintext highlighter-rouge">yamllint</code> or <code class="language-plaintext highlighter-rouge">markdownlint</code>, making it easy to confirm what is being validated in CI logs.</p>
+</blockquote>
 <h3 id="-deployment">
   
   
@@ -1898,7 +1913,7 @@ enabled. This provides seamless navigation from your documentation site to the A
   <li>Verify <code class="language-plaintext highlighter-rouge">Doxyfile</code> exists and is valid</li>
   <li>Check source directories exist (<code class="language-plaintext highlighter-rouge">src/</code>, <code class="language-plaintext highlighter-rouge">include/</code>)</li>
   <li>Graphviz is automatically installed via optimized action (no manual setup needed)</li>
-  <li>Verify <code class="language-plaintext highlighter-rouge">doxygen_config</code> path is correct</li>
+  <li>Verify <code class="language-plaintext highlighter-rouge">doxygen_config</code> path is correct (and set <code class="language-plaintext highlighter-rouge">doxygen_working_directory</code> if relative paths expect a different working folder)</li>
 </ul>
 
 <p><strong>Jekyll Configuration Validation Issues</strong></p>
