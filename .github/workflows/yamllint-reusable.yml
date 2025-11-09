@@ -31,9 +31,12 @@ on:
       files_checked:
         description: 'Number of files checked'
         value: ${{ jobs.yamllint.outputs.files_checked }}
-      issues_found:
-        description: 'Number of issues found'
-        value: ${{ jobs.yamllint.outputs.issues_found }}
+        issues_found:
+          description: 'Number of issues found'
+          value: ${{ jobs.yamllint.outputs.issues_found }}
+        warnings_found:
+          description: 'Number of warnings found'
+          value: ${{ jobs.yamllint.outputs.warnings_found }}
 
 jobs:
   yamllint:
@@ -43,6 +46,7 @@ jobs:
       result: ${{ steps.lint.outputs.result }}
       files_checked: ${{ steps.lint.outputs.files_checked }}
       issues_found: ${{ steps.lint.outputs.issues_found }}
+        warnings_found: ${{ steps.lint.outputs.warnings_found }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -82,9 +86,10 @@ jobs:
             YAMLLINT_CMD="$YAMLLINT_CMD --strict"
           fi
 
-          # Initialize counters
-          FILES_CHECKED=0
-          ISSUES_FOUND=0
+            # Initialize counters
+            FILES_CHECKED=0
+            ERRORS_FOUND=0
+            WARNINGS_FOUND=0
 
           # Check each path
           for path in "${PATH_ARRAY[@]}"; do
@@ -164,30 +169,51 @@ jobs:
                 FILES_CHECKED=$((FILES_CHECKED + 1))
 
                 # Run yamllint and capture output
-                if ! $YAMLLINT_CMD "$file" 2>&1; then
-                  ISSUES_FOUND=$((ISSUES_FOUND + 1))
-                fi
+                  output="$($YAMLLINT_CMD "$file" 2>&1)"
+                  status=$?
+
+                  if [ -n "$output" ]; then
+                    echo "$output"
+                  fi
+
+                  if echo "$output" | grep -q "\[warning\]"; then
+                    WARNINGS_FOUND=$((WARNINGS_FOUND + 1))
+                  fi
+
+                  if [ $status -ne 0 ]; then
+                    ERRORS_FOUND=$((ERRORS_FOUND + 1))
+                  fi
               fi
             done
           done
 
-          # Set outputs
-          echo "result=$([ $ISSUES_FOUND -eq 0 ] && echo 'success' || echo 'failure')" >> $GITHUB_OUTPUT
+            # Determine result status and set outputs
+            RESULT_STATUS="success"
+            if [ $ERRORS_FOUND -gt 0 ]; then
+              RESULT_STATUS="failure"
+            elif [ "$STRICT_MODE" = "true" ] && [ $WARNINGS_FOUND -gt 0 ]; then
+              RESULT_STATUS="failure"
+            fi
+
+            echo "result=$RESULT_STATUS" >> $GITHUB_OUTPUT
           echo "files_checked=$FILES_CHECKED" >> $GITHUB_OUTPUT
-          echo "issues_found=$ISSUES_FOUND" >> $GITHUB_OUTPUT
+            echo "issues_found=$ERRORS_FOUND" >> $GITHUB_OUTPUT
+            echo "warnings_found=$WARNINGS_FOUND" >> $GITHUB_OUTPUT
 
           # Summary
           echo "📊 Summary:"
           echo "  Files checked: $FILES_CHECKED"
-          echo "  Issues found: $ISSUES_FOUND"
-          echo "  Result: $([ $ISSUES_FOUND -eq 0 ] && echo '✅ Success' || echo '❌ Failure')"
+            echo "  Errors found: $ERRORS_FOUND"
+            echo "  Warnings found: $WARNINGS_FOUND"
+            echo "  Result: $([ "$RESULT_STATUS" = "success" ] && echo '✅ Success' || echo '❌ Failure')"
 
-          # Fail the job if yamllint reported errors (warnings require --strict)
-          if [ $ISSUES_FOUND -gt 0 ]; then
-            if [ "$STRICT_MODE" = "true" ]; then
-              echo "❌ Strict mode enabled - failing due to $ISSUES_FOUND issues"
-            else
-              echo "❌ Failing due to $ISSUES_FOUND yamllint errors"
-            fi
+            # Fail the job based on errors/warnings and strict mode
+            if [ $ERRORS_FOUND -gt 0 ]; then
+              echo "❌ Failing due to $ERRORS_FOUND yamllint errors"
             exit 1
           fi
+
+            if [ "$STRICT_MODE" = "true" ] && [ $WARNINGS_FOUND -gt 0 ]; then
+              echo "❌ Strict mode enabled - failing due to $WARNINGS_FOUND warnings"
+              exit 1
+            fi
