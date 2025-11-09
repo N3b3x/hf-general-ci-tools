@@ -101,6 +101,73 @@ jobs:
             fi
           fi
 
+        - name: Report C/C++ files to lint
+          run: |
+            echo "🔍 Gathering files for clang-format and clang-tidy..."
+
+            IFS=',' read -ra EXT_ARRAY <<< "${{ inputs.extensions }}"
+            PATTERNS=()
+            for ext in "${EXT_ARRAY[@]}"; do
+              ext=$(echo "$ext" | xargs)
+              if [ -n "$ext" ]; then
+                PATTERNS+=("*.$ext")
+              fi
+            done
+
+            if [ ${#PATTERNS[@]} -eq 0 ]; then
+              echo "⚠️  No valid extensions specified in inputs.extensions (${{ inputs.extensions }})"
+              echo "✅ Skipping file list preview."
+              exit 0
+            fi
+
+            mapfile -t CANDIDATES < <(git ls-files -- "${PATTERNS[@]}")
+
+            if [ ${#CANDIDATES[@]} -eq 0 ]; then
+              echo "⚠️  No tracked files match extensions: ${PATTERNS[*]}"
+              echo "✅ Skipping file list preview."
+              exit 0
+            fi
+
+            IGNORE_RAW="${{ inputs.ignore }}"
+            if [ -n "$IGNORE_RAW" ]; then
+              IFS='|' read -ra IGNORE_ARRAY <<< "$IGNORE_RAW"
+            else
+              IGNORE_ARRAY=()
+            fi
+
+            FILTERED=()
+            for file in "${CANDIDATES[@]}"; do
+              skip=false
+              for patt in "${IGNORE_ARRAY[@]}"; do
+                patt=$(echo "$patt" | xargs)
+                if [ -n "$patt" ] && [[ "$file" == *"$patt"* ]]; then
+                  skip=true
+                  break
+                fi
+              done
+              if [ "$skip" = false ]; then
+                FILTERED+=("$file")
+              fi
+            done
+
+            if [ ${#FILTERED[@]} -eq 0 ]; then
+              echo "⚠️  All matched files are excluded by ignore patterns: ${IGNORE_RAW}"
+              echo "✅ Skipping file list preview."
+              exit 0
+            fi
+
+            echo "📄 Files eligible for clang-format/clang-tidy (${#FILTERED[@]}):"
+            for file in "${FILTERED[@]}"; do
+              echo "  - $file"
+            done
+
+            if [ "${{ inputs.files_changed_only }}" = "true" ]; then
+              echo "ℹ️  files_changed_only=true: cpp-linter will further restrict to changed files."
+            fi
+            if [ "${{ inputs.lines_changed_only }}" = "true" ]; then
+              echo "ℹ️  lines_changed_only=true: diagnostics limited to changed lines."
+            fi
+
       - name: Run C/C++ Linter
         uses: cpp-linter/cpp-linter-action@v2
         with:

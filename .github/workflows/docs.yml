@@ -122,24 +122,31 @@ on:
         required: true
         type: string
         default: 'gh-pages'
-      # =============================================================================
-      # Deployment Configuration Section
-      # =============================================================================
-      deploy_pages:
-        description: 'Deploy to GitHub Pages'
-        required: false
-        type: boolean
-        default: true
-      # =============================================================================
-      # Doxygen Configuration Section
-      # =============================================================================
-      doxygen_config:
-        description: >-
-          Path to Doxyfile (relative to repo root) - output directory auto-detected
-          from OUTPUT_DIRECTORY and HTML_OUTPUT settings
-        required: false
-        type: string
-        default: 'Doxyfile'
+        # =============================================================================
+        # Deployment Configuration Section
+        # =============================================================================
+        deploy_pages:
+          description: 'Deploy to GitHub Pages'
+          required: false
+          type: boolean
+          default: true
+        # =============================================================================
+        # Doxygen Configuration Section
+        # =============================================================================
+        doxygen_config:
+          description: >-
+            Path to Doxyfile (relative to repo root) - output directory auto-detected
+            from OUTPUT_DIRECTORY and HTML_OUTPUT settings
+          required: false
+          type: string
+          default: 'Doxyfile'
+        doxygen_working_directory:
+          description: >-
+            Directory to execute Doxygen from (defaults to repository root). Relative
+            paths in the Doxyfile are resolved against this directory.
+          required: false
+          type: string
+          default: '.'
       doxygen_fail_on_warnings:
         description: 'Treat Doxygen warnings as errors in CI'
         required: false
@@ -349,8 +356,16 @@ jobs:
               echo "❌ Error: Invalid Doxygen config path format: ${{ inputs.doxygen_config }}"
               exit 1
             fi
-          echo "✅ Doxygen configuration is valid"
           fi
+
+          if [[ -n "${{ inputs.doxygen_working_directory }}" ]]; then
+            if [[ ! "${{ inputs.doxygen_working_directory }}" =~ ^[a-zA-Z0-9_/.-]+$ ]]; then
+              echo "❌ Error: Invalid Doxygen working directory format: ${{ inputs.doxygen_working_directory }}"
+              exit 1
+            fi
+          fi
+
+          echo "✅ Doxygen configuration is valid"
 
           # =============================================================================
           # Security Validation
@@ -380,6 +395,7 @@ jobs:
           echo "  - Versioning: enabled (default)"
           echo "  - Jekyll enabled: ${{ inputs.jekyll_enabled }}"
           echo "  - Doxygen config: ${{ inputs.doxygen_config }}"
+          echo "  - Doxygen working directory: ${{ inputs.doxygen_working_directory }}"
           echo "  - Quality checks enabled:"
           echo "    - YAML linting: true"
           echo "    - Markdown linting: ${{ inputs.run_markdown_lint }}"
@@ -466,10 +482,21 @@ jobs:
         run: |
           echo "🔍 Running YAML linting..."
           CONFIG_FILE="${{ inputs.yamllint_config }}"
+          mapfile -t YAML_FILES < <(git ls-files -- '*.yml' '*.yaml' '*.YML' '*.YAML')
+
+          if [ ${#YAML_FILES[@]} -eq 0 ]; then
+            echo "⚠️  No tracked YAML files found. Skipping yamllint."
+            exit 0
+          fi
+
+          echo "📄 YAML files to lint (${#YAML_FILES[@]}):"
+          for file in "${YAML_FILES[@]}"; do
+            echo "  - $file"
+          done
 
           if [ -n "$CONFIG_FILE" ] && [ -f "$CONFIG_FILE" ]; then
             echo "📝 Using yamllint config: $CONFIG_FILE"
-            if ! yamllint --config-file "$CONFIG_FILE" .; then
+            if ! yamllint --config-file "$CONFIG_FILE" "${YAML_FILES[@]}"; then
               echo "❌ YAML linting failed"
               exit 1
             fi
@@ -477,7 +504,7 @@ jobs:
             if [ -n "$CONFIG_FILE" ]; then
               echo "⚠️  Yamllint config not found at $CONFIG_FILE, using defaults"
             fi
-            if ! yamllint .; then
+            if ! yamllint "${YAML_FILES[@]}"; then
               echo "❌ YAML linting failed"
               exit 1
             fi
@@ -490,18 +517,42 @@ jobs:
         run: |
           echo "🔍 Running markdown linting..."
           CONFIG_FILE="${{ inputs.markdown_lint_config }}"
+          PATHS="${{ inputs.markdown_lint_paths }}"
+          read -r -a PATTERN_ARRAY <<< "$PATHS"
+
+          if [ ${#PATTERN_ARRAY[@]} -eq 0 ]; then
+            echo "⚠️  No markdownlint patterns provided. Skipping."
+            exit 0
+          fi
 
           if [ -n "$CONFIG_FILE" ] && [ -f "$CONFIG_FILE" ]; then
             echo "📝 Using markdownlint config: $CONFIG_FILE"
-            if ! markdownlint --config "$CONFIG_FILE" ${{ inputs.markdown_lint_paths }}; then
-              echo "❌ Markdown linting failed"
-              exit 1
-            fi
+            mapfile -t MARKDOWN_FILES < <(markdownlint --config "$CONFIG_FILE" --list "${PATTERN_ARRAY[@]}")
           else
             if [ -n "$CONFIG_FILE" ]; then
               echo "⚠️  Markdownlint config not found at $CONFIG_FILE, using defaults"
             fi
-            if ! markdownlint ${{ inputs.markdown_lint_paths }}; then
+            mapfile -t MARKDOWN_FILES < <(markdownlint --list "${PATTERN_ARRAY[@]}")
+          fi
+
+          if [ ${#MARKDOWN_FILES[@]} -eq 0 ]; then
+            echo "⚠️  No markdown files matched patterns: $PATHS"
+            echo "✅ Markdown linting skipped (no files to lint)"
+            exit 0
+          fi
+
+          echo "📄 Markdown files to lint (${#MARKDOWN_FILES[@]}):"
+          for file in "${MARKDOWN_FILES[@]}"; do
+            echo "  - $file"
+          done
+
+          if [ -n "$CONFIG_FILE" ] && [ -f "$CONFIG_FILE" ]; then
+            if ! markdownlint --config "$CONFIG_FILE" "${PATTERN_ARRAY[@]}"; then
+              echo "❌ Markdown linting failed"
+              exit 1
+            fi
+          else
+            if ! markdownlint "${PATTERN_ARRAY[@]}"; then
               echo "❌ Markdown linting failed"
               exit 1
             fi
@@ -770,14 +821,40 @@ jobs:
           # Output: doxygen_needed (boolean indicating if Doxygen is required)
           # =============================================================================
 
-          if [ -f "${{ inputs.doxygen_config }}" ]; then
-          echo "doxygen_needed=true" >> $GITHUB_OUTPUT
-          echo "✅ Doxyfile found at ${{ inputs.doxygen_config }}"
-          echo "📋 Doxygen dependencies will be installed"
+          ROOT_DIR="$(pwd)"
+          CONFIG_INPUT="${{ inputs.doxygen_config }}"
+          WORK_INPUT="${{ inputs.doxygen_working_directory }}"
+
+          if [[ "$CONFIG_INPUT" = /* ]]; then
+            DOXYFILE_PATH="$CONFIG_INPUT"
           else
-          echo "doxygen_needed=false" >> $GITHUB_OUTPUT
-          echo "⚠️  No Doxyfile found at ${{ inputs.doxygen_config }}, skipping Doxygen dependencies"
-          echo "📋 Doxygen and Graphviz will not be installed"
+            DOXYFILE_PATH="$ROOT_DIR/$CONFIG_INPUT"
+          fi
+
+          if [[ -z "$WORK_INPUT" || "$WORK_INPUT" == "." ]]; then
+            WORK_DIR="$ROOT_DIR"
+          elif [[ "$WORK_INPUT" = /* ]]; then
+            WORK_DIR="$WORK_INPUT"
+          else
+            WORK_DIR="$ROOT_DIR/$WORK_INPUT"
+          fi
+
+          if [ -f "$DOXYFILE_PATH" ]; then
+            echo "doxygen_needed=true" >> "$GITHUB_OUTPUT"
+            echo "✅ Doxyfile located: $DOXYFILE_PATH"
+            echo "📂 Requested Doxygen working directory: ${WORK_INPUT:-.}"
+            echo "📂 Resolved Doxygen working directory: $WORK_DIR"
+
+            if [ ! -d "$WORK_DIR" ]; then
+              echo "❌ Doxygen working directory does not exist: $WORK_DIR"
+              exit 1
+            fi
+
+            echo "📋 Doxygen dependencies will be installed"
+          else
+            echo "doxygen_needed=false" >> "$GITHUB_OUTPUT"
+            echo "⚠️  No Doxyfile found at ${CONFIG_INPUT:-'(none)'} (resolved path: $DOXYFILE_PATH), skipping Doxygen dependencies"
+            echo "📋 Doxygen and Graphviz will not be installed"
           fi
 
       # =============================================================================
@@ -1045,21 +1122,69 @@ jobs:
         if: steps.doxygen-check.outputs.doxygen_needed == 'true'
         id: doxy-out
         run: |
-          DOXY="${{ inputs.doxygen_config }}"
+          ROOT_DIR="$(pwd)"
+          CONFIG_INPUT="${{ inputs.doxygen_config }}"
+          WORK_INPUT="${{ inputs.doxygen_working_directory }}"
+
+          if [[ "$CONFIG_INPUT" = /* ]]; then
+            DOXYFILE_PATH="$CONFIG_INPUT"
+          else
+            DOXYFILE_PATH="$ROOT_DIR/$CONFIG_INPUT"
+          fi
+
+          if [[ -z "$WORK_INPUT" || "$WORK_INPUT" == "." ]]; then
+            WORK_DIR="$ROOT_DIR"
+          elif [[ "$WORK_INPUT" = /* ]]; then
+            WORK_DIR="$WORK_INPUT"
+          else
+            WORK_DIR="$ROOT_DIR/$WORK_INPUT"
+          fi
+
+          if [ ! -f "$DOXYFILE_PATH" ]; then
+            echo "❌ Resolved Doxyfile not found: $DOXYFILE_PATH"
+            exit 1
+          fi
+
+          if [ ! -d "$WORK_DIR" ]; then
+            echo "❌ Doxygen working directory does not exist: $WORK_DIR"
+            exit 1
+          fi
+
           # Function to extract values from Doxyfile (handles comments and whitespace)
           getval(){ awk -F'=' '/^'"$1"'[[:space:]]*=/ \
-            {gsub(/#.*$/,"",$2); gsub(/^[[:space:]]+|[[:space:]]+$/,"",$2); print $2}' "$DOXY"; }
+            {gsub(/#.*$/,"",$2); gsub(/^[[:space:]]+|[[:space:]]+$/,"",$2); print $2}' "$DOXYFILE_PATH"; }
 
           OUTDIR="$(getval OUTPUT_DIRECTORY)"
           HTMLO="$(getval HTML_OUTPUT)"
-          [ -z "$HTMLO" ] && HTMLO="html"
-          if [ -n "$OUTDIR" ]; then
-            HTML_DIR="$OUTDIR/$HTMLO"
-          else
-            HTML_DIR="$HTMLO"
+
+          if [ -z "$HTMLO" ]; then
+            HTMLO="html"
           fi
+
+          if [ -n "$OUTDIR" ]; then
+            if [[ "$OUTDIR" = /* ]]; then
+              BASE_OUT="$OUTDIR"
+            else
+              BASE_OUT="$WORK_DIR/$OUTDIR"
+            fi
+          else
+            BASE_OUT="$WORK_DIR"
+          fi
+
+          if [[ "$HTMLO" = /* ]]; then
+            HTML_DIR="$HTMLO"
+          else
+            HTML_DIR="$BASE_OUT/$HTMLO"
+          fi
+
+          HTML_DIR="$(python3 - "$HTML_DIR" <<'PY'
+import os, sys
+print(os.path.normpath(sys.argv[1]))
+PY
+)"
+
           echo "html_dir=$HTML_DIR" >> "$GITHUB_OUTPUT"
-          echo "Resolved Doxygen HTML dir: $HTML_DIR"
+          echo "Resolved Doxygen HTML dir (working dir: $WORK_DIR): $HTML_DIR"
 
       - name: Generate Doxygen documentation with versioning
         if: steps.doxygen-check.outputs.doxygen_needed == 'true'
@@ -1070,42 +1195,79 @@ jobs:
           # Doxygen Version Integration
           # =============================================================================
 
-          if [[ -n "${{ needs.version-detection.outputs.doxygen_project_number }}" ]]; then
-          echo "🔧 Setting Doxygen PROJECT_NUMBER to: ${{ needs.version-detection.outputs.doxygen_project_number }}"
+          ROOT_DIR="$(pwd)"
+          CONFIG_INPUT="${{ inputs.doxygen_config }}"
+          WORK_INPUT="${{ inputs.doxygen_working_directory }}"
+          VERSION_NUMBER="${{ needs.version-detection.outputs.doxygen_project_number }}"
+          TEMP_DOXYFILE=""
 
-            # Create a temporary Doxyfile with version
-            TEMP_DOXYFILE="Doxyfile.temp"
-            cp "${{ inputs.doxygen_config }}" "$TEMP_DOXYFILE"
-
-            # Update PROJECT_NUMBER in the temporary file
-            if grep -q "^PROJECT_NUMBER" "$TEMP_DOXYFILE"; then
-              # Replace existing PROJECT_NUMBER
-              sed -i "s|^PROJECT_NUMBER.*|PROJECT_NUMBER = ${{ needs.version-detection.outputs.doxygen_project_number }}|" \
-                "$TEMP_DOXYFILE"
-            else
-              # Add PROJECT_NUMBER if it doesn't exist
-              echo "PROJECT_NUMBER = ${{ needs.version-detection.outputs.doxygen_project_number }}" >> "$TEMP_DOXYFILE"
-            fi
-
-            # Show the updated PROJECT_NUMBER
-          echo "📋 Updated Doxyfile PROJECT_NUMBER:"
-            grep "^PROJECT_NUMBER" "$TEMP_DOXYFILE" || echo "PROJECT_NUMBER not found in Doxyfile"
-
-            # Run Doxygen with the temporary file
-            doxygen "$TEMP_DOXYFILE" 2>&1 | tee doxygen.log
-
-            # Clean up temporary file
-            rm -f "$TEMP_DOXYFILE"
+          if [[ "$CONFIG_INPUT" = /* ]]; then
+            DOXYFILE_PATH="$CONFIG_INPUT"
           else
-            # Run Doxygen without version modification
-            doxygen "${{ inputs.doxygen_config }}" 2>&1 | tee doxygen.log
+            DOXYFILE_PATH="$ROOT_DIR/$CONFIG_INPUT"
           fi
 
-          # Check for warnings if configured to fail on them
+          if [[ -z "$WORK_INPUT" || "$WORK_INPUT" == "." ]]; then
+            WORK_DIR="$ROOT_DIR"
+          elif [[ "$WORK_INPUT" = /* ]]; then
+            WORK_DIR="$WORK_INPUT"
+          else
+            WORK_DIR="$ROOT_DIR/$WORK_INPUT"
+          fi
+
+          if [ ! -f "$DOXYFILE_PATH" ]; then
+            echo "❌ Resolved Doxyfile not found: $DOXYFILE_PATH"
+            exit 1
+          fi
+
+          if [ ! -d "$WORK_DIR" ]; then
+            echo "❌ Doxygen working directory does not exist: $WORK_DIR"
+            exit 1
+          fi
+
+          echo "📄 Using Doxyfile: $DOXYFILE_PATH"
+          echo "📂 Running Doxygen from: $WORK_DIR"
+
+          LOG_PATH="$ROOT_DIR/doxygen.log"
+
+          pushd "$WORK_DIR" >/dev/null
+
+          if [[ -n "$VERSION_NUMBER" ]]; then
+            echo "🔧 Setting Doxygen PROJECT_NUMBER to: $VERSION_NUMBER"
+            TEMP_DOXYFILE="$(mktemp "${TMPDIR:-/tmp}/doxyfile.XXXXXX")"
+            cp "$DOXYFILE_PATH" "$TEMP_DOXYFILE"
+
+            if grep -q "^PROJECT_NUMBER" "$TEMP_DOXYFILE"; then
+              sed -i "s|^PROJECT_NUMBER.*|PROJECT_NUMBER = $VERSION_NUMBER|" "$TEMP_DOXYFILE"
+            else
+              echo "PROJECT_NUMBER = $VERSION_NUMBER" >> "$TEMP_DOXYFILE"
+            fi
+
+            echo "📋 Updated Doxyfile PROJECT_NUMBER:"
+            grep "^PROJECT_NUMBER" "$TEMP_DOXYFILE" || echo "PROJECT_NUMBER not found in Doxyfile"
+
+            doxygen "$TEMP_DOXYFILE" 2>&1 | tee "$LOG_PATH"
+            DOXYGEN_EXIT=${PIPESTATUS[0]}
+          else
+            doxygen "$DOXYFILE_PATH" 2>&1 | tee "$LOG_PATH"
+            DOXYGEN_EXIT=${PIPESTATUS[0]}
+          fi
+
+          popd >/dev/null
+
+          if [[ -n "$TEMP_DOXYFILE" ]]; then
+            rm -f "$TEMP_DOXYFILE"
+          fi
+
           if [ "${{ inputs.doxygen_fail_on_warnings }}" = "true" ] && \
-             grep -q "[Ww]arning:" doxygen.log; then
+             grep -q "[Ww]arning:" "$LOG_PATH"; then
             echo "❌ Doxygen warnings found; failing per policy"
             exit 1
+          fi
+
+          if [ $DOXYGEN_EXIT -ne 0 ]; then
+            echo "❌ Doxygen exited with code $DOXYGEN_EXIT"
+            exit $DOXYGEN_EXIT
           fi
 
           echo "✅ Doxygen documentation generated successfully with version: " \

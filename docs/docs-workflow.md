@@ -134,7 +134,10 @@ The deployment process follows this sequence:
 | Input | Type | Required | Default | Description |
 |-------|------|----------|---------|-------------|
 | `doxygen_config` | string | ❌ | `Doxyfile` | Path to Doxyfile (relative to repo root) |
+| `doxygen_working_directory` | string | ❌ | `.` | Directory to execute Doxygen from (relative to repo root). Relative paths in your Doxyfile are resolved from here. |
 | `doxygen_fail_on_warnings` | boolean | ❌ | `false` | Treat Doxygen warnings as errors in CI |
+
+> 💡 **Tip:** When your `Doxyfile` lives in a subdirectory (for example `docs/api/Doxyfile`) or assumes it will be executed from a specific folder, point `doxygen_config` to the file itself and set `doxygen_working_directory` to the directory you want Doxygen to run from. This keeps relative `INPUT` and `OUTPUT_DIRECTORY` values working exactly as they do locally.
 
 ### 🔗 Link Checking
 
@@ -156,6 +159,8 @@ The deployment process follows this sequence:
 | `run_spell_check` | boolean | ❌ | `false` | Run spell checking on documentation files |
 | `spell_check_paths` | string | ❌ | `**/*.md` | Space-separated glob patterns for files to spell check |
 | `spell_check_config` | string | ❌ | `.cspell.json` | Path to cspell configuration file |
+
+> ℹ️ **Visibility:** The workflow lists every YAML and Markdown file that will be linted before running `yamllint` or `markdownlint`, making it easy to confirm what is being validated in CI logs.
 
 ### 🌐 Deployment
 
@@ -724,7 +729,7 @@ docs.yourproject.com
 - Verify `Doxyfile` exists and is valid
 - Check source directories exist (`src/`, `include/`)
 - Graphviz is automatically installed via optimized action (no manual setup needed)
-- Verify `doxygen_config` path is correct
+- Verify `doxygen_config` path is correct (and set `doxygen_working_directory` if relative paths expect a different working folder)
 
 **Jekyll Configuration Validation Issues**
 
