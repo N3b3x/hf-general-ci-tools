@@ -71,14 +71,14 @@
   },"10": {
     "doc": "🚀 hf-general-ci-tools",
     "title": "✅ Required Setup",
-    "content": "| Requirement | Description | Example | . | GitHub Actions | Enabled in your repository | Repository Settings → Actions | . | Project Structure | Proper C/C++ project layout | src/, include/, docs/ | . | Configuration Files | Tool-specific configs | .clang-format, Doxyfile | . ",
+    "content": "| Requirement | Description | Example | . | GitHub Actions | Enabled in your repository | Repository Settings → Actions | . | Project Structure | Proper C/C++ project layout | src/, include/, docs/ | . | Configuration Files | Tool-specific configs | _config/.clang-format, _config/.clang-tidy, _config/.yamllint | . ",
     "url": "/hf-general-ci-tools/development/#-required-setup",
     
     "relUrl": "/#-required-setup"
   },"11": {
     "doc": "🚀 hf-general-ci-tools",
     "title": "🏗️ Recommended Project Structure",
-    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 . | your-awesome-project/ ├── .github/workflows/ # Your CI workflows │ └── ci.yml # Main CI pipeline ├── src/ # Source code │ ├── main.cpp │ └── utils/ ├── include/ # Header files │ └── utils.h ├── docs/ # Documentation │ ├── index.md │ └── api/ ├── .clang-format # Code style configuration ├── .clang-tidy # Static analysis configuration ├── Doxyfile # Documentation configuration ├── .yamllint # YAML linting configuration └── README.md # Project documentation . | . ",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 . | your-awesome-project/ ├── .github/workflows/ # Your CI workflows │ └── ci.yml # Main CI pipeline ├── src/ # Source code │ ├── main.cpp │ └── utils/ ├── include/ # Header files │ └── utils.h ├── docs/ # Documentation │ ├── index.md │ └── api/ ├── _config/ # Centralized lint/documentation configs │ ├── .clang-format │ ├── .clang-tidy │ ├── .markdownlint.json │ ├── .markdownlint-rules.md │ └── .yamllint ├── Doxyfile # Documentation configuration └── README.md # Project documentation . | . ",
     "url": "/hf-general-ci-tools/development/#%EF%B8%8F-recommended-project-structure",
     
     "relUrl": "/#️-recommended-project-structure"
@@ -141,7 +141,7 @@
   },"20": {
     "doc": "🔧 C/C++ Lint Workflow",
     "title": "🔧 Clang Configuration",
-    "content": "| Input | Type | Required | Default | Description | . | clang_version | string | ❌ | 20 | Clang major version | . | style | string | ❌ | \"file\" | clang-format style (llvm, google, webkit, or ‘file’ to use .clang-format) | . | tidy_checks | string | ❌ | \"\" | clang-tidy checks (comma-separated glob patterns, use - prefix to disable) | . ",
+    "content": "| Input | Type | Required | Default | Description | . | clang_version | string | ❌ | 20 | Clang major version | . | clang_format_config | string | ❌ | _config/.clang-format | Path to clang-format configuration file | . | clang_tidy_config | string | ❌ | _config/.clang-tidy | Path to clang-tidy configuration file | . | tidy_checks | string | ❌ | \"\" | clang-tidy checks (comma-separated glob patterns, use - prefix to disable) | . ",
     "url": "/hf-general-ci-tools/development/docs/c-cpp-lint-workflow.html#-clang-configuration",
     
     "relUrl": "/docs/c-cpp-lint-workflow.html#-clang-configuration"
@@ -197,7 +197,7 @@
   },"28": {
     "doc": "🔧 C/C++ Lint Workflow",
     "title": "Advanced Configuration",
-    "content": "| 1 2 3 4 5 6 7 8 9 10 11 . | jobs: lint: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1 with: clang_version: \"20\" style: \"google\" # Use Google style instead of .clang-format file tidy_checks: \"readability-*,performance-*,modernize-*\" # Specific checks extensions: \"c,cpp,h,hpp\" ignore: \"build|.git|third_party\" files_changed_only: true # Only check changed files in PRs thread_comments: true # Post collapsible thread comments . | . ",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 . | jobs: lint: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1 with: clang_version: \"20\" tidy_checks: \"readability-*,performance-*,modernize-*\" # Specific checks extensions: \"c,cpp,h,hpp\" ignore: \"build|.git|third_party\" files_changed_only: true # Only check changed files in PRs thread_comments: true # Post collapsible thread comments . | . ",
     "url": "/hf-general-ci-tools/development/docs/c-cpp-lint-workflow.html#advanced-configuration",
     
     "relUrl": "/docs/c-cpp-lint-workflow.html#advanced-configuration"
@@ -218,7 +218,7 @@
   },"31": {
     "doc": "🔧 C/C++ Lint Workflow",
     "title": "⚠️ Important Notes",
-    "content": ". | Permissions Required: The workflow needs pull-requests: write permission for PR comments | File Discovery: The action automatically discovers C/C++ files in your repository | Configuration Files: Uses .clang-format and .clang-tidy files if present | . ",
+    "content": ". | Permissions Required: The workflow needs pull-requests: write permission for PR comments | File Discovery: The action automatically discovers C/C++ files in your repository | Configuration Files: Automatically links clang_format_config and clang_tidy_config into the repository root | . ",
     "url": "/hf-general-ci-tools/development/docs/c-cpp-lint-workflow.html#%EF%B8%8F-important-notes",
     
     "relUrl": "/docs/c-cpp-lint-workflow.html#️-important-notes"
@@ -231,18 +231,18 @@
     "relUrl": "/docs/c-cpp-lint-workflow.html#️-configuration"
   },"33": {
     "doc": "🔧 C/C++ Lint Workflow",
-    "title": ".clang-format",
-    "content": "Create a .clang-format file in your project root: . | 1 2 3 4 . | BasedOnStyle: Google IndentWidth: 2 ColumnLimit: 100 AccessModifierOffset: -2 . | . ",
-    "url": "/hf-general-ci-tools/development/docs/c-cpp-lint-workflow.html#clang-format",
+    "title": "_config/.clang-format",
+    "content": "Create _config/.clang-format to define your formatting style: . | 1 2 3 4 . | BasedOnStyle: Google IndentWidth: 2 ColumnLimit: 100 AccessModifierOffset: -2 . | . Need a different configuration? Point the clang_format_config input to any other .clang-format file in your repository. ",
+    "url": "/hf-general-ci-tools/development/docs/c-cpp-lint-workflow.html#_configclang-format",
     
-    "relUrl": "/docs/c-cpp-lint-workflow.html#clang-format"
+    "relUrl": "/docs/c-cpp-lint-workflow.html#_configclang-format"
   },"34": {
     "doc": "🔧 C/C++ Lint Workflow",
-    "title": ".clang-tidy",
-    "content": "Create a .clang-tidy file for static analysis: . | 1 2 3 . | Checks: '*,readability-*,performance-*,modernize-*' WarningsAsErrors: '' HeaderFilterRegex: '' . | . ",
-    "url": "/hf-general-ci-tools/development/docs/c-cpp-lint-workflow.html#clang-tidy",
+    "title": "_config/.clang-tidy",
+    "content": "Create _config/.clang-tidy for static analysis configuration: . | 1 2 3 . | Checks: '*,readability-*,performance-*,modernize-*' WarningsAsErrors: '' HeaderFilterRegex: '' . | . ",
+    "url": "/hf-general-ci-tools/development/docs/c-cpp-lint-workflow.html#_configclang-tidy",
     
-    "relUrl": "/docs/c-cpp-lint-workflow.html#clang-tidy"
+    "relUrl": "/docs/c-cpp-lint-workflow.html#_configclang-tidy"
   },"35": {
     "doc": "🔧 C/C++ Lint Workflow",
     "title": "🔧 Troubleshooting",
@@ -253,7 +253,7 @@
   },"36": {
     "doc": "🔧 C/C++ Lint Workflow",
     "title": "Common Issues",
-    "content": "Style Issues Not Detected . | Verify .clang-format exists and is valid | Check file extensions are included | Ensure paths match your project structure | . Clang Version Issues . | Use supported versions (18, 19, 20) | Check cpp-linter compatibility | . ",
+    "content": "Style Issues Not Detected . | Verify _config/.clang-format exists and is valid (or adjust clang_format_config) | Check file extensions are included | Ensure paths match your project structure | . Tidy Checks Not Applied . | Verify _config/.clang-tidy exists (or point clang_tidy_config to your config) | Confirm tidy_checks is not overriding the configuration unintentionally | . Clang Version Issues . | Use supported versions (18, 19, 20) | Check cpp-linter compatibility | . ",
     "url": "/hf-general-ci-tools/development/docs/c-cpp-lint-workflow.html#common-issues",
     
     "relUrl": "/docs/c-cpp-lint-workflow.html#common-issues"
@@ -764,7 +764,7 @@
   },"109": {
     "doc": "📚 Documentation Workflow",
     "title": "📝 Documentation Quality",
-    "content": "| Input | Type | Required | Default | Description | . | run_markdown_lint | boolean | ❌ | false | Run markdown linting on documentation files | . | markdown_lint_paths | string | ❌ | **/*.md | Space-separated glob patterns for markdown files to lint | . | run_spell_check | boolean | ❌ | false | Run spell checking on documentation files | . | spell_check_paths | string | ❌ | **/*.md | Space-separated glob patterns for files to spell check | . | spell_check_config | string | ❌ | .cspell.json | Path to cspell configuration file | . ",
+    "content": "| Input | Type | Required | Default | Description | . | run_markdown_lint | boolean | ❌ | false | Run markdown linting on documentation files | . | markdown_lint_paths | string | ❌ | **/*.md | Space-separated glob patterns for markdown files to lint | . | yamllint_config | string | ❌ | _config/.yamllint | Path to yamllint configuration file | . | markdown_lint_config | string | ❌ | _config/.markdownlint.json | Path to markdownlint configuration file | . | run_spell_check | boolean | ❌ | false | Run spell checking on documentation files | . | spell_check_paths | string | ❌ | **/*.md | Space-separated glob patterns for files to spell check | . | spell_check_config | string | ❌ | .cspell.json | Path to cspell configuration file | . ",
     "url": "/hf-general-ci-tools/development/docs/docs-workflow.html#-documentation-quality",
     
     "relUrl": "/docs/docs-workflow.html#-documentation-quality"
@@ -890,7 +890,7 @@
   },"127": {
     "doc": "📚 Documentation Workflow",
     "title": "Markdown Linting",
-    "content": "Optional markdown linting using markdownlint-cli to enforce consistent markdown formatting and catch common issues. | 1 2 . | run_markdown_lint: true # Enable markdown linting (default: false) markdown_lint_paths: \"**/*.md\" # Glob patterns for files to lint . | . Features: . | Enforces consistent markdown formatting | Catches common markdown issues | Configurable via .markdownlint.json file | Ignores node_modules by default | . ",
+    "content": "Optional markdown linting using markdownlint-cli to enforce consistent markdown formatting and catch common issues. | 1 2 3 . | run_markdown_lint: true # Enable markdown linting (default: false) markdown_lint_paths: \"**/*.md\" # Glob patterns for files to lint markdown_lint_config: \"_config/.markdownlint.json\" # Path to markdownlint config . | . Features: . | Enforces consistent markdown formatting | Catches common markdown issues | Configurable via _config/.markdownlint.json (override with markdown_lint_config) | Ignores node_modules by default | . ",
     "url": "/hf-general-ci-tools/development/docs/docs-workflow.html#markdown-linting",
     
     "relUrl": "/docs/docs-workflow.html#markdown-linting"
@@ -995,7 +995,7 @@
   },"142": {
     "doc": "📚 Documentation Workflow",
     "title": "Common Issues",
-    "content": "Doxygen Build Fails . | Verify Doxyfile exists and is valid | Check source directories exist (src/, include/) | Graphviz is automatically installed via optimized action (no manual setup needed) | Verify doxygen_config path is correct | . Jekyll Configuration Validation Issues . | False warnings about missing directories: Check if your _config.yml specifies custom directory locations (e.g., layouts_dir: _config/_layouts) | Files not found warnings: Ensure common files (index.md, 404.html, robots.txt) are in the same directory as your _config.yml | Trailing slash warnings: Remove trailing slashes from baseurl and url in your configuration | YAML syntax errors: Use online YAML validators or yq to check syntax | . GitHub Pages Not Deploying . | Check repository permissions | Verify deploy_pages: true | Ensure workflow runs on main branch (not PRs) | Enable GitHub Pages in repository settings (Settings → Pages → Source: GitHub Actions) | Check if Pages site exists and is configured properly | . Link Check Fails . | Verify link paths are correct in link_check_paths | Check that markdown files exist at specified paths | Review link checker output for specific broken links | . Markdown Lint Fails . | Check markdown syntax and formatting | Review .markdownlint.json configuration if present | Fix linting errors reported by markdownlint | . Spell Check Fails . | Review spelling errors in documentation | Add words to .cspell.json custom dictionary if needed | Check spell_check_config path is correct | . ",
+    "content": "Doxygen Build Fails . | Verify Doxyfile exists and is valid | Check source directories exist (src/, include/) | Graphviz is automatically installed via optimized action (no manual setup needed) | Verify doxygen_config path is correct | . Jekyll Configuration Validation Issues . | False warnings about missing directories: Check if your _config.yml specifies custom directory locations (e.g., layouts_dir: _config/_layouts) | Files not found warnings: Ensure common files (index.md, 404.html, robots.txt) are in the same directory as your _config.yml | Trailing slash warnings: Remove trailing slashes from baseurl and url in your configuration | YAML syntax errors: Use online YAML validators or yq to check syntax | . GitHub Pages Not Deploying . | Check repository permissions | Verify deploy_pages: true | Ensure workflow runs on main branch (not PRs) | Enable GitHub Pages in repository settings (Settings → Pages → Source: GitHub Actions) | Check if Pages site exists and is configured properly | . Link Check Fails . | Verify link paths are correct in link_check_paths | Check that markdown files exist at specified paths | Review link checker output for specific broken links | . Markdown Lint Fails . | Check markdown syntax and formatting | Review _config/.markdownlint.json (or your configured markdown_lint_config) if present | Fix linting errors reported by markdownlint | . Spell Check Fails . | Review spelling errors in documentation | Add words to .cspell.json custom dictionary if needed | Check spell_check_config path is correct | . ",
     "url": "/hf-general-ci-tools/development/docs/docs-workflow.html#common-issues",
     
     "relUrl": "/docs/docs-workflow.html#common-issues"
@@ -1919,7 +1919,7 @@
   },"274": {
     "doc": "📝 YAML Lint Workflow",
     "title": "⚙️ Configuration",
-    "content": "| Input | Description | Required | Default | Type | . | config_file | Path to yamllint configuration file | No | .yamllint | string | . | strict_mode | Enable strict mode (fail on warnings) | No | false | boolean | . ",
+    "content": "| Input | Description | Required | Default | Type | . | config_file | Path to yamllint configuration file | No | _config/.yamllint | string | . | strict_mode | Enable strict mode (fail on warnings) | No | false | boolean | . ",
     "url": "/hf-general-ci-tools/development/docs/yamllint-workflow.html#%EF%B8%8F-configuration",
     
     "relUrl": "/docs/yamllint-workflow.html#️-configuration"
@@ -1947,7 +1947,7 @@
   },"278": {
     "doc": "📝 YAML Lint Workflow",
     "title": "Advanced Usage",
-    "content": "| 1 2 3 4 5 6 7 8 9 10 . | name: YAML Lint on: [push, pull_request] jobs: yamllint: uses: N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1 with: paths: '.github/workflows/*.yml,docs/*.yml' config_file: '.yamllint' strict_mode: true exclude_patterns: '.git/**,node_modules/**,_site/**' . | . ",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 . | name: YAML Lint on: [push, pull_request] jobs: yamllint: uses: N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1 with: paths: '.github/workflows/*.yml,docs/*.yml' config_file: '_config/.yamllint' strict_mode: true exclude_patterns: '.git/**,node_modules/**,_site/**' . | . ",
     "url": "/hf-general-ci-tools/development/docs/yamllint-workflow.html#advanced-usage",
     
     "relUrl": "/docs/yamllint-workflow.html#advanced-usage"
@@ -1961,7 +1961,7 @@
   },"280": {
     "doc": "📝 YAML Lint Workflow",
     "title": "Comprehensive Configuration",
-    "content": "| 1 2 3 4 5 6 7 8 9 10 . | name: Complete YAML Lint on: [push, pull_request] jobs: yamllint: uses: N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1 with: paths: '.github/workflows/*.yml,docs/*.yml,**/*.yaml' config_file: '.yamllint' strict_mode: true exclude_patterns: '.git/**,node_modules/**,venv/**,.venv/**,_site/**' . | . ",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 . | name: Complete YAML Lint on: [push, pull_request] jobs: yamllint: uses: N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1 with: paths: '.github/workflows/*.yml,docs/*.yml,**/*.yaml' config_file: '_config/.yamllint' strict_mode: true exclude_patterns: '.git/**,node_modules/**,venv/**,.venv/**,_site/**' . | . ",
     "url": "/hf-general-ci-tools/development/docs/yamllint-workflow.html#comprehensive-configuration",
     
     "relUrl": "/docs/yamllint-workflow.html#comprehensive-configuration"
@@ -1974,11 +1974,11 @@
     "relUrl": "/docs/yamllint-workflow.html#️-configuration-1"
   },"282": {
     "doc": "📝 YAML Lint Workflow",
-    "title": ".yamllint Configuration",
-    "content": "Create a .yamllint file in your project root: . | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 . | extends: default rules: line-length: max: 120 level: warning indentation: spaces: 2 comments: min-spaces-from-content: 1 document-start: present: true truthy: allowed-values: ['true', 'false', 'on', 'off'] . | . ",
-    "url": "/hf-general-ci-tools/development/docs/yamllint-workflow.html#yamllint-configuration",
+    "title": "_config/.yamllint Configuration",
+    "content": "Create a _config/.yamllint file in your project (relative to the repository root): . | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 . | extends: default rules: line-length: max: 120 level: warning indentation: spaces: 2 comments: min-spaces-from-content: 1 document-start: present: true truthy: allowed-values: ['true', 'false', 'on', 'off'] . | . ",
+    "url": "/hf-general-ci-tools/development/docs/yamllint-workflow.html#_configyamllint-configuration",
     
-    "relUrl": "/docs/yamllint-workflow.html#yamllint-configuration"
+    "relUrl": "/docs/yamllint-workflow.html#_configyamllint-configuration"
   },"283": {
     "doc": "📝 YAML Lint Workflow",
     "title": "Default Rules",
@@ -1996,7 +1996,7 @@
   },"285": {
     "doc": "📝 YAML Lint Workflow",
     "title": "Common Issues",
-    "content": "YAML Syntax Errors . | Check for proper indentation (2 spaces) | Verify YAML syntax is valid | Ensure proper document structure | . Line Length Issues . | Adjust line length in .yamllint configuration | Break long lines appropriately | Use YAML’s line continuation features | . Indentation Problems . | Use consistent 2-space indentation | Avoid mixing tabs and spaces | Check for proper nesting | . ",
+    "content": "YAML Syntax Errors . | Check for proper indentation (2 spaces) | Verify YAML syntax is valid | Ensure proper document structure | . Line Length Issues . | Adjust line length in _config/.yamllint configuration | Break long lines appropriately | Use YAML’s line continuation features | . Indentation Problems . | Use consistent 2-space indentation | Avoid mixing tabs and spaces | Check for proper nesting | . ",
     "url": "/hf-general-ci-tools/development/docs/yamllint-workflow.html#common-issues",
     
     "relUrl": "/docs/yamllint-workflow.html#common-issues"

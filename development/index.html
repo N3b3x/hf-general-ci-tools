@@ -650,7 +650,7 @@ jobs:
     <tr>
       <td><strong>Configuration Files</strong></td>
       <td>Tool-specific configs</td>
-      <td><code class="language-plaintext highlighter-rouge">.clang-format</code>, <code class="language-plaintext highlighter-rouge">Doxyfile</code></td>
+      <td><code class="language-plaintext highlighter-rouge">_config/.clang-format</code>, <code class="language-plaintext highlighter-rouge">_config/.clang-tidy</code>, <code class="language-plaintext highlighter-rouge">_config/.yamllint</code></td>
     </tr>
   </tbody>
 </table></div>
@@ -679,6 +679,9 @@ jobs:
 14
 15
 16
+17
+18
+19
 </pre></td><td class="rouge-code"><pre>your-awesome-project/
 ├── .github/workflows/          # Your CI workflows
 │   └── ci.yml                  # Main CI pipeline
@@ -690,10 +693,13 @@ jobs:
 ├── docs/                       # Documentation
 │   ├── index.md
 │   └── api/
-├── .clang-format              # Code style configuration
-├── .clang-tidy                # Static analysis configuration
+├── _config/                   # Centralized lint/documentation configs
+│   ├── .clang-format
+│   ├── .clang-tidy
+│   ├── .markdownlint.json
+│   ├── .markdownlint-rules.md
+│   └── .yamllint
 ├── Doxyfile                   # Documentation configuration
-├── .yamllint                  # YAML linting configuration
 └── README.md                  # Project documentation
 </pre></td></tr></tbody></table></div></code></pre></div></div><hr />
 <h2 id="-related-resources">

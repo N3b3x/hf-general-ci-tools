@@ -342,11 +342,18 @@
       <td>Clang major version</td>
     </tr>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">style</code></td>
+      <td><code class="language-plaintext highlighter-rouge">clang_format_config</code></td>
       <td>string</td>
       <td>❌</td>
-      <td><code class="language-plaintext highlighter-rouge">"file"</code></td>
-      <td>clang-format style (llvm, google, webkit, or ‘file’ to use .clang-format)</td>
+      <td><code class="language-plaintext highlighter-rouge">_config/.clang-format</code></td>
+      <td>Path to clang-format configuration file</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">clang_tidy_config</code></td>
+      <td>string</td>
+      <td>❌</td>
+      <td><code class="language-plaintext highlighter-rouge">_config/.clang-tidy</code></td>
+      <td>Path to clang-tidy configuration file</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">tidy_checks</code></td>
@@ -572,13 +579,11 @@
 8
 9
 10
-11
 </pre></td><td class="rouge-code"><pre><span class="na">jobs</span><span class="pi">:</span>
   <span class="na">lint</span><span class="pi">:</span>
     <span class="na">uses</span><span class="pi">:</span> <span class="s">N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1</span>
     <span class="na">with</span><span class="pi">:</span>
       <span class="na">clang_version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">20"</span>
-      <span class="na">style</span><span class="pi">:</span> <span class="s2">"</span><span class="s">google"</span>  <span class="c1"># Use Google style instead of .clang-format file</span>
       <span class="na">tidy_checks</span><span class="pi">:</span> <span class="s2">"</span><span class="s">readability-*,performance-*,modernize-*"</span>  <span class="c1"># Specific checks</span>
       <span class="na">extensions</span><span class="pi">:</span> <span class="s2">"</span><span class="s">c,cpp,h,hpp"</span>
       <span class="na">ignore</span><span class="pi">:</span> <span class="s2">"</span><span class="s">build|.git|third_party"</span>
@@ -648,7 +653,7 @@
 <ul>
   <li><strong>Permissions Required</strong>: The workflow needs <code class="language-plaintext highlighter-rouge">pull-requests: write</code> permission for PR comments</li>
   <li><strong>File Discovery</strong>: The action automatically discovers C/C++ files in your repository</li>
-  <li><strong>Configuration Files</strong>: Uses <code class="language-plaintext highlighter-rouge">.clang-format</code> and <code class="language-plaintext highlighter-rouge">.clang-tidy</code> files if present</li>
+  <li><strong>Configuration Files</strong>: Automatically links <code class="language-plaintext highlighter-rouge">clang_format_config</code> and <code class="language-plaintext highlighter-rouge">clang_tidy_config</code> into the repository root</li>
 </ul>
 <h2 id="️-configuration">
   
@@ -658,16 +663,16 @@
   
 </h2>
     
-<h3 id="clang-format">
+<h3 id="_configclang-format">
   
   
-    <a href="#clang-format" class="anchor-heading" aria-labelledby="clang-format"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> .clang-format
+    <a href="#_configclang-format" class="anchor-heading" aria-labelledby="_configclang-format"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> <code class="language-plaintext highlighter-rouge">_config/.clang-format</code>
   
   
 </h3>
     
 
-<p>Create a <code class="language-plaintext highlighter-rouge">.clang-format</code> file in your project root:</p>
+<p>Create <code class="language-plaintext highlighter-rouge">_config/.clang-format</code> to define your formatting style:</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -678,16 +683,20 @@
 <span class="na">ColumnLimit</span><span class="pi">:</span> <span class="m">100</span>
 <span class="na">AccessModifierOffset</span><span class="pi">:</span> <span class="s">-2</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
-<h3 id="clang-tidy">
+
+<blockquote>
+  <p>Need a different configuration? Point the <code class="language-plaintext highlighter-rouge">clang_format_config</code> input to any other <code class="language-plaintext highlighter-rouge">.clang-format</code> file in your repository.</p>
+</blockquote>
+<h3 id="_configclang-tidy">
   
   
-    <a href="#clang-tidy" class="anchor-heading" aria-labelledby="clang-tidy"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> .clang-tidy
+    <a href="#_configclang-tidy" class="anchor-heading" aria-labelledby="_configclang-tidy"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> <code class="language-plaintext highlighter-rouge">_config/.clang-tidy</code>
   
   
 </h3>
     
 
-<p>Create a <code class="language-plaintext highlighter-rouge">.clang-tidy</code> file for static analysis:</p>
+<p>Create <code class="language-plaintext highlighter-rouge">_config/.clang-tidy</code> for static analysis configuration:</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -715,9 +724,15 @@
 
 <p><strong>Style Issues Not Detected</strong></p>
 <ul>
-  <li>Verify <code class="language-plaintext highlighter-rouge">.clang-format</code> exists and is valid</li>
+  <li>Verify <code class="language-plaintext highlighter-rouge">_config/.clang-format</code> exists and is valid (or adjust <code class="language-plaintext highlighter-rouge">clang_format_config</code>)</li>
   <li>Check file extensions are included</li>
   <li>Ensure paths match your project structure</li>
+</ul>
+
+<p><strong>Tidy Checks Not Applied</strong></p>
+<ul>
+  <li>Verify <code class="language-plaintext highlighter-rouge">_config/.clang-tidy</code> exists (or point <code class="language-plaintext highlighter-rouge">clang_tidy_config</code> to your config)</li>
+  <li>Confirm <code class="language-plaintext highlighter-rouge">tidy_checks</code> is not overriding the configuration unintentionally</li>
 </ul>
 
 <p><strong>Clang Version Issues</strong></p>

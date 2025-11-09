@@ -622,6 +622,20 @@ multiple versions of your documentation:</p>
       <td>Space-separated glob patterns for markdown files to lint</td>
     </tr>
     <tr>
+      <td><code class="language-plaintext highlighter-rouge">yamllint_config</code></td>
+      <td>string</td>
+      <td>❌</td>
+      <td><code class="language-plaintext highlighter-rouge">_config/.yamllint</code></td>
+      <td>Path to yamllint configuration file</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">markdown_lint_config</code></td>
+      <td>string</td>
+      <td>❌</td>
+      <td><code class="language-plaintext highlighter-rouge">_config/.markdownlint.json</code></td>
+      <td>Path to markdownlint configuration file</td>
+    </tr>
+    <tr>
       <td><code class="language-plaintext highlighter-rouge">run_spell_check</code></td>
       <td>boolean</td>
       <td>❌</td>
@@ -1285,15 +1299,17 @@ for both internal and external links.</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
+3
 </pre></td><td class="rouge-code"><pre><span class="na">run_markdown_lint</span><span class="pi">:</span> <span class="no">true</span>  <span class="c1"># Enable markdown linting (default: false)</span>
 <span class="na">markdown_lint_paths</span><span class="pi">:</span> <span class="s2">"</span><span class="s">**/*.md"</span>  <span class="c1"># Glob patterns for files to lint</span>
+<span class="na">markdown_lint_config</span><span class="pi">:</span> <span class="s2">"</span><span class="s">_config/.markdownlint.json"</span>  <span class="c1"># Path to markdownlint config</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
 
 <p>Features:</p>
 <ul>
   <li>Enforces consistent markdown formatting</li>
   <li>Catches common markdown issues</li>
-  <li>Configurable via <code class="language-plaintext highlighter-rouge">.markdownlint.json</code> file</li>
+  <li>Configurable via <code class="language-plaintext highlighter-rouge">_config/.markdownlint.json</code> (override with <code class="language-plaintext highlighter-rouge">markdown_lint_config</code>)</li>
   <li>Ignores <code class="language-plaintext highlighter-rouge">node_modules</code> by default</li>
 </ul>
 <h3 id="spell-checking">
@@ -1915,7 +1931,7 @@ same directory as your <code class="language-plaintext highlighter-rouge">_confi
 <p><strong>Markdown Lint Fails</strong></p>
 <ul>
   <li>Check markdown syntax and formatting</li>
-  <li>Review <code class="language-plaintext highlighter-rouge">.markdownlint.json</code> configuration if present</li>
+  <li>Review <code class="language-plaintext highlighter-rouge">_config/.markdownlint.json</code> (or your configured <code class="language-plaintext highlighter-rouge">markdown_lint_config</code>) if present</li>
   <li>Fix linting errors reported by markdownlint</li>
 </ul>
 

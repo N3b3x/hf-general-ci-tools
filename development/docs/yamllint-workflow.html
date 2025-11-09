@@ -374,7 +374,7 @@ This is a <strong>reusable workflow</strong> that can be called from other repos
       <td><code class="language-plaintext highlighter-rouge">config_file</code></td>
       <td>Path to yamllint configuration file</td>
       <td>No</td>
-      <td><code class="language-plaintext highlighter-rouge">.yamllint</code></td>
+      <td><code class="language-plaintext highlighter-rouge">_config/.yamllint</code></td>
       <td>string</td>
     </tr>
     <tr>
@@ -471,7 +471,7 @@ This is a <strong>reusable workflow</strong> that can be called from other repos
     <span class="na">uses</span><span class="pi">:</span> <span class="s">N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1</span>
     <span class="na">with</span><span class="pi">:</span>
       <span class="na">paths</span><span class="pi">:</span> <span class="s1">'</span><span class="s">.github/workflows/*.yml,docs/*.yml'</span>
-      <span class="na">config_file</span><span class="pi">:</span> <span class="s1">'</span><span class="s">.yamllint'</span>
+      <span class="na">config_file</span><span class="pi">:</span> <span class="s1">'</span><span class="s">_config/.yamllint'</span>
       <span class="na">strict_mode</span><span class="pi">:</span> <span class="no">true</span>
       <span class="na">exclude_patterns</span><span class="pi">:</span> <span class="s1">'</span><span class="s">.git/**,node_modules/**,_site/**'</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
@@ -527,7 +527,7 @@ This is a <strong>reusable workflow</strong> that can be called from other repos
     <span class="na">uses</span><span class="pi">:</span> <span class="s">N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1</span>
     <span class="na">with</span><span class="pi">:</span>
       <span class="na">paths</span><span class="pi">:</span> <span class="s1">'</span><span class="s">.github/workflows/*.yml,docs/*.yml,**/*.yaml'</span>
-      <span class="na">config_file</span><span class="pi">:</span> <span class="s1">'</span><span class="s">.yamllint'</span>
+      <span class="na">config_file</span><span class="pi">:</span> <span class="s1">'</span><span class="s">_config/.yamllint'</span>
       <span class="na">strict_mode</span><span class="pi">:</span> <span class="no">true</span>
       <span class="na">exclude_patterns</span><span class="pi">:</span> <span class="s1">'</span><span class="s">.git/**,node_modules/**,venv/**,.venv/**,_site/**'</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
@@ -539,16 +539,16 @@ This is a <strong>reusable workflow</strong> that can be called from other repos
   
 </h2>
     
-<h3 id="yamllint-configuration">
+<h3 id="_configyamllint-configuration">
   
   
-    <a href="#yamllint-configuration" class="anchor-heading" aria-labelledby="yamllint-configuration"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> .yamllint Configuration
+    <a href="#_configyamllint-configuration" class="anchor-heading" aria-labelledby="_configyamllint-configuration"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> <code class="language-plaintext highlighter-rouge">_config/.yamllint</code> Configuration
   
   
 </h3>
     
 
-<p>Create a <code class="language-plaintext highlighter-rouge">.yamllint</code> file in your project root:</p>
+<p>Create a <code class="language-plaintext highlighter-rouge">_config/.yamllint</code> file in your project (relative to the repository root):</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -621,7 +621,7 @@ This is a <strong>reusable workflow</strong> that can be called from other repos
 
 <p><strong>Line Length Issues</strong></p>
 <ul>
-  <li>Adjust line length in <code class="language-plaintext highlighter-rouge">.yamllint</code> configuration</li>
+  <li>Adjust line length in <code class="language-plaintext highlighter-rouge">_config/.yamllint</code> configuration</li>
   <li>Break long lines appropriately</li>
   <li>Use YAML’s line continuation features</li>
 </ul>
