@@ -51,7 +51,7 @@ This is a **reusable workflow** that can be called from other repositories.
 
 | Input | Description | Required | Default | Type |
 |-------|-------------|----------|---------|------|
-| `config_file` | Path to yamllint configuration file | No | `.yamllint` | string |
+| `config_file` | Path to yamllint configuration file | No | `_config/.yamllint` | string |
 | `strict_mode` | Enable strict mode (fail on warnings) | No | `false` | boolean |
 
 ## 📤 Outputs
@@ -84,7 +84,7 @@ jobs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1
     with:
       paths: '.github/workflows/*.yml,docs/*.yml'
-      config_file: '.yamllint'
+      config_file: '_config/.yamllint'
       strict_mode: true
       exclude_patterns: '.git/**,node_modules/**,_site/**'
 ```
@@ -112,16 +112,16 @@ jobs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1
     with:
       paths: '.github/workflows/*.yml,docs/*.yml,**/*.yaml'
-      config_file: '.yamllint'
+      config_file: '_config/.yamllint'
       strict_mode: true
       exclude_patterns: '.git/**,node_modules/**,venv/**,.venv/**,_site/**'
 ```
 
 ## ⚙️ Configuration
 
-### .yamllint Configuration
+### `_config/.yamllint` Configuration
 
-Create a `.yamllint` file in your project root:
+Create a `_config/.yamllint` file in your project (relative to the repository root):
 
 ```yaml
 extends: default
@@ -158,7 +158,7 @@ The workflow uses yamllint with these default settings:
 - Ensure proper document structure
 
 **Line Length Issues**
-- Adjust line length in `.yamllint` configuration
+- Adjust line length in `_config/.yamllint` configuration
 - Break long lines appropriately
 - Use YAML's line continuation features
 

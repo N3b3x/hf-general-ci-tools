@@ -192,7 +192,7 @@ jobs:
 |-------------|-------------|---------|
 | **GitHub Actions** | Enabled in your repository | Repository Settings → Actions |
 | **Project Structure** | Proper C/C++ project layout | `src/`, `include/`, `docs/` |
-| **Configuration Files** | Tool-specific configs | `.clang-format`, `Doxyfile` |
+| **Configuration Files** | Tool-specific configs | `_config/.clang-format`, `_config/.clang-tidy`, `_config/.yamllint` |
 
 ### 🏗️ Recommended Project Structure
 
@@ -208,10 +208,13 @@ your-awesome-project/
 ├── docs/                       # Documentation
 │   ├── index.md
 │   └── api/
-├── .clang-format              # Code style configuration
-├── .clang-tidy                # Static analysis configuration
+├── _config/                   # Centralized lint/documentation configs
+│   ├── .clang-format
+│   ├── .clang-tidy
+│   ├── .markdownlint.json
+│   ├── .markdownlint-rules.md
+│   └── .yamllint
 ├── Doxyfile                   # Documentation configuration
-├── .yamllint                  # YAML linting configuration
 └── README.md                  # Project documentation
 ```
 

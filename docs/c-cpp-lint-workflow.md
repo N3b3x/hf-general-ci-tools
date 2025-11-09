@@ -45,7 +45,8 @@ The C/C++ Lint workflow runs clang-format and clang-tidy using cpp-linter for co
 | Input | Type | Required | Default | Description |
 |-------|------|----------|---------|-------------|
 | `clang_version` | string | ❌ | `20` | Clang major version |
-| `style` | string | ❌ | `"file"` | clang-format style (llvm, google, webkit, or 'file' to use .clang-format) |
+| `clang_format_config` | string | ❌ | `_config/.clang-format` | Path to clang-format configuration file |
+| `clang_tidy_config` | string | ❌ | `_config/.clang-tidy` | Path to clang-tidy configuration file |
 | `tidy_checks` | string | ❌ | `""` | clang-tidy checks (comma-separated glob patterns, use - prefix to disable) |
 
 ### 📁 File Selection
@@ -115,7 +116,6 @@ jobs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1
     with:
       clang_version: "20"
-      style: "google"  # Use Google style instead of .clang-format file
       tidy_checks: "readability-*,performance-*,modernize-*"  # Specific checks
       extensions: "c,cpp,h,hpp"
       ignore: "build|.git|third_party"
@@ -154,13 +154,13 @@ The workflow provides:
 
 - **Permissions Required**: The workflow needs `pull-requests: write` permission for PR comments
 - **File Discovery**: The action automatically discovers C/C++ files in your repository
-- **Configuration Files**: Uses `.clang-format` and `.clang-tidy` files if present
+- **Configuration Files**: Automatically links `clang_format_config` and `clang_tidy_config` into the repository root
 
 ## ⚙️ Configuration
 
-### .clang-format
+### `_config/.clang-format`
 
-Create a `.clang-format` file in your project root:
+Create `_config/.clang-format` to define your formatting style:
 
 ```yaml
 BasedOnStyle: Google
@@ -169,9 +169,11 @@ ColumnLimit: 100
 AccessModifierOffset: -2
 ```
 
-### .clang-tidy
+> Need a different configuration? Point the `clang_format_config` input to any other `.clang-format` file in your repository.
 
-Create a `.clang-tidy` file for static analysis:
+### `_config/.clang-tidy`
+
+Create `_config/.clang-tidy` for static analysis configuration:
 
 ```yaml
 Checks: '*,readability-*,performance-*,modernize-*'
@@ -184,9 +186,13 @@ HeaderFilterRegex: ''
 ### Common Issues
 
 **Style Issues Not Detected**
-- Verify `.clang-format` exists and is valid
+- Verify `_config/.clang-format` exists and is valid (or adjust `clang_format_config`)
 - Check file extensions are included
 - Ensure paths match your project structure
+
+**Tidy Checks Not Applied**
+- Verify `_config/.clang-tidy` exists (or point `clang_tidy_config` to your config)
+- Confirm `tidy_checks` is not overriding the configuration unintentionally
 
 **Clang Version Issues**
 - Use supported versions (18, 19, 20)
