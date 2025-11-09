@@ -148,6 +148,7 @@ The workflow provides:
 - **PR Feedback**: Annotations and comments on pull requests
 - **Configurable Scope**: Control which files and paths are checked
 - **Performance Options**: Check only changed files/lines for faster runs
+- **File Preview**: Prints the list of C/C++ files that will be sent to clang-format and clang-tidy before the action runs
 - **File Annotations**: Provides PR annotations for linting issues
 
 ### ⚠️ Important Notes
