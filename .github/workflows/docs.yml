@@ -1177,11 +1177,7 @@ jobs:
             HTML_DIR="$BASE_OUT/$HTMLO"
           fi
 
-          HTML_DIR="$(python3 - "$HTML_DIR" <<'PY'
-import os, sys
-print(os.path.normpath(sys.argv[1]))
-PY
-)"
+          HTML_DIR="$(python3 -c 'import os,sys; print(os.path.normpath(sys.argv[1]))' "$HTML_DIR")"
 
           echo "html_dir=$HTML_DIR" >> "$GITHUB_OUTPUT"
           echo "Resolved Doxygen HTML dir (working dir: $WORK_DIR): $HTML_DIR"
@@ -2395,4 +2391,3 @@ PY
           echo "  Root: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
           echo "  Version Selector: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/version_selector.html"
           echo "  Current Version: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/$VERSION_PATH/"
-
