@@ -119,34 +119,34 @@ on:
       # =============================================================================
       deployment_branch:
         description: 'Branch name for deployment (required for versioned documentation)'
-        required: true
+        required: false
         type: string
         default: 'gh-pages'
-        # =============================================================================
-        # Deployment Configuration Section
-        # =============================================================================
-        deploy_pages:
-          description: 'Deploy to GitHub Pages'
-          required: false
-          type: boolean
-          default: true
-        # =============================================================================
-        # Doxygen Configuration Section
-        # =============================================================================
-        doxygen_config:
-          description: >-
-            Path to Doxyfile (relative to repo root) - output directory auto-detected
-            from OUTPUT_DIRECTORY and HTML_OUTPUT settings
-          required: false
-          type: string
-          default: 'Doxyfile'
-        doxygen_working_directory:
-          description: >-
-            Directory to execute Doxygen from (defaults to repository root). Relative
-            paths in the Doxyfile are resolved against this directory.
-          required: false
-          type: string
-          default: '.'
+      # =============================================================================
+      # Deployment Configuration Section
+      # =============================================================================
+      deploy_pages:
+        description: 'Deploy to GitHub Pages'
+        required: false
+        type: boolean
+        default: true
+      # =============================================================================
+      # Doxygen Configuration Section
+      # =============================================================================
+      doxygen_config:
+        description: >-
+          Path to Doxyfile (relative to repo root) - output directory auto-detected
+          from OUTPUT_DIRECTORY and HTML_OUTPUT settings
+        required: false
+        type: string
+        default: 'Doxyfile'
+      doxygen_working_directory:
+        description: >-
+          Directory to execute Doxygen from (defaults to repository root). Relative
+          paths in the Doxyfile are resolved against this directory.
+        required: false
+        type: string
+        default: '.'
       doxygen_fail_on_warnings:
         description: 'Treat Doxygen warnings as errors in CI'
         required: false
@@ -427,7 +427,7 @@ jobs:
 
       - name: Cache pip dependencies
         if: ${{ inputs.run_markdown_lint == true || inputs.run_spell_check == true }}
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt', '**/pyproject.toml') }}
@@ -901,11 +901,78 @@ jobs:
           node-version: '20'
 
       # =============================================================================
+      # Doxygen Output Resolution (required for caching)
+      # =============================================================================
+      - name: Resolve Doxygen HTML output directory
+        if: steps.doxygen-check.outputs.doxygen_needed == 'true'
+        id: doxy_out
+        run: |
+          ROOT_DIR="$(pwd)"
+          CONFIG_INPUT="${{ inputs.doxygen_config }}"
+          WORK_INPUT="${{ inputs.doxygen_working_directory }}"
+
+          if [[ "$CONFIG_INPUT" = /* ]]; then
+            DOXYFILE_PATH="$CONFIG_INPUT"
+          else
+            DOXYFILE_PATH="$ROOT_DIR/$CONFIG_INPUT"
+          fi
+
+          if [[ -z "$WORK_INPUT" || "$WORK_INPUT" == "." ]]; then
+            WORK_DIR="$ROOT_DIR"
+          elif [[ "$WORK_INPUT" = /* ]]; then
+            WORK_DIR="$WORK_INPUT"
+          else
+            WORK_DIR="$ROOT_DIR/$WORK_INPUT"
+          fi
+
+          if [ ! -f "$DOXYFILE_PATH" ]; then
+            echo "❌ Resolved Doxyfile not found: $DOXYFILE_PATH"
+            exit 1
+          fi
+
+          if [ ! -d "$WORK_DIR" ]; then
+            echo "❌ Doxygen working directory does not exist: $WORK_DIR"
+            exit 1
+          fi
+
+          # Function to extract values from Doxyfile (handles comments and whitespace)
+          getval(){ awk -F'=' '/^'"$1"'[[:space:]]*=/ \
+            {gsub(/#.*$/,"",$2); gsub(/^[[:space:]]+|[[:space:]]+$/,"",$2); print $2}' "$DOXYFILE_PATH"; }
+
+          OUTDIR="$(getval OUTPUT_DIRECTORY)"
+          HTMLO="$(getval HTML_OUTPUT)"
+
+          if [ -z "$HTMLO" ]; then
+            HTMLO="html"
+          fi
+
+          if [ -n "$OUTDIR" ]; then
+            if [[ "$OUTDIR" = /* ]]; then
+              BASE_OUT="$OUTDIR"
+            else
+              BASE_OUT="$WORK_DIR/$OUTDIR"
+            fi
+          else
+            BASE_OUT="$WORK_DIR"
+          fi
+
+          if [[ "$HTMLO" = /* ]]; then
+            HTML_DIR="$HTMLO"
+          else
+            HTML_DIR="$BASE_OUT/$HTMLO"
+          fi
+
+          HTML_DIR="$(python3 -c 'import os,sys; print(os.path.normpath(sys.argv[1]))' "$HTML_DIR")"
+
+          echo "html_dir=$HTML_DIR" >> "$GITHUB_OUTPUT"
+          echo "Resolved Doxygen HTML dir (working dir: $WORK_DIR): $HTML_DIR"
+
+      # =============================================================================
       # Comprehensive Dependency Caching
       # =============================================================================
       - name: Cache pip dependencies
         if: ${{ inputs.run_markdown_lint == true || inputs.run_spell_check == true }}
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt', '**/pyproject.toml') || 'no-deps' }}
@@ -914,7 +981,7 @@ jobs:
 
       - name: Cache Node.js dependencies
         if: ${{ inputs.run_markdown_lint == true || inputs.run_spell_check == true }}
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json', '**/yarn.lock') || 'no-deps' }}
@@ -923,7 +990,7 @@ jobs:
 
       - name: Cache Jekyll dependencies
         if: ${{ inputs.jekyll_enabled == true }}
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: vendor/bundle
           key: ${{ runner.os }}-jekyll-${{ hashFiles('**/Gemfile.lock') }}
@@ -932,10 +999,10 @@ jobs:
 
       - name: Cache Doxygen build artifacts
         if: steps.doxygen-check.outputs.doxygen_needed == 'true'
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
-            ${{ steps.doxy-out.outputs.html_dir }}
+            ${{ steps.doxy_out.outputs.html_dir }}
             doxygen.log
           key: >-
             ${{ runner.os }}-doxygen-${{ github.sha }}-${{ hashFiles('**/Doxyfile', '**/*.h', '**/*.cpp', '**/*.c') }}
@@ -1115,73 +1182,6 @@ jobs:
           yamllint --version
           echo "✅ yamllint installed successfully"
 
-      # =============================================================================
-      # Doxygen Documentation Generation
-      # =============================================================================
-      - name: Resolve Doxygen HTML output directory
-        if: steps.doxygen-check.outputs.doxygen_needed == 'true'
-        id: doxy-out
-        run: |
-          ROOT_DIR="$(pwd)"
-          CONFIG_INPUT="${{ inputs.doxygen_config }}"
-          WORK_INPUT="${{ inputs.doxygen_working_directory }}"
-
-          if [[ "$CONFIG_INPUT" = /* ]]; then
-            DOXYFILE_PATH="$CONFIG_INPUT"
-          else
-            DOXYFILE_PATH="$ROOT_DIR/$CONFIG_INPUT"
-          fi
-
-          if [[ -z "$WORK_INPUT" || "$WORK_INPUT" == "." ]]; then
-            WORK_DIR="$ROOT_DIR"
-          elif [[ "$WORK_INPUT" = /* ]]; then
-            WORK_DIR="$WORK_INPUT"
-          else
-            WORK_DIR="$ROOT_DIR/$WORK_INPUT"
-          fi
-
-          if [ ! -f "$DOXYFILE_PATH" ]; then
-            echo "❌ Resolved Doxyfile not found: $DOXYFILE_PATH"
-            exit 1
-          fi
-
-          if [ ! -d "$WORK_DIR" ]; then
-            echo "❌ Doxygen working directory does not exist: $WORK_DIR"
-            exit 1
-          fi
-
-          # Function to extract values from Doxyfile (handles comments and whitespace)
-          getval(){ awk -F'=' '/^'"$1"'[[:space:]]*=/ \
-            {gsub(/#.*$/,"",$2); gsub(/^[[:space:]]+|[[:space:]]+$/,"",$2); print $2}' "$DOXYFILE_PATH"; }
-
-          OUTDIR="$(getval OUTPUT_DIRECTORY)"
-          HTMLO="$(getval HTML_OUTPUT)"
-
-          if [ -z "$HTMLO" ]; then
-            HTMLO="html"
-          fi
-
-          if [ -n "$OUTDIR" ]; then
-            if [[ "$OUTDIR" = /* ]]; then
-              BASE_OUT="$OUTDIR"
-            else
-              BASE_OUT="$WORK_DIR/$OUTDIR"
-            fi
-          else
-            BASE_OUT="$WORK_DIR"
-          fi
-
-          if [[ "$HTMLO" = /* ]]; then
-            HTML_DIR="$HTMLO"
-          else
-            HTML_DIR="$BASE_OUT/$HTMLO"
-          fi
-
-          HTML_DIR="$(python3 -c 'import os,sys; print(os.path.normpath(sys.argv[1]))' "$HTML_DIR")"
-
-          echo "html_dir=$HTML_DIR" >> "$GITHUB_OUTPUT"
-          echo "Resolved Doxygen HTML dir (working dir: $WORK_DIR): $HTML_DIR"
-
       - name: Generate Doxygen documentation with versioning
         if: steps.doxygen-check.outputs.doxygen_needed == 'true'
         run: |
@@ -1272,7 +1272,7 @@ jobs:
       - name: Stage Doxygen into Jekyll (if enabled)
         if: ${{ inputs.jekyll_enabled == true && steps.doxygen-check.outputs.doxygen_needed == 'true' }}
         run: |
-          SRC="${{ steps.doxy-out.outputs.html_dir }}"
+          SRC="${{ steps.doxy_out.outputs.html_dir }}"
           DEST="${{ inputs.jekyll_source }}/api"
           if [ -d "$SRC" ]; then
             mkdir -p "$DEST"
@@ -1318,7 +1318,7 @@ jobs:
           # - Enables seamless navigation between Jekyll content and API docs
           # =============================================================================
 
-          if [ -d "${{ steps.doxy-out.outputs.html_dir }}" ]; then
+          if [ -d "${{ steps.doxy_out.outputs.html_dir }}" ]; then
             # Create centralized Doxygen directory structure
             DOXS_BASE="doxs"
             VERSIONED_DOXS="$DOXS_BASE/${{ needs.version-detection.outputs.version_name }}"
@@ -1328,9 +1328,9 @@ jobs:
 
             # Copy Doxygen output to centralized versioned directory
             if command -v rsync >/dev/null 2>&1; then
-              rsync -a --delete "${{ steps.doxy-out.outputs.html_dir }}"/ "$VERSIONED_DOXS"/
+              rsync -a --delete "${{ steps.doxy_out.outputs.html_dir }}"/ "$VERSIONED_DOXS"/
             else
-              cp -a "${{ steps.doxy-out.outputs.html_dir }}"/. "$VERSIONED_DOXS"/
+              cp -a "${{ steps.doxy_out.outputs.html_dir }}"/. "$VERSIONED_DOXS"/
             fi
 
             # Create symlink to latest stable version
@@ -1433,7 +1433,7 @@ jobs:
 
           echo "✅ Centralized Doxygen versioned artifacts created successfully"
           else
-          echo "⚠️  No Doxygen output found at ${{ steps.doxy-out.outputs.html_dir }}"
+          echo "⚠️  No Doxygen output found at ${{ steps.doxy_out.outputs.html_dir }}"
           fi
 
       # =============================================================================
@@ -1455,7 +1455,7 @@ jobs:
           echo "  - Pip cache directory: $(ls -la ~/.cache/pip 2>/dev/null | wc -l || echo '0') files"
           echo "  - NPM cache directory: $(ls -la ~/.npm 2>/dev/null | wc -l || echo '0') files"
           echo "  - Jekyll cache directory: $(ls -la vendor/bundle 2>/dev/null | wc -l || echo '0') files"
-          echo "  - Doxygen cache: $(ls -la ${{ steps.doxy-out.outputs.html_dir }} 2>/dev/null | wc -l || echo '0') files"
+          echo "  - Doxygen cache: $(ls -la ${{ steps.doxy_out.outputs.html_dir }} 2>/dev/null | wc -l || echo '0') files"
 
           # Check if dependency files exist for future cache effectiveness
           echo "🔍 Dependency Files Status:"
@@ -1882,15 +1882,15 @@ jobs:
           # Check for Doxygen output (if Jekyll not available or not enabled)
           if [ -z "$DEPLOY_PATH" ] && [ "${{ steps.doxygen-check.outputs.doxygen_needed }}" == "true" ]; then
           echo "🔍 Checking Doxygen build output..."
-          echo "Doxygen output dir (auto-detected): ${{ steps.doxy-out.outputs.html_dir }}"
+          echo "Doxygen output dir (auto-detected): ${{ steps.doxy_out.outputs.html_dir }}"
 
-            if [ -d "${{ steps.doxy-out.outputs.html_dir }}" ]; then
-              echo "✅ Doxygen build output found: ${{ steps.doxy-out.outputs.html_dir }}"
+            if [ -d "${{ steps.doxy_out.outputs.html_dir }}" ]; then
+              echo "✅ Doxygen build output found: ${{ steps.doxy_out.outputs.html_dir }}"
               echo "📁 Doxygen output contents:"
-              ls -la "${{ steps.doxy-out.outputs.html_dir }}"
-              DEPLOY_PATH="${{ steps.doxy-out.outputs.html_dir }}"
+              ls -la "${{ steps.doxy_out.outputs.html_dir }}"
+              DEPLOY_PATH="${{ steps.doxy_out.outputs.html_dir }}"
             else
-              echo "❌ Doxygen build output not found: ${{ steps.doxy-out.outputs.html_dir }}"
+              echo "❌ Doxygen build output not found: ${{ steps.doxy_out.outputs.html_dir }}"
             fi
           fi
 
@@ -1971,7 +1971,7 @@ jobs:
       # =============================================================================
       - name: Deploy Jekyll site to GitHub Pages
         if: ${{ inputs.deploy_pages == true }}
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ${{ env.DEPLOY_PATH || '_site' }}
@@ -1993,7 +1993,7 @@ jobs:
       # =============================================================================
       - name: Deploy Doxygen artifacts to GitHub Pages
         if: ${{ inputs.deploy_pages == true && steps.doxygen-check.outputs.doxygen_needed == 'true' }}
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./doxs
