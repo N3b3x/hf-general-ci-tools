@@ -100,7 +100,6 @@ jobs:
               echo "⚠️  clang-tidy config not found at $TIDY_CONFIG"
             fi
           fi
-
         - name: Report C/C++ files to lint
           run: |
             echo "🔍 Gathering files for clang-format and clang-tidy..."

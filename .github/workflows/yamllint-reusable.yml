@@ -182,8 +182,12 @@ jobs:
           echo "  Issues found: $ISSUES_FOUND"
           echo "  Result: $([ $ISSUES_FOUND -eq 0 ] && echo '✅ Success' || echo '❌ Failure')"
 
-          # Fail if issues found and strict mode is enabled
-          if [ "$STRICT_MODE" = "true" ] && [ $ISSUES_FOUND -gt 0 ]; then
-            echo "❌ Strict mode enabled - failing due to $ISSUES_FOUND issues"
+          # Fail the job if yamllint reported errors (warnings require --strict)
+          if [ $ISSUES_FOUND -gt 0 ]; then
+            if [ "$STRICT_MODE" = "true" ]; then
+              echo "❌ Strict mode enabled - failing due to $ISSUES_FOUND issues"
+            else
+              echo "❌ Failing due to $ISSUES_FOUND yamllint errors"
+            fi
             exit 1
           fi
