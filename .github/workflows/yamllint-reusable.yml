@@ -55,17 +55,17 @@ jobs:
       - name: Run yamllint
         id: lint
         run: |
-          # Parse inputs
+          # Parse inputs for configuration
           PATHS="${{ inputs.paths }}"
           CONFIG_FILE="${{ inputs.config_file }}"
           STRICT_MODE="${{ inputs.strict_mode }}"
           EXCLUDE_PATTERNS="${{ inputs.exclude_patterns }}"
 
-          # Convert comma-separated paths to array
+          # Convert comma-separated paths to array for processing
           IFS=',' read -ra PATH_ARRAY <<< "$PATHS"
           IFS=',' read -ra EXCLUDE_ARRAY <<< "$EXCLUDE_PATTERNS"
 
-          # Build yamllint command
+          # Build yamllint command for execution
           YAMLLINT_CMD="yamllint"
 
           # Add config file if it exists
