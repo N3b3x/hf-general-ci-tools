@@ -243,8 +243,6 @@ your-awesome-project/
 
 **GNU General Public License v3.0** - See the [LICENSE](LICENSE) file for details
 
-*Free for personal and commercial use*
-
 ---
 
 > **🧪 [Test 404 Page](nonexistent-page)** - (on live documentation) Click this link to test our custom 404 page!
