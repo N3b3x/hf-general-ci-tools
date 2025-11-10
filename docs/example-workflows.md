@@ -108,7 +108,7 @@ jobs:
   docs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
-      doxygen_config: "Doxyfile"
+      doxygen_config: "_config/Doxyfile"
       run_link_check: true
       link_check_paths: "docs/** *.md **/docs/**"
       jekyll_enabled: true
@@ -159,7 +159,7 @@ jobs:
   docs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
-      doxygen_config: "Doxyfile"
+      doxygen_config: "_config/Doxyfile"
       run_link_check: false
       jekyll_enabled: true
       jekyll_config: "_config.yml,_config_dev.yml"
@@ -211,7 +211,7 @@ jobs:
   docs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
-      doxygen_config: "Doxyfile"
+      doxygen_config: "_config/Doxyfile"
       run_link_check: true
       link_check_paths: "docs/** *.md **/docs/**"
       jekyll_enabled: true
@@ -255,7 +255,7 @@ jobs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
       checkout_recursive: true  # Enable submodule checkout
-      doxygen_config: "Doxyfile"
+      doxygen_config: "_config/Doxyfile"
       run_link_check: true
       link_check_paths: "docs/** *.md **/docs/**"
       jekyll_enabled: true

@@ -120,7 +120,7 @@ jobs:
   docs:
     uses: n3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
-      doxygen_config: "Doxyfile"
+      doxygen_config: "_config/Doxyfile"
       output_dir: "docs/doxygen/html"
 
   # Link validation
@@ -209,12 +209,13 @@ your-awesome-project/
 │   ├── index.md
 │   └── api/
 ├── _config/                   # Centralized lint/documentation configs
+│   ├── Doxyfile               # Documentation configuration (run from repo root)
 │   ├── .clang-format
 │   ├── .clang-tidy
 │   ├── .markdownlint.json
 │   ├── .markdownlint-rules.md
 │   └── .yamllint
-├── Doxyfile                   # Documentation configuration
+├── cpp-ci-test/               # Sample C/C++ sources for CI testing and Doxygen
 └── README.md                  # Project documentation
 ```
 

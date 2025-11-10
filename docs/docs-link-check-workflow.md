@@ -252,7 +252,7 @@ jobs:
   docs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
-      doxygen_config: Doxyfile
+      doxygen_config: _config/Doxyfile
       run_link_check: true
 
   link-check:

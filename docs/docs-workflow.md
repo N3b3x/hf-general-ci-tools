@@ -218,7 +218,7 @@ jobs:
   docs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
-      doxygen_config: Doxyfile
+      doxygen_config: _config/Doxyfile
       deployment_branch: gh-pages
 ```
 
@@ -229,7 +229,7 @@ jobs:
   docs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
-      doxygen_config: Doxyfile
+      doxygen_config: _config/Doxyfile
       deployment_branch: gh-pages
       checkout_recursive: true  # Enable submodule checkout
 ```
@@ -241,7 +241,7 @@ jobs:
   docs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
-      doxygen_config: Doxyfile
+      doxygen_config: _config/Doxyfile
       deployment_branch: gh-pages
       run_link_check: true
       link_check_paths: "docs/** *.md **/docs/**"
@@ -260,7 +260,7 @@ jobs:
   docs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
-      doxygen_config: Doxyfile
+      doxygen_config: _config/Doxyfile
       deployment_branch: gh-pages
       jekyll_enabled: true
       jekyll_config: "_config.yml"
@@ -277,7 +277,7 @@ jobs:
   docs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
-      doxygen_config: Doxyfile
+      doxygen_config: _config/Doxyfile
       deployment_branch: gh-pages
       jekyll_enabled: true
       jekyll_config: "_config.yml,_config_prod.yml"
@@ -315,7 +315,7 @@ jobs:
     uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
     with:
       checkout_recursive: true  # Required for submodule-based docs
-      doxygen_config: Doxyfile
+      doxygen_config: _config/Doxyfile
       deployment_branch: gh-pages
       jekyll_enabled: true
       jekyll_source: "docs"
@@ -359,23 +359,28 @@ The workflow uses optimized installation methods for maximum speed:
 
 ### Doxygen Configuration
 
-Create a `Doxyfile` in your project root:
+This repository ships with a preconfigured Doxygen setup at `_config/Doxyfile`. Run it
+from the repository root so the relative paths resolve correctly:
 
-```ini
-# Basic Doxygen configuration
-PROJECT_NAME           = "My C++ Project"
-PROJECT_NUMBER        = 1.0
-OUTPUT_DIRECTORY      = docs/doxygen
-INPUT                 = src include
-FILE_PATTERNS         = *.c *.cpp *.h *.hpp
-RECURSIVE             = YES
-GENERATE_HTML         = YES
-HTML_OUTPUT           = html
-GENERATE_LATEX        = NO
-EXTRACT_ALL           = YES
-EXTRACT_PRIVATE       = YES
-EXTRACT_STATIC        = YES
+```bash
+doxygen _config/Doxyfile
 ```
+
+The configuration publishes HTML documentation to `docs/doxygen/html`, enabling GitHub
+Pages to surface the generated API reference alongside the rest of the site. It also
+discovers the sample sources in `cpp-ci-test/`, which you can reuse to validate C and
+C++ focused workflows.
+
+When invoking the reusable workflow, point to this configuration explicitly:
+
+```yaml
+with:
+  doxygen_config: _config/Doxyfile
+  doxygen_working_directory: .
+```
+
+> Need to customize the inputs? Copy `_config/Doxyfile` and adjust `INPUT`,
+> `OUTPUT_DIRECTORY`, or any other settings to match your project's layout.
 
 ### Link Checking with Lychee
 
