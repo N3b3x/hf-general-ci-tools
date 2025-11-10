@@ -51,7 +51,7 @@ jobs:
 
       # Doxygen versioning
       doxygen_version_strategy: 'auto'
-      doxygen_config: 'Doxyfile'
+      doxygen_config: '_config/Doxyfile'
 
       # Jekyll configuration
       jekyll_enabled: 'true'
@@ -445,7 +445,7 @@ jobs:
     uses: 'N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@main'
     with:
       deployment_branch: 'gh-pages'
-      doxygen_config: 'Doxyfile'
+      doxygen_config: '_config/Doxyfile'
       jekyll_enabled: 'true'
       deploy_pages: 'true'
 ```
@@ -599,7 +599,7 @@ deployment_branch: 'gh-pages'  # Required for versioned documentation
 
 ```yaml
 doxygen_version_strategy: 'auto'  # or 'manual'
-doxygen_config: 'Doxyfile'  # Ensure Doxyfile exists
+doxygen_config: '_config/Doxyfile'  # Ensure Doxyfile exists
 ```
 
 #### 3. Jekyll Build Fails
