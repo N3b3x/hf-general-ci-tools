@@ -1,39 +1,4 @@
 ---
-# =============================================================================
-# Documentation Workflow (Reusable)
-# =============================================================================
-#
-# This workflow provides comprehensive documentation generation and deployment
-# with support for:
-# - Doxygen API documentation with centralized versioning
-# - Jekyll static site generation with front matter navigation
-# - Multi-version deployment to GitHub Pages (always enabled)
-# - Quality assurance (YAML/Markdown linting, link checking, spell checking)
-# - Centralized Doxygen artifact management in /doxs/ directory
-# - Git-synchronized versioning with automatic detection
-# - Parallel job execution for optimal performance
-# - Comprehensive input validation and security checks
-#
-# Architecture:
-# - Input Validation Job: Centralized validation of all workflow inputs
-# - Quality Checks Job: Parallel execution of linting and quality checks
-# - Version Detection Job: Git-based version detection and strategy determination
-# - Main Build Job: Documentation generation with caching and optimization
-# - Deploy Job: GitHub Pages deployment with versioned artifacts
-#
-# Performance Features:
-# - Comprehensive caching for all dependencies (Ruby, Node.js, pip, Jekyll, Doxygen)
-# - Parallel job execution to reduce total workflow time
-# - Conditional installation of tools only when needed
-# - Optimized dependency management based on actual requirements
-#
-# Security Features:
-# - Input validation with format checking and security pattern detection
-# - Pinned action versions for reproducible builds
-# - Safe handling of user inputs and file paths
-# - Comprehensive error handling and cleanup
-#
-# =============================================================================
 name: Documentation Workflow (Reusable)
 
 on:
