@@ -1,22 +1,4 @@
 ---
-# =============================================================================
-# Publish Versioned Documentation
-# =============================================================================
-# This workflow publishes the repository's documentation using the enhanced
-# docs.yml workflow with versioning enabled by default.
-#
-# Key Features:
-# - Automatic version detection from git branches/tags
-# - Versioned deployment to gh-pages branch
-# - Jekyll site generation with front matter navigation
-# - Quality assurance (link checking, markdown linting)
-# - Centralized Doxygen artifact management (if Doxygen is enabled)
-#
-# Versioning Strategy:
-# - main branch → development version
-# - release/* branches → versioned releases (e.g., v1.2.0)
-# - v* tags → stable releases (e.g., v1.2.0)
-# =============================================================================
 name: 📚 Publish Documentation
 
 on:
