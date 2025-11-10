@@ -15,7 +15,7 @@
   
 
     
-    .site-nav > ul.nav-list:first-child > li:not(:nth-child(4)) > a,
+    .site-nav > ul.nav-list:first-child > li:not(:nth-child(5)) > a,
     .site-nav > ul.nav-list:first-child > li > ul > li a {
       background-image: none;
     }
@@ -25,12 +25,12 @@
       background-image: none;
     }
 
-    .site-nav > ul.nav-list:first-child > li:nth-child(4) > a {
+    .site-nav > ul.nav-list:first-child > li:nth-child(5) > a {
       font-weight: 600;
       text-decoration: none;
-    }.site-nav > ul.nav-list:first-child > li:nth-child(4) > button svg {
+    }.site-nav > ul.nav-list:first-child > li:nth-child(5) > button svg {
       transform: rotate(-90deg);
-    }.site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(4) > ul.nav-list {
+    }.site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(5) > ul.nav-list {
       display: block;
     }
   </style>
@@ -50,21 +50,21 @@
 
 
   <!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>📖 Examples &amp; Guides | hf-general-ci-tools - development</title>
+<title>C/C++ Sample Sources for CI Experiments | hf-general-ci-tools - development</title>
 <meta name="generator" content="Jekyll v3.10.0" />
-<meta property="og:title" content="📖 Examples &amp; Guides" />
+<meta property="og:title" content="C/C++ Sample Sources for CI Experiments" />
 <meta name="author" content="N3b3x" />
 <meta property="og:locale" content="en" />
-<meta name="description" content="Comprehensive guides and real-world examples" />
-<meta property="og:description" content="Comprehensive guides and real-world examples" />
-<link rel="canonical" href="https://n3b3x.github.io/hf-general-ci-tools/development/guides/" />
-<meta property="og:url" content="https://n3b3x.github.io/hf-general-ci-tools/development/guides/" />
+<meta name="description" content="A comprehensive collection of reusable GitHub Actions workflows for general CI/CD tasks, including C/C++ linting, static analysis, documentation generation, and link checking" />
+<meta property="og:description" content="A comprehensive collection of reusable GitHub Actions workflows for general CI/CD tasks, including C/C++ linting, static analysis, documentation generation, and link checking" />
+<link rel="canonical" href="https://n3b3x.github.io/hf-general-ci-tools/development/cpp-ci-test/" />
+<meta property="og:url" content="https://n3b3x.github.io/hf-general-ci-tools/development/cpp-ci-test/" />
 <meta property="og:site_name" content="hf-general-ci-tools - development" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="📖 Examples &amp; Guides" />
+<meta property="twitter:title" content="C/C++ Sample Sources for CI Experiments" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"N3b3x","url":"https://github.com/n3b3x"},"description":"Comprehensive guides and real-world examples","headline":"📖 Examples &amp; Guides","url":"https://n3b3x.github.io/hf-general-ci-tools/development/guides/"}</script>
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"N3b3x","url":"https://github.com/n3b3x"},"description":"A comprehensive collection of reusable GitHub Actions workflows for general CI/CD tasks, including C/C++ linting, static analysis, documentation generation, and link checking","headline":"C/C++ Sample Sources for CI Experiments","url":"https://n3b3x.github.io/hf-general-ci-tools/development/cpp-ci-test/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -244,77 +244,41 @@
       <div id="main-content" class="main-content">
         <main>
           
-            <h1 id="examples--guides">
+            <h1 id="cc-sample-sources-for-ci-experiments">
   
   
-    <a href="#examples--guides" class="anchor-heading" aria-labelledby="examples--guides"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Examples &amp; Guides
+    <a href="#cc-sample-sources-for-ci-experiments" class="anchor-heading" aria-labelledby="cc-sample-sources-for-ci-experiments"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> C/C++ Sample Sources for CI Experiments
   
   
 </h1>
     
 
-<p>This section provides comprehensive guides and real-world examples for using the workflows in this repository.</p>
-<h2 id="available-guides">
-  
-  
-    <a href="#available-guides" class="anchor-heading" aria-labelledby="available-guides"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Available Guides
-  
-  
-</h2>
-    
+<p>This directory contains small, well-documented C and C++ translation units that
+exercise the C/C++ related tooling showcased in this repository:</p>
 
 <ul>
-  <li><strong><a href="/hf-general-ci-tools/development/docs/jekyll-guide.html">Jekyll Configuration Guide</a></strong> - Complete guide to Jekyll configuration,
-CI optimization, and workflow examples</li>
-  <li><strong><a href="/hf-general-ci-tools/development/docs/example-workflows.html">Example Workflows</a></strong> - Real-world usage examples for consumer repositories</li>
+  <li><code class="language-plaintext highlighter-rouge">include/geometry.h</code> and <code class="language-plaintext highlighter-rouge">src/geometry.c</code> provide a handful of geometry helper
+functions written in C.</li>
+  <li><code class="language-plaintext highlighter-rouge">include/greeter.hpp</code> and <code class="language-plaintext highlighter-rouge">src/greeter.cpp</code> deliver a simple C++ class used to
+model basic object-oriented behaviour.</li>
 </ul>
-<h2 id="getting-started">
-  
-  
-    <a href="#getting-started" class="anchor-heading" aria-labelledby="getting-started"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Getting Started
-  
-  
-</h2>
-    
 
-<p>If you’re new to this repository, start with the <a href="/hf-general-ci-tools/development/docs/example-workflows.html">Example Workflows</a> to see how to
-integrate these workflows into your project.</p>
+<p>The files include Doxygen comments and are referenced by <code class="language-plaintext highlighter-rouge">_config/Doxyfile</code>,
+which means they are automatically published when you run</p>
 
-<p>For advanced Jekyll configuration and CI optimization, refer to the
-<a href="/hf-general-ci-tools/development/docs/jekyll-guide.html">Jekyll Configuration Guide</a>.</p><hr />
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>doxygen _config/Doxyfile
+</pre></td></tr></tbody></table></div></code></pre></div></div>
 
-<p><a href="/hf-general-ci-tools/development/workflows/">← Previous: Reusable Workflows</a></p>
-
-<div class="table-wrapper"><table>
-  <tbody>
-    <tr>
-      <td><strong>📚 <a href="/hf-general-ci-tools/development/docs/">All Documentation</a></strong></td>
-      <td><strong>🏠 <a href="/hf-general-ci-tools/development/">Main README</a></strong></td>
-    </tr>
-  </tbody>
-</table></div>
+<p>The generated documentation lands under <code class="language-plaintext highlighter-rouge">docs/doxygen/html</code>. This location is
+compatible with the Jekyll + GitHub Pages setup used by the Publish Docs
+workflows, so you can push the rendered artefacts alongside the rest of the
+documentation if desired.</p>
 
           
 
           
-            <hr>
-<h2 class="text-delta">📋 Table of Contents</h2>
-
-<ul>
-  
-  <li>
-    <a href="/hf-general-ci-tools/development/docs/jekyll-guide.html">🔧 Jekyll Configuration Guide</a>
-  </li>
-  
-  <li>
-    <a href="/hf-general-ci-tools/development/docs/example-workflows.html">🚀 Example Workflows</a>
-  </li>
-  
-  <li>
-    <a href="/hf-general-ci-tools/development/docs/versioning-guide.html">🔀 Documentation Versioning Guide</a>
-  </li>
-  
-</ul>
+            
           
         </main>
         

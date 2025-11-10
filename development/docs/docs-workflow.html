@@ -163,7 +163,7 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
       </button><a href="/hf-general-ci-tools/development/workflows/" class="nav-list-link">🔄 Reusable Workflows</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/c-cpp-lint-workflow.html" class="nav-list-link">🔧 C/C++ Lint Workflow</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/c-cpp-static-analysis-workflow.html" class="nav-list-link">🛡️ Static Analysis Workflow</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/docs-workflow.html" class="nav-list-link">📚 Documentation Workflow</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/docs-link-check-workflow.html" class="nav-list-link">🔗 Link Check Workflow</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/yamllint-workflow.html" class="nav-list-link">📝 YAML Lint Workflow</a></li></ul></li><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in 📖 Examples & Guides category" aria-pressed="false">
         <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
-      </button><a href="/hf-general-ci-tools/development/guides/" class="nav-list-link">📖 Examples & Guides</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/jekyll-guide.html" class="nav-list-link">🔧 Jekyll Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/example-workflows.html" class="nav-list-link">🚀 Example Workflows</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/versioning-guide.html" class="nav-list-link">🔀 Documentation Versioning Guide</a></li></ul></li></ul>
+      </button><a href="/hf-general-ci-tools/development/guides/" class="nav-list-link">📖 Examples & Guides</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/jekyll-guide.html" class="nav-list-link">🔧 Jekyll Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/example-workflows.html" class="nav-list-link">🚀 Example Workflows</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/versioning-guide.html" class="nav-list-link">🔀 Documentation Versioning Guide</a></li></ul></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/cpp-ci-test/" class="nav-list-link">C/C++ Sample Sources for CI Experiments</a></li></ul>
   
 </nav>
 
@@ -956,7 +956,7 @@ multiple versions of your documentation:</p>
   <span class="na">docs</span><span class="pi">:</span>
     <span class="na">uses</span><span class="pi">:</span> <span class="s">N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1</span>
     <span class="na">with</span><span class="pi">:</span>
-      <span class="na">doxygen_config</span><span class="pi">:</span> <span class="s">Doxyfile</span>
+      <span class="na">doxygen_config</span><span class="pi">:</span> <span class="s">_config/Doxyfile</span>
       <span class="na">deployment_branch</span><span class="pi">:</span> <span class="s">gh-pages</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
 <h3 id="with-submodule-support">
@@ -979,7 +979,7 @@ multiple versions of your documentation:</p>
   <span class="na">docs</span><span class="pi">:</span>
     <span class="na">uses</span><span class="pi">:</span> <span class="s">N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1</span>
     <span class="na">with</span><span class="pi">:</span>
-      <span class="na">doxygen_config</span><span class="pi">:</span> <span class="s">Doxyfile</span>
+      <span class="na">doxygen_config</span><span class="pi">:</span> <span class="s">_config/Doxyfile</span>
       <span class="na">deployment_branch</span><span class="pi">:</span> <span class="s">gh-pages</span>
       <span class="na">checkout_recursive</span><span class="pi">:</span> <span class="no">true</span>  <span class="c1"># Enable submodule checkout</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
@@ -1010,7 +1010,7 @@ multiple versions of your documentation:</p>
   <span class="na">docs</span><span class="pi">:</span>
     <span class="na">uses</span><span class="pi">:</span> <span class="s">N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1</span>
     <span class="na">with</span><span class="pi">:</span>
-      <span class="na">doxygen_config</span><span class="pi">:</span> <span class="s">Doxyfile</span>
+      <span class="na">doxygen_config</span><span class="pi">:</span> <span class="s">_config/Doxyfile</span>
       <span class="na">deployment_branch</span><span class="pi">:</span> <span class="s">gh-pages</span>
       <span class="na">run_link_check</span><span class="pi">:</span> <span class="no">true</span>
       <span class="na">link_check_paths</span><span class="pi">:</span> <span class="s2">"</span><span class="s">docs/**</span><span class="nv"> </span><span class="s">*.md</span><span class="nv"> </span><span class="s">**/docs/**"</span>
@@ -1046,7 +1046,7 @@ multiple versions of your documentation:</p>
   <span class="na">docs</span><span class="pi">:</span>
     <span class="na">uses</span><span class="pi">:</span> <span class="s">N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1</span>
     <span class="na">with</span><span class="pi">:</span>
-      <span class="na">doxygen_config</span><span class="pi">:</span> <span class="s">Doxyfile</span>
+      <span class="na">doxygen_config</span><span class="pi">:</span> <span class="s">_config/Doxyfile</span>
       <span class="na">deployment_branch</span><span class="pi">:</span> <span class="s">gh-pages</span>
       <span class="na">jekyll_enabled</span><span class="pi">:</span> <span class="no">true</span>
       <span class="na">jekyll_config</span><span class="pi">:</span> <span class="s2">"</span><span class="s">_config.yml"</span>
@@ -1087,7 +1087,7 @@ multiple versions of your documentation:</p>
   <span class="na">docs</span><span class="pi">:</span>
     <span class="na">uses</span><span class="pi">:</span> <span class="s">N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1</span>
     <span class="na">with</span><span class="pi">:</span>
-      <span class="na">doxygen_config</span><span class="pi">:</span> <span class="s">Doxyfile</span>
+      <span class="na">doxygen_config</span><span class="pi">:</span> <span class="s">_config/Doxyfile</span>
       <span class="na">deployment_branch</span><span class="pi">:</span> <span class="s">gh-pages</span>
       <span class="na">jekyll_enabled</span><span class="pi">:</span> <span class="no">true</span>
       <span class="na">jekyll_config</span><span class="pi">:</span> <span class="s2">"</span><span class="s">_config.yml,_config_prod.yml"</span>
@@ -1154,7 +1154,7 @@ multiple versions of your documentation:</p>
     <span class="na">uses</span><span class="pi">:</span> <span class="s">N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1</span>
     <span class="na">with</span><span class="pi">:</span>
       <span class="na">checkout_recursive</span><span class="pi">:</span> <span class="no">true</span>  <span class="c1"># Required for submodule-based docs</span>
-      <span class="na">doxygen_config</span><span class="pi">:</span> <span class="s">Doxyfile</span>
+      <span class="na">doxygen_config</span><span class="pi">:</span> <span class="s">_config/Doxyfile</span>
       <span class="na">deployment_branch</span><span class="pi">:</span> <span class="s">gh-pages</span>
       <span class="na">jekyll_enabled</span><span class="pi">:</span> <span class="no">true</span>
       <span class="na">jekyll_source</span><span class="pi">:</span> <span class="s2">"</span><span class="s">docs"</span>
@@ -1234,35 +1234,32 @@ multiple versions of your documentation:</p>
 </h3>
     
 
-<p>Create a <code class="language-plaintext highlighter-rouge">Doxyfile</code> in your project root:</p>
+<p>This repository ships with a preconfigured Doxygen setup at <code class="language-plaintext highlighter-rouge">_config/Doxyfile</code>. Run it
+from the repository root so the relative paths resolve correctly:</p>
 
-<div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>doxygen _config/Doxyfile
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<p>The configuration publishes HTML documentation to <code class="language-plaintext highlighter-rouge">docs/doxygen/html</code>, enabling GitHub
+Pages to surface the generated API reference alongside the rest of the site. It also
+discovers the sample sources in <code class="language-plaintext highlighter-rouge">cpp-ci-test/</code>, which you can reuse to validate C and
+C++ focused workflows.</p>
+
+<p>When invoking the reusable workflow, point to this configuration explicitly:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-</pre></td><td class="rouge-code"><pre><span class="c"># Basic Doxygen configuration
-</span><span class="py">PROJECT_NAME</span>           <span class="p">=</span> <span class="s">"My C++ Project"</span>
-<span class="py">PROJECT_NUMBER</span>        <span class="p">=</span> <span class="s">1.0</span>
-<span class="py">OUTPUT_DIRECTORY</span>      <span class="p">=</span> <span class="s">docs/doxygen</span>
-<span class="py">INPUT</span>                 <span class="p">=</span> <span class="s">src include</span>
-<span class="py">FILE_PATTERNS</span>         <span class="p">=</span> <span class="s">*.c *.cpp *.h *.hpp</span>
-<span class="py">RECURSIVE</span>             <span class="p">=</span> <span class="s">YES</span>
-<span class="py">GENERATE_HTML</span>         <span class="p">=</span> <span class="s">YES</span>
-<span class="py">HTML_OUTPUT</span>           <span class="p">=</span> <span class="s">html</span>
-<span class="py">GENERATE_LATEX</span>        <span class="p">=</span> <span class="s">NO</span>
-<span class="py">EXTRACT_ALL</span>           <span class="p">=</span> <span class="s">YES</span>
-<span class="py">EXTRACT_PRIVATE</span>       <span class="p">=</span> <span class="s">YES</span>
-<span class="py">EXTRACT_STATIC</span>        <span class="p">=</span> <span class="s">YES</span>
+</pre></td><td class="rouge-code"><pre><span class="na">with</span><span class="pi">:</span>
+  <span class="na">doxygen_config</span><span class="pi">:</span> <span class="s">_config/Doxyfile</span>
+  <span class="na">doxygen_working_directory</span><span class="pi">:</span> <span class="s">.</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
+
+<blockquote>
+  <p>Need to customize the inputs? Copy <code class="language-plaintext highlighter-rouge">_config/Doxyfile</code> and adjust <code class="language-plaintext highlighter-rouge">INPUT</code>,
+<code class="language-plaintext highlighter-rouge">OUTPUT_DIRECTORY</code>, or any other settings to match your project’s layout.</p>
+</blockquote>
 <h3 id="link-checking-with-lychee">
   
   

@@ -70,7 +70,7 @@ jobs:
       # Note: Doxygen versioning is automatically synchronized with git-based versioning.
       # Doxygen artifacts are centrally managed in /doxs/ and symlinked to Jekyll sites
       # for seamless integration.
-      doxygen_config: 'Doxyfile'         # Path to your Doxyfile
+      doxygen_config: '_config/Doxyfile'         # Path to your Doxyfile
       doxygen_fail_on_warnings: 'false'  # Set to true for strict builds
 
       # =============================================================================

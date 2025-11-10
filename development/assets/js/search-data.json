@@ -57,7 +57,7 @@
   },"8": {
     "doc": "🚀 hf-general-ci-tools",
     "title": "🎯 Using Reusable Workflows",
-    "content": "For other repositories - Copy and customize these examples for your project . 🔧 Basic CI Pipeline . | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 . | name: 🚀 CI Pipeline on: push: { branches: [ main ] } pull_request: { branches: [ main ] } jobs: # Code quality checks lint: uses: n3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1 with: clang_version: \"20\" style: \"file\" extensions: \"c,cpp,h,hpp\" # Security analysis static: uses: n3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1 with: paths: \"src include\" std: \"c++17\" strict: false # Documentation generation docs: uses: n3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: \"Doxyfile\" output_dir: \"docs/doxygen/html\" # Link validation link-check: uses: n3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: paths: \"docs/**,*.md\" . | . 🎨 Individual Workflow Examples . 🔧 C/C++ Linting Only ```yaml name: Code Quality on: [push, pull_request] jobs: lint: uses: n3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1 with: source_dirs: \"src/\" include_patterns: \"*.cpp,*.hpp,*.c,*.h\" clang_version: \"20\" style: \"file\" ``` 📚 Documentation Only ```yaml name: Build Docs on: [push] jobs: docs: uses: n3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: jekyll_enabled: true jekyll_source: \"docs\" deploy_pages: true run_link_check: true ``` 🔗 Link Checking Only ```yaml name: Check Links on: [push, pull_request] jobs: link-check: uses: n3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: paths: \"docs/**,*.md\" verbose: true timeout: \"30\" ``` . ",
+    "content": "For other repositories - Copy and customize these examples for your project . 🔧 Basic CI Pipeline . | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 . | name: 🚀 CI Pipeline on: push: { branches: [ main ] } pull_request: { branches: [ main ] } jobs: # Code quality checks lint: uses: n3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1 with: clang_version: \"20\" style: \"file\" extensions: \"c,cpp,h,hpp\" # Security analysis static: uses: n3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1 with: paths: \"src include\" std: \"c++17\" strict: false # Documentation generation docs: uses: n3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: \"_config/Doxyfile\" output_dir: \"docs/doxygen/html\" # Link validation link-check: uses: n3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: paths: \"docs/**,*.md\" . | . 🎨 Individual Workflow Examples . 🔧 C/C++ Linting Only ```yaml name: Code Quality on: [push, pull_request] jobs: lint: uses: n3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1 with: source_dirs: \"src/\" include_patterns: \"*.cpp,*.hpp,*.c,*.h\" clang_version: \"20\" style: \"file\" ``` 📚 Documentation Only ```yaml name: Build Docs on: [push] jobs: docs: uses: n3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: jekyll_enabled: true jekyll_source: \"docs\" deploy_pages: true run_link_check: true ``` 🔗 Link Checking Only ```yaml name: Check Links on: [push, pull_request] jobs: link-check: uses: n3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: paths: \"docs/**,*.md\" verbose: true timeout: \"30\" ``` . ",
     "url": "/hf-general-ci-tools/development/#-using-reusable-workflows",
     
     "relUrl": "/#-using-reusable-workflows"
@@ -78,7 +78,7 @@
   },"11": {
     "doc": "🚀 hf-general-ci-tools",
     "title": "🏗️ Recommended Project Structure",
-    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 . | your-awesome-project/ ├── .github/workflows/ # Your CI workflows │ └── ci.yml # Main CI pipeline ├── src/ # Source code │ ├── main.cpp │ └── utils/ ├── include/ # Header files │ └── utils.h ├── docs/ # Documentation │ ├── index.md │ └── api/ ├── _config/ # Centralized lint/documentation configs │ ├── .clang-format │ ├── .clang-tidy │ ├── .markdownlint.json │ ├── .markdownlint-rules.md │ └── .yamllint ├── Doxyfile # Documentation configuration └── README.md # Project documentation . | . ",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 . | your-awesome-project/ ├── .github/workflows/ # Your CI workflows │ └── ci.yml # Main CI pipeline ├── src/ # Source code │ ├── main.cpp │ └── utils/ ├── include/ # Header files │ └── utils.h ├── docs/ # Documentation │ ├── index.md │ └── api/ ├── _config/ # Centralized lint/documentation configs │ ├── Doxyfile # Documentation configuration (run from repo root) │ ├── .clang-format │ ├── .clang-tidy │ ├── .markdownlint.json │ ├── .markdownlint-rules.md │ └── .yamllint ├── cpp-ci-test/ # Sample C/C++ sources for CI testing and Doxygen └── README.md # Project documentation . | . ",
     "url": "/hf-general-ci-tools/development/#%EF%B8%8F-recommended-project-structure",
     
     "relUrl": "/#️-recommended-project-structure"
@@ -547,7 +547,7 @@
   },"78": {
     "doc": "🔗 Link Check Workflow",
     "title": "Combined with Documentation Workflow",
-    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 . | name: Documentation Pipeline on: push: branches: [main] jobs: docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: Doxyfile run_link_check: true link-check: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: paths: \"docs/**\" . | . ",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 . | name: Documentation Pipeline on: push: branches: [main] jobs: docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: _config/Doxyfile run_link_check: true link-check: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: paths: \"docs/**\" . | . ",
     "url": "/hf-general-ci-tools/development/docs/docs-link-check-workflow.html#combined-with-documentation-workflow",
     
     "relUrl": "/docs/docs-link-check-workflow.html#combined-with-documentation-workflow"
@@ -806,35 +806,35 @@
   },"115": {
     "doc": "📚 Documentation Workflow",
     "title": "Basic Usage",
-    "content": "| 1 2 3 4 5 6 . | jobs: docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: Doxyfile deployment_branch: gh-pages . | . ",
+    "content": "| 1 2 3 4 5 6 . | jobs: docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: _config/Doxyfile deployment_branch: gh-pages . | . ",
     "url": "/hf-general-ci-tools/development/docs/docs-workflow.html#basic-usage",
     
     "relUrl": "/docs/docs-workflow.html#basic-usage"
   },"116": {
     "doc": "📚 Documentation Workflow",
     "title": "With Submodule Support",
-    "content": "| 1 2 3 4 5 6 7 . | jobs: docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: Doxyfile deployment_branch: gh-pages checkout_recursive: true # Enable submodule checkout . | . ",
+    "content": "| 1 2 3 4 5 6 7 . | jobs: docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: _config/Doxyfile deployment_branch: gh-pages checkout_recursive: true # Enable submodule checkout . | . ",
     "url": "/hf-general-ci-tools/development/docs/docs-workflow.html#with-submodule-support",
     
     "relUrl": "/docs/docs-workflow.html#with-submodule-support"
   },"117": {
     "doc": "📚 Documentation Workflow",
     "title": "With Documentation Quality Checks",
-    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 . | jobs: docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: Doxyfile deployment_branch: gh-pages run_link_check: true link_check_paths: \"docs/** *.md **/docs/**\" run_markdown_lint: true markdown_lint_paths: \"docs/** *.md\" run_spell_check: true spell_check_paths: \"docs/** *.md\" spell_check_config: \".cspell.json\" deploy_pages: true . | . ",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 . | jobs: docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: _config/Doxyfile deployment_branch: gh-pages run_link_check: true link_check_paths: \"docs/** *.md **/docs/**\" run_markdown_lint: true markdown_lint_paths: \"docs/** *.md\" run_spell_check: true spell_check_paths: \"docs/** *.md\" spell_check_config: \".cspell.json\" deploy_pages: true . | . ",
     "url": "/hf-general-ci-tools/development/docs/docs-workflow.html#with-documentation-quality-checks",
     
     "relUrl": "/docs/docs-workflow.html#with-documentation-quality-checks"
   },"118": {
     "doc": "📚 Documentation Workflow",
     "title": "With Jekyll Integration",
-    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 . | jobs: docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: Doxyfile deployment_branch: gh-pages jekyll_enabled: true jekyll_config: \"_config.yml\" jekyll_source: \"docs\" jekyll_destination: \"_site\" run_link_check: true deploy_pages: true . | . ",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 . | jobs: docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: _config/Doxyfile deployment_branch: gh-pages jekyll_enabled: true jekyll_config: \"_config.yml\" jekyll_source: \"docs\" jekyll_destination: \"_site\" run_link_check: true deploy_pages: true . | . ",
     "url": "/hf-general-ci-tools/development/docs/docs-workflow.html#with-jekyll-integration",
     
     "relUrl": "/docs/docs-workflow.html#with-jekyll-integration"
   },"119": {
     "doc": "📚 Documentation Workflow",
     "title": "Advanced Jekyll Configuration",
-    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 . | jobs: docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: Doxyfile deployment_branch: gh-pages jekyll_enabled: true jekyll_config: \"_config.yml,_config_prod.yml\" jekyll_source: \"docs\" jekyll_destination: \"_site\" jekyll_environment: \"production\" jekyll_safe: true jekyll_verbose: true jekyll_strict_front_matter: true jekyll_drafts: false jekyll_future: false jekyll_unpublished: false run_link_check: true deploy_pages: true . | . ",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 . | jobs: docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: _config/Doxyfile deployment_branch: gh-pages jekyll_enabled: true jekyll_config: \"_config.yml,_config_prod.yml\" jekyll_source: \"docs\" jekyll_destination: \"_site\" jekyll_environment: \"production\" jekyll_safe: true jekyll_verbose: true jekyll_strict_front_matter: true jekyll_drafts: false jekyll_future: false jekyll_unpublished: false run_link_check: true deploy_pages: true . | . ",
     "url": "/hf-general-ci-tools/development/docs/docs-workflow.html#advanced-jekyll-configuration",
     
     "relUrl": "/docs/docs-workflow.html#advanced-jekyll-configuration"
@@ -848,7 +848,7 @@
   },"121": {
     "doc": "📚 Documentation Workflow",
     "title": "Submodule Documentation Projects",
-    "content": "| 1 2 3 4 5 6 7 8 9 10 11 . | jobs: docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: checkout_recursive: true # Required for submodule-based docs doxygen_config: Doxyfile deployment_branch: gh-pages jekyll_enabled: true jekyll_source: \"docs\" run_link_check: true link_check_paths: \"docs/** *.md **/docs/**\" . | . ",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 . | jobs: docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: checkout_recursive: true # Required for submodule-based docs doxygen_config: _config/Doxyfile deployment_branch: gh-pages jekyll_enabled: true jekyll_source: \"docs\" run_link_check: true link_check_paths: \"docs/** *.md **/docs/**\" . | . ",
     "url": "/hf-general-ci-tools/development/docs/docs-workflow.html#submodule-documentation-projects",
     
     "relUrl": "/docs/docs-workflow.html#submodule-documentation-projects"
@@ -876,7 +876,7 @@
   },"125": {
     "doc": "📚 Documentation Workflow",
     "title": "Doxygen Configuration",
-    "content": "Create a Doxyfile in your project root: . | 1 2 3 4 5 6 7 8 9 10 11 12 13 . | # Basic Doxygen configuration PROJECT_NAME = \"My C++ Project\" PROJECT_NUMBER = 1.0 OUTPUT_DIRECTORY = docs/doxygen INPUT = src include FILE_PATTERNS = *.c *.cpp *.h *.hpp RECURSIVE = YES GENERATE_HTML = YES HTML_OUTPUT = html GENERATE_LATEX = NO EXTRACT_ALL = YES EXTRACT_PRIVATE = YES EXTRACT_STATIC = YES . | . ",
+    "content": "This repository ships with a preconfigured Doxygen setup at _config/Doxyfile. Run it from the repository root so the relative paths resolve correctly: . | 1 . | doxygen _config/Doxyfile . | . The configuration publishes HTML documentation to docs/doxygen/html, enabling GitHub Pages to surface the generated API reference alongside the rest of the site. It also discovers the sample sources in cpp-ci-test/, which you can reuse to validate C and C++ focused workflows. When invoking the reusable workflow, point to this configuration explicitly: . | 1 2 3 . | with: doxygen_config: _config/Doxyfile doxygen_working_directory: . | . Need to customize the inputs? Copy _config/Doxyfile and adjust INPUT, OUTPUT_DIRECTORY, or any other settings to match your project’s layout. ",
     "url": "/hf-general-ci-tools/development/docs/docs-workflow.html#doxygen-configuration",
     
     "relUrl": "/docs/docs-workflow.html#doxygen-configuration"
@@ -1079,28 +1079,28 @@
   },"154": {
     "doc": "🚀 Example Workflows",
     "title": "🚀 Advanced Parallel Workflow",
-    "content": "Use Case: Production projects requiring comprehensive CI/CD with all checks running in parallel. | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 . | name: 🚀 Advanced CI on: push: branches: [main, develop, release/*] pull_request: branches: [main, develop] workflow_dispatch: inputs: run_strict_checks: description: 'Run strict static analysis' required: false default: false type: boolean jobs: # C/C++ Linting lint: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1 with: clang_version: \"20\" style: \"file\" tidy_checks: \"performance-*,modernize-*,readability-*\" extensions: \"c,cpp,cc,cxx,h,hpp\" ignore: \"build|.git|third_party\" files_changed_only: true # Static Analysis static-analysis: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1 with: paths: \"src include examples\" std: \"c++17\" strict: $ # Documentation Generation docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: \"Doxyfile\" run_link_check: true link_check_paths: \"docs/** *.md **/docs/**\" jekyll_enabled: true jekyll_config: \"_config.yml,_config_prod.yml\" jekyll_environment: \"production\" # YAML Linting yaml-lint: uses: N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1 with: paths: \"**/*.yml,**/*.yaml\" strict_mode: false # Link Checking link-check: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: paths: \"docs/** *.md **/docs/**\" fail_on_errors: true timeout: \"30\" . | . ",
+    "content": "Use Case: Production projects requiring comprehensive CI/CD with all checks running in parallel. | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 . | name: 🚀 Advanced CI on: push: branches: [main, develop, release/*] pull_request: branches: [main, develop] workflow_dispatch: inputs: run_strict_checks: description: 'Run strict static analysis' required: false default: false type: boolean jobs: # C/C++ Linting lint: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1 with: clang_version: \"20\" style: \"file\" tidy_checks: \"performance-*,modernize-*,readability-*\" extensions: \"c,cpp,cc,cxx,h,hpp\" ignore: \"build|.git|third_party\" files_changed_only: true # Static Analysis static-analysis: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1 with: paths: \"src include examples\" std: \"c++17\" strict: $ # Documentation Generation docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: \"_config/Doxyfile\" run_link_check: true link_check_paths: \"docs/** *.md **/docs/**\" jekyll_enabled: true jekyll_config: \"_config.yml,_config_prod.yml\" jekyll_environment: \"production\" # YAML Linting yaml-lint: uses: N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1 with: paths: \"**/*.yml,**/*.yaml\" strict_mode: false # Link Checking link-check: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: paths: \"docs/** *.md **/docs/**\" fail_on_errors: true timeout: \"30\" . | . ",
     "url": "/hf-general-ci-tools/development/docs/example-workflows.html#-advanced-parallel-workflow",
     
     "relUrl": "/docs/example-workflows.html#-advanced-parallel-workflow"
   },"155": {
     "doc": "🚀 Example Workflows",
     "title": "🔧 Development Workflow",
-    "content": "Use Case: Development branches with relaxed checks and draft documentation. | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 . | name: 🔧 Development CI on: push: branches: [develop, feature/*] pull_request: branches: [develop] jobs: # Quick lint check lint: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1 with: clang_version: \"20\" style: \"file\" files_changed_only: true # Documentation with drafts docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: \"Doxyfile\" run_link_check: false jekyll_enabled: true jekyll_config: \"_config.yml,_config_dev.yml\" jekyll_environment: \"development\" jekyll_drafts: true jekyll_future: true . | . ",
+    "content": "Use Case: Development branches with relaxed checks and draft documentation. | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 . | name: 🔧 Development CI on: push: branches: [develop, feature/*] pull_request: branches: [develop] jobs: # Quick lint check lint: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1 with: clang_version: \"20\" style: \"file\" files_changed_only: true # Documentation with drafts docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: \"_config/Doxyfile\" run_link_check: false jekyll_enabled: true jekyll_config: \"_config.yml,_config_dev.yml\" jekyll_environment: \"development\" jekyll_drafts: true jekyll_future: true . | . ",
     "url": "/hf-general-ci-tools/development/docs/example-workflows.html#-development-workflow",
     
     "relUrl": "/docs/example-workflows.html#-development-workflow"
   },"156": {
     "doc": "🚀 Example Workflows",
     "title": "📦 Release Workflow",
-    "content": "Use Case: Release branches with strict checks and production documentation. | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 . | name: 📦 Release CI on: push: branches: [release/*] workflow_dispatch: inputs: release_version: description: 'Release version tag' required: true type: string jobs: # Strict linting lint: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1 with: clang_version: \"20\" style: \"file\" tidy_checks: \"performance-*,modernize-*,readability-*,bugprone-*\" extensions: \"c,cpp,cc,cxx,h,hpp\" ignore: \"build|.git\" files_changed_only: false # Strict static analysis static-analysis: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1 with: paths: \"src include examples\" std: \"c++17\" strict: true # Production documentation docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: \"Doxyfile\" run_link_check: true link_check_paths: \"docs/** *.md **/docs/**\" jekyll_enabled: true jekyll_config: \"_config.yml,_config_prod.yml\" jekyll_environment: \"production\" # Comprehensive link checking link-check: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: paths: \"docs/** *.md **/docs/**\" fail_on_errors: true timeout: \"60\" # YAML validation yaml-lint: uses: N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1 with: paths: \"**/*.yml,**/*.yaml\" strict_mode: true . | . ",
+    "content": "Use Case: Release branches with strict checks and production documentation. | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 . | name: 📦 Release CI on: push: branches: [release/*] workflow_dispatch: inputs: release_version: description: 'Release version tag' required: true type: string jobs: # Strict linting lint: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1 with: clang_version: \"20\" style: \"file\" tidy_checks: \"performance-*,modernize-*,readability-*,bugprone-*\" extensions: \"c,cpp,cc,cxx,h,hpp\" ignore: \"build|.git\" files_changed_only: false # Strict static analysis static-analysis: uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1 with: paths: \"src include examples\" std: \"c++17\" strict: true # Production documentation docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: doxygen_config: \"_config/Doxyfile\" run_link_check: true link_check_paths: \"docs/** *.md **/docs/**\" jekyll_enabled: true jekyll_config: \"_config.yml,_config_prod.yml\" jekyll_environment: \"production\" # Comprehensive link checking link-check: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: paths: \"docs/** *.md **/docs/**\" fail_on_errors: true timeout: \"60\" # YAML validation yaml-lint: uses: N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1 with: paths: \"**/*.yml,**/*.yaml\" strict_mode: true . | . ",
     "url": "/hf-general-ci-tools/development/docs/example-workflows.html#-release-workflow",
     
     "relUrl": "/docs/example-workflows.html#-release-workflow"
   },"157": {
     "doc": "🚀 Example Workflows",
     "title": "📚 Submodule Documentation Workflow",
-    "content": "Use Case: Projects with documentation stored in submodules or external repositories. | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 . | name: 📚 Submodule Documentation CI on: push: branches: [main, develop] pull_request: branches: [main] jobs: # Documentation with submodule support docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: checkout_recursive: true # Enable submodule checkout doxygen_config: \"Doxyfile\" run_link_check: true link_check_paths: \"docs/** *.md **/docs/**\" jekyll_enabled: true jekyll_source: \"docs\" jekyll_config: \"_config.yml\" run_markdown_lint: true markdown_lint_paths: \"docs/** *.md\" run_spell_check: true spell_check_paths: \"docs/** *.md\" # Link checking for submodule content link-check: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: paths: \"docs/** *.md **/docs/**\" fail_on_errors: true timeout: \"30\" . | . ",
+    "content": "Use Case: Projects with documentation stored in submodules or external repositories. | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 . | name: 📚 Submodule Documentation CI on: push: branches: [main, develop] pull_request: branches: [main] jobs: # Documentation with submodule support docs: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1 with: checkout_recursive: true # Enable submodule checkout doxygen_config: \"_config/Doxyfile\" run_link_check: true link_check_paths: \"docs/** *.md **/docs/**\" jekyll_enabled: true jekyll_source: \"docs\" jekyll_config: \"_config.yml\" run_markdown_lint: true markdown_lint_paths: \"docs/** *.md\" run_spell_check: true spell_check_paths: \"docs/** *.md\" # Link checking for submodule content link-check: uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1 with: paths: \"docs/** *.md **/docs/**\" fail_on_errors: true timeout: \"30\" . | . ",
     "url": "/hf-general-ci-tools/development/docs/example-workflows.html#-submodule-documentation-workflow",
     
     "relUrl": "/docs/example-workflows.html#-submodule-documentation-workflow"
@@ -1562,7 +1562,7 @@
   },"223": {
     "doc": "🔀 Documentation Versioning Guide",
     "title": "1. Enable Versioning in Your Workflow",
-    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 . | name: '📚 Publish Versioned Documentation' on: push: branches: ['main', 'release/*'] pull_request: branches: ['main'] workflow_dispatch: permissions: contents: 'read' pages: 'write' id-token: 'write' jobs: publish-docs: uses: 'N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@main' with: # Versioning is now enabled by default deployment_branch: 'gh-pages' # Required for versioned documentation # Doxygen versioning doxygen_version_strategy: 'auto' doxygen_config: 'Doxyfile' # Jekyll configuration jekyll_enabled: 'true' jekyll_source: 'docs' jekyll_destination: '_site' # Versioned deployment deployment_branch: 'gh-pages' # Quality checks run_link_check: 'true' run_markdown_lint: 'true' deploy_pages: 'true' . | . ",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 . | name: '📚 Publish Versioned Documentation' on: push: branches: ['main', 'release/*'] pull_request: branches: ['main'] workflow_dispatch: permissions: contents: 'read' pages: 'write' id-token: 'write' jobs: publish-docs: uses: 'N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@main' with: # Versioning is now enabled by default deployment_branch: 'gh-pages' # Required for versioned documentation # Doxygen versioning doxygen_version_strategy: 'auto' doxygen_config: '_config/Doxyfile' # Jekyll configuration jekyll_enabled: 'true' jekyll_source: 'docs' jekyll_destination: '_site' # Versioned deployment deployment_branch: 'gh-pages' # Quality checks run_link_check: 'true' run_markdown_lint: 'true' deploy_pages: 'true' . | . ",
     "url": "/hf-general-ci-tools/development/docs/versioning-guide.html#1-enable-versioning-in-your-workflow",
     
     "relUrl": "/docs/versioning-guide.html#1-enable-versioning-in-your-workflow"
@@ -1758,7 +1758,7 @@
   },"251": {
     "doc": "🔀 Documentation Versioning Guide",
     "title": "Basic Versioning",
-    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 . | name: 'Documentation with Versioning' on: push: branches: ['main', 'release/*'] jobs: docs: uses: 'N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@main' with: deployment_branch: 'gh-pages' doxygen_config: 'Doxyfile' jekyll_enabled: 'true' deploy_pages: 'true' . | . ",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 . | name: 'Documentation with Versioning' on: push: branches: ['main', 'release/*'] jobs: docs: uses: 'N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@main' with: deployment_branch: 'gh-pages' doxygen_config: '_config/Doxyfile' jekyll_enabled: 'true' deploy_pages: 'true' . | . ",
     "url": "/hf-general-ci-tools/development/docs/versioning-guide.html#basic-versioning",
     
     "relUrl": "/docs/versioning-guide.html#basic-versioning"
@@ -1828,7 +1828,7 @@
   },"261": {
     "doc": "🔀 Documentation Versioning Guide",
     "title": "Common Issues",
-    "content": "1. Version Not Detected . Problem: Version detection fails or returns empty values. Solution: Check branch naming convention and ensure deployment branch is specified: . | 1 . | deployment_branch: 'gh-pages' # Required for versioned documentation . | . 2. Doxygen Version Not Set . Problem: Doxygen PROJECT_NUMBER is not updated. Solution: Ensure Doxygen versioning is enabled: . | 1 2 . | doxygen_version_strategy: 'auto' # or 'manual' doxygen_config: 'Doxyfile' # Ensure Doxyfile exists . | . 3. Jekyll Build Fails . Problem: Jekyll build fails with versioned configuration. Solution: Check Jekyll configuration: . | 1 2 3 4 5 . | # Check if main config exists ls _config.yml # Verify Jekyll configuration jekyll doctor . | . 4. Deployment Issues . Problem: Versioned deployment fails. Solution: Check deployment branch and permissions: . | 1 2 3 4 5 6 . | deployment_branch: 'gh-pages' # Ensure branch exists # Check repository permissions permissions: contents: 'read' pages: 'write' id-token: 'write' . | . ",
+    "content": "1. Version Not Detected . Problem: Version detection fails or returns empty values. Solution: Check branch naming convention and ensure deployment branch is specified: . | 1 . | deployment_branch: 'gh-pages' # Required for versioned documentation . | . 2. Doxygen Version Not Set . Problem: Doxygen PROJECT_NUMBER is not updated. Solution: Ensure Doxygen versioning is enabled: . | 1 2 . | doxygen_version_strategy: 'auto' # or 'manual' doxygen_config: '_config/Doxyfile' # Ensure Doxyfile exists . | . 3. Jekyll Build Fails . Problem: Jekyll build fails with versioned configuration. Solution: Check Jekyll configuration: . | 1 2 3 4 5 . | # Check if main config exists ls _config.yml # Verify Jekyll configuration jekyll doctor . | . 4. Deployment Issues . Problem: Versioned deployment fails. Solution: Check deployment branch and permissions: . | 1 2 3 4 5 6 . | deployment_branch: 'gh-pages' # Ensure branch exists # Check repository permissions permissions: contents: 'read' pages: 'write' id-token: 'write' . | . ",
     "url": "/hf-general-ci-tools/development/docs/versioning-guide.html#common-issues",
     
     "relUrl": "/docs/versioning-guide.html#common-issues"
@@ -2028,5 +2028,12 @@
     "url": "/hf-general-ci-tools/development/docs/yamllint-workflow.html",
     
     "relUrl": "/docs/yamllint-workflow.html"
+  },"290": {
+    "doc": "C/C++ Sample Sources for CI Experiments",
+    "title": "C/C++ Sample Sources for CI Experiments",
+    "content": "# C/C++ Sample Sources for CI Experiments This directory contains small, well-documented C and C++ translation units that exercise the C/C++ related tooling showcased in this repository: - `include/geometry.h` and `src/geometry.c` provide a handful of geometry helper functions written in C. - `include/greeter.hpp` and `src/greeter.cpp` deliver a simple C++ class used to model basic object-oriented behaviour. The files include Doxygen comments and are referenced by `_config/Doxyfile`, which means they are automatically published when you run ``` doxygen _config/Doxyfile ``` The generated documentation lands under `docs/doxygen/html`. This location is compatible with the Jekyll + GitHub Pages setup used by the Publish Docs workflows, so you can push the rendered artefacts alongside the rest of the documentation if desired. ",
+    "url": "/hf-general-ci-tools/development/cpp-ci-test/",
+    
+    "relUrl": "/cpp-ci-test/"
   }
 }

@@ -163,7 +163,7 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
       </button><a href="/hf-general-ci-tools/development/workflows/" class="nav-list-link">🔄 Reusable Workflows</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/c-cpp-lint-workflow.html" class="nav-list-link">🔧 C/C++ Lint Workflow</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/c-cpp-static-analysis-workflow.html" class="nav-list-link">🛡️ Static Analysis Workflow</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/docs-workflow.html" class="nav-list-link">📚 Documentation Workflow</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/docs-link-check-workflow.html" class="nav-list-link">🔗 Link Check Workflow</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/yamllint-workflow.html" class="nav-list-link">📝 YAML Lint Workflow</a></li></ul></li><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in 📖 Examples & Guides category" aria-pressed="false">
         <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
-      </button><a href="/hf-general-ci-tools/development/guides/" class="nav-list-link">📖 Examples & Guides</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/jekyll-guide.html" class="nav-list-link">🔧 Jekyll Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/example-workflows.html" class="nav-list-link">🚀 Example Workflows</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/versioning-guide.html" class="nav-list-link">🔀 Documentation Versioning Guide</a></li></ul></li></ul>
+      </button><a href="/hf-general-ci-tools/development/guides/" class="nav-list-link">📖 Examples & Guides</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/jekyll-guide.html" class="nav-list-link">🔧 Jekyll Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/example-workflows.html" class="nav-list-link">🚀 Example Workflows</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/versioning-guide.html" class="nav-list-link">🔀 Documentation Versioning Guide</a></li></ul></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/cpp-ci-test/" class="nav-list-link">C/C++ Sample Sources for CI Experiments</a></li></ul>
   
 </nav>
 
@@ -362,7 +362,7 @@ enhanced <code class="language-plaintext highlighter-rouge">docs.yml</code> work
 
       <span class="c1"># Doxygen versioning</span>
       <span class="na">doxygen_version_strategy</span><span class="pi">:</span> <span class="s1">'</span><span class="s">auto'</span>
-      <span class="na">doxygen_config</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Doxyfile'</span>
+      <span class="na">doxygen_config</span><span class="pi">:</span> <span class="s1">'</span><span class="s">_config/Doxyfile'</span>
 
       <span class="c1"># Jekyll configuration</span>
       <span class="na">jekyll_enabled</span><span class="pi">:</span> <span class="s1">'</span><span class="s">true'</span>
@@ -1253,7 +1253,7 @@ automatically through page front matter:</p>
     <span class="na">uses</span><span class="pi">:</span> <span class="s1">'</span><span class="s">N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@main'</span>
     <span class="na">with</span><span class="pi">:</span>
       <span class="na">deployment_branch</span><span class="pi">:</span> <span class="s1">'</span><span class="s">gh-pages'</span>
-      <span class="na">doxygen_config</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Doxyfile'</span>
+      <span class="na">doxygen_config</span><span class="pi">:</span> <span class="s1">'</span><span class="s">_config/Doxyfile'</span>
       <span class="na">jekyll_enabled</span><span class="pi">:</span> <span class="s1">'</span><span class="s">true'</span>
       <span class="na">deploy_pages</span><span class="pi">:</span> <span class="s1">'</span><span class="s">true'</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
@@ -1555,7 +1555,7 @@ The version selector is automatically included in your documentation:
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 </pre></td><td class="rouge-code"><pre><span class="na">doxygen_version_strategy</span><span class="pi">:</span> <span class="s1">'</span><span class="s">auto'</span>  <span class="c1"># or 'manual'</span>
-<span class="na">doxygen_config</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Doxyfile'</span>  <span class="c1"># Ensure Doxyfile exists</span>
+<span class="na">doxygen_config</span><span class="pi">:</span> <span class="s1">'</span><span class="s">_config/Doxyfile'</span>  <span class="c1"># Ensure Doxyfile exists</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
 <h4 id="3-jekyll-build-fails">
   
