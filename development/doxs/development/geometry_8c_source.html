@@ -106,31 +106,31 @@ $(function(){initNavTree('geometry_8c_source.html',''); initResizable(); });
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;math.h&gt;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;stddef.h&gt;</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">static</span> <span class="keywordtype">double</span> clamp_non_negative(<span class="keywordtype">double</span> value) {</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <span class="keywordflow">return</span> value &lt; 0.0 ? 0.0 : value;</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>}</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">double</span> PERIMETER_MULTIPLIER = 2.0;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">static</span> <span class="keywordtype">double</span> clamp_non_negative(<span class="keywordtype">double</span> value) { <span class="keywordflow">return</span> value &lt; 0.0 ? 0.0 : value; }</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
 <div class="foldopen" id="foldopen00015" data-start="{" data-end="}">
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="geometry_8h.html#aa259decaf155eda8d3ffae3c945d1645">   15</a></span><span class="keywordtype">double</span> <a class="code hl_function" href="geometry_8c.html#aa259decaf155eda8d3ffae3c945d1645">geometry_rectangle_area</a>(<span class="keywordtype">double</span> width, <span class="keywordtype">double</span> height) {</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    width = clamp_non_negative(width);</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    height = clamp_non_negative(height);</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keywordflow">return</span> width * height;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  width = clamp_non_negative(width);</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  height = clamp_non_negative(height);</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  <span class="keywordflow">return</span> width * height;</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>}</div>
 </div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
 <div class="foldopen" id="foldopen00021" data-start="{" data-end="}">
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="geometry_8h.html#a71da5aa67e4e3fa012fad162bec36cda">   21</a></span><span class="keywordtype">double</span> <a class="code hl_function" href="geometry_8c.html#a71da5aa67e4e3fa012fad162bec36cda">geometry_rectangle_perimeter</a>(<span class="keywordtype">double</span> width, <span class="keywordtype">double</span> height) {</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    width = clamp_non_negative(width);</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    height = clamp_non_negative(height);</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keywordflow">return</span> 2.0 * (width + height);</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  width = clamp_non_negative(width);</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  height = clamp_non_negative(height);</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <span class="keywordflow">return</span> PERIMETER_MULTIPLIER * (width + height);</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>}</div>
 </div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
 <div class="foldopen" id="foldopen00027" data-start="{" data-end="}">
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="geometry_8h.html#a1a73f7680e6a695ebc9d7a706ceedcd4">   27</a></span><span class="keywordtype">double</span> <a class="code hl_function" href="geometry_8c.html#a1a73f7680e6a695ebc9d7a706ceedcd4">geometry_hypotenuse</a>(<span class="keywordtype">double</span> leg_a, <span class="keywordtype">double</span> leg_b) {</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    leg_a = clamp_non_negative(leg_a);</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    leg_b = clamp_non_negative(leg_b);</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordflow">return</span> hypot(leg_a, leg_b);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  leg_a = clamp_non_negative(leg_a);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  leg_b = clamp_non_negative(leg_b);</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keywordflow">return</span> hypot(leg_a, leg_b);</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>}</div>
 </div>
 <div class="ttc" id="ageometry_8c_html_a1a73f7680e6a695ebc9d7a706ceedcd4"><div class="ttname"><a href="geometry_8c.html#a1a73f7680e6a695ebc9d7a706ceedcd4">geometry_hypotenuse</a></div><div class="ttdeci">double geometry_hypotenuse(double leg_a, double leg_b)</div><div class="ttdoc">Compute the length of the hypotenuse using the Pythagorean theorem.</div><div class="ttdef"><b>Definition</b> <a href="#l00027">geometry.c:27</a></div></div>
@@ -143,7 +143,7 @@ $(function(){initNavTree('geometry_8c_source.html',''); initResizable(); });
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d5c12f55e1ff089f5d0371df99ee9377.html">cpp-ci-test</a></li><li class="navelem"><a class="el" href="dir_0dfcd8579a7621f4de1828418d5ea945.html">src</a></li><li class="navelem"><a class="el" href="geometry_8c.html">geometry.c</a></li>
-    <li class="footer">Generated on Tue Nov 11 2025 20:09:47 for Publish Docs API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Tue Nov 11 2025 20:24:52 for Publish Docs API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

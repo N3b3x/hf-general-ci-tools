@@ -100,33 +100,38 @@ $(function(){initNavTree('greeter_8hpp_source.html',''); initResizable(); });
   <div class="headertitle"><div class="title">greeter.hpp</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="greeter_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">namespace </span>ci_demo {</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="foldopen" id="foldopen00015" data-start="{" data-end="};">
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="classci__demo_1_1Greeter.html">   15</a></span><span class="keyword">class </span><a class="code hl_class" href="classci__demo_1_1Greeter.html">Greeter</a> {</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classci__demo_1_1Greeter.html#a0a8f76b50c86f6debf88192b8d92d98c">Greeter</a>(std::string <a class="code hl_function" href="classci__demo_1_1Greeter.html#a8ba1051f491db1b4abbe87e086da2684">salutation</a> = <span class="stringliteral">&quot;Hello&quot;</span>);</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    [[nodiscard]] std::string <a class="code hl_function" href="classci__demo_1_1Greeter.html#a1c6f59ec22d7ac944ca89d0a1f4b9714">greet</a>(<span class="keyword">const</span> std::string&amp; name) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classci__demo_1_1Greeter.html#a6537428a7a80a1967ad88eea5302d6dd">set_salutation</a>(std::string <a class="code hl_function" href="classci__demo_1_1Greeter.html#a8ba1051f491db1b4abbe87e086da2684">salutation</a>);</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    [[nodiscard]] <span class="keyword">const</span> std::string&amp; <a class="code hl_function" href="classci__demo_1_1Greeter.html#a8ba1051f491db1b4abbe87e086da2684">salutation</a>() <span class="keyword">const</span> <span class="keyword">noexcept</span>;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    std::string salutation_;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>};</div>
+<a href="greeter_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef GREETER_HPP</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define GREETER_HPP</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">namespace </span>ci_demo {</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="foldopen" id="foldopen00016" data-start="{" data-end="};">
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="classci__demo_1_1Greeter.html">   16</a></span><span class="keyword">class </span><a class="code hl_class" href="classci__demo_1_1Greeter.html">Greeter</a> {</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <span class="keyword">explicit</span> <a class="code hl_function" href="classci__demo_1_1Greeter.html#a1fc29f7adb946034eaf6283174967f48">Greeter</a>(std::string <a class="code hl_function" href="classci__demo_1_1Greeter.html#a8ba1051f491db1b4abbe87e086da2684">salutation</a>);</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <a class="code hl_function" href="classci__demo_1_1Greeter.html#a1fc29f7adb946034eaf6283174967f48">Greeter</a>();</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  [[nodiscard]] std::string <a class="code hl_function" href="classci__demo_1_1Greeter.html#a1c6f59ec22d7ac944ca89d0a1f4b9714">greet</a>(<span class="keyword">const</span> std::string&amp; name) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classci__demo_1_1Greeter.html#a6537428a7a80a1967ad88eea5302d6dd">set_salutation</a>(std::string <a class="code hl_function" href="classci__demo_1_1Greeter.html#a8ba1051f491db1b4abbe87e086da2684">salutation</a>);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  [[nodiscard]] <span class="keyword">const</span> std::string&amp; <a class="code hl_function" href="classci__demo_1_1Greeter.html#a8ba1051f491db1b4abbe87e086da2684">salutation</a>() <span class="keyword">const</span> <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  std::string salutation_;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>};</div>
 </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>}  <span class="comment">// namespace ci_demo</span></div>
-<div class="ttc" id="aclassci__demo_1_1Greeter_html"><div class="ttname"><a href="classci__demo_1_1Greeter.html">ci_demo::Greeter</a></div><div class="ttdoc">A simple greeter that can generate salutations for arbitrary names.</div><div class="ttdef"><b>Definition</b> <a href="#l00015">greeter.hpp:15</a></div></div>
-<div class="ttc" id="aclassci__demo_1_1Greeter_html_a0a8f76b50c86f6debf88192b8d92d98c"><div class="ttname"><a href="classci__demo_1_1Greeter.html#a0a8f76b50c86f6debf88192b8d92d98c">ci_demo::Greeter::Greeter</a></div><div class="ttdeci">Greeter(std::string salutation=&quot;Hello&quot;)</div><div class="ttdoc">Construct the greeter with an optional salutation prefix.</div><div class="ttdef"><b>Definition</b> <a href="greeter_8cpp_source.html#l00013">greeter.cpp:13</a></div></div>
-<div class="ttc" id="aclassci__demo_1_1Greeter_html_a1c6f59ec22d7ac944ca89d0a1f4b9714"><div class="ttname"><a href="classci__demo_1_1Greeter.html#a1c6f59ec22d7ac944ca89d0a1f4b9714">ci_demo::Greeter::greet</a></div><div class="ttdeci">std::string greet(const std::string &amp;name) const</div><div class="ttdoc">Produce a greeting for the provided name.</div><div class="ttdef"><b>Definition</b> <a href="greeter_8cpp_source.html#l00015">greeter.cpp:15</a></div></div>
-<div class="ttc" id="aclassci__demo_1_1Greeter_html_a6537428a7a80a1967ad88eea5302d6dd"><div class="ttname"><a href="classci__demo_1_1Greeter.html#a6537428a7a80a1967ad88eea5302d6dd">ci_demo::Greeter::set_salutation</a></div><div class="ttdeci">void set_salutation(std::string salutation)</div><div class="ttdoc">Update the salutation prefix used in greetings.</div><div class="ttdef"><b>Definition</b> <a href="greeter_8cpp_source.html#l00028">greeter.cpp:28</a></div></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>}  <span class="comment">// namespace ci_demo</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor">#endif </span><span class="comment">/* GREETER_HPP */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="aclassci__demo_1_1Greeter_html"><div class="ttname"><a href="classci__demo_1_1Greeter.html">ci_demo::Greeter</a></div><div class="ttdoc">A simple greeter that can generate salutations for arbitrary names.</div><div class="ttdef"><b>Definition</b> <a href="#l00016">greeter.hpp:16</a></div></div>
+<div class="ttc" id="aclassci__demo_1_1Greeter_html_a1c6f59ec22d7ac944ca89d0a1f4b9714"><div class="ttname"><a href="classci__demo_1_1Greeter.html#a1c6f59ec22d7ac944ca89d0a1f4b9714">ci_demo::Greeter::greet</a></div><div class="ttdeci">std::string greet(const std::string &amp;name) const</div><div class="ttdoc">Produce a greeting for the provided name.</div><div class="ttdef"><b>Definition</b> <a href="greeter_8cpp_source.html#l00017">greeter.cpp:17</a></div></div>
+<div class="ttc" id="aclassci__demo_1_1Greeter_html_a1fc29f7adb946034eaf6283174967f48"><div class="ttname"><a href="classci__demo_1_1Greeter.html#a1fc29f7adb946034eaf6283174967f48">ci_demo::Greeter::Greeter</a></div><div class="ttdeci">Greeter()</div><div class="ttdoc">Construct the greeter with default &quot;Hello&quot; salutation.</div><div class="ttdef"><b>Definition</b> <a href="greeter_8cpp_source.html#l00015">greeter.cpp:15</a></div></div>
+<div class="ttc" id="aclassci__demo_1_1Greeter_html_a6537428a7a80a1967ad88eea5302d6dd"><div class="ttname"><a href="classci__demo_1_1Greeter.html#a6537428a7a80a1967ad88eea5302d6dd">ci_demo::Greeter::set_salutation</a></div><div class="ttdeci">void set_salutation(std::string salutation)</div><div class="ttdoc">Update the salutation prefix used in greetings.</div><div class="ttdef"><b>Definition</b> <a href="greeter_8cpp_source.html#l00030">greeter.cpp:30</a></div></div>
 <div class="ttc" id="aclassci__demo_1_1Greeter_html_a8ba1051f491db1b4abbe87e086da2684"><div class="ttname"><a href="classci__demo_1_1Greeter.html#a8ba1051f491db1b4abbe87e086da2684">ci_demo::Greeter::salutation</a></div><div class="ttdeci">const std::string &amp; salutation() const noexcept</div><div class="ttdoc">Access the current salutation prefix.</div><div class="ttdef"><b>Definition</b> <a href="greeter_8cpp_source.html#l00032">greeter.cpp:32</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -134,7 +139,7 @@ $(function(){initNavTree('greeter_8hpp_source.html',''); initResizable(); });
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d5c12f55e1ff089f5d0371df99ee9377.html">cpp-ci-test</a></li><li class="navelem"><a class="el" href="dir_f5f64ea3448e3cf13a5860647df90cf9.html">include</a></li><li class="navelem"><a class="el" href="greeter_8hpp.html">greeter.hpp</a></li>
-    <li class="footer">Generated on Tue Nov 11 2025 20:09:47 for Publish Docs API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Tue Nov 11 2025 20:24:52 for Publish Docs API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

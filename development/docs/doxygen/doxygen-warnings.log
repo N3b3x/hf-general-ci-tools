@@ -1,5 +1,6 @@
 /home/runner/work/hf-general-ci-tools/hf-general-ci-tools/cpp-ci-test/README.md:1: warning: found more than one \mainpage comment block! (first occurrence: /home/runner/work/hf-general-ci-tools/hf-general-ci-tools/README.md, line 1), Skipping current block!
-/home/runner/work/hf-general-ci-tools/hf-general-ci-tools/cpp-ci-test/src/geometry.c:11: warning: Member clamp_non_negative(double value) (function) of file geometry.c is not documented.
+/home/runner/work/hf-general-ci-tools/hf-general-ci-tools/cpp-ci-test/src/geometry.c:13: warning: Member clamp_non_negative(double value) (function) of file geometry.c is not documented.
+/home/runner/work/hf-general-ci-tools/hf-general-ci-tools/cpp-ci-test/src/geometry.c:11: warning: Member PERIMETER_MULTIPLIER (variable) of file geometry.c is not documented.
 <clamp_non_negative>:1: warning: parameters of member clamp_non_negative are not documented
 index:1: warning: expected whitespace after \{ command
 /home/runner/work/hf-general-ci-tools/hf-general-ci-tools/README.md:1: warning: expected whitespace after \{ command

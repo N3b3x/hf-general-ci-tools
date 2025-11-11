@@ -1,5 +1,5 @@
-#ifndef CPP_CI_TEST_GEOMETRY_H
-#define CPP_CI_TEST_GEOMETRY_H
+#ifndef GEOMETRY_H
+#define GEOMETRY_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -44,4 +44,4 @@ double geometry_hypotenuse(double leg_a, double leg_b);
 }
 #endif
 
-#endif /* CPP_CI_TEST_GEOMETRY_H */
+#endif /* GEOMETRY_H */
