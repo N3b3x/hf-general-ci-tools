@@ -74,12 +74,12 @@ This repository provides a curated set of **reusable GitHub Actions workflows** 
 | Guide | Description | Target Audience |
 |-------|-------------|-----------------|
 | **[📋 Documentation Index](docs/index.md)** | Complete overview and navigation | All users |
-| **[🔧 C/C++ Lint Guide](docs/lint-workflow.md)** | Code quality and formatting setup | C/C++ developers |
-| **[🛡️ Static Analysis Guide](docs/static-analysis-workflow.md)** | Security analysis configuration | Security-focused teams |
-| **[📚 Documentation Guide](docs/docs-workflow.md)** | Documentation generation & deployment | Documentation teams |
-| **[🔗 Link Check Guide](docs/link-check-workflow.md)** | Link validation setup | Documentation maintainers |
-| **[📝 YAML Lint Guide](docs/yamllint-workflow.md)** | YAML validation configuration | DevOps engineers |
-| **[💡 Example Workflows](docs/example-workflows.md)** | Complete workflow examples | All users |
+| **[🔧 C/C++ Linting Tools](docs/ru-cpp-lint.md)** | Code quality and formatting setup | C/C++ developers |
+| **[� C/C++ Static Analysis](docs/ru-cpp-analysis.md)** | Security analysis configuration | Security-focused teams |
+| **[📚 Documentation Publisher](docs/ru-docs-publish.md)** | Documentation generation & deployment | Documentation teams |
+| **[🔗 Documentation Link Check](docs/ru-docs-linkcheck.md)** | Link validation setup | Documentation maintainers |
+| **[📝 YAML Linting Tools](docs/ru-yaml-lint.md)** | YAML validation configuration | DevOps engineers |
+| **[� CI Workflows & Design](docs/ci-workflows.md)** | Testing philosophy and live examples | All users |
 
 ---
 
@@ -235,8 +235,8 @@ your-awesome-project/
 
 ### 🛠️ Configuration Examples
 
-- **[Configuration Examples](docs/configuration-examples.md)** - Ready-to-use config files
-- **[Example Workflows](docs/example-workflows.md)** - Complete workflow examples
+- **[Jekyll Integration Guide](docs/jekyll-guide.md)** - Advanced Jekyll configuration for documentation sites
+- **[Versioning Guide](docs/versioning-guide.md)** - Multi-version documentation strategies
 
 ---
 
@@ -245,8 +245,6 @@ your-awesome-project/
 **GNU General Public License v3.0** - See the [LICENSE](LICENSE) file for details
 
 ---
-
-> **🧪 [Test 404 Page](nonexistent-page)** - (on live documentation) Click this link to test our custom 404 page!
 
 **⭐ Star this repository if you find it helpful!**
 
