@@ -1,5 +1,5 @@
 ---
-name: � C++ Lint CI
+name: 🔍 C++ Lint CI
 
 on:
   push:
@@ -45,5 +45,5 @@ jobs:
       # =============================================================================
       # Quality Checks
       # =============================================================================
-      # Test specific tidy checks relevant to the demo code
-      tidy_checks: "readability-*,modernize-*,performance-*,bugprone-*,-modernize-use-trailing-return-type"
+      # Use the configuration file for tidy checks (don't override)
+      tidy_checks: ""  # Empty to use _config/.clang-tidy file
