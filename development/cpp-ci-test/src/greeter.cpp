@@ -3,7 +3,7 @@
  * @brief Implementation for the sample C++ greeter.
  */
 
-#include "greeter.hpp"
+#include "../include/greeter.hpp"
 
 #include <sstream>
 #include <utility>

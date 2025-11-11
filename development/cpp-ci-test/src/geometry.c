@@ -3,7 +3,7 @@
  * @brief Implementation for the sample geometry helpers.
  */
 
-#include "geometry.h"
+#include "../include/geometry.h"
 
 #include <math.h>
 #include <stddef.h>
