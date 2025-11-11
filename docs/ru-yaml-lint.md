@@ -1,19 +1,25 @@
 ---
 layout: default
-title: "📝 YAML Lint Workflow"
-description: "YAML file validation and formatting"
+title: "📝 YAML Linting Tools (Reusable)"
+description: "Reusable workflow for YAML file validation and formatting using yamllint"
 nav_order: 5
 parent: "🔄 Reusable Workflows"
 ---
 
-# YAML Lint Workflow Guide
+# 📝 YAML Linting Tools (Reusable)
 
-**📝 YAML File Validation**
+**Workflow:** `ru-yaml-lint.yml` → 📝 **[RU] YAML Linting Tools**
+
+A comprehensive reusable workflow for YAML file validation and formatting using yamllint. Ensures proper syntax, formatting, and adherence to best practices across all YAML files in your repository.
 
 ---
 
-The YAML Lint workflow validates YAML files in your repository using yamllint to ensure proper formatting and syntax.
-This is a **reusable workflow** that can be called from other repositories.
+## 📋 Overview
+
+This reusable workflow (`ru-yaml-lint.yml`) validates YAML files in your repository using yamllint to ensure proper formatting and syntax. It's designed for maximum configurability and can be easily integrated into any project with YAML files.
+
+### ✨ **Live CI Example**
+👀 See our comprehensive testing workflow: [`ci-yaml-lint.yml`](../.github/workflows/ci-yaml-lint.yml) which demonstrates **all features** of this reusable workflow by testing it against this repository's YAML files with comprehensive configuration options.
 
 ## 📋 Table of Contents
 
@@ -173,9 +179,9 @@ Enable debug output by checking the workflow logs in GitHub Actions.
 
 ## 📚 Related Workflows
 
-- **[C/C++ Lint](c-cpp-lint-workflow.md)** - Code quality checks
-- **[Static Analysis](c-cpp-static-analysis-workflow.md)** - Security analysis
-- **[Documentation](docs-workflow.md)** - Documentation generation
+- **[C/C++ Lint](ru-cpp-lint.md)** - Code quality checks
+- **[Static Analysis](ru-cpp-analysis.md)** - Security analysis
+- **[Documentation](ru-docs-publish.md)** - Documentation generation
 
 ## 🔗 Related Resources
 
@@ -185,6 +191,6 @@ Enable debug output by checking the workflow logs in GitHub Actions.
 
 ---
 
-[← Previous: Link Check Workflow](docs-link-check-workflow.md)
+[← Previous: Link Check Workflow](ru-docs-linkcheck.md)
 
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**

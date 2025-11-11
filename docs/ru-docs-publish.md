@@ -1,19 +1,25 @@
 ---
 layout: default
-title: "📚 Documentation Workflow"
-description: "Doxygen documentation generation and GitHub Pages deployment"
+title: "📚 Documentation Publisher (Reusable)"
+description: "Reusable workflow for documentation generation and GitHub Pages deployment"
 nav_order: 3
 parent: "🔄 Reusable Workflows"
 ---
 
-# Documentation Workflow Guide
+# 📚 Documentation Publisher (Reusable)
 
-**📖 Doxygen + GitHub Pages Deployment**
+**Workflow:** `ru-docs-publish.yml` → 📚 **[RU] Documentation Publisher**
+
+A comprehensive reusable workflow for building and publishing documentation using multiple tools including Doxygen, Jekyll, and GitHub Pages. Supports complex documentation pipelines with link checking and artifact management.
 
 ---
 
-The Documentation workflow builds Doxygen documentation and optionally deploys it to GitHub Pages
-with link checking and artifact management.
+## 📋 Overview
+
+This reusable workflow (`ru-docs-publish.yml`) builds documentation using various tools (Doxygen, Jekyll, etc.) and optionally deploys it to GitHub Pages with comprehensive link checking and artifact management. It's designed for maximum flexibility to handle complex documentation workflows.
+
+### ✨ **Live CI Example**
+👀 See our comprehensive testing workflow: [`ci-docs-publish.yml`](../.github/workflows/ci-docs-publish.yml) which demonstrates **all features** of this reusable workflow by building and deploying this repository's documentation with full configuration options enabled.
 
 ## 📋 Table of Contents
 
@@ -915,9 +921,9 @@ git push origin gh-pages
 
 ## 📚 Related Workflows
 
-- **[C/C++ Lint](c-cpp-lint-workflow.md)** - Code quality checks
-- **[Static Analysis](c-cpp-static-analysis-workflow.md)** - Security analysis
-- **[Link Check](docs-link-check-workflow.md)** - Documentation link validation
+- **[C/C++ Lint](ru-cpp-lint.md)** - Code quality checks
+- **[Static Analysis](ru-cpp-analysis.md)** - Security analysis
+- **[Link Check](ru-docs-linkcheck.md)** - Documentation link validation
 
 ## 🔗 Related Resources
 
@@ -927,7 +933,7 @@ git push origin gh-pages
 
 ---
 
-[← Previous: Static Analysis Workflow](c-cpp-static-analysis-workflow.md) | [Next: Link Check Workflow →](docs-link-check-workflow.md)
+[← Previous: Static Analysis Workflow](ru-cpp-analysis.md) | [Next: Link Check Workflow →](ru-docs-linkcheck.md)
 
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
 

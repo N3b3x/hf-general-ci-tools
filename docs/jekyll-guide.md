@@ -608,7 +608,7 @@ jobs:
 
 ---
 
-[Next: Example Workflows →](example-workflows.md)
+[Next: CI Workflows & Design →](ci-workflows.md)
 
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
 

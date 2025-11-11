@@ -1,18 +1,25 @@
 ---
 layout: default
-title: "🛡️ Static Analysis Workflow"
-description: "Security analysis using cppcheck"
+title: "� C++ Static Analysis (Reusable)"
+description: "Reusable workflow for C++ security and bug detection using cppcheck"
 nav_order: 2
 parent: "🔄 Reusable Workflows"
 ---
 
-# Static Analysis Workflow Guide
+# 🔍 C++ Static Analysis (Reusable)
 
-**🔒 Cppcheck Security Analysis**
+**Workflow:** `ru-cpp-analysis.yml` → 🔍 **[RU] C++ Static Analysis**
+
+A powerful reusable workflow for comprehensive C++ static analysis using cppcheck to detect security vulnerabilities, bugs, and code quality issues. Designed for easy integration with configurable strictness levels.
 
 ---
 
-The Static Analysis workflow runs cppcheck via Docker for comprehensive C/C++ code analysis with configurable strictness.
+## 📋 Overview
+
+This reusable workflow (`ru-cpp-analysis.yml`) performs comprehensive static analysis on C++ codebases using cppcheck via Docker. It's designed for maximum flexibility with configurable analysis levels and can be called from any repository.
+
+### ✨ **Live CI Example**
+👀 See our comprehensive testing workflow: [`ci-cpp-analysis.yml`](../.github/workflows/ci-cpp-analysis.yml) which demonstrates **all features** of this reusable workflow by testing it against real C++ code with various configuration options.
 
 ## 📋 Table of Contents
 
@@ -143,9 +150,9 @@ Create a `.cppcheck-suppressions` file for false positives:
 
 ## 📚 Related Workflows
 
-- **[C/C++ Lint](c-cpp-lint-workflow.md)** - Code quality checks
-- **[Documentation](docs-workflow.md)** - Documentation generation
-- **[Link Check](docs-link-check-workflow.md)** - Documentation link validation
+- **[C/C++ Lint](ru-cpp-lint.md)** - Code quality checks
+- **[Documentation](ru-docs-publish.md)** - Documentation generation
+- **[Link Check](ru-docs-linkcheck.md)** - Documentation link validation
 
 ## 🔗 Related Resources
 
@@ -155,7 +162,7 @@ Create a `.cppcheck-suppressions` file for false positives:
 
 ---
 
-[← Previous: C/C++ Lint Workflow](c-cpp-lint-workflow.md) | [Next: Documentation Workflow →](docs-workflow.md)
+[← Previous: C/C++ Lint Workflow](ru-cpp-lint.md) | [Next: Documentation Workflow →](ru-docs-publish.md)
 
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
 

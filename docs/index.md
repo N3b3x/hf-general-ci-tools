@@ -18,12 +18,12 @@ permalink: /docs/
 
 | Workflow | Description | Quick Start |
 |----------|-------------|-------------|
-| **[C/C++ Lint](c-cpp-lint-workflow.md)** | Code quality checks using clang-format and clang-tidy | [→ Lint Guide](c-cpp-lint-workflow.md) |
-| **[Static Analysis](c-cpp-static-analysis-workflow.md)** | Security analysis using cppcheck | [→ Static Analysis Guide](c-cpp-static-analysis-workflow.md) |
-| **[Documentation](docs-workflow.md)** | Doxygen documentation generation and GitHub Pages deployment | [→ Docs Guide](docs-workflow.md) |
-| **[Versioning](versioning-guide.md)** | Multi-version documentation with Doxygen and Jekyll | [→ Versioning Guide](versioning-guide.md) |
-| **[Link Check](docs-link-check-workflow.md)** | Documentation link validation using Lychee | [→ Link Check Guide](docs-link-check-workflow.md) |
-| **[YAML Lint](yamllint-workflow.md)** | YAML file validation and formatting | [→ YAML Lint Guide](yamllint-workflow.md) |
+| **[🔧 C++ Linting](ru-cpp-lint.md)** | Reusable C++ code quality checks using clang-format and clang-tidy | [→ Lint Guide](ru-cpp-lint.md) |
+| **[🔍 C++ Analysis](ru-cpp-analysis.md)** | Reusable C++ security analysis using cppcheck | [→ Analysis Guide](ru-cpp-analysis.md) |
+| **[📚 Docs Publisher](ru-docs-publish.md)** | Reusable documentation generation and GitHub Pages deployment | [→ Docs Guide](ru-docs-publish.md) |
+| **[🔗 Link Checker](ru-docs-linkcheck.md)** | Reusable documentation link validation using Lychee | [→ Link Check Guide](ru-docs-linkcheck.md) |
+| **[📝 YAML Linting](ru-yaml-lint.md)** | Reusable YAML file validation and formatting | [→ YAML Guide](ru-yaml-lint.md) |
+| **[📖 Versioning](versioning-guide.md)** | Multi-version documentation with Doxygen and Jekyll | [→ Versioning Guide](versioning-guide.md) |
 
 ## 🏠 Repository-Specific Workflows
 
@@ -34,18 +34,19 @@ permalink: /docs/
 | **[Publish Documentation](https://github.com/n3b3x/hf-general-ci-tools/blob/main/.github/workflows/ci-docs-publish.yml)** | Builds and deploys this repo's documentation site | Push to main, PRs |
 | **[YAML Lint](https://github.com/n3b3x/hf-general-ci-tools/blob/main/.github/workflows/ci-yaml-lint.yml)** | Validates YAML syntax in this repository | Push, PRs |
 
-## 📚 Documentation
+## 📚 Documentation Structure
 
-Each workflow has comprehensive documentation with usage examples and configuration options:
+### **🔧 Reusable Workflows** (Production Tools)
+- **[🔧 C++ Linting Tools](ru-cpp-lint.md)** - Clang-format and clang-tidy for any C++ project
+- **[🔍 C++ Static Analysis](ru-cpp-analysis.md)** - Cppcheck security analysis with flexible configuration
+- **[📚 Documentation Publisher](ru-docs-publish.md)** - Complete docs pipeline with Doxygen, Jekyll, and GitHub Pages
+- **[🔗 Documentation Link Check](ru-docs-linkcheck.md)** - Comprehensive link validation using Lychee
+- **[📝 YAML Linting Tools](ru-yaml-lint.md)** - Flexible YAML validation and formatting
 
-- **[C/C++ Lint Workflow](c-cpp-lint-workflow.md)** - Code quality checks using clang-format and clang-tidy
-- **[Static Analysis Workflow](c-cpp-static-analysis-workflow.md)** - Security analysis using cppcheck
-- **[Documentation Workflow](docs-workflow.md)** - Doxygen documentation generation and GitHub Pages deployment
-- **[Versioning Guide](versioning-guide.md)** - Multi-version documentation with Doxygen and Jekyll integration
-- **[Link Check Workflow](docs-link-check-workflow.md)** - Documentation link validation using Lychee
-- **[YAML Lint Workflow](yamllint-workflow.md)** - YAML file validation and formatting
-- **[Jekyll Guide](jekyll-guide.md)** - Complete Jekyll configuration and examples
-- **[Example Workflows](example-workflows.md)** - Real-world usage examples for consumer repositories
+### **🚀 Design & Implementation**
+- **[🚀 CI Workflows & Design Philosophy](ci-workflows.md)** - Understanding our testing approach and architecture decisions
+- **[📖 Versioning Guide](versioning-guide.md)** - Multi-version documentation strategies with Doxygen and Jekyll
+- **[🎨 Jekyll Integration Guide](jekyll-guide.md)** - Advanced Jekyll configuration for documentation sites
 
 ## 🎯 Quick Start
 

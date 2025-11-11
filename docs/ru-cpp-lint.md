@@ -1,18 +1,25 @@
 ---
 layout: default
-title: "🔧 C/C++ Lint Workflow"
-description: "Code quality checks using clang-format and clang-tidy"
+title: "🔧 C++ Linting Tools (Reusable)"
+description: "Reusable workflow for C++ code quality and formatting checks using clang-format and clang-tidy"
 nav_order: 1
 parent: "🔄 Reusable Workflows"
 ---
 
-# C/C++ Lint Workflow Guide
+# 🔧 C++ Linting Tools (Reusable)
 
-**🔍 C/C++ Code Quality Checks**
+**Workflow:** `ru-cpp-lint.yml` → 🔧 **[RU] C++ Linting Tools**
+
+A comprehensive reusable workflow for automated C++ code quality and formatting checks using industry-standard tools like clang-format and clang-tidy. This workflow provides extensive configuration options and can be easily integrated into any C++ project.
 
 ---
 
-The C/C++ Lint workflow runs clang-format and clang-tidy using cpp-linter for code quality enforcement.
+## 📋 Overview
+
+This reusable workflow (`ru-cpp-lint.yml`) performs comprehensive code quality checks on C++ codebases and can be called from other repositories. It's designed for maximum flexibility and configurability.
+
+### ✨ **Live CI Example**
+👀 See our comprehensive testing workflow: [`ci-cpp-lint.yml`](../.github/workflows/ci-cpp-lint.yml) which demonstrates **all features** of this reusable workflow by testing it against real C++ code with maximum configuration options enabled.
 
 ## 📋 Table of Contents
 
@@ -201,9 +208,9 @@ HeaderFilterRegex: ''
 
 ## 📚 Related Workflows
 
-- **[Static Analysis](c-cpp-static-analysis-workflow.md)** - Security analysis
-- **[Documentation](docs-workflow.md)** - Documentation generation
-- **[Link Check](docs-link-check-workflow.md)** - Documentation link validation
+- **[Static Analysis](ru-cpp-analysis.md)** - Security analysis
+- **[Documentation](ru-docs-publish.md)** - Documentation generation
+- **[Link Check](ru-docs-linkcheck.md)** - Documentation link validation
 
 ## 🔗 Related Resources
 
@@ -213,7 +220,7 @@ HeaderFilterRegex: ''
 
 ---
 
-[Next: Static Analysis Workflow →](c-cpp-static-analysis-workflow.md)
+[Next: Static Analysis Workflow →](ru-cpp-analysis.md)
 
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
 

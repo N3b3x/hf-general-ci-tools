@@ -13,11 +13,15 @@ This section contains all the reusable GitHub Actions workflows available in thi
 
 ## Available Workflows
 
-- **[C/C++ Lint Workflow](c-cpp-lint-workflow.md)** - Code quality checks using clang-format and clang-tidy
-- **[Static Analysis Workflow](c-cpp-static-analysis-workflow.md)** - Security analysis using cppcheck
-- **[Documentation Workflow](docs-workflow.md)** - Doxygen documentation generation and GitHub Pages deployment
-- **[Link Check Workflow](docs-link-check-workflow.md)** - Documentation link validation using Lychee
-- **[YAML Lint Workflow](yamllint-workflow.md)** - YAML file validation and formatting
+- **[🔧 C++ Linting Tools](ru-cpp-lint.md)** - Clang-format and clang-tidy for any C++ project
+- **[🔍 C++ Static Analysis](ru-cpp-analysis.md)** - Cppcheck security analysis with flexible configuration
+- **[📚 Documentation Publisher](ru-docs-publish.md)** - Complete docs pipeline with Doxygen, Jekyll, and GitHub Pages
+- **[🔗 Documentation Link Check](ru-docs-linkcheck.md)** - Comprehensive link validation using Lychee
+- **[📝 YAML Linting Tools](ru-yaml-lint.md)** - Flexible YAML validation and formatting
+
+## 🚀 Testing & Validation
+
+Each reusable workflow (`ru-*.yml`) has a corresponding comprehensive CI test workflow (`ci-*.yml`) that demonstrates all its features and validates its functionality. See **[CI Workflows & Design Philosophy](ci-workflows.md)** for details on our testing approach.
 
 ## Usage
 
@@ -26,6 +30,6 @@ workflow documentation for detailed usage instructions and parameters.
 
 ---
 
-[← Previous: Documentation](index.md) | [Next: Examples & Guides →](guides.md)
+[← Previous: Documentation](index.md) | [Next: CI Workflows & Design →](ci-workflows.md)
 
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**

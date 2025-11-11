@@ -1,23 +1,25 @@
 ---
 layout: default
-title: "🔗 Link Check Workflow"
-description: "Documentation link validation using Lychee"
+title: "🔗 Documentation Link Check (Reusable)"
+description: "Reusable workflow for documentation link validation using Lychee"
 nav_order: 4
 parent: "🔄 Reusable Workflows"
 ---
 
-# 🔗 Documentation Link Check Workflow Guide
+# 🔗 Documentation Link Check (Reusable)
 
-**🔍 Automated Documentation Link Validation for General Projects**
+**Workflow:** `ru-docs-linkcheck.yml` → 🔗 **[RU] Documentation Link Check**
 
-*Standalone workflow for checking documentation links and ensuring all references are valid*
-
+A comprehensive reusable workflow for automated documentation link validation using Lychee. Ensures all links in your documentation are valid, accessible, and properly formatted across multiple file types.
 
 ---
 
 ## 📋 Overview
 
-The **Link Check Workflow** is a standalone reusable workflow that validates all documentation links in your repository.
+This reusable workflow (`ru-docs-linkcheck.yml`) validates all documentation links in your repository using the powerful Lychee link checker. It supports extensive configuration options for different types of projects and documentation structures.
+
+### ✨ **Live CI Example**
+� See our comprehensive testing workflow: [`ci-docs-linkcheck.yml`](../.github/workflows/ci-docs-linkcheck.yml) which demonstrates **all features** of this reusable workflow by testing it against this repository's documentation with maximum configuration options enabled.
 It ensures that all internal and external links are working correctly, preventing broken references in your documentation.
 
 ### **Key Features**
@@ -448,10 +450,10 @@ Broken links:
 
 ## 🔗 Related Documentation
 
-- [Documentation Workflow](docs-workflow.md) - Build and deploy documentation
-- [C/C++ Lint Workflow](c-cpp-lint-workflow.md) - Code quality checks
-- [Static Analysis Workflow](c-cpp-static-analysis-workflow.md) - Security analysis
-- [Example Workflows](example-workflows.md) - Complete workflow examples
+- [Documentation Workflow](ru-docs-publish.md) - Build and deploy documentation
+- [C/C++ Lint Workflow](ru-cpp-lint.md) - Code quality checks
+- [Static Analysis Workflow](ru-cpp-analysis.md) - Security analysis
+- [CI Workflows & Design](ci-workflows.md) - Our testing philosophy and live examples
 - [Main Documentation Index](index.md) - All workflow guides
 
 ---
@@ -465,6 +467,6 @@ Broken links:
 
 ---
 
-[← Previous: Documentation Workflow](docs-workflow.md) | [Next: YAML Lint Workflow →](yamllint-workflow.md)
+[← Previous: Documentation Workflow](ru-docs-publish.md) | [Next: YAML Lint Workflow →](ru-yaml-lint.md)
 
 **📚 [All Documentation](index.md)** | **🏠 [Main README](../README.md)**
