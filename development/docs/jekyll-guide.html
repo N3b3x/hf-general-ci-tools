@@ -13,29 +13,10 @@
 
   <style id="jtd-nav-activation">
   
-
-    .site-nav > ul.nav-list:first-child > li > a,
-    
-    .site-nav > ul.nav-list:first-child > li > ul > li:not(:nth-child(1)) > a,
-    .site-nav > ul.nav-list:first-child > li > ul > li > ul > li a {
+    .site-nav ul li a {
       background-image: none;
     }
 
-    .site-nav > ul.nav-list:not(:first-child) a,
-    .site-nav li.external a {
-      background-image: none;
-    }
-
-    .site-nav > ul.nav-list:first-child > li:nth-child(4) > ul > li:nth-child(1) > a {
-      font-weight: 600;
-      text-decoration: none;
-    }.site-nav > ul.nav-list:first-child > li:nth-child(4) > button svg,
-    .site-nav > ul.nav-list:first-child > li:nth-child(4) > ul > li:nth-child(1) > button svg {
-      transform: rotate(-90deg);
-    }.site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(4) > ul.nav-list,
-    .site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(4) > ul.nav-list > li.nav-list-item:nth-child(1) > ul.nav-list {
-      display: block;
-    }
   </style>
 
   
@@ -161,9 +142,7 @@
   
     <ul class="nav-list"><li class="nav-list-item"><a href="/hf-general-ci-tools/development/" class="nav-list-link">🚀 hf-general-ci-tools</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/" class="nav-list-link">📖 Documentation</a></li><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in 🔄 Reusable Workflows category" aria-pressed="false">
         <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
-      </button><a href="/hf-general-ci-tools/development/workflows/" class="nav-list-link">🔄 Reusable Workflows</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/c-cpp-lint-workflow.html" class="nav-list-link">🔧 C/C++ Lint Workflow</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/c-cpp-static-analysis-workflow.html" class="nav-list-link">🛡️ Static Analysis Workflow</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/docs-workflow.html" class="nav-list-link">📚 Documentation Workflow</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/docs-link-check-workflow.html" class="nav-list-link">🔗 Link Check Workflow</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/yamllint-workflow.html" class="nav-list-link">📝 YAML Lint Workflow</a></li></ul></li><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in 📖 Examples & Guides category" aria-pressed="false">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
-      </button><a href="/hf-general-ci-tools/development/guides/" class="nav-list-link">📖 Examples & Guides</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/jekyll-guide.html" class="nav-list-link">🔧 Jekyll Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/example-workflows.html" class="nav-list-link">🚀 Example Workflows</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/versioning-guide.html" class="nav-list-link">🔀 Documentation Versioning Guide</a></li></ul></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/cpp-ci-test/" class="nav-list-link">C/C++ Sample Sources for CI Experiments</a></li></ul>
+      </button><a href="/hf-general-ci-tools/development/workflows/" class="nav-list-link">🔄 Reusable Workflows</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/ru-cpp-lint.html" class="nav-list-link">🔧 C++ Linting Tools (Reusable)</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/ru-cpp-analysis.html" class="nav-list-link">� C++ Static Analysis (Reusable)</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/ru-docs-publish.html" class="nav-list-link">📚 Documentation Publisher (Reusable)</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/ru-docs-linkcheck.html" class="nav-list-link">🔗 Documentation Link Check (Reusable)</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/ru-yaml-lint.html" class="nav-list-link">📝 YAML Linting Tools (Reusable)</a></li></ul></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/ci-workflows.html" class="nav-list-link">🚀 CI Workflows & Design Philosophy</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/cpp-ci-test/" class="nav-list-link">C/C++ Sample Sources for CI Experiments</a></li></ul>
   
 </nav>
 
@@ -253,7 +232,6 @@
     <div class="main-content-wrap">
       <nav aria-label="Breadcrumb" class="breadcrumb-nav">
   <ol class="breadcrumb-nav-list">
-    <li class="breadcrumb-nav-list-item"><a href="/hf-general-ci-tools/development/guides/">📖 Examples & Guides</a></li>
     <li class="breadcrumb-nav-list-item"><span>🔧 Jekyll Configuration Guide</span></li>
   </ol>
 </nav>
@@ -327,7 +305,7 @@ optimization and practical examples.</p>
 
 <span class="na">jobs</span><span class="pi">:</span>
   <span class="na">build-docs</span><span class="pi">:</span>
-    <span class="na">uses</span><span class="pi">:</span> <span class="s">./.github/workflows/docs.yml</span>
+    <span class="na">uses</span><span class="pi">:</span> <span class="s">./.github/workflows/ru-docs-publish.yml</span>
     <span class="na">with</span><span class="pi">:</span>
       <span class="na">jekyll_enabled</span><span class="pi">:</span> <span class="no">true</span>
       <span class="na">jekyll_config</span><span class="pi">:</span> <span class="s2">"</span><span class="s">_config.yml"</span>
@@ -1257,7 +1235,7 @@ jekyll build <span class="nt">--config</span> _config.yml,_config_prod.yml
 
 <span class="na">jobs</span><span class="pi">:</span>
   <span class="na">build-docs</span><span class="pi">:</span>
-    <span class="na">uses</span><span class="pi">:</span> <span class="s">./.github/workflows/docs.yml</span>
+    <span class="na">uses</span><span class="pi">:</span> <span class="s">./.github/workflows/ru-docs-publish.yml</span>
     <span class="na">with</span><span class="pi">:</span>
       <span class="na">jekyll_enabled</span><span class="pi">:</span> <span class="no">true</span>
       <span class="na">jekyll_config</span><span class="pi">:</span> <span class="s2">"</span><span class="s">_config.yml,_config_prod.yml"</span>
@@ -1296,7 +1274,7 @@ jekyll build <span class="nt">--config</span> _config.yml,_config_prod.yml
 
 <span class="na">jobs</span><span class="pi">:</span>
   <span class="na">build-docs</span><span class="pi">:</span>
-    <span class="na">uses</span><span class="pi">:</span> <span class="s">./.github/workflows/docs.yml</span>
+    <span class="na">uses</span><span class="pi">:</span> <span class="s">./.github/workflows/ru-docs-publish.yml</span>
     <span class="na">with</span><span class="pi">:</span>
       <span class="na">jekyll_enabled</span><span class="pi">:</span> <span class="no">true</span>
       <span class="na">jekyll_config</span><span class="pi">:</span> <span class="s2">"</span><span class="s">_config.yml,_config_dev.yml"</span>
@@ -1356,7 +1334,7 @@ jekyll build <span class="nt">--config</span> _config.yml,_config_prod.yml
 
 <span class="na">jobs</span><span class="pi">:</span>
   <span class="na">build-docs</span><span class="pi">:</span>
-    <span class="na">uses</span><span class="pi">:</span> <span class="s">./.github/workflows/docs.yml</span>
+    <span class="na">uses</span><span class="pi">:</span> <span class="s">./.github/workflows/ru-docs-publish.yml</span>
     <span class="na">with</span><span class="pi">:</span>
       <span class="na">jekyll_enabled</span><span class="pi">:</span> <span class="no">true</span>
       <span class="na">jekyll_environment</span><span class="pi">:</span> <span class="s">$</span>
@@ -1391,7 +1369,7 @@ jekyll build <span class="nt">--config</span> _config.yml,_config_prod.yml
 
 <span class="na">jobs</span><span class="pi">:</span>
   <span class="na">build-docs</span><span class="pi">:</span>
-    <span class="na">uses</span><span class="pi">:</span> <span class="s">./.github/workflows/docs.yml</span>
+    <span class="na">uses</span><span class="pi">:</span> <span class="s">./.github/workflows/ru-docs-publish.yml</span>
     <span class="na">with</span><span class="pi">:</span>
       <span class="na">jekyll_enabled</span><span class="pi">:</span> <span class="no">true</span>
       <span class="c1"># Any combination of config files</span>
@@ -1481,7 +1459,7 @@ jekyll build <span class="nt">--config</span> _config.yml,_config_prod.yml
 
 <span class="na">jobs</span><span class="pi">:</span>
   <span class="na">build-docs</span><span class="pi">:</span>
-    <span class="na">uses</span><span class="pi">:</span> <span class="s">./.github/workflows/docs.yml</span>
+    <span class="na">uses</span><span class="pi">:</span> <span class="s">./.github/workflows/ru-docs-publish.yml</span>
     <span class="na">with</span><span class="pi">:</span>
       <span class="na">jekyll_enabled</span><span class="pi">:</span> <span class="no">true</span>
       <span class="na">jekyll_config</span><span class="pi">:</span> <span class="s2">"</span><span class="s">_config.yml"</span>
@@ -1508,7 +1486,7 @@ jekyll build <span class="nt">--config</span> _config.yml,_config_prod.yml
   <li>Enable verbose output for detailed debugging</li>
 </ul><hr />
 
-<p><a href="/hf-general-ci-tools/development/docs/example-workflows.html">Next: Example Workflows →</a></p>
+<p><a href="/hf-general-ci-tools/development/docs/ci-workflows.html">Next: CI Workflows &amp; Design →</a></p>
 
 <div class="table-wrapper"><table>
   <tbody>

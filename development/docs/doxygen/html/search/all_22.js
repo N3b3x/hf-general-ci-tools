@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['🌍_20environment_20vs_20configuration_0',['🌍 Environment vs Configuration',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/jekyll-guide.md#autotoc_md294',1,'']]]
+  ['❌_20strong_20avoid_20this_3a_20strong_0',['❌ &lt;strong&gt;Avoid This:&lt;/strong&gt;',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/jekyll-guide.md#autotoc_md99',1,'']]]
 ];

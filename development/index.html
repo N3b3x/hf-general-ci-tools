@@ -158,9 +158,7 @@
   
     <ul class="nav-list"><li class="nav-list-item"><a href="/hf-general-ci-tools/development/" class="nav-list-link">🚀 hf-general-ci-tools</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/" class="nav-list-link">📖 Documentation</a></li><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in 🔄 Reusable Workflows category" aria-pressed="false">
         <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
-      </button><a href="/hf-general-ci-tools/development/workflows/" class="nav-list-link">🔄 Reusable Workflows</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/c-cpp-lint-workflow.html" class="nav-list-link">🔧 C/C++ Lint Workflow</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/c-cpp-static-analysis-workflow.html" class="nav-list-link">🛡️ Static Analysis Workflow</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/docs-workflow.html" class="nav-list-link">📚 Documentation Workflow</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/docs-link-check-workflow.html" class="nav-list-link">🔗 Link Check Workflow</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/yamllint-workflow.html" class="nav-list-link">📝 YAML Lint Workflow</a></li></ul></li><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in 📖 Examples & Guides category" aria-pressed="false">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
-      </button><a href="/hf-general-ci-tools/development/guides/" class="nav-list-link">📖 Examples & Guides</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/jekyll-guide.html" class="nav-list-link">🔧 Jekyll Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/example-workflows.html" class="nav-list-link">🚀 Example Workflows</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/versioning-guide.html" class="nav-list-link">🔀 Documentation Versioning Guide</a></li></ul></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/cpp-ci-test/" class="nav-list-link">C/C++ Sample Sources for CI Experiments</a></li></ul>
+      </button><a href="/hf-general-ci-tools/development/workflows/" class="nav-list-link">🔄 Reusable Workflows</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/ru-cpp-lint.html" class="nav-list-link">🔧 C++ Linting Tools (Reusable)</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/ru-cpp-analysis.html" class="nav-list-link">� C++ Static Analysis (Reusable)</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/ru-docs-publish.html" class="nav-list-link">📚 Documentation Publisher (Reusable)</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/ru-docs-linkcheck.html" class="nav-list-link">🔗 Documentation Link Check (Reusable)</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/ru-yaml-lint.html" class="nav-list-link">📝 YAML Linting Tools (Reusable)</a></li></ul></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/ci-workflows.html" class="nav-list-link">🚀 CI Workflows & Design Philosophy</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/cpp-ci-test/" class="nav-list-link">C/C++ Sample Sources for CI Experiments</a></li></ul>
   
 </nav>
 
@@ -263,8 +261,8 @@
 
 <p><strong>A comprehensive collection of reusable GitHub Actions workflows for modern CI/CD pipelines</strong></p><hr />
 
-<p><a href="https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/publish-docs.yml"><img src="https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/publish-docs.yml/badge.svg" alt="Publish Docs" /></a>
-<a href="https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/yamllint.yml"><img src="https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/yamllint.yml/badge.svg" alt="YAML Lint" /></a>
+<p><a href="https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/ci-docs-publish.yml"><img src="https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/ci-docs-publish.yml/badge.svg" alt="Docs Publish CI" /></a>
+<a href="https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/ci-yaml-lint.yml"><img src="https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/ci-yaml-lint.yml/badge.svg" alt="YAML Lint CI" /></a>
 <a href="LICENSE"><img src="https://img.shields.io/badge/license-GPL%20v3-blue.svg" alt="License" /></a>
 <a href="https://n3b3x.github.io/hf-general-ci-tools"><img src="https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg" alt="GitHub Pages" /></a></p>
 
@@ -325,31 +323,31 @@
   </thead>
   <tbody>
     <tr>
-      <td><strong><a href=".github/workflows/c-cpp-lint.yml">🔧 C/C++ Lint</a></strong></td>
+      <td><strong><a href=".github/workflows/ru-cpp-lint.yml">🔧 C/C++ Lint</a></strong></td>
       <td>Code quality and formatting checks</td>
       <td>• clang-format<br />• clang-tidy<br />• Configurable rules</td>
       <td><a href="#-quick-start">→ Use Now</a></td>
     </tr>
     <tr>
-      <td><strong><a href=".github/workflows/c-cpp-static-analysis.yml">🛡️ Static Analysis</a></strong></td>
+      <td><strong><a href=".github/workflows/ru-cpp-analysis.yml">🛡️ Static Analysis</a></strong></td>
       <td>Security and bug detection</td>
       <td>• cppcheck integration<br />• Custom rules<br />• Multiple standards</td>
       <td><a href="#-quick-start">→ Use Now</a></td>
     </tr>
     <tr>
-      <td><strong><a href=".github/workflows/docs.yml">📚 Documentation</a></strong></td>
+      <td><strong><a href=".github/workflows/ru-docs-publish.yml">📚 Documentation</a></strong></td>
       <td>Documentation generation &amp; deployment</td>
       <td>• Doxygen support<br />• Jekyll sites<br />• GitHub Pages</td>
       <td><a href="#-quick-start">→ Use Now</a></td>
     </tr>
     <tr>
-      <td><strong><a href=".github/workflows/docs-link-check.yml">🔗 Link Check</a></strong></td>
+      <td><strong><a href=".github/workflows/ru-docs-linkcheck.yml">🔗 Link Check</a></strong></td>
       <td>Documentation link validation</td>
       <td>• Lychee integration<br />• Custom configs<br />• Exclude patterns</td>
       <td><a href="#-quick-start">→ Use Now</a></td>
     </tr>
     <tr>
-      <td><strong><a href=".github/workflows/yamllint-reusable.yml">📝 YAML Lint</a></strong></td>
+      <td><strong><a href=".github/workflows/ru-yaml-lint.yml">📝 YAML Lint</a></strong></td>
       <td>YAML file validation</td>
       <td>• Syntax checking<br />• Style validation<br />• Custom rules</td>
       <td><a href="#-quick-start">→ Use Now</a></td>
@@ -380,13 +378,13 @@
   </thead>
   <tbody>
     <tr>
-      <td><strong><a href=".github/workflows/publish-docs.yml">📚 Publish Documentation</a></strong></td>
+      <td><strong><a href=".github/workflows/ci-docs-publish.yml">📚 Docs Publish CI</a></strong></td>
       <td>Builds and deploys this repo’s documentation site</td>
       <td>Push to main, PRs</td>
       <td>✅ Active</td>
     </tr>
     <tr>
-      <td><strong><a href=".github/workflows/yamllint.yml">📝 YAML Lint</a></strong></td>
+      <td><strong><a href=".github/workflows/ci-yaml-lint.yml">📝 YAML Lint CI</a></strong></td>
       <td>Validates YAML syntax in this repository</td>
       <td>Push, PRs</td>
       <td>✅ Active</td>
@@ -438,7 +436,7 @@
       <td>Security-focused teams</td>
     </tr>
     <tr>
-      <td><strong><a href="/hf-general-ci-tools/development/docs/docs-workflow.html">📚 Documentation Guide</a></strong></td>
+      <td><strong><a href="docs/docs-workflow.md">📚 Documentation Guide</a></strong></td>
       <td>Documentation generation &amp; deployment</td>
       <td>Documentation teams</td>
     </tr>
@@ -448,12 +446,12 @@
       <td>Documentation maintainers</td>
     </tr>
     <tr>
-      <td><strong><a href="/hf-general-ci-tools/development/docs/yamllint-workflow.html">📝 YAML Lint Guide</a></strong></td>
+      <td><strong><a href="docs/yamllint-workflow.md">📝 YAML Lint Guide</a></strong></td>
       <td>YAML validation configuration</td>
       <td>DevOps engineers</td>
     </tr>
     <tr>
-      <td><strong><a href="/hf-general-ci-tools/development/docs/example-workflows.html">💡 Example Workflows</a></strong></td>
+      <td><strong><a href="docs/example-workflows.md">💡 Example Workflows</a></strong></td>
       <td>Complete workflow examples</td>
       <td>All users</td>
     </tr>
@@ -534,7 +532,7 @@
 <span class="na">jobs</span><span class="pi">:</span>
   <span class="c1"># Code quality checks</span>
   <span class="na">lint</span><span class="pi">:</span>
-    <span class="na">uses</span><span class="pi">:</span> <span class="s">n3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1</span>
+    <span class="na">uses</span><span class="pi">:</span> <span class="s">n3b3x/hf-general-ci-tools/.github/workflows/ru-cpp-lint.yml@v1</span>
     <span class="na">with</span><span class="pi">:</span>
       <span class="na">clang_version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">20"</span>
       <span class="na">style</span><span class="pi">:</span> <span class="s2">"</span><span class="s">file"</span>
@@ -542,7 +540,7 @@
 
   <span class="c1"># Security analysis</span>
   <span class="na">static</span><span class="pi">:</span>
-    <span class="na">uses</span><span class="pi">:</span> <span class="s">n3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1</span>
+    <span class="na">uses</span><span class="pi">:</span> <span class="s">n3b3x/hf-general-ci-tools/.github/workflows/ru-cpp-analysis.yml@v1</span>
     <span class="na">with</span><span class="pi">:</span>
       <span class="na">paths</span><span class="pi">:</span> <span class="s2">"</span><span class="s">src</span><span class="nv"> </span><span class="s">include"</span>
       <span class="na">std</span><span class="pi">:</span> <span class="s2">"</span><span class="s">c++17"</span>
@@ -550,14 +548,14 @@
 
   <span class="c1"># Documentation generation</span>
   <span class="na">docs</span><span class="pi">:</span>
-    <span class="na">uses</span><span class="pi">:</span> <span class="s">n3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1</span>
+    <span class="na">uses</span><span class="pi">:</span> <span class="s">n3b3x/hf-general-ci-tools/.github/workflows/ru-docs-publish.yml@v1</span>
     <span class="na">with</span><span class="pi">:</span>
       <span class="na">doxygen_config</span><span class="pi">:</span> <span class="s2">"</span><span class="s">_config/Doxyfile"</span>
       <span class="na">output_dir</span><span class="pi">:</span> <span class="s2">"</span><span class="s">docs/doxygen/html"</span>
 
   <span class="c1"># Link validation</span>
   <span class="na">link-check</span><span class="pi">:</span>
-    <span class="na">uses</span><span class="pi">:</span> <span class="s">n3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1</span>
+    <span class="na">uses</span><span class="pi">:</span> <span class="s">n3b3x/hf-general-ci-tools/.github/workflows/ru-docs-linkcheck.yml@v1</span>
     <span class="na">with</span><span class="pi">:</span>
       <span class="na">paths</span><span class="pi">:</span> <span class="s2">"</span><span class="s">docs/**,*.md"</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
@@ -578,7 +576,7 @@ name: Code Quality
 on: [push, pull_request]
 jobs:
   lint:
-    uses: n3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1
+    uses: n3b3x/hf-general-ci-tools/.github/workflows/ru-cpp-lint.yml@v1
     with:
       source_dirs: "src/"
       include_patterns: "*.cpp,*.hpp,*.c,*.h"
@@ -595,7 +593,7 @@ name: Build Docs
 on: [push]
 jobs:
   docs:
-    uses: n3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
+    uses: n3b3x/hf-general-ci-tools/.github/workflows/ru-docs-publish.yml@v1
     with:
       jekyll_enabled: true
       jekyll_source: "docs"
@@ -612,7 +610,7 @@ name: Check Links
 on: [push, pull_request]
 jobs:
   link-check:
-    uses: n3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
+    uses: n3b3x/hf-general-ci-tools/.github/workflows/ru-docs-linkcheck.yml@v1
     with:
       paths: "docs/**,*.md"
       verbose: true
@@ -776,7 +774,7 @@ jobs:
 
 <ul>
   <li><strong><a href="docs/configuration-examples.md">Configuration Examples</a></strong> - Ready-to-use config files</li>
-  <li><strong><a href="/hf-general-ci-tools/development/docs/example-workflows.html">Example Workflows</a></strong> - Complete workflow examples</li>
+  <li><strong><a href="docs/example-workflows.md">Example Workflows</a></strong> - Complete workflow examples</li>
 </ul><hr />
 <h2 id="-license">
   
