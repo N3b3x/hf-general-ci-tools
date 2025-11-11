@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['_5fconfig_20clang_20format_20tt_0',['&lt;tt&gt;_config/.clang-format&lt;/tt&gt;',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/c-cpp-lint-workflow.md#autotoc_md50',1,'']]],
-  ['_5fconfig_20clang_20tidy_20tt_1',['&lt;tt&gt;_config/.clang-tidy&lt;/tt&gt;',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/c-cpp-lint-workflow.md#autotoc_md51',1,'']]],
-  ['_5fconfig_20yamllint_20tt_20configuration_2',['&lt;tt&gt;_config/.yamllint&lt;/tt&gt; Configuration',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/yamllint-workflow.md#autotoc_md392',1,'']]],
-  ['_5fconfig_20yml_20tt_3',['Base Configuration (&lt;tt&gt;_config.yml&lt;/tt&gt;)',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/jekyll-guide.md#autotoc_md290',1,'']]]
+  ['6_0',['nav_order: 6',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ci-workflows.md#autotoc_md31',1,'']]]
 ];

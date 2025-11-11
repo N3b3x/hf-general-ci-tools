@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['📦_20release_20workflow_0',['📦 Release Workflow',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/example-workflows.md#autotoc_md220',1,'']]]
+  ['📤_20outputs_0',['📤 Outputs',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-cpp-analysis.md#autotoc_md148',1,'📤 Outputs'],['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-cpp-lint.md#autotoc_md173',1,'📤 Outputs'],['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-docs-publish.md#autotoc_md266',1,'📤 Outputs'],['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-yaml-lint.md#autotoc_md332',1,'📤 Outputs']]]
 ];
