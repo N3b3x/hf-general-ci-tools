@@ -26,6 +26,10 @@ jobs:
       # Versioning Configuration (Always Enabled)
       # =============================================================================
       deployment_branch: 'gh-pages'  # Required for versioned documentation
+      # =============================================================================
+      # Doxygen Configuration
+      # =============================================================================
+      doxygen_config: "_config/Doxyfile"
 
       # =============================================================================
       # Jekyll Configuration
