@@ -1,0 +1,48 @@
+---
+name: 🔍 Test C++ Lint
+
+on:
+  push:
+    branches: [main, 'release/*']  # Run on main and release branches
+    tags: ['v*']  # Run on version tags
+  pull_request:
+    branches: [main]  # Only run on PRs targeting main branch
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: test-cpp-lint-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-cpp-lint:
+    name: Test C++ Linting Tools
+    uses: ./.github/workflows/c-cpp-lint.yml
+    with:
+      # =============================================================================
+      # Clang Configuration
+      # =============================================================================
+      clang_version: "20"
+      clang_format_config: "_config/.clang-format"
+      clang_tidy_config: "_config/.clang-tidy"
+      
+      # =============================================================================
+      # File Patterns
+      # =============================================================================
+      extensions: "c,cpp,cc,cxx,h,hpp"
+      ignore: "build|.git|docs|_site"
+      
+      # =============================================================================
+      # Analysis Options
+      # =============================================================================
+      files_changed_only: false  # Analyze all files to test the tooling
+      lines_changed_only: false  # Analyze all lines to test the tooling
+      step_summary: true
+      
+      # =============================================================================
+      # Quality Checks
+      # =============================================================================
+      # Test specific tidy checks relevant to the demo code
+      tidy_checks: "readability-*,modernize-*,performance-*,bugprone-*,-modernize-use-trailing-return-type"
