@@ -1,6 +1,6 @@
 # Contributing to hf-general-ci-tools
 
-Thank you for your interest in contributing to hf-general-ci-tools! This project provides reusable GitHub Actions workflows for common CI/CD tasks, and we welcome contributions from the community.
+Thank you for your interest in contributing to hf-general-ci-tools! This project provides a comprehensive collection of reusable GitHub Actions workflows for CI/CD automation, featuring a dual-architecture system with production-ready reusable workflows and comprehensive CI testing workflows. We welcome contributions from the community!
 
 ## 📋 Table of Contents
 
@@ -25,9 +25,12 @@ This project follows the [Contributor Covenant Code of Conduct](https://www.cont
 
 - Git
 - GitHub account
-- Basic understanding of GitHub Actions
-- YAML knowledge
+- Basic understanding of GitHub Actions workflows
+- YAML syntax knowledge
 - Familiarity with CI/CD concepts
+- Understanding of the project's dual-workflow architecture:
+  - **Reusable workflows** (`ru-*.yml`) - Production-ready tools for other repositories
+  - **CI workflows** (`ci-*.yml`) - Comprehensive testing workflows that validate the reusable ones
 
 ### Setting Up Your Development Environment
 
@@ -39,7 +42,7 @@ This project follows the [Contributor Covenant Code of Conduct](https://www.cont
    ```
 3. **Add the upstream remote**:
    ```bash
-   git remote add upstream https://github.com/n3b3x/hf-general-ci-tools.git
+   git remote add upstream https://github.com/N3b3x/hf-general-ci-tools.git
    ```
 4. **Create a new branch** for your changes:
    ```bash
@@ -61,21 +64,35 @@ We welcome several types of contributions:
 - Request additional configuration options
 
 ### 🔧 Workflow Improvements
-- Fix bugs in existing workflows
-- Add new features to workflows
-- Optimize workflow performance
-- Improve error handling
+- Fix bugs in existing reusable workflows (`ru-*.yml`)
+- Enhance CI testing workflows (`ci-*.yml`) 
+- Add new workflow capabilities (C++ analysis, documentation generation, etc.)
+- Optimize workflow performance and resource usage
+- Improve error handling and user experience
+- Update workflow inputs/outputs to match current tool versions
 
 ### 📚 Documentation
-- Improve existing documentation
-- Add examples and tutorials
-- Fix typos and clarify instructions
-- Add configuration examples
+- Update workflow documentation (`docs/ru-*.md`) to match actual implementations
+- Improve Jekyll documentation site configuration
+- Add real-world usage examples and tutorials
+- Fix typos and clarify complex instructions
+- Ensure 1:1 mapping between workflows and documentation files
+- Update versioning guides and Jekyll integration docs
 
 ### 🧪 Testing
 - Test workflows in different environments
-- Report compatibility issues
-- Suggest test improvements
+- Report compatibility issues with tool versions
+- Improve CI workflow coverage
+- Validate tool CLI argument compatibility
+
+### 🔧 Available Workflow Categories
+
+This repository currently supports:
+
+- **C++ Development**: `ru-cpp-lint.yml` and `ru-cpp-analysis.yml` for code quality
+- **Documentation**: `ru-docs-publish.yml` and `ru-docs-linkcheck.yml` for Jekyll/Doxygen sites  
+- **YAML Validation**: `ru-yaml-lint.yml` for configuration file quality
+- **Future Categories**: Python, Node.js, Docker, or other language ecosystems welcome!
 
 ## Development Workflow
 
@@ -113,20 +130,29 @@ We welcome several types of contributions:
 - **Performance**: Optimize for speed and resource usage
 - **Security**: Follow GitHub Actions security best practices
 
-### Workflow Structure
+### Workflow Architecture
+
+This project uses a **dual-workflow architecture**:
+
+#### Reusable Workflows (`ru-*.yml`)
+Production-ready workflows that other repositories can call:
 
 ```yaml
-name: Workflow Name
-description: 'Brief description of what this workflow does'
+---
+name: 🔧 [RU] Workflow Name
 
 on:
   workflow_call:
     inputs:
-      # Define all inputs with descriptions
+      input_name:
+        description: 'Clear description of what this input does'
+        required: false
+        type: string
+        default: 'sensible_default'
     outputs:
-      # Define outputs if applicable
-    secrets:
-      # Define required secrets
+      output_name:
+        description: 'Description of output'
+        value: ${{ jobs.job-name.outputs.result }}
 
 jobs:
   job-name:
@@ -136,13 +162,37 @@ jobs:
         # Implementation
 ```
 
+#### CI Testing Workflows (`ci-*.yml`)
+Comprehensive testing workflows that validate the reusable ones:
+
+```yaml
+---
+name: 🔧 Workflow Name CI
+
+on:
+  push:
+    branches: [main, 'release/*']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test-workflow:
+    name: Test Workflow Name
+    uses: ./.github/workflows/ru-workflow-name.yml
+    with:
+      # Test all possible input combinations
+      input_name: "comprehensive_test_value"
+```
+
 ### Input Guidelines
 
-- **Use descriptive names**: `source_directories` instead of `dirs`
-- **Provide clear descriptions**: Explain what each input does
-- **Set sensible defaults**: Make workflows work out-of-the-box
-- **Validate inputs**: Check for required values and valid formats
-- **Use appropriate types**: `string`, `boolean`, `number`, `choice`
+- **Use descriptive names**: `checkout_recursive` instead of `recursive`
+- **Provide comprehensive descriptions**: Explain what each input does and when to use it
+- **Set sensible defaults**: Make workflows work out-of-the-box (e.g., `paths: 'docs/** *.md'`)
+- **Validate tool compatibility**: Ensure parameter names match actual tool versions (e.g., Lychee `max_retries`)
+- **Use appropriate types**: `string`, `boolean` (avoid `number` for better YAML compatibility)
+- **Include usage notes**: Add helpful context like `(Note: requires tool version X.Y)`
 
 ### Output Guidelines
 
@@ -168,13 +218,14 @@ jobs:
 
 ### Workflow Documentation
 
-Each workflow should have:
-- **Purpose**: What the workflow does
-- **Inputs**: All available inputs with descriptions
-- **Outputs**: All outputs with descriptions
-- **Examples**: Basic and advanced usage examples
-- **Prerequisites**: Required setup and configuration
-- **Troubleshooting**: Common issues and solutions
+Each reusable workflow must have corresponding documentation in `docs/ru-*.md`:
+
+- **Perfect 1:1 mapping**: Every `ru-*.yml` has a `ru-*.md` documentation file
+- **Live CI Example**: Reference to the `ci-*.yml` that demonstrates all features
+- **Accurate inputs table**: All parameters with correct defaults and descriptions
+- **Real usage examples**: Working code snippets that users can copy-paste
+- **Tool-specific notes**: Version requirements and compatibility information
+- **Jekyll integration**: Proper front matter for the documentation site
 
 ### Documentation Structure
 
@@ -219,22 +270,48 @@ Brief description of the workflow.
 - Issue 2: Solution
 ```
 
-### Code Comments
+### Quality Standards
 
-- **Explain complex logic**: Don't assume readers understand everything
-- **Document non-obvious decisions**: Explain why certain choices were made
-- **Include examples**: Show how to use complex features
-- **Keep comments up-to-date**: Update comments when code changes
+This repository maintains high quality standards:
+
+#### YAML Quality
+- **yamllint compliance**: All workflows must pass `yamllint -c _config/.yamllint`
+- **No trailing whitespace**: Use proper line endings
+- **Consistent formatting**: Follow established patterns in existing workflows
+
+#### Documentation Quality  
+- **No broken links**: All cross-references must work
+- **Markdown formatting**: Clean structure with proper headers
+- **Accurate examples**: All code examples must be functional
+
+#### Tool Integration
+- **Version compatibility**: CLI arguments must match actual tool versions
+- **Parameter validation**: Ensure all inputs work as documented
+- **Error handling**: Provide helpful error messages
+
+#### Architecture Compliance
+- **Dual workflow system**: Every `ru-*.yml` needs a `ci-*.yml`
+- **Naming conventions**: Follow `ru-` and `ci-` prefixes consistently
+- **Documentation mapping**: Maintain perfect workflow-to-docs alignment
 
 ## Testing Guidelines
 
+### Our Testing Architecture
+
+This project uses **comprehensive CI workflows** to test every reusable workflow:
+
+1. **Every reusable workflow** (`ru-*.yml`) has a corresponding CI test (`ci-*.yml`)
+2. **CI workflows test maximum features** - They use comprehensive input combinations
+3. **Live validation** - CI workflows run against this repository's actual content
+4. **Quality gates** - All workflows must pass yamllint and documentation accuracy checks
+
 ### Testing Your Workflows
 
-1. **Create a test repository** with sample code
-2. **Test all input combinations** you can think of
-3. **Verify error handling** with invalid inputs
-4. **Check performance** with large codebases
-5. **Test on different platforms** if applicable
+1. **Create both workflows**: Always create `ru-*.yml` AND `ci-*.yml` together
+2. **Test in the CI workflow**: Use the `ci-*.yml` to validate your `ru-*.yml`
+3. **Verify against real content**: Test with this repository's actual files
+4. **Check tool compatibility**: Ensure CLI arguments match tool versions (e.g., Lychee, yamllint)
+5. **Validate documentation sync**: Ensure `docs/ru-*.md` matches the workflow parameters
 
 ### Test Cases to Consider
 
@@ -246,12 +323,14 @@ Brief description of the workflow.
 
 ### Testing Checklist
 
-- [ ] Workflow runs successfully with valid inputs
-- [ ] Error messages are clear and helpful
-- [ ] All inputs are properly validated
-- [ ] Outputs are correctly set
-- [ ] Documentation examples work
-- [ ] Performance is acceptable
+- [ ] **Reusable workflow** (`ru-*.yml`) runs successfully with valid inputs
+- [ ] **CI workflow** (`ci-*.yml`) comprehensively tests the reusable workflow
+- [ ] **Documentation** (`docs/ru-*.md`) accurately describes all inputs/outputs
+- [ ] **Tool compatibility** verified (CLI arguments match current tool versions)
+- [ ] **YAML linting** passes using `_config/.yamllint`
+- [ ] **Error messages** are clear and helpful for end users
+- [ ] **Live CI Example** reference works in documentation
+- [ ] **Navigation flow** maintains proper cross-references
 
 ## Pull Request Process
 
@@ -342,10 +421,18 @@ We use [Semantic Versioning](https://semver.org/):
 
 ### Resources
 
+#### General Resources
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
 - [YAML Syntax Guide](https://yaml.org/spec/1.2/spec.html)
 - [Semantic Versioning](https://semver.org/)
 - [Conventional Commits](https://www.conventionalcommits.org/)
+
+#### Project-Specific Resources
+- [Jekyll Documentation](https://jekyllrb.com/docs/) - For documentation site features
+- [Lychee Link Checker](https://github.com/lycheeverse/lychee) - Current CLI options and compatibility
+- [yamllint Documentation](https://yamllint.readthedocs.io/) - YAML linting rules and configuration
+- [GitHub Pages](https://docs.github.com/en/pages) - For documentation deployment
+- [Doxygen Manual](https://www.doxygen.nl/manual/) - For C++ documentation generation
 
 ## 🙏 Recognition
 

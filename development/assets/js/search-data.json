@@ -43,7 +43,7 @@
   },"6": {
     "doc": "🚀 hf-general-ci-tools",
     "title": "📖 Available Guides",
-    "content": "| Guide | Description | Target Audience | . | 📋 Documentation Index | Complete overview and navigation | All users | . | 🔧 C/C++ Lint Guide | Code quality and formatting setup | C/C++ developers | . | 🛡️ Static Analysis Guide | Security analysis configuration | Security-focused teams | . | 📚 Documentation Guide | Documentation generation &amp; deployment | Documentation teams | . | 🔗 Link Check Guide | Link validation setup | Documentation maintainers | . | 📝 YAML Lint Guide | YAML validation configuration | DevOps engineers | . | 💡 Example Workflows | Complete workflow examples | All users | . ",
+    "content": "| Guide | Description | Target Audience | . | 📋 Documentation Index | Complete overview and navigation | All users | . | 🔧 C/C++ Linting Tools | Code quality and formatting setup | C/C++ developers | . | � C/C++ Static Analysis | Security analysis configuration | Security-focused teams | . | 📚 Documentation Publisher | Documentation generation &amp; deployment | Documentation teams | . | 🔗 Documentation Link Check | Link validation setup | Documentation maintainers | . | 📝 YAML Linting Tools | YAML validation configuration | DevOps engineers | . | � CI Workflows &amp; Design | Testing philosophy and live examples | All users | . ",
     "url": "/hf-general-ci-tools/development/#-available-guides",
     
     "relUrl": "/#-available-guides"
@@ -99,14 +99,14 @@
   },"14": {
     "doc": "🚀 hf-general-ci-tools",
     "title": "🛠️ Configuration Examples",
-    "content": ". | Configuration Examples - Ready-to-use config files | Example Workflows - Complete workflow examples | . ",
+    "content": ". | Jekyll Integration Guide - Advanced Jekyll configuration for documentation sites | Versioning Guide - Multi-version documentation strategies | . ",
     "url": "/hf-general-ci-tools/development/#%EF%B8%8F-configuration-examples",
     
     "relUrl": "/#️-configuration-examples"
   },"15": {
     "doc": "🚀 hf-general-ci-tools",
     "title": "📄 License",
-    "content": "GNU General Public License v3.0 - See the LICENSE file for details . 🧪 Test 404 Page - (on live documentation) Click this link to test our custom 404 page! . ⭐ Star this repository if you find it helpful! . Report Bug • Request Feature • Contribute . ",
+    "content": "GNU General Public License v3.0 - See the LICENSE file for details . ⭐ Star this repository if you find it helpful! . Report Bug • Request Feature • Contribute . ",
     "url": "/hf-general-ci-tools/development/#-license",
     
     "relUrl": "/#-license"
