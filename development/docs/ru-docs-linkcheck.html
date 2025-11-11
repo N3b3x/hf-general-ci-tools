@@ -309,7 +309,7 @@ It ensures that all internal and external links are working correctly, preventin
   <li>🎯 <strong>Flexible Path Patterns</strong> - Customizable file and directory patterns</li>
   <li>📊 <strong>Detailed Reporting</strong> - Clear error messages and link status with verbose output</li>
   <li>🛡️ <strong>Smart Filtering</strong> - Excludes private links and mailto addresses by default</li>
-  <li>🔄 <strong>Retry Logic</strong> - Automatic retry for failed links with configurable attempts</li>
+  <li>🔄 <strong>Retry Logic</strong> - Configurable retry attempts with customizable wait times</li>
 </ul><hr />
 <h2 id="-quick-start">
   
@@ -379,6 +379,7 @@ It ensures that all internal and external links are working correctly, preventin
 17
 18
 19
+20
 </pre></td><td class="rouge-code"><pre><span class="na">name</span><span class="pi">:</span> <span class="s">Advanced Link Check</span>
 
 <span class="na">on</span><span class="pi">:</span>
@@ -394,7 +395,8 @@ It ensures that all internal and external links are working correctly, preventin
       <span class="na">paths</span><span class="pi">:</span> <span class="s2">"</span><span class="s">docs/**</span><span class="nv"> </span><span class="s">*.md</span><span class="nv"> </span><span class="s">**/docs/**"</span>
       <span class="na">fail_on_errors</span><span class="pi">:</span> <span class="no">true</span>
       <span class="na">timeout</span><span class="pi">:</span> <span class="s2">"</span><span class="s">15"</span>
-      <span class="na">retry</span><span class="pi">:</span> <span class="s2">"</span><span class="s">5"</span>
+      <span class="na">max_retries</span><span class="pi">:</span> <span class="s2">"</span><span class="s">5"</span>
+      <span class="na">retry_wait_time</span><span class="pi">:</span> <span class="s2">"</span><span class="s">2"</span>
       <span class="na">exclude_private</span><span class="pi">:</span> <span class="no">true</span>
       <span class="na">exclude_mail</span><span class="pi">:</span> <span class="no">true</span>
       <span class="na">verbose</span><span class="pi">:</span> <span class="no">true</span>
@@ -521,10 +523,16 @@ It ensures that all internal and external links are working correctly, preventin
       <td>Timeout in seconds for each link check</td>
     </tr>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">retry</code></td>
+      <td><code class="language-plaintext highlighter-rouge">max_retries</code></td>
       <td><code class="language-plaintext highlighter-rouge">string</code></td>
       <td><code class="language-plaintext highlighter-rouge">"3"</code></td>
-      <td>Number of retries for failed links</td>
+      <td>Maximum number of retries per request</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">retry_wait_time</code></td>
+      <td><code class="language-plaintext highlighter-rouge">string</code></td>
+      <td><code class="language-plaintext highlighter-rouge">"1"</code></td>
+      <td>Minimum wait time in seconds between retries</td>
     </tr>
     <tr>
       <td><code class="language-plaintext highlighter-rouge">exclude_private</code></td>

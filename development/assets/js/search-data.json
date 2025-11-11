@@ -974,7 +974,7 @@
   },"139": {
     "doc": "🔗 Documentation Link Check (Reusable)",
     "title": "Key Features",
-    "content": ". | 🔍 Comprehensive Link Checking - Validates all markdown files and documentation using Lychee | 🌐 External Link Validation - Checks external URLs for accessibility with retry logic | 📁 Internal Link Validation - Verifies internal file references and anchors | ⚡ Fast Processing - Efficient scanning with configurable timeouts and parallel processing | 🎯 Flexible Path Patterns - Customizable file and directory patterns | 📊 Detailed Reporting - Clear error messages and link status with verbose output | 🛡️ Smart Filtering - Excludes private links and mailto addresses by default | 🔄 Retry Logic - Automatic retry for failed links with configurable attempts | . ",
+    "content": ". | 🔍 Comprehensive Link Checking - Validates all markdown files and documentation using Lychee | 🌐 External Link Validation - Checks external URLs for accessibility with retry logic | 📁 Internal Link Validation - Verifies internal file references and anchors | ⚡ Fast Processing - Efficient scanning with configurable timeouts and parallel processing | 🎯 Flexible Path Patterns - Customizable file and directory patterns | 📊 Detailed Reporting - Clear error messages and link status with verbose output | 🛡️ Smart Filtering - Excludes private links and mailto addresses by default | 🔄 Retry Logic - Configurable retry attempts with customizable wait times | . ",
     "url": "/hf-general-ci-tools/development/docs/ru-docs-linkcheck.html#key-features",
     
     "relUrl": "/docs/ru-docs-linkcheck.html#key-features"
@@ -995,7 +995,7 @@
   },"142": {
     "doc": "🔗 Documentation Link Check (Reusable)",
     "title": "Advanced Configuration",
-    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 . | name: Advanced Link Check on: push: branches: [main] pull_request: branches: [main] jobs: link-check: uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-docs-linkcheck.yml@v1 with: paths: \"docs/** *.md **/docs/**\" fail_on_errors: true timeout: \"15\" retry: \"5\" exclude_private: true exclude_mail: true verbose: true . | . ",
+    "content": "| 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 . | name: Advanced Link Check on: push: branches: [main] pull_request: branches: [main] jobs: link-check: uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-docs-linkcheck.yml@v1 with: paths: \"docs/** *.md **/docs/**\" fail_on_errors: true timeout: \"15\" max_retries: \"5\" retry_wait_time: \"2\" exclude_private: true exclude_mail: true verbose: true . | . ",
     "url": "/hf-general-ci-tools/development/docs/ru-docs-linkcheck.html#advanced-configuration",
     
     "relUrl": "/docs/ru-docs-linkcheck.html#advanced-configuration"
@@ -1023,7 +1023,7 @@
   },"146": {
     "doc": "🔗 Documentation Link Check (Reusable)",
     "title": "⚙️ Link Checking Configuration",
-    "content": "| Parameter | Type | Default | Description | . | timeout | string | \"10\" | Timeout in seconds for each link check | . | retry | string | \"3\" | Number of retries for failed links | . | exclude_private | boolean | true | Exclude private/internal links | . | exclude_mail | boolean | true | Exclude mailto links | . | config_file | string | \"\" | Path to lychee.toml config file (optional) | . ",
+    "content": "| Parameter | Type | Default | Description | . | timeout | string | \"10\" | Timeout in seconds for each link check | . | max_retries | string | \"3\" | Maximum number of retries per request | . | retry_wait_time | string | \"1\" | Minimum wait time in seconds between retries | . | exclude_private | boolean | true | Exclude private/internal links | . | exclude_mail | boolean | true | Exclude mailto links | . | config_file | string | \"\" | Path to lychee.toml config file (optional) | . ",
     "url": "/hf-general-ci-tools/development/docs/ru-docs-linkcheck.html#%EF%B8%8F-link-checking-configuration",
     
     "relUrl": "/docs/ru-docs-linkcheck.html#️-link-checking-configuration"
