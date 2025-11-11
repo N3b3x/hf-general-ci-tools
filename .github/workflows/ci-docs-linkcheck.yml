@@ -24,35 +24,17 @@ jobs:
       # =============================================================================
       # Repository Configuration
       # =============================================================================
-      checkout_recursive: true  # Test recursive checkout
+      checkout_recursive: true  # Test recursive checkout for submodule support
 
       # =============================================================================
       # Link Check Configuration
       # =============================================================================
-      # Test comprehensive link checking with maximum features
-      check_external_links: true  # Check external links (most comprehensive test)
-      check_anchors: true  # Verify anchor links work
-      follow_redirects: true  # Follow HTTP redirects
-
-      # =============================================================================
-      # File Patterns
-      # =============================================================================
-      # Test multiple file types and comprehensive patterns
-      file_patterns: "**/*.md,**/*.html,**/*.rst,docs/**/*"
-      exclude_patterns: "node_modules/**,_site/**,.git/**,vendor/**"
-
-      # =============================================================================
-      # Advanced Options
-      # =============================================================================
-      # Test timeout and retry settings
-      timeout: 30  # 30 second timeout per link
-      max_redirects: 5  # Allow up to 5 redirects
-      user_agent: "Mozilla/5.0 (CI Link Checker)"  # Custom user agent for testing
-
-      # =============================================================================
-      # Quality Control
-      # =============================================================================
-      # Set to false for testing - we want to see what issues exist
-      fail_on_broken_links: false  # Don't fail the workflow for testing
-      create_report: true  # Generate detailed report
-      report_format: "markdown"  # Use markdown format for GitHub integration
+      # Test comprehensive link checking with maximum features enabled
+      paths: "docs/** *.md **/*.md"  # Comprehensive path patterns for all markdown
+      fail_on_errors: false  # Don't fail workflow for CI testing purposes
+      timeout: "30"  # Extended timeout per link for thorough testing
+      retry: "3"  # Retry failed links multiple times
+      exclude_private: true  # Exclude private/internal links from checking
+      exclude_mail: true  # Exclude mailto links from validation
+      verbose: true  # Enable verbose output for detailed CI testing
+      config_file: ""  # Use default lychee configuration (no custom config)
