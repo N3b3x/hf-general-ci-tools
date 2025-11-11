@@ -33,7 +33,8 @@ jobs:
       paths: "docs/** *.md **/*.md"  # Comprehensive path patterns for all markdown
       fail_on_errors: false  # Don't fail workflow for CI testing purposes
       timeout: "30"  # Extended timeout per link for thorough testing
-      retry: "3"  # Retry failed links multiple times
+      max_retries: "3"  # Maximum number of retries per request
+      retry_wait_time: "2"  # Wait 2 seconds between retries for thorough testing
       exclude_private: true  # Exclude private/internal links from checking
       exclude_mail: true  # Exclude mailto links from validation
       verbose: true  # Enable verbose output for detailed CI testing

@@ -31,7 +31,7 @@ It ensures that all internal and external links are working correctly, preventin
 - 🎯 **Flexible Path Patterns** - Customizable file and directory patterns
 - 📊 **Detailed Reporting** - Clear error messages and link status with verbose output
 - 🛡️ **Smart Filtering** - Excludes private links and mailto addresses by default
-- 🔄 **Retry Logic** - Automatic retry for failed links with configurable attempts
+- 🔄 **Retry Logic** - Configurable retry attempts with customizable wait times
 
 ---
 
@@ -71,7 +71,8 @@ jobs:
       paths: "docs/** *.md **/docs/**"
       fail_on_errors: true
       timeout: "15"
-      retry: "5"
+      max_retries: "5"
+      retry_wait_time: "2"
       exclude_private: true
       exclude_mail: true
       verbose: true
@@ -127,7 +128,8 @@ Then customize it for your needs. The TOML file allows you to:
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `timeout` | `string` | `"10"` | Timeout in seconds for each link check |
-| `retry` | `string` | `"3"` | Number of retries for failed links |
+| `max_retries` | `string` | `"3"` | Maximum number of retries per request |
+| `retry_wait_time` | `string` | `"1"` | Minimum wait time in seconds between retries |
 | `exclude_private` | `boolean` | `true` | Exclude private/internal links |
 | `exclude_mail` | `boolean` | `true` | Exclude mailto links |
 | `config_file` | `string` | `""` | Path to lychee.toml config file (optional) |

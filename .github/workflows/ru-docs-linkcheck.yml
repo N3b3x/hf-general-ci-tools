@@ -24,11 +24,16 @@ on:
         required: false
         type: string
         default: '10'
-      retry:
-        description: 'Number of retries for failed links'
+      max_retries:
+        description: 'Maximum number of retries per request'
         required: false
         type: string
         default: '3'
+      retry_wait_time:
+        description: 'Minimum wait time in seconds between retries'
+        required: false
+        type: string
+        default: '1'
       exclude_private:
         description: 'Exclude private/internal links'
         required: false
@@ -69,7 +74,8 @@ jobs:
             ${{ inputs.verbose == 'true' && '--verbose' || '' }}
             --format detailed
             --timeout ${{ inputs.timeout }}
-            --retry ${{ inputs.retry }}
+            --max-retries ${{ inputs.max_retries }}
+            --retry-wait-time ${{ inputs.retry_wait_time }}
             ${{ inputs.exclude_private == 'true' && '--exclude-all-private' || '' }}
             ${{ inputs.exclude_mail == 'true' && '--exclude-mail' || '' }}
             ${{ inputs.fail_on_errors == 'true' && '--fail' || '' }}
