@@ -20,7 +20,7 @@ var searchData=
   ['git_20based_20versioning_20enforced_17',['1. Git-Based Versioning (Enforced)',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/versioning-guide.md#autotoc_md389',1,'']]],
   ['github_20pages_20setup_18',['GitHub Pages Setup',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-docs-publish.md#autotoc_md303',1,'🌐 GitHub Pages Setup'],['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-docs-publish.md#autotoc_md296',1,'GitHub Pages Setup']]],
   ['greet_19',['greet',['../classci__demo_1_1Greeter.html#a1c6f59ec22d7ac944ca89d0a1f4b9714',1,'ci_demo::Greeter']]],
-  ['greeter_20',['Greeter',['../classci__demo_1_1Greeter.html',1,'ci_demo::Greeter'],['../classci__demo_1_1Greeter.html#a0a8f76b50c86f6debf88192b8d92d98c',1,'ci_demo::Greeter::Greeter()']]],
+  ['greeter_20',['Greeter',['../classci__demo_1_1Greeter.html',1,'ci_demo::Greeter'],['../classci__demo_1_1Greeter.html#a463ccb16afc3aef09bcef35d9a3d379f',1,'ci_demo::Greeter::Greeter(std::string salutation)'],['../classci__demo_1_1Greeter.html#a1fc29f7adb946034eaf6283174967f48',1,'ci_demo::Greeter::Greeter()']]],
   ['greeter_2ecpp_21',['greeter.cpp',['../greeter_8cpp.html',1,'']]],
   ['greeter_2ehpp_22',['greeter.hpp',['../greeter_8hpp.html',1,'']]],
   ['guide_23',['Guide',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/versioning-guide.md#autotoc_md349',1,'🔀 Documentation Versioning Guide'],['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/jekyll-guide.md#autotoc_md86',1,'🔧 Jekyll Configuration Guide']]],
