@@ -1,5 +1,5 @@
 ---
-name: YAML Lint (Reusable)
+name: 📝 [RU] YAML Linting Tools
 
 on:
   workflow_call:

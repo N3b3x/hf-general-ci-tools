@@ -81,7 +81,7 @@ The C/C++ Lint workflow runs clang-format and clang-tidy using cpp-linter for co
 ```yaml
 jobs:
   lint:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-cpp-lint.yml@v1
     with:
       clang_version: "20"
 ```
@@ -91,7 +91,7 @@ jobs:
 ```yaml
 jobs:
   lint:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-cpp-lint.yml@v1
     with:
       extensions: "c,cpp,h,hpp,cc,cxx"
       clang_version: "18"
@@ -102,7 +102,7 @@ jobs:
 ```yaml
 jobs:
   lint:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-cpp-lint.yml@v1
     with:
       ignore: "build|.git|third_party|vendor|test"
       clang_version: "20"
@@ -113,7 +113,7 @@ jobs:
 ```yaml
 jobs:
   lint:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-cpp-lint.yml@v1
     with:
       clang_version: "20"
       tidy_checks: "readability-*,performance-*,modernize-*"  # Specific checks
@@ -128,7 +128,7 @@ jobs:
 ```yaml
 jobs:
   lint:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-cpp-lint.yml@v1
     with:
       clang_version: "20"
       files_changed_only: true   # Only lint changed files

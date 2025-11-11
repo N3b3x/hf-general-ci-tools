@@ -9,7 +9,7 @@ parent: "📖 Examples & Guides"
 # 🔀 Documentation Versioning Guide
 
 Complete guide to implementing versioned documentation with automatic Doxygen and Jekyll integration using the
-enhanced `docs.yml` workflow.
+enhanced `ru-docs-publish.yml` workflow.
 
 ## 📋 Table of Contents
 
@@ -43,8 +43,8 @@ permissions:
   id-token: 'write'
 
 jobs:
-  publish-docs:
-    uses: 'N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@main'
+  ci-docs-publish:
+    uses: 'N3b3x/hf-general-ci-tools/.github/workflows/ru-docs-publish.yml@main'
     with:
       # Versioning is now enabled by default
       deployment_branch: 'gh-pages'  # Required for versioned documentation
@@ -442,7 +442,7 @@ on:
 
 jobs:
   docs:
-    uses: 'N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@main'
+    uses: 'N3b3x/hf-general-ci-tools/.github/workflows/ru-docs-publish.yml@main'
     with:
       deployment_branch: 'gh-pages'
       doxygen_config: '_config/Doxyfile'
@@ -463,7 +463,7 @@ on:
 
 jobs:
   docs:
-    uses: 'N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@main'
+    uses: 'N3b3x/hf-general-ci-tools/.github/workflows/ru-docs-publish.yml@main'
     with:
       # Versioning (always enabled)
       deployment_branch: 'gh-pages'
@@ -504,7 +504,7 @@ on:
 
 jobs:
   docs:
-    uses: 'N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@main'
+    uses: 'N3b3x/hf-general-ci-tools/.github/workflows/ru-docs-publish.yml@main'
     with:
       deployment_branch: 'gh-pages'  # Required for versioned documentation
       deploy_pages: 'true'          # Deploy to GitHub Pages

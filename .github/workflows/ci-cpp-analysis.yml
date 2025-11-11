@@ -1,5 +1,5 @@
 ---
-name: 🔍 Test C++ Static Analysis
+name: 🔍 C++ Analysis CI
 
 on:
   push:
@@ -13,25 +13,25 @@ permissions:
   contents: read
 
 concurrency:
-  group: test-cpp-static-analysis-${{ github.ref }}
+  group: ci-cpp-analysis-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   test-cppcheck:
     name: Test C++ Static Analysis (Cppcheck)
-    uses: ./.github/workflows/c-cpp-static-analysis.yml
+    uses: ./.github/workflows/ru-cpp-analysis.yml
     with:
       # =============================================================================
       # Analysis Paths
       # =============================================================================
       # Analyze the sample C++ code in cpp-ci-test directory
       paths: "cpp-ci-test/src cpp-ci-test/include"
-      
+
       # =============================================================================
       # C++ Standard
       # =============================================================================
       std: "c++17"
-      
+
       # =============================================================================
       # Quality Control
       # =============================================================================

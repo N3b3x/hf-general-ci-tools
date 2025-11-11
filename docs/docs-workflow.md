@@ -216,7 +216,7 @@ The deployment process follows this sequence:
 ```yaml
 jobs:
   docs:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-docs-publish.yml@v1
     with:
       doxygen_config: _config/Doxyfile
       deployment_branch: gh-pages
@@ -227,7 +227,7 @@ jobs:
 ```yaml
 jobs:
   docs:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-docs-publish.yml@v1
     with:
       doxygen_config: _config/Doxyfile
       deployment_branch: gh-pages
@@ -239,7 +239,7 @@ jobs:
 ```yaml
 jobs:
   docs:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-docs-publish.yml@v1
     with:
       doxygen_config: _config/Doxyfile
       deployment_branch: gh-pages
@@ -258,7 +258,7 @@ jobs:
 ```yaml
 jobs:
   docs:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-docs-publish.yml@v1
     with:
       doxygen_config: _config/Doxyfile
       deployment_branch: gh-pages
@@ -275,7 +275,7 @@ jobs:
 ```yaml
 jobs:
   docs:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-docs-publish.yml@v1
     with:
       doxygen_config: _config/Doxyfile
       deployment_branch: gh-pages
@@ -299,7 +299,7 @@ jobs:
 ```yaml
 jobs:
   docs:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-docs-publish.yml@v1
     with:
       doxygen_config: docs/Doxyfile.custom
       deployment_branch: gh-pages
@@ -312,7 +312,7 @@ jobs:
 ```yaml
 jobs:
   docs:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-docs-publish.yml@v1
     with:
       checkout_recursive: true  # Required for submodule-based docs
       doxygen_config: _config/Doxyfile
@@ -514,7 +514,7 @@ For repositories that only need link checking without documentation generation, 
 ```yaml
 jobs:
   link-check:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-docs-linkcheck.yml@v1
     with:
       paths: "docs/** *.md **/docs/**"  # Paths to check (default: **/*.md)
       fail_on_errors: true              # Fail on broken links

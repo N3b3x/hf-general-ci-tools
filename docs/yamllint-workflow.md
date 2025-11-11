@@ -71,7 +71,7 @@ name: YAML Lint
 on: [push, pull_request]
 jobs:
   yamllint:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-yaml-lint.yml@v1
 ```
 
 ### Advanced Usage
@@ -81,7 +81,7 @@ name: YAML Lint
 on: [push, pull_request]
 jobs:
   yamllint:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-yaml-lint.yml@v1
     with:
       paths: '.github/workflows/*.yml,docs/*.yml'
       config_file: '_config/.yamllint'
@@ -96,7 +96,7 @@ name: Workflow YAML Lint
 on: [push, pull_request]
 jobs:
   yamllint:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-yaml-lint.yml@v1
     with:
       paths: '.github/workflows/*.yml'
       strict_mode: true
@@ -109,7 +109,7 @@ name: Complete YAML Lint
 on: [push, pull_request]
 jobs:
   yamllint:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-yaml-lint.yml@v1
     with:
       paths: '.github/workflows/*.yml,docs/*.yml,**/*.yaml'
       config_file: '_config/.yamllint'

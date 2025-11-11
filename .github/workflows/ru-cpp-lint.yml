@@ -1,5 +1,5 @@
 ---
-name: C/C++ Lint (Reusable)
+name: 🔧 [RU] C++ Linting Tools
 
 on:
   workflow_call:

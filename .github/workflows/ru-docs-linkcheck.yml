@@ -1,5 +1,5 @@
 ---
-name: Documentation Link Check (Reusable)
+name: 🔗 [RU] Documentation Link Check
 
 on:
   workflow_call:

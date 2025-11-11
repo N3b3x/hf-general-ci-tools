@@ -33,7 +33,7 @@ on:
 
 jobs:
   build-docs:
-    uses: ./.github/workflows/docs.yml
+    uses: ./.github/workflows/ru-docs-publish.yml
     with:
       jekyll_enabled: true
       jekyll_config: "_config.yml"
@@ -477,7 +477,7 @@ on:
 
 jobs:
   build-docs:
-    uses: ./.github/workflows/docs.yml
+    uses: ./.github/workflows/ru-docs-publish.yml
     with:
       jekyll_enabled: true
       jekyll_config: "_config.yml,_config_prod.yml"
@@ -495,7 +495,7 @@ on:
 
 jobs:
   build-docs:
-    uses: ./.github/workflows/docs.yml
+    uses: ./.github/workflows/ru-docs-publish.yml
     with:
       jekyll_enabled: true
       jekyll_config: "_config.yml,_config_dev.yml"
@@ -527,7 +527,7 @@ on:
 
 jobs:
   build-docs:
-    uses: ./.github/workflows/docs.yml
+    uses: ./.github/workflows/ru-docs-publish.yml
     with:
       jekyll_enabled: true
       jekyll_environment: ${{ github.event.inputs.environment ||
@@ -548,7 +548,7 @@ on:
 
 jobs:
   build-docs:
-    uses: ./.github/workflows/docs.yml
+    uses: ./.github/workflows/ru-docs-publish.yml
     with:
       jekyll_enabled: true
       # Any combination of config files
@@ -587,7 +587,7 @@ on:
 
 jobs:
   build-docs:
-    uses: ./.github/workflows/docs.yml
+    uses: ./.github/workflows/ru-docs-publish.yml
     with:
       jekyll_enabled: true
       jekyll_config: "_config.yml"

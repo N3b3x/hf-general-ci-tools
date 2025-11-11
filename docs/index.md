@@ -31,8 +31,8 @@ permalink: /docs/
 
 | Workflow | Purpose | Trigger |
 |----------|---------|---------|
-| **[Publish Documentation](https://github.com/n3b3x/hf-general-ci-tools/blob/main/.github/workflows/publish-docs.yml)** | Builds and deploys this repo's documentation site | Push to main, PRs |
-| **[YAML Lint](https://github.com/n3b3x/hf-general-ci-tools/blob/main/.github/workflows/yamllint.yml)** | Validates YAML syntax in this repository | Push, PRs |
+| **[Publish Documentation](https://github.com/n3b3x/hf-general-ci-tools/blob/main/.github/workflows/ci-docs-publish.yml)** | Builds and deploys this repo's documentation site | Push to main, PRs |
+| **[YAML Lint](https://github.com/n3b3x/hf-general-ci-tools/blob/main/.github/workflows/ci-yaml-lint.yml)** | Validates YAML syntax in this repository | Push, PRs |
 
 ## 📚 Documentation
 
@@ -55,20 +55,20 @@ Select the appropriate **reusable workflow** for your needs:
 
 ```yaml
 # For C/C++ projects
-uses: n3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1
+uses: n3b3x/hf-general-ci-tools/.github/workflows/ru-cpp-lint.yml@v1
 
 # For documentation
-uses: n3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
+uses: n3b3x/hf-general-ci-tools/.github/workflows/ru-docs-publish.yml@v1
 
 # For link checking
-uses: n3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
+uses: n3b3x/hf-general-ci-tools/.github/workflows/ru-docs-linkcheck.yml@v1
 
 # For YAML validation
-uses: n3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1
+uses: n3b3x/hf-general-ci-tools/.github/workflows/ru-yaml-lint.yml@v1
 ```
 
 > **Note:** These are **reusable workflows** designed to be called from other repositories.
-> The repository-specific workflows (like `publish-docs.yml`) are only used internally by this repository.
+> The repository-specific workflows (like `ci-docs-publish.yml`) are only used internally by this repository.
 
 ### 2. Configure Your Workflow
 
@@ -94,7 +94,7 @@ These workflows are designed to be **called from other repositories** using the 
 ```yaml
 jobs:
   my-job:
-    uses: n3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
+    uses: n3b3x/hf-general-ci-tools/.github/workflows/ru-docs-publish.yml@v1
     with:
       jekyll_enabled: true
       deploy_pages: true
@@ -103,8 +103,8 @@ jobs:
 ### 🏠 Repository-Specific Workflows
 These workflows are **only used internally** by this repository:
 
-- **`publish-docs.yml`** - Builds and deploys this repo's documentation site
-- **`yamllint.yml`** - Validates YAML syntax in this repository
+- **`ci-docs-publish.yml`** - Builds and deploys this repo's documentation site
+- **`ci-yaml-lint.yml`** - Validates YAML syntax in this repository
 
 > **For other repositories:** Only use the **reusable workflows** listed in the "Reusable Workflows" section above.
 
@@ -117,7 +117,7 @@ name: Code Quality
 on: [push, pull_request]
 jobs:
   lint:
-    uses: n3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1
+    uses: n3b3x/hf-general-ci-tools/.github/workflows/ru-cpp-lint.yml@v1
     with:
       source_dirs: "src/"
       include_patterns: "*.cpp,*.hpp,*.c,*.h"
@@ -130,7 +130,7 @@ name: Documentation
 on: [push]
 jobs:
   docs:
-    uses: n3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
+    uses: n3b3x/hf-general-ci-tools/.github/workflows/ru-docs-publish.yml@v1
     with:
       jekyll_enabled: true
       run_link_check: true
@@ -144,7 +144,7 @@ name: Link Check
 on: [push, pull_request]
 jobs:
   links:
-    uses: n3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
+    uses: n3b3x/hf-general-ci-tools/.github/workflows/ru-docs-linkcheck.yml@v1
     with:
       paths: "docs/** *.md"
       verbose: true

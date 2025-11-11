@@ -12,8 +12,8 @@ permalink: /
 
 ---
 
-[![Publish Docs](https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/publish-docs.yml/badge.svg)](https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/publish-docs.yml)
-[![YAML Lint](https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/yamllint.yml/badge.svg)](https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/yamllint.yml)
+[![Docs Publish CI](https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/ci-docs-publish.yml/badge.svg)](https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/ci-docs-publish.yml)
+[![YAML Lint CI](https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/ci-yaml-lint.yml/badge.svg)](https://github.com/n3b3x/hf-general-ci-tools/actions/workflows/ci-yaml-lint.yml)
 [![License](https://img.shields.io/badge/license-GPL%20v3-blue.svg)](LICENSE)
 [![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg)](https://n3b3x.github.io/hf-general-ci-tools)
 
@@ -45,11 +45,11 @@ This repository provides a curated set of **reusable GitHub Actions workflows** 
 
 | Workflow | Description | Features | Quick Start |
 |----------|-------------|----------|-------------|
-| **[🔧 C/C++ Lint](.github/workflows/c-cpp-lint.yml)** | Code quality and formatting checks | • clang-format<br>• clang-tidy<br>• Configurable rules | [→ Use Now](#-quick-start) |
-| **[🛡️ Static Analysis](.github/workflows/c-cpp-static-analysis.yml)** | Security and bug detection | • cppcheck integration<br>• Custom rules<br>• Multiple standards | [→ Use Now](#-quick-start) |
-| **[📚 Documentation](.github/workflows/docs.yml)** | Documentation generation & deployment | • Doxygen support<br>• Jekyll sites<br>• GitHub Pages | [→ Use Now](#-quick-start) |
-| **[🔗 Link Check](.github/workflows/docs-link-check.yml)** | Documentation link validation | • Lychee integration<br>• Custom configs<br>• Exclude patterns | [→ Use Now](#-quick-start) |
-| **[📝 YAML Lint](.github/workflows/yamllint-reusable.yml)** | YAML file validation | • Syntax checking<br>• Style validation<br>• Custom rules | [→ Use Now](#-quick-start) |
+| **[🔧 C/C++ Lint](.github/workflows/ru-cpp-lint.yml)** | Code quality and formatting checks | • clang-format<br>• clang-tidy<br>• Configurable rules | [→ Use Now](#-quick-start) |
+| **[🛡️ Static Analysis](.github/workflows/ru-cpp-analysis.yml)** | Security and bug detection | • cppcheck integration<br>• Custom rules<br>• Multiple standards | [→ Use Now](#-quick-start) |
+| **[📚 Documentation](.github/workflows/ru-docs-publish.yml)** | Documentation generation & deployment | • Doxygen support<br>• Jekyll sites<br>• GitHub Pages | [→ Use Now](#-quick-start) |
+| **[🔗 Link Check](.github/workflows/ru-docs-linkcheck.yml)** | Documentation link validation | • Lychee integration<br>• Custom configs<br>• Exclude patterns | [→ Use Now](#-quick-start) |
+| **[📝 YAML Lint](.github/workflows/ru-yaml-lint.yml)** | YAML file validation | • Syntax checking<br>• Style validation<br>• Custom rules | [→ Use Now](#-quick-start) |
 
 ---
 
@@ -59,8 +59,8 @@ This repository provides a curated set of **reusable GitHub Actions workflows** 
 
 | Workflow | Purpose | Trigger | Status |
 |----------|---------|---------|--------|
-| **[📚 Publish Documentation](.github/workflows/publish-docs.yml)** | Builds and deploys this repo's documentation site | Push to main, PRs | ✅ Active |
-| **[📝 YAML Lint](.github/workflows/yamllint.yml)** | Validates YAML syntax in this repository | Push, PRs | ✅ Active |
+| **[📚 Docs Publish CI](.github/workflows/ci-docs-publish.yml)** | Builds and deploys this repo's documentation site | Push to main, PRs | ✅ Active |
+| **[📝 YAML Lint CI](.github/workflows/ci-yaml-lint.yml)** | Validates YAML syntax in this repository | Push, PRs | ✅ Active |
 
 ---
 
@@ -102,7 +102,7 @@ on:
 jobs:
   # Code quality checks
   lint:
-    uses: n3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1
+    uses: n3b3x/hf-general-ci-tools/.github/workflows/ru-cpp-lint.yml@v1
     with:
       clang_version: "20"
       style: "file"
@@ -110,7 +110,7 @@ jobs:
 
   # Security analysis
   static:
-    uses: n3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1
+    uses: n3b3x/hf-general-ci-tools/.github/workflows/ru-cpp-analysis.yml@v1
     with:
       paths: "src include"
       std: "c++17"
@@ -118,14 +118,14 @@ jobs:
 
   # Documentation generation
   docs:
-    uses: n3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
+    uses: n3b3x/hf-general-ci-tools/.github/workflows/ru-docs-publish.yml@v1
     with:
       doxygen_config: "_config/Doxyfile"
       output_dir: "docs/doxygen/html"
 
   # Link validation
   link-check:
-    uses: n3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
+    uses: n3b3x/hf-general-ci-tools/.github/workflows/ru-docs-linkcheck.yml@v1
     with:
       paths: "docs/**,*.md"
 ```
@@ -140,7 +140,7 @@ name: Code Quality
 on: [push, pull_request]
 jobs:
   lint:
-    uses: n3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1
+    uses: n3b3x/hf-general-ci-tools/.github/workflows/ru-cpp-lint.yml@v1
     with:
       source_dirs: "src/"
       include_patterns: "*.cpp,*.hpp,*.c,*.h"
@@ -157,7 +157,7 @@ name: Build Docs
 on: [push]
 jobs:
   docs:
-    uses: n3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
+    uses: n3b3x/hf-general-ci-tools/.github/workflows/ru-docs-publish.yml@v1
     with:
       jekyll_enabled: true
       jekyll_source: "docs"
@@ -174,7 +174,7 @@ name: Check Links
 on: [push, pull_request]
 jobs:
   link-check:
-    uses: n3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
+    uses: n3b3x/hf-general-ci-tools/.github/workflows/ru-docs-linkcheck.yml@v1
     with:
       paths: "docs/**,*.md"
       verbose: true

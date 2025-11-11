@@ -1,6 +1,6 @@
 ---
 # Example: Versioned Documentation Workflow
-# This is an example of how to use the enhanced docs.yml workflow with versioning
+# This is an example of how to use the enhanced ru-docs-publish.yml workflow with versioning
 #
 # Key Features:
 # - Automatic version detection from git tags/branches
@@ -36,8 +36,8 @@ jobs:
   # =============================================================================
   # Versioned Documentation Build and Deploy
   # =============================================================================
-  publish-docs:
-    uses: 'N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@main'
+  ci-docs-publish:
+    uses: 'N3b3x/hf-general-ci-tools/.github/workflows/ru-docs-publish.yml@main'
     with:
       # =============================================================================
       # Repository Configuration
@@ -91,18 +91,18 @@ jobs:
   # Optional: Notify on Success/Failure
   # =============================================================================
   notify:
-    needs: publish-docs
+    needs: ci-docs-publish
     runs-on: ubuntu-latest
     if: always()
     steps:
       - name: Notify Success
-        if: needs.publish-docs.result == 'success'
+        if: needs.ci-docs-publish.result == 'success'
         run: |
           echo "✅ Documentation deployed successfully!"
           echo "🌐 Check your GitHub Pages for the latest version"
 
       - name: Notify Failure
-        if: needs.publish-docs.result == 'failure'
+        if: needs.ci-docs-publish.result == 'failure'
         run: |
           echo "❌ Documentation deployment failed!"
           echo "Check the workflow logs for details"

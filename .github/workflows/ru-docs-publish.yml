@@ -1,5 +1,5 @@
 ---
-name: Documentation Workflow (Reusable)
+name: 📚 [RU] Documentation Publisher
 
 on:
   workflow_call:

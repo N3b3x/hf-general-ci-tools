@@ -65,7 +65,7 @@ The Static Analysis workflow runs cppcheck via Docker for comprehensive C/C++ co
 ```yaml
 jobs:
   static:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-cpp-analysis.yml@v1
     with:
       paths: "src include"
       std: "c++17"
@@ -77,7 +77,7 @@ jobs:
 ```yaml
 jobs:
   static:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-cpp-analysis.yml@v1
     with:
       paths: "src include"
       std: "c++20"
@@ -89,7 +89,7 @@ jobs:
 ```yaml
 jobs:
   static:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-cpp-analysis.yml@v1
     with:
       paths: "src lib tests"
       std: "c++14"

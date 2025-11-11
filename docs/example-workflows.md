@@ -41,7 +41,7 @@ on:
 jobs:
   # Lint C/C++ code
   lint:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-cpp-lint.yml@v1
     with:
       clang_version: "20"
       style: "file"
@@ -49,7 +49,7 @@ jobs:
 
   # Static analysis
   static:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-cpp-analysis.yml@v1
     with:
       paths: "src include"
       std: "c++17"
@@ -57,7 +57,7 @@ jobs:
 
   # Check documentation links
   docs-links:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-docs-linkcheck.yml@v1
     with:
       paths: "docs/** *.md **/docs/**"
 ```
@@ -87,7 +87,7 @@ on:
 jobs:
   # C/C++ Linting
   lint:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-cpp-lint.yml@v1
     with:
       clang_version: "20"
       style: "file"
@@ -98,7 +98,7 @@ jobs:
 
   # Static Analysis
   static-analysis:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-cpp-analysis.yml@v1
     with:
       paths: "src include examples"
       std: "c++17"
@@ -106,7 +106,7 @@ jobs:
 
   # Documentation Generation
   docs:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-docs-publish.yml@v1
     with:
       doxygen_config: "_config/Doxyfile"
       run_link_check: true
@@ -117,14 +117,14 @@ jobs:
 
   # YAML Linting
   yaml-lint:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-yaml-lint.yml@v1
     with:
       paths: "**/*.yml,**/*.yaml"
       strict_mode: false
 
   # Link Checking
   link-check:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-docs-linkcheck.yml@v1
     with:
       paths: "docs/** *.md **/docs/**"
       fail_on_errors: true
@@ -149,7 +149,7 @@ on:
 jobs:
   # Quick lint check
   lint:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-cpp-lint.yml@v1
     with:
       clang_version: "20"
       style: "file"
@@ -157,7 +157,7 @@ jobs:
 
   # Documentation with drafts
   docs:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-docs-publish.yml@v1
     with:
       doxygen_config: "_config/Doxyfile"
       run_link_check: false
@@ -190,7 +190,7 @@ on:
 jobs:
   # Strict linting
   lint:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-lint.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-cpp-lint.yml@v1
     with:
       clang_version: "20"
       style: "file"
@@ -201,7 +201,7 @@ jobs:
 
   # Strict static analysis
   static-analysis:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/c-cpp-static-analysis.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-cpp-analysis.yml@v1
     with:
       paths: "src include examples"
       std: "c++17"
@@ -209,7 +209,7 @@ jobs:
 
   # Production documentation
   docs:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-docs-publish.yml@v1
     with:
       doxygen_config: "_config/Doxyfile"
       run_link_check: true
@@ -220,7 +220,7 @@ jobs:
 
   # Comprehensive link checking
   link-check:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-docs-linkcheck.yml@v1
     with:
       paths: "docs/** *.md **/docs/**"
       fail_on_errors: true
@@ -228,7 +228,7 @@ jobs:
 
   # YAML validation
   yaml-lint:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/yamllint-reusable.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-yaml-lint.yml@v1
     with:
       paths: "**/*.yml,**/*.yaml"
       strict_mode: true
@@ -252,7 +252,7 @@ on:
 jobs:
   # Documentation with submodule support
   docs:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-docs-publish.yml@v1
     with:
       checkout_recursive: true  # Enable submodule checkout
       doxygen_config: "_config/Doxyfile"
@@ -268,7 +268,7 @@ jobs:
 
   # Link checking for submodule content
   link-check:
-    uses: N3b3x/hf-general-ci-tools/.github/workflows/docs-link-check.yml@v1
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-docs-linkcheck.yml@v1
     with:
       paths: "docs/** *.md **/docs/**"
       fail_on_errors: true

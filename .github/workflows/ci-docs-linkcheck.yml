@@ -1,0 +1,58 @@
+---
+name: 🔗 Docs Link Check CI
+
+on:
+  push:
+    branches: [main, 'release/*']  # Run on main and release branches
+    tags: ['v*']  # Run on version tags
+  pull_request:
+    branches: [main]  # Only run on PRs targeting main branch
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-docs-linkcheck-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-linkcheck:
+    name: Test Documentation Link Check
+    uses: ./.github/workflows/ru-docs-linkcheck.yml
+    with:
+      # =============================================================================
+      # Repository Configuration
+      # =============================================================================
+      checkout_recursive: true  # Test recursive checkout
+      
+      # =============================================================================
+      # Link Check Configuration  
+      # =============================================================================
+      # Test comprehensive link checking with maximum features
+      check_external_links: true  # Check external links (most comprehensive test)
+      check_anchors: true  # Verify anchor links work
+      follow_redirects: true  # Follow HTTP redirects
+      
+      # =============================================================================
+      # File Patterns
+      # =============================================================================
+      # Test multiple file types and comprehensive patterns
+      file_patterns: "**/*.md,**/*.html,**/*.rst,docs/**/*"
+      exclude_patterns: "node_modules/**,_site/**,.git/**,vendor/**"
+      
+      # =============================================================================
+      # Advanced Options
+      # =============================================================================
+      # Test timeout and retry settings
+      timeout: 30  # 30 second timeout per link
+      max_redirects: 5  # Allow up to 5 redirects
+      user_agent: "Mozilla/5.0 (CI Link Checker)"  # Custom user agent for testing
+      
+      # =============================================================================
+      # Quality Control
+      # =============================================================================
+      # Set to false for testing - we want to see what issues exist
+      fail_on_broken_links: false  # Don't fail the workflow for testing
+      create_report: true  # Generate detailed report
+      report_format: "markdown"  # Use markdown format for GitHub integration

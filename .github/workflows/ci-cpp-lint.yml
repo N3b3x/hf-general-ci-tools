@@ -1,5 +1,5 @@
 ---
-name: 🔍 Test C++ Lint
+name: � C++ Lint CI
 
 on:
   push:
@@ -14,13 +14,13 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: test-cpp-lint-${{ github.ref }}
+  group: ci-cpp-lint-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   test-cpp-lint:
     name: Test C++ Linting Tools
-    uses: ./.github/workflows/c-cpp-lint.yml
+    uses: ./.github/workflows/ru-cpp-lint.yml
     with:
       # =============================================================================
       # Clang Configuration
@@ -28,20 +28,20 @@ jobs:
       clang_version: "20"
       clang_format_config: "_config/.clang-format"
       clang_tidy_config: "_config/.clang-tidy"
-      
+
       # =============================================================================
       # File Patterns
       # =============================================================================
       extensions: "c,cpp,cc,cxx,h,hpp"
       ignore: "build|.git|docs|_site"
-      
+
       # =============================================================================
       # Analysis Options
       # =============================================================================
       files_changed_only: false  # Analyze all files to test the tooling
       lines_changed_only: false  # Analyze all lines to test the tooling
       step_summary: true
-      
+
       # =============================================================================
       # Quality Checks
       # =============================================================================

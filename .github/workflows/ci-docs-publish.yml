@@ -1,5 +1,5 @@
 ---
-name: 📚 Publish Documentation
+name: 📚 Docs Publish CI
 
 on:
   push:
@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   publish-docs:
-    uses: ./.github/workflows/docs.yml
+    uses: ./.github/workflows/ru-docs-publish.yml
     with:
       # =============================================================================
       # Versioning Configuration (Always Enabled)

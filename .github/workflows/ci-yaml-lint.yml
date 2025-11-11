@@ -1,5 +1,5 @@
 ---
-name: 📚 YAML Lint
+name: 📝 YAML Lint CI
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
 jobs:
   yamllint:
     name: YAML Lint
-    uses: ./.github/workflows/yamllint-reusable.yml
+    uses: ./.github/workflows/ru-yaml-lint.yml
     with:
       paths: '.github/workflows/*.yml,**/*.yml,**/*.yaml'
       config_file: '_config/.yamllint'
