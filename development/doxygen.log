@@ -1,20 +1,3 @@
-warning: ignoring unsupported tag 'SHOW_TYPEDEF_SOURCE' at line 61, file /tmp/doxyfile.ULI9uy
-warning: Tag 'HTML_TIMESTAMP' at line 110 of file '/tmp/doxyfile.ULI9uy' has become obsolete.
-         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
-warning: ignoring unsupported tag 'GENERATE_BUILDERS' at line 120, file /tmp/doxyfile.ULI9uy
-warning: ignoring unsupported tag 'GENERATE_PDF' at line 131, file /tmp/doxyfile.ULI9uy
-warning: Tag 'CLASS_DIAGRAMS' at line 133 of file '/tmp/doxyfile.ULI9uy' has become obsolete.
-         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
-warning: Tag 'MSCGEN_PATH' at line 134 of file '/tmp/doxyfile.ULI9uy' has become obsolete.
-         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
-warning: Tag 'DOT_FONTNAME' at line 139 of file '/tmp/doxyfile.ULI9uy' has become obsolete.
-         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
-warning: Tag 'DOT_FONTSIZE' at line 140 of file '/tmp/doxyfile.ULI9uy' has become obsolete.
-         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
-warning: Tag 'DOT_TRANSPARENT' at line 161 of file '/tmp/doxyfile.ULI9uy' has become obsolete.
-         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
-warning: ignoring unsupported tag 'FORMAT_STYLE' at line 166, file /tmp/doxyfile.ULI9uy
-warning: ignoring unsupported tag 'KITWARE_CMAKE_GENERATOR' at line 168, file /tmp/doxyfile.ULI9uy
 Doxygen version used: 1.10.0 (ebc57c6dd303a980bd19dd74b8b61c8f3f5180ca)
 Searching for include files...
 Searching for files in directory /home/runner/work/hf-general-ci-tools/hf-general-ci-tools/cpp-ci-test/include
@@ -171,39 +154,7 @@ finalizing index lists...
 writing tag file...
 Running plantuml with JAVA...
 Running dot...
-Generating dot graphs using 5 parallel threads...
-Running dot for graph 1/12
-Running dot for graph 2/12
-Running dot for graph 3/12
-Running dot for graph 4/12
-Running dot for graph 5/12
-Running dot for graph 6/12
-Running dot for graph 7/12
-Running dot for graph 8/12
-Running dot for graph 9/12
-Running dot for graph 10/12
-Running dot for graph 11/12
-Running dot for graph 12/12
-Patching output file 1/20
-Patching output file 2/20
-Patching output file 3/20
-Patching output file 4/20
-Patching output file 5/20
-Patching output file 6/20
-Patching output file 7/20
-Patching output file 8/20
-Patching output file 9/20
-Patching output file 10/20
-Patching output file 11/20
-Patching output file 12/20
-Patching output file 13/20
-Patching output file 14/20
-Patching output file 15/20
-Patching output file 16/20
-Patching output file 17/20
-Patching output file 18/20
-Patching output file 19/20
-Patching output file 20/20
+Patching output file 1/1
 type lookup cache used 76/65536 hits=608 misses=214
 symbol lookup cache used 34/65536 hits=169 misses=34
 finished...
