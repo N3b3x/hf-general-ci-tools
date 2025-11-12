@@ -49,7 +49,7 @@ jobs:
 
       - name: Run markdownlint (Official Action - Simple)
         if: ${{ inputs.use_docker == false }}
-        id: lint
+        id: action_run
         uses: DavidAnson/markdownlint-cli2-action@v20
         with:
           globs: ${{ inputs.paths }}
@@ -58,11 +58,11 @@ jobs:
 
       - name: Process results (Official Action)
         if: ${{ inputs.use_docker == false }}
-        id: lint_outputs
+        id: action_outputs
         run: |
           # The official action doesn't provide detailed outputs
           # Set basic outputs based on step outcome
-          if [ "${{ steps.lint.outcome }}" == "success" ]; then
+          if [ "${{ steps.action_run.outcome }}" == "success" ]; then
             echo "result=success" >> $GITHUB_OUTPUT
             echo "issues_found=0" >> $GITHUB_OUTPUT
             FILES=$(git ls-files -- '*.md' | wc -l)
@@ -79,7 +79,7 @@ jobs:
 
       - name: Run markdownlint (Docker - Full Control with Excludes)
         if: ${{ inputs.use_docker == true }}
-        id: lint
+        id: docker_run
         run: |
           # Parse inputs for configuration
           PATHS="${{ inputs.paths }}"
@@ -185,14 +185,14 @@ jobs:
         run: |
           # Consolidate outputs from either the official action or Docker path
           if [ "${{ inputs.use_docker }}" == "true" ]; then
-            # Docker path sets outputs in lint step
-            echo "result=${{ steps.lint.outputs.result }}" >> $GITHUB_OUTPUT
-            echo "files_checked=${{ steps.lint.outputs.files_checked }}" >> $GITHUB_OUTPUT
-            echo "issues_found=${{ steps.lint.outputs.issues_found }}" >> $GITHUB_OUTPUT
+            # Docker path sets outputs in docker_run step
+            echo "result=${{ steps.docker_run.outputs.result }}" >> $GITHUB_OUTPUT
+            echo "files_checked=${{ steps.docker_run.outputs.files_checked }}" >> $GITHUB_OUTPUT
+            echo "issues_found=${{ steps.docker_run.outputs.issues_found }}" >> $GITHUB_OUTPUT
           else
-            # Official action path sets outputs in lint_outputs step
-            echo "result=${{ steps.lint_outputs.outputs.result }}" >> $GITHUB_OUTPUT
-            echo "files_checked=${{ steps.lint_outputs.outputs.files_checked }}" >> $GITHUB_OUTPUT
-            echo "issues_found=${{ steps.lint_outputs.outputs.issues_found }}" >> $GITHUB_OUTPUT
+            # Official action path sets outputs in action_outputs step
+            echo "result=${{ steps.action_outputs.outputs.result }}" >> $GITHUB_OUTPUT
+            echo "files_checked=${{ steps.action_outputs.outputs.files_checked }}" >> $GITHUB_OUTPUT
+            echo "issues_found=${{ steps.action_outputs.outputs.issues_found }}" >> $GITHUB_OUTPUT
           fi
 
