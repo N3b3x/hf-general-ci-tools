@@ -83,9 +83,10 @@ jobs:
           CPPCHECK_CMD="$CPPCHECK_CMD --output-file=/src/cppcheck_report.xml"
 
           # Add exclude options if specified
+          # Note: cppcheck uses -i (ignore) option, not --exclude
           if [ -n "$exclude" ]; then
             for ex in $exclude; do
-              CPPCHECK_CMD="$CPPCHECK_CMD --exclude=/src/$ex"
+              CPPCHECK_CMD="$CPPCHECK_CMD -i /src/$ex"
             done
           fi
 
