@@ -4,8 +4,8 @@ name: 📝 [RU] Markdown Linting Tools
 on:
   workflow_call:
     inputs:
-      paths:
-        description: 'Space-separated list of paths/patterns to check (default: all markdown files)'
+      globs:
+        description: 'Space-separated list of glob patterns to check (default: all markdown files)'
         required: false
         type: string
         default: '**/*.md'
@@ -62,7 +62,7 @@ jobs:
         id: action_run
         uses: DavidAnson/markdownlint-cli2-action@v20
         with:
-          globs: ${{ inputs.paths }}
+          globs: ${{ inputs.globs }}
           config: ${{ inputs.config_file }}
           fix: ${{ inputs.fix }}
           separator: ${{ inputs.separator != '' && inputs.separator || ' ' }}
@@ -94,12 +94,12 @@ jobs:
         id: docker_run
         run: |
           # Parse inputs for configuration
-          PATHS="${{ inputs.paths }}"
+          GLOBS="${{ inputs.globs }}"
           CONFIG_FILE="${{ inputs.config_file }}"
           EXCLUDE_PATTERNS="${{ inputs.exclude_patterns }}"
 
-          # Convert space-separated paths to array (markdownlint-cli2 uses space-separated)
-          read -r -a PATH_ARRAY <<< "$PATHS"
+          # Convert space-separated globs to array (markdownlint-cli2 uses space-separated)
+          read -r -a GLOB_ARRAY <<< "$GLOBS"
           IFS=',' read -ra EXCLUDE_ARRAY <<< "$EXCLUDE_PATTERNS"
 
           # Build markdownlint-cli2 command
@@ -119,9 +119,9 @@ jobs:
 
           # Get list of files to check using markdownlint-cli2 --list
           if [ -f "$CONFIG_FILE" ]; then
-            mapfile -t ALL_FILES < <(docker run --rm -v "$PWD":/workdir markdownlint/markdownlint-cli2:latest --config "/workdir/$CONFIG_FILE" --list "${PATH_ARRAY[@]}" 2>/dev/null || true)
+            mapfile -t ALL_FILES < <(docker run --rm -v "$PWD":/workdir markdownlint/markdownlint-cli2:latest --config "/workdir/$CONFIG_FILE" --list "${GLOB_ARRAY[@]}" 2>/dev/null || true)
           else
-            mapfile -t ALL_FILES < <(docker run --rm -v "$PWD":/workdir markdownlint/markdownlint-cli2:latest --list "${PATH_ARRAY[@]}" 2>/dev/null || true)
+            mapfile -t ALL_FILES < <(docker run --rm -v "$PWD":/workdir markdownlint/markdownlint-cli2:latest --list "${GLOB_ARRAY[@]}" 2>/dev/null || true)
           fi
 
           # Filter out excluded patterns
@@ -149,7 +149,7 @@ jobs:
               echo "    - $file"
             done
           else
-            echo "  ⚠️  No markdown files found matching patterns: $PATHS"
+            echo "  ⚠️  No markdown files found matching patterns: $GLOBS"
             echo "result=success" >> $GITHUB_OUTPUT
             echo "files_checked=0" >> $GITHUB_OUTPUT
             echo "issues_found=0" >> $GITHUB_OUTPUT

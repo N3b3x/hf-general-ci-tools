@@ -11,12 +11,12 @@ on:
 jobs:
   markdownlint:
     name: Markdown Lint
-    uses: ./.github/workflows/ru-markdown-lint.yml
+    uses: N3b3x/hf-general-ci-tools/.github/workflows/ru-markdown-lint.yml@main
     with:
       # =============================================================================
       # File Selection
       # =============================================================================
-      paths: 'docs/** *.md **/*.md'
+      globs: 'docs/** *.md **/*.md'
       exclude_patterns: '.git/**,node_modules/**,venv/**,.venv/**,_site/**,**/hf-espidf-project-tools/**'
 
       # =============================================================================
@@ -28,6 +28,6 @@ jobs:
       # Execution Options
       # =============================================================================
       use_docker: false  # Use official action (faster) or Docker (more control)
-      fix: false  # Automatically fix fixable issues (does not commit changes)
+      fix: true  # Automatically fix fixable issues (does not commit changes)
       separator: ''  # Separator between glob patterns (default: space)
 
