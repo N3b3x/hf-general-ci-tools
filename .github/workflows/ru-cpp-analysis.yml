@@ -19,6 +19,29 @@ on:
         type: boolean
         required: false
         default: false
+      exclude:
+        description: "Paths to exclude (space-separated)"
+        type: string
+        required: false
+        default: ""
+      enable:
+        description: >
+          Checks to enable (comma-separated: all,warning,style,performance,
+          portability,information,unusedFunction,missingInclude)
+        type: string
+        required: false
+        default: "warning,style,performance,portability,information"
+      force:
+        description: "Force checking even with incomplete analysis"
+        type: boolean
+        required: false
+        default: false
+      max_configs:
+        description: >
+          Maximum configs to check (for template-heavy code, 0=unlimited)
+        type: number
+        required: false
+        default: 0
 
 jobs:
   cppcheck:
@@ -32,16 +55,45 @@ jobs:
         run: |
           set -e
           paths="${{ inputs.paths }}"
+          exclude="${{ inputs.exclude }}"
+          enable="${{ inputs.enable }}"
+          force="${{ inputs.force }}"
+          max_configs="${{ inputs.max_configs }}"
+
+          # Build cppcheck command
+          CPPCHECK_CMD="cppcheck --enable=$enable"
+          CPPCHECK_CMD="$CPPCHECK_CMD --suppress=missingIncludeSystem"
+          CPPCHECK_CMD="$CPPCHECK_CMD --inline-suppr"
+          CPPCHECK_CMD="$CPPCHECK_CMD --std=${{ inputs.std }}"
+
+          # Add force option if enabled
+          if [ "$force" = "true" ]; then
+            CPPCHECK_CMD="$CPPCHECK_CMD --force"
+          fi
+
+          # Add max-configs if specified
+          if [ "$max_configs" != "0" ] && [ -n "$max_configs" ]; then
+            CPPCHECK_CMD="$CPPCHECK_CMD --max-configs=$max_configs"
+          fi
+
+          CPPCHECK_CMD="$CPPCHECK_CMD --xml"
+          CPPCHECK_CMD="$CPPCHECK_CMD --output-file=/src/cppcheck_report.xml"
+
+          # Add exclude options if specified
+          if [ -n "$exclude" ]; then
+            for ex in $exclude; do
+              CPPCHECK_CMD="$CPPCHECK_CMD --exclude=/src/$ex"
+            done
+          fi
+
+          # Add paths to analyze
+          for p in $paths; do
+            CPPCHECK_CMD="$CPPCHECK_CMD /src/$p"
+          done
+
           docker run --rm -v "$PWD":/src ghcr.io/facthunder/cppcheck:latest \
-            cppcheck \
-              --enable=warning,style,performance,portability \
-              --suppress=missingIncludeSystem \
-              --inline-suppr \
-              --std=${{ inputs.std }} \
-              --xml \
-              --output-file=/src/cppcheck_report.xml \
-              $(for p in $paths; do echo "/src/$p"; done) 2>&1 | \
-              tee cppcheck_output.txt || true
+            $CPPCHECK_CMD 2>&1 | \
+            tee cppcheck_output.txt || true
 
           if [ -s cppcheck_report.xml ]; then
             echo "issues=true" >> "$GITHUB_OUTPUT"

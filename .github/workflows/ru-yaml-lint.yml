@@ -23,7 +23,7 @@ on:
         description: 'Comma-separated patterns to exclude from checking'
         required: false
         type: string
-        default: '.git/**,node_modules/**,venv/**,.venv/**'
+        default: '.git/**,node_modules/**,venv/**,.venv/**,**/hf-espidf-project-tools/**'
     outputs:
       result:
         description: 'YAML lint result (success/failure)'
