@@ -13,7 +13,21 @@ jobs:
     name: Markdown Lint
     uses: ./.github/workflows/ru-markdown-lint.yml
     with:
+      # =============================================================================
+      # File Selection
+      # =============================================================================
       paths: 'docs/** *.md **/*.md'
-      config_file: '_config/.markdownlint.json'
       exclude_patterns: '.git/**,node_modules/**,venv/**,.venv/**,_site/**,**/hf-espidf-project-tools/**'
+
+      # =============================================================================
+      # Configuration
+      # =============================================================================
+      config_file: '_config/.markdownlint.json'
+
+      # =============================================================================
+      # Execution Options
+      # =============================================================================
+      use_docker: false  # Use official action (faster) or Docker (more control)
+      fix: false  # Automatically fix fixable issues (does not commit changes)
+      separator: ''  # Separator between glob patterns (default: space)
 

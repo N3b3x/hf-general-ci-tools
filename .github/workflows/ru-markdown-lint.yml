@@ -24,6 +24,16 @@ on:
         required: false
         type: boolean
         default: false
+      fix:
+        description: 'Automatically fix fixable issues (equivalent to --fix flag)'
+        required: false
+        type: boolean
+        default: false
+      separator:
+        description: 'Separator to use between glob patterns (default: space)'
+        required: false
+        type: string
+        default: ''
     outputs:
       result:
         description: 'Markdown lint result (success/failure)'
@@ -53,7 +63,9 @@ jobs:
         uses: DavidAnson/markdownlint-cli2-action@v20
         with:
           globs: ${{ inputs.paths }}
-          configFile: ${{ inputs.config_file }}
+          config: ${{ inputs.config_file }}
+          fix: ${{ inputs.fix }}
+          separator: ${{ inputs.separator != '' && inputs.separator || ' ' }}
         continue-on-error: true
 
       - name: Process results (Official Action)
@@ -153,6 +165,10 @@ jobs:
           DOCKER_CMD="docker run --rm -v \"$PWD\":/workdir markdownlint/markdownlint-cli2:latest"
           if [ -f "$CONFIG_FILE" ]; then
             DOCKER_CMD="$DOCKER_CMD --config \"/workdir/$CONFIG_FILE\""
+          fi
+          # Add --fix flag if enabled
+          if [ "${{ inputs.fix }}" == "true" ]; then
+            DOCKER_CMD="$DOCKER_CMD --fix"
           fi
 
           # Run on filtered files
