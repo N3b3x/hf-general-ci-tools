@@ -182,8 +182,15 @@ jobs:
           echo "  Issues found: $ISSUES_FOUND"
           echo "  Result: $([ $ISSUES_FOUND -eq 0 ] && echo '✅ Success' || echo '❌ Failure')"
 
-          # Fail if issues found and strict mode is enabled
-          if [ "$STRICT_MODE" = "true" ] && [ $ISSUES_FOUND -gt 0 ]; then
-            echo "❌ Strict mode enabled - failing due to $ISSUES_FOUND issues"
+          # Always fail on errors (yamllint returns non-zero for errors even without --strict)
+          # Strict mode controls whether warnings also cause failures
+          # Without --strict: only errors are reported (should always fail)
+          # With --strict: both errors and warnings are reported (should always fail)
+          if [ $ISSUES_FOUND -gt 0 ]; then
+            if [ "$STRICT_MODE" = "true" ]; then
+              echo "❌ Strict mode enabled - failing due to $ISSUES_FOUND issues (errors and/or warnings)"
+            else
+              echo "❌ Failing due to $ISSUES_FOUND error(s) found"
+            fi
             exit 1
           fi
