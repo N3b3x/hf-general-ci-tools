@@ -62,7 +62,10 @@ jobs:
 
           # Build cppcheck command
           CPPCHECK_CMD="cppcheck --enable=$enable"
+          # Suppress missingIncludeSystem warnings (common for system headers)
+          # Also suppress unmatchedSuppression info messages when suppressions don't match
           CPPCHECK_CMD="$CPPCHECK_CMD --suppress=missingIncludeSystem"
+          CPPCHECK_CMD="$CPPCHECK_CMD --suppress=unmatchedSuppression"
           CPPCHECK_CMD="$CPPCHECK_CMD --inline-suppr"
           CPPCHECK_CMD="$CPPCHECK_CMD --std=${{ inputs.std }}"
 
