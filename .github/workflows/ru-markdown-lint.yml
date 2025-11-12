@@ -1,0 +1,198 @@
+---
+name: 📝 [RU] Markdown Linting Tools
+
+on:
+  workflow_call:
+    inputs:
+      paths:
+        description: 'Space-separated list of paths/patterns to check (default: all markdown files)'
+        required: false
+        type: string
+        default: '**/*.md'
+      config_file:
+        description: 'Path to markdownlint configuration file (default: _config/.markdownlint.json)'
+        required: false
+        type: string
+        default: '_config/.markdownlint.json'
+      exclude_patterns:
+        description: 'Comma-separated patterns to exclude from checking'
+        required: false
+        type: string
+        default: '.git/**,node_modules/**,venv/**,.venv/**,_site/**,**/hf-espidf-project-tools/**'
+      use_docker:
+        description: 'Use Docker container instead of official action (for more control)'
+        required: false
+        type: boolean
+        default: false
+    outputs:
+      result:
+        description: 'Markdown lint result (success/failure)'
+        value: ${{ jobs.markdownlint.outputs.result }}
+      files_checked:
+        description: 'Number of files checked'
+        value: ${{ jobs.markdownlint.outputs.files_checked }}
+      issues_found:
+        description: 'Number of issues found'
+        value: ${{ jobs.markdownlint.outputs.issues_found }}
+
+jobs:
+  markdownlint:
+    name: Markdown Lint
+    runs-on: ubuntu-latest
+    outputs:
+      result: ${{ steps.consolidate.outputs.result }}
+      files_checked: ${{ steps.consolidate.outputs.files_checked }}
+      issues_found: ${{ steps.consolidate.outputs.issues_found }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run markdownlint (Official Action - Simple)
+        if: ${{ inputs.use_docker == false }}
+        id: lint
+        uses: DavidAnson/markdownlint-cli2-action@v20
+        with:
+          globs: ${{ inputs.paths }}
+          configFile: ${{ inputs.config_file }}
+        continue-on-error: true
+
+      - name: Process results (Official Action)
+        if: ${{ inputs.use_docker == false }}
+        id: lint_outputs
+        run: |
+          # The official action doesn't provide detailed outputs
+          # Set basic outputs based on step outcome
+          if [ "${{ steps.lint.outcome }}" == "success" ]; then
+            echo "result=success" >> $GITHUB_OUTPUT
+            echo "issues_found=0" >> $GITHUB_OUTPUT
+            FILES=$(git ls-files -- '*.md' | wc -l)
+            echo "files_checked=$FILES" >> $GITHUB_OUTPUT
+            echo "✅ Markdown linting passed"
+          else
+            echo "result=failure" >> $GITHUB_OUTPUT
+            echo "issues_found=1" >> $GITHUB_OUTPUT
+            FILES=$(git ls-files -- '*.md' | wc -l)
+            echo "files_checked=$FILES" >> $GITHUB_OUTPUT
+            echo "❌ Markdown linting failed"
+            exit 1
+          fi
+
+      - name: Run markdownlint (Docker - Full Control with Excludes)
+        if: ${{ inputs.use_docker == true }}
+        id: lint
+        run: |
+          # Parse inputs for configuration
+          PATHS="${{ inputs.paths }}"
+          CONFIG_FILE="${{ inputs.config_file }}"
+          EXCLUDE_PATTERNS="${{ inputs.exclude_patterns }}"
+
+          # Convert space-separated paths to array (markdownlint-cli2 uses space-separated)
+          read -r -a PATH_ARRAY <<< "$PATHS"
+          IFS=',' read -ra EXCLUDE_ARRAY <<< "$EXCLUDE_PATTERNS"
+
+          # Build markdownlint-cli2 command
+          MARKDOWNLINT_CMD="markdownlint-cli2"
+
+          # Add config file if it exists
+          if [ -f "$CONFIG_FILE" ]; then
+            echo "✅ Using markdownlint config: $CONFIG_FILE"
+            MARKDOWNLINT_CMD="$MARKDOWNLINT_CMD --config $CONFIG_FILE"
+          else
+            echo "⚠️  No config file found at $CONFIG_FILE, using defaults"
+          fi
+
+          # Initialize counters
+          FILES_CHECKED=0
+          ISSUES_FOUND=0
+
+          # Get list of files to check using markdownlint-cli2 --list
+          if [ -f "$CONFIG_FILE" ]; then
+            mapfile -t ALL_FILES < <(docker run --rm -v "$PWD":/workdir markdownlint/markdownlint-cli2:latest --config "/workdir/$CONFIG_FILE" --list "${PATH_ARRAY[@]}" 2>/dev/null || true)
+          else
+            mapfile -t ALL_FILES < <(docker run --rm -v "$PWD":/workdir markdownlint/markdownlint-cli2:latest --list "${PATH_ARRAY[@]}" 2>/dev/null || true)
+          fi
+
+          # Filter out excluded patterns
+          filtered_files=()
+          for file in "${ALL_FILES[@]}"; do
+            skip=false
+            for exclude in "${EXCLUDE_ARRAY[@]}"; do
+              exclude=$(echo "$exclude" | xargs)
+              # Convert glob pattern to simple string match for exclusion
+              if [[ "$file" == *"$exclude"* ]]; then
+                echo "  🚫 Excluding: $file (matches: $exclude)"
+                skip=true
+                break
+              fi
+            done
+            if [ "$skip" = false ]; then
+              filtered_files+=("$file")
+            fi
+          done
+
+          # Debug: Show filtered files
+          if [ ${#filtered_files[@]} -gt 0 ]; then
+            echo "  ✅ ${#filtered_files[@]} files to lint:"
+            for file in "${filtered_files[@]}"; do
+              echo "    - $file"
+            done
+          else
+            echo "  ⚠️  No markdown files found matching patterns: $PATHS"
+            echo "result=success" >> $GITHUB_OUTPUT
+            echo "files_checked=0" >> $GITHUB_OUTPUT
+            echo "issues_found=0" >> $GITHUB_OUTPUT
+            echo "✅ Markdown linting skipped (no files to lint)"
+            exit 0
+          fi
+
+          # Run markdownlint-cli2 on filtered files using Docker
+          FILES_CHECKED=${#filtered_files[@]}
+          echo "🔍 Running markdownlint-cli2 on $FILES_CHECKED files..."
+
+          # Build docker command
+          DOCKER_CMD="docker run --rm -v \"$PWD\":/workdir markdownlint/markdownlint-cli2:latest"
+          if [ -f "$CONFIG_FILE" ]; then
+            DOCKER_CMD="$DOCKER_CMD --config \"/workdir/$CONFIG_FILE\""
+          fi
+
+          # Run on filtered files
+          if $DOCKER_CMD "${filtered_files[@]}" 2>&1; then
+            ISSUES_FOUND=0
+          else
+            ISSUES_FOUND=1
+          fi
+
+          # Set outputs
+          echo "result=$([ $ISSUES_FOUND -eq 0 ] && echo 'success' || echo 'failure')" >> $GITHUB_OUTPUT
+          echo "files_checked=$FILES_CHECKED" >> $GITHUB_OUTPUT
+          echo "issues_found=$ISSUES_FOUND" >> $GITHUB_OUTPUT
+
+          # Summary
+          echo "📊 Summary:"
+          echo "  Files checked: $FILES_CHECKED"
+          echo "  Issues found: $ISSUES_FOUND"
+          echo "  Result: $([ $ISSUES_FOUND -eq 0 ] && echo '✅ Success' || echo '❌ Failure')"
+
+          # Always fail on errors
+          if [ $ISSUES_FOUND -gt 0 ]; then
+            echo "❌ Failing due to markdown linting errors"
+            exit 1
+          fi
+
+      - name: Consolidate outputs
+        id: consolidate
+        if: always()
+        run: |
+          # Consolidate outputs from either the official action or Docker path
+          if [ "${{ inputs.use_docker }}" == "true" ]; then
+            # Docker path sets outputs in lint step
+            echo "result=${{ steps.lint.outputs.result }}" >> $GITHUB_OUTPUT
+            echo "files_checked=${{ steps.lint.outputs.files_checked }}" >> $GITHUB_OUTPUT
+            echo "issues_found=${{ steps.lint.outputs.issues_found }}" >> $GITHUB_OUTPUT
+          else
+            # Official action path sets outputs in lint_outputs step
+            echo "result=${{ steps.lint_outputs.outputs.result }}" >> $GITHUB_OUTPUT
+            echo "files_checked=${{ steps.lint_outputs.outputs.files_checked }}" >> $GITHUB_OUTPUT
+            echo "issues_found=${{ steps.lint_outputs.outputs.issues_found }}" >> $GITHUB_OUTPUT
+          fi
+
