@@ -158,7 +158,7 @@
   
     <ul class="nav-list"><li class="nav-list-item"><a href="/hf-general-ci-tools/development/" class="nav-list-link">🚀 hf-general-ci-tools</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/" class="nav-list-link">📖 Documentation</a></li><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in 🔄 Reusable Workflows category" aria-pressed="false">
         <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
-      </button><a href="/hf-general-ci-tools/development/workflows/" class="nav-list-link">🔄 Reusable Workflows</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/ru-cpp-lint.html" class="nav-list-link">🔧 C++ Linting Tools (Reusable)</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/ru-cpp-analysis.html" class="nav-list-link">� C++ Static Analysis (Reusable)</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/ru-docs-publish.html" class="nav-list-link">📚 Documentation Publisher (Reusable)</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/ru-docs-linkcheck.html" class="nav-list-link">🔗 Documentation Link Check (Reusable)</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/ru-yaml-lint.html" class="nav-list-link">📝 YAML Linting Tools (Reusable)</a></li></ul></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/ci-workflows.html" class="nav-list-link">🚀 CI Workflows & Design Philosophy</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/cpp-ci-test/" class="nav-list-link">C/C++ Sample Sources for CI Experiments</a></li></ul>
+      </button><a href="/hf-general-ci-tools/development/workflows/" class="nav-list-link">🔄 Reusable Workflows</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/ru-cpp-lint.html" class="nav-list-link">🔧 C++ Linting Tools (Reusable)</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/ru-cpp-analysis.html" class="nav-list-link">� C++ Static Analysis (Reusable)</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/ru-docs-publish.html" class="nav-list-link">📚 Documentation Publisher (Reusable)</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/ru-docs-linkcheck.html" class="nav-list-link">🔗 Documentation Link Check (Reusable)</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/ru-yaml-lint.html" class="nav-list-link">📝 YAML Linting Tools (Reusable)</a></li></ul></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/ci-workflows.html" class="nav-list-link">🚀 CI Workflows & Design Philosophy</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/ru-release.html" class="nav-list-link">📦 Release Management</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/docs/ru-markdown-lint.html" class="nav-list-link">📄 Markdown Linting</a></li><li class="nav-list-item"><a href="/hf-general-ci-tools/development/cpp-ci-test/" class="nav-list-link">C/C++ Sample Sources for CI Experiments</a></li></ul>
   
 </nav>
 
@@ -306,7 +306,12 @@
       <td><a href="/hf-general-ci-tools/development/docs/ru-yaml-lint.html">→ YAML Guide</a></td>
     </tr>
     <tr>
-      <td><strong><a href="/hf-general-ci-tools/development/docs/versioning-guide.html">📖 Versioning</a></strong></td>
+      <td><strong><a href="/hf-general-ci-tools/development/docs/ru-release.html">� Release Management</a></strong></td>
+      <td>Reusable GitHub release creation with auto-generated notes</td>
+      <td><a href="/hf-general-ci-tools/development/docs/ru-release.html">→ Release Guide</a></td>
+    </tr>
+    <tr>
+      <td><strong><a href="/hf-general-ci-tools/development/docs/versioning-guide.html">�📖 Versioning</a></strong></td>
       <td>Multi-version documentation with Doxygen and Jekyll</td>
       <td><a href="/hf-general-ci-tools/development/docs/versioning-guide.html">→ Versioning Guide</a></td>
     </tr>
@@ -366,6 +371,8 @@
   <li><strong><a href="/hf-general-ci-tools/development/docs/ru-docs-publish.html">📚 Documentation Publisher</a></strong> - Complete docs pipeline with Doxygen, Jekyll, and GitHub Pages</li>
   <li><strong><a href="/hf-general-ci-tools/development/docs/ru-docs-linkcheck.html">🔗 Documentation Link Check</a></strong> - Comprehensive link validation using Lychee</li>
   <li><strong><a href="/hf-general-ci-tools/development/docs/ru-yaml-lint.html">📝 YAML Linting Tools</a></strong> - Flexible YAML validation and formatting</li>
+  <li><strong><a href="/hf-general-ci-tools/development/docs/ru-markdown-lint.html">� Markdown Linting Tools</a></strong> - Markdown file validation with auto-fix capabilities</li>
+  <li><strong><a href="/hf-general-ci-tools/development/docs/ru-release.html">�📦 Release Management</a></strong> - Automated GitHub release creation with professional release notes</li>
 </ul>
 <h3 id="-design--implementation">
   
@@ -410,6 +417,12 @@
 9
 10
 11
+12
+13
+14
+15
+16
+17
 </pre></td><td class="rouge-code"><pre><span class="c1"># For C/C++ projects</span>
 <span class="na">uses</span><span class="pi">:</span> <span class="s">n3b3x/hf-general-ci-tools/.github/workflows/ru-cpp-lint.yml@v1</span>
 
@@ -421,6 +434,12 @@
 
 <span class="c1"># For YAML validation</span>
 <span class="na">uses</span><span class="pi">:</span> <span class="s">n3b3x/hf-general-ci-tools/.github/workflows/ru-yaml-lint.yml@v1</span>
+
+<span class="c1"># For Markdown validation</span>
+<span class="na">uses</span><span class="pi">:</span> <span class="s">n3b3x/hf-general-ci-tools/.github/workflows/ru-markdown-lint.yml@v1</span>
+
+<span class="c1"># For releases</span>
+<span class="na">uses</span><span class="pi">:</span> <span class="s">n3b3x/hf-general-ci-tools/.github/workflows/ru-release.yml@v1</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
 
 <blockquote>
