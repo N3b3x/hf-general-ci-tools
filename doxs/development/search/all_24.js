@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['🌐_20deployment_0',['🌐 Deployment',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-docs-publish.md#autotoc_md263',1,'']]],
-  ['🌐_20github_20pages_20setup_1',['🌐 GitHub Pages Setup',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-docs-publish.md#autotoc_md303',1,'']]]
+  ['❌_20strong_20avoid_20this_3a_20strong_0',['❌ &lt;strong&gt;Avoid This:&lt;/strong&gt;',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/jekyll-guide.md#autotoc_md99',1,'']]]
 ];

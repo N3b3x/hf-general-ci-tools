@@ -97,7 +97,10 @@ $(function(){initNavTree('index.html',''); initResizable(); });
 <div class="contents">
 <div class="textblock"><h2><a class="anchor" id="autotoc_md0"></a>
 } md_README</h2>
-<p>layout: default title: "🚀 hf-general-ci-tools" description: "A comprehensive collection of reusable GitHub Actions workflows for modern CI/CD pipelines" nav_order: 1 </p>
+<p>layout: default title: "🚀 hf-general-ci-tools" description: "A comprehensiv| &lt;strong&gt;@ref "/home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-docs-linkcheck.md" "🔗 Documentation Link Check"&lt;/strong&gt; | Link validation setup | Documentation maintainers |
+| &lt;strong&gt;@ref "/home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-yaml-lint.md" "📝 YAML Linting Tools"&lt;/strong&gt; | YAML validation configuration | DevOps engineers |
+| &lt;strong&gt;@ref "/home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-release.md" "📦 Release Management"&lt;/strong&gt; | Automated release creation | Release managers |
+| &lt;strong&gt;@ref "/home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ci-workflows.md" "🚀 CI Workflows &amp; Design"&lt;/strong&gt; | Testing philosophy and live examples | All users |ollection of reusable GitHub Actions workflows for modern CI/CD pipelines" nav_order: 1 </p>
 <h2><a class="anchor" id="autotoc_md1"></a>
 permalink: /</h2>
 <h1><a class="anchor" id="autotoc_md2"></a>
@@ -152,7 +155,15 @@ permalink: /</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><b><a href=".github/workflows/ru-yaml-lint.yml">📝 YAML Lint</a></b>   </td><td class="markdownTableBodyNone">YAML file validation   </td><td class="markdownTableBodyNone">• Syntax checking<br  />
 • Style validation<br  />
-• Custom rules   </td><td class="markdownTableBodyNone">→ Use Now   </td></tr>
+• Custom rules   </td><td class="markdownTableBodyNone">→ Use Now    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><b><a href=".github/workflows/ru-markdown-lint.yml">� Markdown Lint</a></b>   </td><td class="markdownTableBodyNone">Markdown file validation   </td><td class="markdownTableBodyNone">• Syntax checking<br  />
+• Style validation<br  />
+• Auto-fix support   </td><td class="markdownTableBodyNone">→ Use Now    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><b><a href=".github/workflows/ru-release.yml">�📦 Release</a></b>   </td><td class="markdownTableBodyNone">Automated GitHub releases   </td><td class="markdownTableBodyNone">• Auto-generated notes<br  />
+• Draft/prerelease support<br  />
+• Tag-based releases   </td><td class="markdownTableBodyNone">→ Use Now   </td></tr>
 </table>
 <hr  />
 <h2><a class="anchor" id="autotoc_md10"></a>
@@ -286,6 +297,34 @@ permalink: /</h2>
 <div class="line">      verbose: true</div>
 <div class="line">      timeout: &quot;30&quot;</div>
 </div><!-- fragment --> </details>
+<details >
+<summary >
+<b>� Markdown Validation Only</b></summary>
+<p></p>
+<div class="fragment"><div class="line">name: Docs Quality</div>
+<div class="line">on: [push, pull_request]</div>
+<div class="line">jobs:</div>
+<div class="line">  markdown:</div>
+<div class="line">    uses: n3b3x/hf-general-ci-tools/.github/workflows/ru-markdown-lint.yml@v1</div>
+<div class="line">    with:</div>
+<div class="line">      globs: &quot;docs/**/*.md *.md&quot;</div>
+<div class="line">      fix: false</div>
+</div><!-- fragment --> </details>
+<details >
+<summary >
+<b>�📦 Release Creation Only</b></summary>
+<p></p>
+<div class="fragment"><div class="line">name: Release</div>
+<div class="line">on:</div>
+<div class="line">  push:</div>
+<div class="line">    tags: [&#39;v*&#39;]</div>
+<div class="line">jobs:</div>
+<div class="line">  release:</div>
+<div class="line">    uses: n3b3x/hf-general-ci-tools/.github/workflows/ru-release.yml@v1</div>
+<div class="line">    with:</div>
+<div class="line">      draft: false</div>
+<div class="line">      prerelease: false</div>
+</div><!-- fragment --> </details>
 <hr  />
 <h2><a class="anchor" id="autotoc_md20"></a>
 📋 Prerequisites</h2>
@@ -362,7 +401,7 @@ permalink: /</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Nov 12 2025 19:42:05 for Publish Docs API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Thu Nov 13 2025 22:06:36 for Publish Docs API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

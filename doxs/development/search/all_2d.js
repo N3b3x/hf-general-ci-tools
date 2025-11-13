@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['📖_20available_20guides_0',['📖 Available Guides',['../index.html#autotoc_md13',1,'']]],
-  ['📖_20examples_20guides_1',['📖 Examples Guides',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/jekyll-guide.md#autotoc_md85',1,'parent: &quot;📖 Examples &amp; Guides&quot;'],['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/versioning-guide.md#autotoc_md348',1,'parent: &quot;📖 Examples &amp; Guides&quot;']]],
-  ['📖_20input_20parameters_2',['📖 Input Parameters',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-docs-linkcheck.md#autotoc_md203',1,'']]],
-  ['📖_20usage_20examples_3',['📖 Usage Examples',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/index.md#autotoc_md76',1,'']]]
+  ['📄_20license_0',['📄 License',['../index.html#autotoc_md28',1,'📄 License'],['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/index.md#autotoc_md81',1,'📄 License']]],
+  ['📄_20markdown_20linting_1',['📄 Markdown Linting',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-markdown-lint.md#autotoc_md323',1,'']]]
 ];

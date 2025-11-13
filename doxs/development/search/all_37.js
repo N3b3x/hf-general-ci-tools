@@ -1,12 +1,9 @@
 var searchData=
 [
-  ['🚀_20ci_20workflows_20comprehensive_20testing_0',['🚀 CI Workflows (Comprehensive Testing)',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ci-workflows.md#autotoc_md44',1,'']]],
-  ['🚀_20ci_20workflows_20design_20philosophy_1',['🚀 CI Workflows &amp; Design Philosophy',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ci-workflows.md#autotoc_md32',1,'']]],
-  ['🚀_20deployment_20strategies_2',['🚀 Deployment Strategies',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/versioning-guide.md#autotoc_md380',1,'']]],
-  ['🚀_20design_20implementation_20strong_3',['&lt;strong&gt;🚀 Design &amp; Implementation&lt;/strong&gt;',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/index.md#autotoc_md67',1,'']]],
-  ['🚀_20hf_20general_20ci_20tools_4',['🚀 hf-general-ci-tools',['../index.html#autotoc_md2',1,'']]],
-  ['🚀_20quick_20start_5',['🚀 Quick Start',['../index.html#autotoc_md15',1,'🚀 Quick Start'],['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/jekyll-guide.md#autotoc_md88',1,'🚀 Quick Start'],['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-docs-linkcheck.md#autotoc_md198',1,'🚀 Quick Start'],['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/versioning-guide.md#autotoc_md351',1,'🚀 Quick Start']]],
-  ['🚀_20testing_20validation_6',['🚀 Testing &amp; Validation',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/workflows.md#autotoc_md405',1,'']]],
-  ['🚀_20usage_20examples_7',['🚀 Usage Examples',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-cpp-analysis.md#autotoc_md149',1,'🚀 Usage Examples'],['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-cpp-lint.md#autotoc_md174',1,'🚀 Usage Examples'],['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-docs-publish.md#autotoc_md267',1,'🚀 Usage Examples'],['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-yaml-lint.md#autotoc_md333',1,'🚀 Usage Examples']]],
-  ['🚀_20workflow_20examples_8',['🚀 Workflow Examples',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/jekyll-guide.md#autotoc_md123',1,'']]]
+  ['🔍_20c_20static_20analysis_20reusable_0',['🔍 C++ Static Analysis (Reusable)',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-cpp-analysis.md#autotoc_md139',1,'']]],
+  ['🔍_20ci_20cpp_20analysis_20yml_20strong_20c_20analysis_20testing_1',['&lt;strong&gt;🔍 ci-cpp-analysis.yml&lt;/strong&gt; - C++ Analysis Testing',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ci-workflows.md#autotoc_md46',1,'']]],
+  ['🔍_20configuration_20validation_2',['🔍 Configuration Validation',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/jekyll-guide.md#autotoc_md91',1,'']]],
+  ['🔍_20how_20it_20works_3',['🔍 How It Works',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-docs-linkcheck.md#autotoc_md220',1,'']]],
+  ['🔍_20jekyll_20configuration_20validation_4',['🔍 Jekyll Configuration Validation',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-docs-publish.md#autotoc_md285',1,'']]],
+  ['🔍_20ru_20cpp_20analysis_20yml_20strong_20c_20static_20analysis_5',['&lt;strong&gt;🔍 ru-cpp-analysis.yml&lt;/strong&gt; - C++ Static Analysis',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ci-workflows.md#autotoc_md39',1,'']]]
 ];

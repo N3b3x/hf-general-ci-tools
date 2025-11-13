@@ -1,27 +1,7 @@
 var searchData=
 [
-  ['base_20configuration_20tt_20_5fconfig_20yml_20tt_0',['Base Configuration (&lt;tt&gt;_config.yml&lt;/tt&gt;)',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/jekyll-guide.md#autotoc_md111',1,'']]],
-  ['base_20url_20extraction_20strong_1',['&lt;strong&gt;Automatic Base URL Extraction&lt;/strong&gt;',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/versioning-guide.md#autotoc_md357',1,'']]],
-  ['based_20versioning_20enforced_2',['1. Git-Based Versioning (Enforced)',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/versioning-guide.md#autotoc_md389',1,'']]],
-  ['basic_20c_20c_20linting_3',['Basic C/C++ Linting',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/index.md#autotoc_md77',1,'']]],
-  ['basic_20ci_20pipeline_4',['🔧 Basic CI Pipeline',['../index.html#autotoc_md17',1,'']]],
-  ['basic_20link_20check_20strong_5',['&lt;strong&gt;Basic Link Check&lt;/strong&gt;',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-docs-linkcheck.md#autotoc_md210',1,'']]],
-  ['basic_20production_20build_6',['Basic Production Build',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/jekyll-guide.md#autotoc_md124',1,'']]],
-  ['basic_20setup_7',['1. Basic Setup',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/jekyll-guide.md#autotoc_md89',1,'']]],
-  ['basic_20usage_8',['Basic Usage',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-cpp-analysis.md#autotoc_md150',1,'Basic Usage'],['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-cpp-lint.md#autotoc_md175',1,'Basic Usage'],['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-docs-publish.md#autotoc_md268',1,'Basic Usage'],['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-yaml-lint.md#autotoc_md334',1,'Basic Usage']]],
-  ['basic_20usage_20strong_9',['&lt;strong&gt;Basic Usage&lt;/strong&gt;',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-docs-linkcheck.md#autotoc_md199',1,'']]],
-  ['basic_20versioning_10',['Basic Versioning',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/versioning-guide.md#autotoc_md385',1,'']]],
-  ['behavior_11',['🔧 Linting Behavior',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-cpp-lint.md#autotoc_md180',1,'']]],
-  ['behavior_3a_20strong_12',['&lt;strong&gt;Configuration Behavior:&lt;/strong&gt;',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-docs-publish.md#autotoc_md292',1,'']]],
-  ['benefits_13',['🎯 Design Decisions &amp; Benefits',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ci-workflows.md#autotoc_md51',1,'']]],
-  ['benefits_20of_20centralized_20architecture_3a_20strong_14',['&lt;strong&gt;Benefits of Centralized Architecture:&lt;/strong&gt;',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/versioning-guide.md#autotoc_md371',1,'']]],
-  ['benefits_3a_20strong_15',['&lt;strong&gt;Benefits:&lt;/strong&gt;',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-docs-publish.md#autotoc_md294',1,'']]],
-  ['best_20practices_16',['Best Practices',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/versioning-guide.md#autotoc_md388',1,'🎯 Best Practices'],['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/jekyll-guide.md#autotoc_md97',1,'Validation Best Practices']]],
-  ['branch_17',['Custom Deployment Branch',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/versioning-guide.md#autotoc_md383',1,'']]],
-  ['branch_20naming_20convention_18',['2. Branch Naming Convention',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/versioning-guide.md#autotoc_md390',1,'']]],
-  ['branch_20strong_19',['&lt;strong&gt;Missing Deployment Branch&lt;/strong&gt;',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-docs-publish.md#autotoc_md316',1,'']]],
-  ['build_20',['Build',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/jekyll-guide.md#autotoc_md124',1,'Basic Production Build'],['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/jekyll-guide.md#autotoc_md133',1,'Debug Build'],['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/jekyll-guide.md#autotoc_md126',1,'Multi-Environment Build']]],
-  ['build_20failures_21',['Build Failures',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/jekyll-guide.md#autotoc_md132',1,'']]],
-  ['build_20with_20overrides_22',['Development Build with Overrides',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/jekyll-guide.md#autotoc_md125',1,'']]],
-  ['built_20in_20validation_20features_23',['Built-in Validation Features',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/jekyll-guide.md#autotoc_md92',1,'']]]
+  ['_5fconfig_20clang_20format_20tt_0',['&lt;tt&gt;_config/.clang-format&lt;/tt&gt;',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-cpp-lint.md#autotoc_md183',1,'']]],
+  ['_5fconfig_20clang_20tidy_20tt_1',['&lt;tt&gt;_config/.clang-tidy&lt;/tt&gt;',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-cpp-lint.md#autotoc_md184',1,'']]],
+  ['_5fconfig_20yamllint_20tt_20configuration_2',['&lt;tt&gt;_config/.yamllint&lt;/tt&gt; Configuration',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/ru-yaml-lint.md#autotoc_md414',1,'']]],
+  ['_5fconfig_20yml_20tt_3',['Base Configuration (&lt;tt&gt;_config.yml&lt;/tt&gt;)',['..//home/runner/work/hf-general-ci-tools/hf-general-ci-tools/docs/jekyll-guide.md#autotoc_md111',1,'']]]
 ];
