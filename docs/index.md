@@ -23,7 +23,8 @@ permalink: /docs/
 | **[📚 Docs Publisher](ru-docs-publish.md)** | Reusable documentation generation and GitHub Pages deployment | [→ Docs Guide](ru-docs-publish.md) |
 | **[🔗 Link Checker](ru-docs-linkcheck.md)** | Reusable documentation link validation using Lychee | [→ Link Check Guide](ru-docs-linkcheck.md) |
 | **[📝 YAML Linting](ru-yaml-lint.md)** | Reusable YAML file validation and formatting | [→ YAML Guide](ru-yaml-lint.md) |
-| **[📖 Versioning](versioning-guide.md)** | Multi-version documentation with Doxygen and Jekyll | [→ Versioning Guide](versioning-guide.md) |
+| **[� Release Management](ru-release.md)** | Reusable GitHub release creation with auto-generated notes | [→ Release Guide](ru-release.md) |
+| **[�📖 Versioning](versioning-guide.md)** | Multi-version documentation with Doxygen and Jekyll | [→ Versioning Guide](versioning-guide.md) |
 
 ## 🏠 Repository-Specific Workflows
 
@@ -42,6 +43,8 @@ permalink: /docs/
 - **[📚 Documentation Publisher](ru-docs-publish.md)** - Complete docs pipeline with Doxygen, Jekyll, and GitHub Pages
 - **[🔗 Documentation Link Check](ru-docs-linkcheck.md)** - Comprehensive link validation using Lychee
 - **[📝 YAML Linting Tools](ru-yaml-lint.md)** - Flexible YAML validation and formatting
+- **[� Markdown Linting Tools](ru-markdown-lint.md)** - Markdown file validation with auto-fix capabilities
+- **[�📦 Release Management](ru-release.md)** - Automated GitHub release creation with professional release notes
 
 ### **🚀 Design & Implementation**
 - **[🚀 CI Workflows & Design Philosophy](ci-workflows.md)** - Understanding our testing approach and architecture decisions
@@ -66,6 +69,12 @@ uses: n3b3x/hf-general-ci-tools/.github/workflows/ru-docs-linkcheck.yml@v1
 
 # For YAML validation
 uses: n3b3x/hf-general-ci-tools/.github/workflows/ru-yaml-lint.yml@v1
+
+# For Markdown validation
+uses: n3b3x/hf-general-ci-tools/.github/workflows/ru-markdown-lint.yml@v1
+
+# For releases
+uses: n3b3x/hf-general-ci-tools/.github/workflows/ru-release.yml@v1
 ```
 
 > **Note:** These are **reusable workflows** designed to be called from other repositories.

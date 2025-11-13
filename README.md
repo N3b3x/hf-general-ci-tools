@@ -1,7 +1,10 @@
 ---
 layout: default
 title: "🚀 hf-general-ci-tools"
-description: "A comprehensive collection of reusable GitHub Actions workflows for modern CI/CD pipelines"
+description: "A comprehensiv| **[🔗 Documentation Link Check](docs/ru-docs-linkcheck.md)** | Link validation setup | Documentation maintainers |
+| **[📝 YAML Linting Tools](docs/ru-yaml-lint.md)** | YAML validation configuration | DevOps engineers |
+| **[📦 Release Management](docs/ru-release.md)** | Automated release creation | Release managers |
+| **[🚀 CI Workflows & Design](docs/ci-workflows.md)** | Testing philosophy and live examples | All users |ollection of reusable GitHub Actions workflows for modern CI/CD pipelines"
 nav_order: 1
 permalink: /
 ---
@@ -50,6 +53,8 @@ This repository provides a curated set of **reusable GitHub Actions workflows** 
 | **[📚 Documentation](.github/workflows/ru-docs-publish.yml)** | Documentation generation & deployment | • Doxygen support<br>• Jekyll sites<br>• GitHub Pages | [→ Use Now](#-quick-start) |
 | **[🔗 Link Check](.github/workflows/ru-docs-linkcheck.yml)** | Documentation link validation | • Lychee integration<br>• Custom configs<br>• Exclude patterns | [→ Use Now](#-quick-start) |
 | **[📝 YAML Lint](.github/workflows/ru-yaml-lint.yml)** | YAML file validation | • Syntax checking<br>• Style validation<br>• Custom rules | [→ Use Now](#-quick-start) |
+| **[� Markdown Lint](.github/workflows/ru-markdown-lint.yml)** | Markdown file validation | • Syntax checking<br>• Style validation<br>• Auto-fix support | [→ Use Now](#-quick-start) |
+| **[�📦 Release](.github/workflows/ru-release.yml)** | Automated GitHub releases | • Auto-generated notes<br>• Draft/prerelease support<br>• Tag-based releases | [→ Use Now](#-quick-start) |
 
 ---
 
@@ -179,6 +184,38 @@ jobs:
       paths: "docs/**,*.md"
       verbose: true
       timeout: "30"
+```
+</details>
+
+<details>
+<summary><strong>� Markdown Validation Only</strong></summary>
+
+```yaml
+name: Docs Quality
+on: [push, pull_request]
+jobs:
+  markdown:
+    uses: n3b3x/hf-general-ci-tools/.github/workflows/ru-markdown-lint.yml@v1
+    with:
+      globs: "docs/**/*.md *.md"
+      fix: false
+```
+</details>
+
+<details>
+<summary><strong>�📦 Release Creation Only</strong></summary>
+
+```yaml
+name: Release
+on:
+  push:
+    tags: ['v*']
+jobs:
+  release:
+    uses: n3b3x/hf-general-ci-tools/.github/workflows/ru-release.yml@v1
+    with:
+      draft: false
+      prerelease: false
 ```
 </details>
 
