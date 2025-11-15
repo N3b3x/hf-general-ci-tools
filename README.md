@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "🚀 hf-general-ci-tools"
-description: "A comprehensiv| **[🔗 Documentation Link Check](docs/ru-docs-linkcheck.md)** | Link validation setup | Documentation maintainers |
+description: "A comprehensive Link validation setup | Documentation maintainers |
 | **[📝 YAML Linting Tools](docs/ru-yaml-lint.md)** | YAML validation configuration | DevOps engineers |
 | **[📦 Release Management](docs/ru-release.md)** | Automated release creation | Release managers |
 | **[🚀 CI Workflows & Design](docs/ci-workflows.md)** | Testing philosophy and live examples | All users |ollection of reusable GitHub Actions workflows for modern CI/CD pipelines"
